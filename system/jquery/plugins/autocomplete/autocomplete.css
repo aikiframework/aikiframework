@@ -1,0 +1,48 @@
+	.autocompletePreload
+	{
+			width:300px;
+			height:20px;
+			line-height:20px;
+			background-color:#ffffff;
+	}
+		
+	.autocompleteBox 
+	{
+			position: relative;
+			left: 0px;
+			margin: 0px 0px 0px 0px;
+			width: 200px;
+			background-color: #eaeaea;
+			-moz-border-radius: 4px;
+			-webkit-border-radius: 4px;
+			border: 1px solid #bbbbbb;	
+			color: #000000;
+			width:350px;
+			height:250px;
+			overflow-y:auto;
+			overflow-x:hidden;
+	}
+	
+	.autocompleteList 
+	{
+			margin: 0px;
+			padding: 0px;
+	}
+	
+	.autocompleteList li 
+	{					
+			margin: 0px 0px 0px 0px;
+			!margin: 0px 0px 0px -15px;			
+			padding: 0px 0px 0px 5px;
+			cursor: pointer;
+			list-style-type:none;
+			line-height:20px;
+			display:block;
+			width:400px;			
+			text-transform:capitalize;
+	}
+	
+	.autocompleteList li:hover 
+	{
+			background-color: #659CD8;
+	}
