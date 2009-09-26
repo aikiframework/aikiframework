@@ -147,10 +147,10 @@ if (!isset($_POST['db_type']) or !isset($_POST['db_host']) or !isset($_POST['db_
 before we start doing the hard work ( filling the form bellow ) I need you to check the following for me:
 <br />
 <br />
-1- please make sure that <b>'.$system_folder.'</b> has script write permissions ( I need to create config.php and .htaccess inside )
+1- please make sure that <b>'.$system_folder.'</b> has script write permissions that is: 777 ( I need to create config.php and .htaccess inside )
 <br />
 <br />
-2- please create an empty database, it will be great if you set the connection collation to utf8_general_ci
+2- please create an empty database, it will be great if you set the connection collation to utf8_general_ci.
 <br />
 <br />
 3- make sure you are using php 5.1 or above ( I am alpha and not fully tested on other versions )
