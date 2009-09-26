@@ -662,6 +662,12 @@ class CreateLayout
 			}
 
 
+			//apply new location for the whole page
+			$new_header = preg_match("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);
+			if ($new_header > 0 and $new_header_match[1]){
+				Header("Location: $new_header_match[1]", false, 301);
+			}
+				
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
 
@@ -681,7 +687,7 @@ class CreateLayout
 			if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1){
 				$processed_widget = $processed_widget."<a href='".$aiki->setting[url]."index.php?language=arabic&module=admin&operators=module|aiki_widgets|edit&op=edit&do=editaiki_widgets&pkey=".$widget->id."'><small>Edit Widget</small></a>";
 			}
-				
+
 
 
 			$replace_string = $aiki->get_string_between($processed_widget, "{#{", "}#}");
@@ -746,7 +752,7 @@ class CreateLayout
 				$processed_widget = preg_replace("/\{\#\{(.*)\}\#\}/U", '', $processed_widget);
 
 			}
-				
+
 			$this->widget_html .=  $processed_widget;
 
 
@@ -754,13 +760,6 @@ class CreateLayout
 
 		}
 
-
-
-		//apply new location for the whole page
-		$new_header = preg_match("/\(\#\(header\:(.*)\)\#\)/U",$this->widget_html, $new_header_match);
-		if ($new_header > 0 and $new_header_match[1]){
-			Header("Location: $new_header_match[1]", false, 301);
-		}
 
 
 	}
