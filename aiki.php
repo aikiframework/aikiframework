@@ -26,7 +26,7 @@ if (isset($_REQUEST['noheaders'])){ $noheaders = true; }
 if (isset($_REQUEST['custome_output'])){$custome_output = true;	$noheaders = true; }
 
 
-if (!file_exists("$system_folder/config.php")){
+if (file_exists("$system_folder/config.php")){
 	require_once("$system_folder/config.php");
 }else{
 	require ("$system_folder/system/libraries/installer.php");
