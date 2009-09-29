@@ -58,35 +58,38 @@ class ajax extends aiki
 		 $(\"#$array[0]\").click(function(event){
 		 ";
 
-		 foreach ($array_of_values as $value){
+				foreach ($array_of_values as $value){
 
-		 	$value = $this->get_string_between($value, "[", "]");
+					$value = $this->get_string_between($value, "[", "]");
 
-		 	$value = explode(',', $value);
+					$value = explode(',', $value);
 
-		 	$url = $this->get_string_between($value['0'], "'", "'");
-		 	$target = $this->get_string_between($value['1'], "'", "'");
-		 	$callback = $this->get_string_between($value['2'], "'", "'");
+					$url = $this->get_string_between($value['0'], "'", "'");
+					$target = $this->get_string_between($value['1'], "'", "'");
+					
+					if (isset ($value['2'])){
+						$callback = $this->get_string_between($value['2'], "'", "'");
+					}
 
-		 	$output .= "$function_name('$url', '$target'";
+					$output .= "$function_name('$url', '$target'";
 
-		 	if ($callback){
-		 		$output .= ", '$callback;'";
-		 	}
+					if ($callback){
+						$output .= ", '$callback;'";
+					}
 
-		 	$output .= ");"."\n";
+					$output .= ");"."\n";
 
-		 }
+				}
 
 
 
-		 $output .= "return false;
+				$output .= "return false;
 
 		 });
 		 });
 		 </script>";
 
-		 $text = preg_replace('/\(ajax\_a\('.preg_quote($set_of_requests, '/').'\)ajax\_a\)/Us', $output, $text);
+				$text = preg_replace('/\(ajax\_a\('.preg_quote($set_of_requests, '/').'\)ajax\_a\)/Us', $output, $text);
 
 			}
 

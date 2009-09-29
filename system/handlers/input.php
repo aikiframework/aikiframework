@@ -27,6 +27,7 @@ class aiki_input
 
 				case "process":
 					$key_request = "process";
+					$process_type = $req;
 					break;
 
 				case "add_to_form":
@@ -36,9 +37,17 @@ class aiki_input
 				case "edit_form":
 					$key_request = "edit_form";
 					break;
-						
+
+				case "edit_form_keep_history":
+					$key_request = "edit_form_keep_history";
+					break;
+
 				case "form_id":
 					$form_id = $req;
+					break;
+
+				case "record_id":
+					$record_id = $req;
 					break;
 
 			}
@@ -49,7 +58,9 @@ class aiki_input
 			switch ($key_request){
 
 				case "process":
-					$this->form_handler($req, $_POST);
+						
+					$this->form_handler($process_type, $_POST);
+						
 					break;
 
 				case "add_to_form":
@@ -60,8 +71,13 @@ class aiki_input
 
 				case "edit_form":
 
+					echo $aiki->records->edit_db_record_by_form_post($_POST, $form_id, $record_id);
+
 					break;
 
+				case "edit_form_keep_history":
+
+					break;
 			}
 		}
 

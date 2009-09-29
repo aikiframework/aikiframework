@@ -1,9 +1,6 @@
 <?php
 set_time_limit('999999999999999999');
 
-//error_reporting(E_ALL);
-define('IN_AIKICMS', true);
-//require_once ("aiki.php");
 
 
 if ($membership->permissions != "SystemGOD"){
@@ -158,9 +155,7 @@ switch ($do){
 		$ModuleArray = array(
 		 "tablename" => "dsyria_articles_text",
 		 "pkey" => "id",
-		 "textinput1" => "first_title|employees|true:العنوان الأول",
-		 "textinput2" => "second_title|employees:العنوان الثاني",
-		 "textinput3" => "writers|employees:كتاب المقال",
+
 		 "selection1" => "categories1|employees:التصنيف الأول:dsyria_articles_categories:id:name",
 		 "selection2" => "categories2|employees:التصنيف الثاني:dsyria_articles_categories:id:name",		
 		 "staticselect1" => "maintype|employees:نوع المقال:custome:خبر>2&مقال>1",

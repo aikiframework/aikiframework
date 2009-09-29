@@ -11,7 +11,7 @@
 	}
 
 function treeajaxify(file, targetwidget){ 
-      $.get('admin_tools/edit/widgets/'+file,function(data) { 
+      $.get('admin_tools/edit/2/'+file,function(data) { 
               $(targetwidget).html(data);
               htmleditor = CodeMirror.fromTextArea('widget', {
                   height: "350px",
@@ -98,7 +98,7 @@ function createtree(){
 
 			if(selector == 'widget'){
 					//create widget
-					$("#widget-form").load("admin_tools/new/widgets",  {limit: 25}, function(){
+					$("#widget-form").load("admin_tools/new/2",  {limit: 25}, function(){
 						$('#new_record_form').ajaxForm(formoptions); 
     	 			});
 			}
@@ -126,7 +126,7 @@ function createtree(){
 					if(isNaN(NODE.id)) {
 					//delete url	
 					}else{
-						$("#widget-form").load("admin_tools/delete/widgets/"+NODE.id+":aiki_widgets:yes",  {limit: 25}, function(){
+						$("#widget-form").load("admin_tools/delete/2/"+NODE.id+":aiki_widgets:yes",  {limit: 25}, function(){
 							$.tree_reference('widgettree').refresh();
      					});
 					}

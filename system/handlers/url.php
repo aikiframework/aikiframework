@@ -36,12 +36,12 @@ class aiki_url
 
 	function apply_url_on_query($query){
 
-		$count = preg_match_all( '/\(\((.*)\)\)/U', $query, $matches );
+		$count = preg_match_all( '/\(\!\((.*)\)\!\)/U', $query, $matches );
 
 		if ($count > 0){
 			foreach ($matches[1] as $parsed){
 				if ($parsed){
-					$query = str_replace("(($parsed))", $this->url[$parsed], $query);
+					$query = str_replace("(!($parsed)!)", $this->url[$parsed], $query);
 				}
 			}
 		}

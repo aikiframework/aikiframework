@@ -20,7 +20,7 @@ class CreateLayout
 	function CreateLayout(){
 		global $db, $site, $aiki, $url, $errors, $layout;
 
-				
+
 		$this->output_modifiers = $db->get_results("SELECT modifiers_name from aiki_plugins where modifiers_type = 'output_modifier'");
 
 		$output_modifiers = $db->get_results("SELECT modifiers_name from aiki_plugins where modifiers_type = 'output_modifier'");
@@ -66,8 +66,8 @@ class CreateLayout
 				$this->html_output .= $errors->page_not_found();
 			}
 		}
-		
-		
+
+
 	}
 
 
@@ -108,7 +108,7 @@ class CreateLayout
 				}
 			}
 
-			if ($widget->javascript and !$widget->load_in_widget){
+			if ($widget->javascript){
 				$this->CallJavaScript[$widget_id] = $widget->javascript;
 			}
 
@@ -180,7 +180,7 @@ class CreateLayout
 
 			$widget->pagetitle = $this->get_global_vars_in_text($widget->pagetitle);
 
-			$widget->pagetitle = $url->apply_url_on_query($widget->pagetitle);
+			$widget->pagetitle = $aiki->url->apply_url_on_query($widget->pagetitle);
 
 			if ($widget->dynamic_pagetitle){
 				$title = $db->get_var("$widget->pagetitle");
@@ -250,14 +250,6 @@ class CreateLayout
 				}
 			}
 
-			if ($widget->javascript and $widget->load_in_widget == 1 ){
-
-				$javascript = $db->get_var("SELECT script FROM aiki_javascript where id = '$widget->javascript '");
-				if ($javascript){
-
-					$widget->widget = $widget->widget.$javascript;
-				}
-			}
 
 			$widget->widget = htmlspecialchars_decode($widget->widget);
 
@@ -281,7 +273,7 @@ class CreateLayout
 
 			if ($widget->normal_select){
 
-				$widget->normal_select = $url->apply_url_on_query($widget->normal_select);
+				$widget->normal_select = $aiki->url->apply_url_on_query($widget->normal_select);
 
 				$widget->normal_select = $aiki->processVars ($aiki->L10n ("$widget->normal_select"));
 				$widget->normal_select = $this->get_global_vars_in_text($widget->normal_select);
@@ -631,6 +623,8 @@ class CreateLayout
 			/////////End OF select and not select
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
+			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
+				
 
 			if($widget->output_modifiers){
 				if ($widget->output_modifiers != '[all]'){
@@ -663,7 +657,7 @@ class CreateLayout
 			if ($new_header > 0 and $new_header_match[1]){
 				Header("Location: $new_header_match[1]", false, 301);
 			}
-				
+
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
 
@@ -704,14 +698,6 @@ class CreateLayout
 						$Modules_Tools->EditMultiWidgetsInPlace();
 						break;
 
-
-					case "modules_editor":
-						require_once ("system/libs/array_tools.php");
-						$array_tools = new array_tools();
-						$processed_widget .= $array_tools->array_editor('id', 'module_name', 'module_array', 'aiki_modules', 'where module_array != ""');
-
-						break;
-
 					case "config_editor":
 
 						require_once ("system/libs/array_tools.php");
@@ -720,10 +706,6 @@ class CreateLayout
 
 						break;
 
-
-					case "edit_record_in_module":
-						$processed_widget .= $records_libs->dbUpdateDelete($url->url[2], 'edit', $url->url[3], '', '', "", "");
-						break;
 
 					case "delete_record":
 						$processed_widget .= $records_libs->dbUpdateDelete($url->url[2], 'del', $url->url[3], '', '', "", "");
@@ -742,8 +724,9 @@ class CreateLayout
 
 			}
 
+
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
-			
+
 			$this->widget_html .=  $processed_widget;
 
 

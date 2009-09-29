@@ -123,7 +123,7 @@ class aiki_html
 				$header .= "&widgets=$layout->widgets_css";
 			}
 			$header.= '" />
-<link rel="icon" href="'.$config['url'].'favicon.ico" type="image/x-icon" />';
+<link rel="icon" href="'.$config['url'].'/assets/images/favicon.ico" type="image/x-icon" />';
 
 			$header .= $this->write_javascript();
 

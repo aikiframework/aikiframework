@@ -1,7 +1,7 @@
 <?php
 class aiki_languages
 {
-	
+
 
 	function L10n($string){
 		global $db, $config;
@@ -14,13 +14,15 @@ class aiki_languages
 			{
 				$parsed = trim($parsed);
 				$short_term = $db->get_row("SELECT $default_language FROM aiki_dictionary WHERE short_term = '$parsed'");
-				$string = str_replace("[[$parsed]]", $short_term->$default_language, $string);
+				if ($short_term){
+					$string = str_replace("[[$parsed]]", $short_term->$default_language, $string);
+				}
 
 			}
 		}
 		return $string;
 	}
-	
-	
+
+
 }
 ?>
