@@ -15,8 +15,8 @@ define('IN_AIKI', true);
 
 require_once("aiki.php");
 
-$site = mysql_escape_string($_GET['site']);
-$widgets = mysql_escape_string($_GET['widgets']);
+$site = $_GET['site'];
+$widgets = $_GET['widgets'];
 
 if (!$site){
 	$site = "aiki_shared";

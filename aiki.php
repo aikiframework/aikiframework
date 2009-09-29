@@ -42,11 +42,15 @@ $config = $aiki->get_config($config);
 
 $membership = $aiki->load("membership");
 
+
+$aiki->load("records");
+
 $aiki->load("input");
 
 $aiki->load("output");
 $aiki->output->output_from_cache();
 
+$aiki->load("forms");
 $aiki->load("cache");
 $aiki->load("events");
 $aiki->load("upload");
@@ -66,6 +70,9 @@ $aiki->load("javascript");
 $aiki->load("sql_markup");
 $aiki->load("wiki_markup");
 $aiki->load("languages");
+
+
+
 
 
 

@@ -10,7 +10,7 @@ class aiki_errors
 		
 		$aiki->html->set_title("404 Page Not Found");
 
-		$request = mysql_real_escape_string($_SERVER['REQUEST_URI']);
+		$request = $_SERVER['REQUEST_URI'];
 		$request = urldecode($request);
 
 		$check_request = $db->get_row("SELECT * FROM aiki_redirects where url='$request'");

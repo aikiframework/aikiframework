@@ -116,7 +116,6 @@ if (!isset($noheaders)){
 
 
 // Tidy from php5-tidy using libtidy
-//TODO: use tidy when generating full cache
 if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $html_tidy and $tidy_config) {
 
 	$tidy = new tidy();

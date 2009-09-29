@@ -289,18 +289,12 @@ switch ($do){
 		 "tablename" => "modules_photo_archive",
 		 "pkey" => "id",
 
-		 "textinput1" => "categorie:نوع الصورة",
-		 "textinput2" => "title:عنوان الصورة",
+
 		 "filemanager91" => "colored_label:لون المجموعة",
 		 "filemanager92" => "rating:التقييم",
 		 "filemanager93" => "ratings_num:عدد التقييمات",
 		 "textinput10" => "alt_text:النص المرتبط",
 		 "normaltextblock1" => "keywords:الكلمات المفتاحية",
-		 "textinput12" => "date_of_shot:تاريخ التصوير",
-		 "textinput14" => "copyright:حقوق الطبع",
-		 "textinput13" => "description:الوصف",
-		 "textinput15" => "current_owner:المالك الحالي",
-		 "textinput16" => "photographer:المصور",
 		 "filemanager80" => "original_artist_id:الفنان الأصلي",
 		 "filemanager81" => "original_width:العرض الأصلي",
 		 "filemanager82" => "original_height:الارتفاع الأصلي",
@@ -310,12 +304,10 @@ switch ($do){
 		 "filemanager86" => "article_pubdate:تاريخ نشر المقال",
 		 "filemanager87" => "article_writer:كاتب المقال",
 		 "filemanager88" => "article_id:رقم المقال",
-		 "textinput33" => "full_path:المسار الكامل للملف:full_path",
 		 "filemanager34" => "resolution:الدقة",
 		 "filemanager35" => "depth:عمق الألوان",
 		 "filemanager36" => "color_space:الفضاء اللوني",
 		 "filemanager37" => "compression:الضغط",
-		 "textinput38" => "source_url:رابط المصدر",
 		 "filemanager39" => "source_device:الجهاز الأصلي",
 		 "filemanager40" => "exif_data:معلومات ميتا الصورة",
 		 "filemanager41" => "capture_date:تاريخ التصوير",
@@ -323,12 +315,7 @@ switch ($do){
 		 "filemanager43" => "shutter_speed:سرعة العدسة",
 		 "filemanager44" => "focal_length:فتحة العدسة",
 		 "filemanager45" => "iso_speed:حساسية الصورة",
-		 "textinput46" => "location:مكان الصورة",
-		 "textinput47" => "longitude:خط الطول",
-		 "textinput48" => "altitude:خط العرض",
 		 "filemanager851" => "available_sizes:القياسات المتوفرة",
-		 "textinput49" => "watermark:رابط الشعار",
-		 "textinput59" => "no_watermark_under:عدم إظهار الشعار تحت",
 		 "filemanager49" => "filename:ملف الصورة:unique_filename",
 "filemanager1" => "mime_type:نوع الملف:mime_type",
 		 "filemanager94" => "upload_file_name:اسم ملف الأصل:upload_file_name",
@@ -347,9 +334,6 @@ switch ($do){
 		 "pkey" => "id",
    	  	 "send_email" => "info@falestiny.com|[from_email]|عمل جديد|الكاتب:[writer]<br>العنوان:[first_title]<br>[second_title]<br><br>[post]",
    	  	 "textinput_if_valid1" => "from_email||true:بريدك الإلكتروني:email",
-   	  	 "textinput1" => "writer:اسم الكاتب",
-   	  	 "textinput2" => "first_title:عنوان المادة الأول",
-   	  	 "textinput3" => "second_title:عنوان المادة الثاني",
    	  	 "bigtextblock2" => "post:المادة",
    	  	 "autofiled2" => "stime:تاريخ الادخال:uploaddate"
   	  
@@ -358,24 +342,8 @@ switch ($do){
 
 
    	  	 $ModuleArray = array(
-		 "tablename" => "f_emails",
-		 "pkey" => "id",
-   	  	 "send_email" => "info@falestiny.com|[sender_email]|[email_topic]|[message]",
-   	  	 "textinput1" => "sender_name||true:اسمك",
-   	  	 "textinput_if_valid1" => "sender_email||true:بريدك الإلكتروني:email",
-   	  	  "textinput2" => "email_topic:موضوع الرسالة",
-   	  	 "bigtextblock2" => "message||true:نص الرسالة",
-   	  	 "autofiled2" => "stime:تاريخ الإرسالة:uploaddate"
-  	  
-
-   	  	 );
-
-
-   	  	 $ModuleArray = array(
 		 "tablename" => "aiki_widgets",
 		 "pkey" => "id",
-   	     "textinput1" => "widget_name|SystemGOD:Widget name",
-   	     "textinput2" => "style_id|SystemGOD:Css Class",
    	     "normaltextblock1" => "display_urls|SystemGOD:Urls",
    	     "normaltextblock2" => "kill_urls|SystemGOD:Kill Urls",
    	     "normaltextblock3" => "normal_select|SystemGOD:SQL",
@@ -409,8 +377,7 @@ a:31:{s:9:"tablename";s:12:"aiki_widgets";s:4:"pkey";s:2:"id";s:10:"textinput1";
    	     "textinput12" => "permissions|SystemGOD:مستوى الصلاحيات المطلوب",
    	  	 "staticselect8" => "edit_in_place|SystemGOD:السماح بالتعديل في المكان:custome:لا>&نعم>1",		
    	     "textinput14" => "widget_cache_timeout|SystemGOD:وقت الكاش",
-   	     "selection6" => "javascript|SystemGOD:استدعاء جافاسكربت:aiki_javascript:id:script_name",
-         "staticselect20" => "is_active|SystemGOD:تشغيل النافذة:custome:لا>0&نعم>1",		   	  
+   	     "selection6" => "javascript:استدعاء جافاسكربت:aiki_javascript:id:script_name",
 
 
 */
@@ -418,76 +385,20 @@ a:31:{s:9:"tablename";s:12:"aiki_widgets";s:4:"pkey";s:2:"id";s:10:"textinput1";
 		$ModuleArray = array(
 		 "tablename" => "dsyria_bank_riched",
 		 "pkey" => "id",
-		 "textinput1" => "original_bank_id|SystemGOD:رقم الموضوع",
-		 "textinput2" => "name|SystemGOD:اسم المستخدم",	
-		 "textinput3" => "email|SystemGOD:البريد الإلكتروني",
-		 "textinput4" => "title|SystemGOD:العنوان",
-		 "bigtextblock5" => "text|SystemGOD:التعليق",	
-   	  "staticselect5" => "publish_cond:النشر:custome:نعم>1&لا>0&"
+		 	
+
    	  );
 
 
 
-
-	  	 $ModuleArray = array(
-		 "tablename" => "aiki_urls",
-		 "pkey" => "id",
-   	     "textinput1" => "url|SystemGOD:URL",
-   	     "textinput2" => "site|SystemGOD:Site",
-   	  	 );
-   	  	 
-   	  	 
-   	  	 	  	 $ModuleArray = array(
-		 "tablename" => "aiki_users",
-		 "pkey" => "id",
-   	     "textinput1" => "username:اسم المستخدم",
-   	     		 "selection1" => "usergroup:الصلاحيات:aiki_users_groups:id:name",
-
-   	  	 );
 
 
 
    	  	 echo serialize($ModuleArray);
    	  	 break;
 
-	case "UpdateMultiRecords":
-		require_once ("aiki_lib/admin_tools/records_libs.php");
-		$records_libs = new records_libs();
-		$records_libs->UpdateMultiRecords('alhurriy_news_text', "", 'order_by', 'insert_date');
-		$db->debug();
-		break;
 
 
-	case "show_status":
-		require_once("aiki_lib/status/cpuload/class_CPULoad.php");
-		$cpuload = new CPULoad();
-		$cpuload->sample_load();
-		$cpuload->print_load();
-
-		echo "<hr>";
-
-		include ('aiki_lib/status/uptime.php');
-
-		echo "<hr>";
-
-		require_once("aiki_lib/status/linuxstat.php");
-		$stat = new linuxstat();
-		print_r($stat->getCpuInfo());
-
-		echo "<hr>";
-
-		print_r($stat->getMemStat());
-
-		echo "<hr>";
-		include ('aiki_lib/status/smtpstatus/smtpstatus.inc.php');
-
-		$mystatus = new smtpstatus;
-
-		$mystatus->header();
-		$mystatus->cm("mail.discover-syria.com");
-
-
-		break;
 
 }
 

@@ -92,14 +92,14 @@ function createtree(){
 			if(selector == 'url') {
 					//alert(TYPE + REF_NODE.id);
 				$("#widget-form").load("admin_tools/new/urls",  {limit: 25}, function(){
-					$('#addwidget').ajaxForm(formoptions); 
+					$('#new_record_form').ajaxForm(formoptions); 
   		   		});
 			}
 
 			if(selector == 'widget'){
 					//create widget
 					$("#widget-form").load("admin_tools/new/widgets",  {limit: 25}, function(){
-						$('#addwidget').ajaxForm(formoptions); 
+						$('#new_record_form').ajaxForm(formoptions); 
     	 			});
 			}
 

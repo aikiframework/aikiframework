@@ -4,6 +4,7 @@ class aiki_input
 {
 
 	function aiki_input(){
+		global $aiki, $layout;
 
 		foreach ($_GET as $key => $req){
 			$req = mysql_escape_string($req);
@@ -12,14 +13,57 @@ class aiki_input
 
 
 		foreach ($_POST as $key => $req){
-			$req = mysql_escape_string($req);
+
+			$req = stripcslashes($req);
+			$req = str_replace('\"', '"', $req);
+			$req = str_replace("\'", "'", $req);
+			$req = str_replace('"', '\"', $req);
+			$req = str_replace("'", "\'", $req);
+
+
 			$_POST[$key] = $req;
 
-			if ($key == 'handle_form'){
-				$this->form_handler($req, $_POST);
+			switch ($key){
+
+				case "process":
+					$key_request = "process";
+					break;
+
+				case "add_to_form":
+					$key_request = "add_to_form";
+					break;
+
+				case "edit_form":
+					$key_request = "edit_form";
+					break;
+						
+				case "form_id":
+					$form_id = $req;
+					break;
+
 			}
+
 		}
 
+		if (isset($key_request)){
+			switch ($key_request){
+
+				case "process":
+					$this->form_handler($req, $_POST);
+					break;
+
+				case "add_to_form":
+
+					echo $aiki->records->insert_from_form_to_db($_POST, $form_id);
+
+					break;
+
+				case "edit_form":
+
+					break;
+
+			}
+		}
 
 	}
 

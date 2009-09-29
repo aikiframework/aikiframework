@@ -20,6 +20,7 @@ class CreateLayout
 	function CreateLayout(){
 		global $db, $site, $aiki, $url, $errors, $layout;
 
+				
 		$this->output_modifiers = $db->get_results("SELECT modifiers_name from aiki_plugins where modifiers_type = 'output_modifier'");
 
 		$output_modifiers = $db->get_results("SELECT modifiers_name from aiki_plugins where modifiers_type = 'output_modifier'");
@@ -65,7 +66,8 @@ class CreateLayout
 				$this->html_output .= $errors->page_not_found();
 			}
 		}
-
+		
+		
 	}
 
 
@@ -568,11 +570,6 @@ class CreateLayout
 
 					$widgetContents = $this->aikiTemplates($widgetContents);
 
-					$widgetContents = $this->displayForms($widgetContents);
-
-					//$widgetContents = $image_processing->PowerGraphic($widgetContents);
-
-
 					$widgetContents = $this->call_javascripts($widgetContents, $widget_id);
 
 					$widgetContents = $this->sql($widgetContents);
@@ -624,7 +621,6 @@ class CreateLayout
 
 				//TODO: $widget->widget = $this->call_javascripts($widget->widget, $widget_id);
 
-				$widget->widget = $this->displayForms($widget->widget);
 				//TODO: $widget->widget = $this->sql($widget->widget);
 
 
@@ -725,14 +721,7 @@ class CreateLayout
 						break;
 
 
-					case "insert_new_record_to_module":
-
-						$processed_widget .= $records_libs->dbCreateInsert($url->url[2], '');
-						break;
-
 					case "edit_record_in_module":
-						require_once ("system/libraries/records.php");
-						$records_libs = new records_libs();
 						$processed_widget .= $records_libs->dbUpdateDelete($url->url[2], 'edit', $url->url[3], '', '', "", "");
 						break;
 
@@ -753,6 +742,8 @@ class CreateLayout
 
 			}
 
+			$processed_widget = $aiki->forms->displayForms($processed_widget);
+			
 			$this->widget_html .=  $processed_widget;
 
 
@@ -763,13 +754,6 @@ class CreateLayout
 
 
 	}
-
-
-
-
-
-
-
 
 
 	function noaiki($text){
@@ -794,53 +778,6 @@ class CreateLayout
 		}
 		return $text;
 	}
-
-	function displayForms($text){
-		global $db, $records_libs;
-
-		$forms_count = preg_match_all("/\(\#\(form\:(.*)\)\#\)/U", $text, $forms);
-		if ($forms_count >0){
-
-			foreach ($forms[1] as $form_number){
-				if ($form_number){
-					$form_sides = explode(":", $form_number);
-
-
-					$form_number = mysql_real_escape_string($form_sides[0]);
-
-					$form_array = $db->get_var("SELECT form_array from aiki_forms where id='$form_number' limit 1");
-					if ($form_array){
-						$form = $records_libs->dbCreateInsert('', $form_array);
-
-						if ($form_sides[1]){
-							$form_static_values = explode("|", $form_sides[1]);
-							$form_inner_data = "";
-							foreach($form_static_values as $static_vaule){
-								$static_value_sides = explode("=", $static_vaule);
-
-								$form = preg_replace("/name\=\"$static_value_sides[0]\"/U", "name='$static_value_sides[0]' value='$static_value_sides[1]'", $form);
-
-								$form_inner_data .= $static_vaule;
-							}
-						}
-					}
-				}
-				if ($form_inner_data){
-					$text = preg_replace("/\(\#\(form\:$form_number:$form_inner_data\)\#\)/U", $form, $text);
-
-				}else{
-					$text = preg_replace("/\(\#\(form\:$form_number\)\#\)/U", $form, $text);
-				}
-			}
-
-		}
-
-		return $text;
-	}
-
-
-
-
 
 
 
