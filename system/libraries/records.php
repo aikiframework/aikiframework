@@ -206,52 +206,6 @@ width:591px;
 	}
 
 
-	function fill_form($html, $sql){
-		global $db, $aiki;
-
-		$viewrow = $db->get_row($sql);
-
-		$viewrow = $aiki->array->object2array($viewrow);
-
-		if (!is_array($viewrow)){return;}
-
-		$arraykeys = array_keys($viewrow);
-
-
-		$get_input_fields = preg_match_all("|<input[^>]+>|Us",$html, $input_matchs );
-
-		foreach($input_matchs[0] as $input){
-
-			$name = $aiki->get_string_between($input, 'name="', '"');
-
-			if (in_array($name, $arraykeys)){
-
-				$mod_input = preg_replace('/value\=\"(.*)\"/', "", $input);
-				$mod_input = str_replace('>','value="'.$viewrow["$name"].'">', $mod_input);
-
-				$html = str_replace($input, $mod_input, $html);
-			}
-
-		}
-
-
-
-
-		$get_text_areas = preg_match_all("|<textarea[^>]+>(.*)</textarea+>|Us",$html, $input_matchs );
-
-		foreach($input_matchs[0] as $input){
-
-			$name = $aiki->get_string_between($input, 'name="', '"');
-
-			if (in_array($name, $arraykeys)){
-
-				$html = preg_replace('|<textarea[^>](.*)name\=\"'.$name.'\"(.*)+>(.*)</textarea+>|Us', "<textarea \\1 name=\"$name\">".$viewrow["$name"]."</textarea>", $html);
-			}
-
-		}
-
-		return $html;
-	}
 
 	function edit_all(){
 

@@ -228,7 +228,7 @@ class aiki_forms
 
 					case "upload":
 						if (isset($form_data)){
-								
+
 							$form .= ("<tr><td>$intwalker[1]</td><td>");
 							$site_path = $config['url'];
 							$img = "<img src=\"";
@@ -372,6 +372,11 @@ class aiki_forms
 			$form = $aiki->sql_markup->sql($form_html);
 			$form = $aiki->processVars($form_html);
 
+			$form = str_replace('$form_id', $form_id, $form);
+			$form = str_replace('$form_type', 'new_record_form', $form);
+			$form = str_replace('$submit', 'add_to_form', $form);
+
+
 
 		}else{
 
@@ -385,13 +390,32 @@ class aiki_forms
 
 	function create_update_form($form_array, $form_html, $form_id, $record_id){
 		global $aiki;
-		
+
 		$form = '';
 			
 		if (isset($form_html) and $form_html){
 
 			$form = $aiki->sql_markup->sql($form_html);
 			$form = $aiki->processVars($form_html);
+
+			$form = str_replace('$form_id', $form_id, $form);
+			$form = str_replace('$record_id', $record_id, $form);
+			$form = str_replace('$form_type', 'auto_filled_form', $form);
+			$form = str_replace('$submit', 'edit_form', $form);
+
+			$arraykeys = array_keys($form_array);
+
+			if (in_array("tablename", $arraykeys))
+			$tablename = $form_array["tablename"];
+
+			if (in_array("pkey", $arraykeys)) {
+				$pkey = $form_array["pkey"];
+			}else{
+				$pkey = 'id';
+			}
+
+			$sql = "select * from $tablename where $pkey='$record_id' limit 1";
+			$form = $this->fill_form($form, $sql);
 
 
 		}else{
@@ -402,6 +426,102 @@ class aiki_forms
 
 		return $form;
 
+
+	}
+
+	function fill_form($html, $sql){
+		global $db, $aiki;
+
+		$viewrow = $db->get_row($sql);
+
+		$viewrow = $aiki->array->object2array($viewrow);
+
+		if (!is_array($viewrow)){return;}
+
+		$arraykeys = array_keys($viewrow);
+
+
+		$get_input_fields = preg_match_all("|<input[^>]+>|Us",$html, $input_matchs );
+
+		foreach($input_matchs[0] as $input){
+
+			$name = $aiki->get_string_between($input, 'name="', '"');
+
+			if (in_array($name, $arraykeys)){
+
+				$mod_input = preg_replace('/value\=\"(.*)\"/', "", $input);
+				$mod_input = str_replace('>','value="'.$viewrow["$name"].'">', $mod_input);
+
+				$html = str_replace($input, $mod_input, $html);
+			}
+
+		}
+
+
+
+
+		$get_text_areas = preg_match_all("|<textarea[^>]+>(.*)</textarea+>|Us",$html, $input_matchs );
+
+		foreach($input_matchs[0] as $input){
+
+			$name = $aiki->get_string_between($input, 'name="', '"');
+
+			if (in_array($name, $arraykeys)){
+
+				$html = preg_replace('|<textarea[^>](.*)name\=\"'.$name.'\"(.*)+>(.*)</textarea+>|Us', "<textarea \\1 name=\"$name\">".$viewrow["$name"]."</textarea>", $html);
+			}
+
+		}
+
+		return $html;
+	}
+
+	function auto_generate_form($table){
+		global $aiki, $db;
+
+		$form_array = array();
+
+		$table_info = $db->get_results("SELECT * FROM $table");
+
+		$form_array["tablename"] = $table;
+
+		$i = 0;
+
+		foreach ($db->col_info as $column){
+
+			$i++;
+
+			$column = $aiki->array->object2array($column);
+
+			if ($column['primary_key'] == 1){
+				$form_array["pkey"] = $column['name'];
+			}
+
+			switch ($column['type']){
+
+				case "int":
+					$column['type'] = 'textinput';
+					break;
+
+				case "string":
+					$column['type'] = 'textinput';
+					break;
+
+				case "blob":
+					$column['type'] = 'textblock';
+					break;
+			}
+
+			$column_display_name = str_replace('_', ' ', $column['name']);
+			$column_display_name = str_replace('-', ' ', $column_display_name);
+				
+			$form_array[$column['type'].$i] = $column['name']."|SystemGOD:$column_display_name";
+
+		}
+
+		$form_array = serialize($form_array);
+
+		$insert_form = $db->query("insert into aiki_forms (form_name, form_array) values ('$table', '$form_array')");
 
 	}
 

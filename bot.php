@@ -161,8 +161,7 @@ switch ($do){
 		 "staticselect1" => "maintype|employees:نوع المقال:custome:خبر>2&مقال>1",
 	     "normaltextblock1" => "hometext|employees|true:الافتتاحية",
 			
-		 "textinput4" => "sources|employees:المصادر",
-		 "textinput5" => "extras|employees:ملاحظات إضافية",		
+	
 		 "normaltextblock1" => "keywords|employees:الكلمات المفتاحية",
 		 "imagenoupload22" => "filename|employees:صورة المقال",
 		 "autofiled1" => "publish_date|employees:تاريخ النشر:publishdate",

@@ -498,7 +498,7 @@ class CreateLayout
 
 
 
-
+						//TODO: move this to a plugin
 						$tags = $aiki->get_string_between($widget->widget, "(#(tags:", ")#)");
 						if ($tags){
 							$tagsides = explode("||", $tags);
@@ -624,7 +624,7 @@ class CreateLayout
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
-				
+
 
 			if($widget->output_modifiers){
 				if ($widget->output_modifiers != '[all]'){
