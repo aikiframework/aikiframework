@@ -15,11 +15,6 @@ $html_output = '';
 
 require_once("aiki.php");
 
-if (!isset($username) and isset($_SESSION['aiki']))
-$username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aiki']."'");
-
-if (isset($username))
-$membership->getUserPermissions($username);
 
 require_once ("system/widgets.php");
 $layout = new CreateLayout();

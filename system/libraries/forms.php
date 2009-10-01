@@ -103,7 +103,7 @@ class aiki_forms
 			$form_data = $db->get_row("select * from $tablename where $pkey='$record_id' limit 1");
 		}
 
-		
+
 		$form = "<form method=\"post\" enctype=\"multipart/form-data\" id=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\" name=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\">
 		<table border=\"0\" width=\"100%\">";
 
@@ -476,7 +476,7 @@ class aiki_forms
 		return $html;
 	}
 
-	function auto_generate_form($table){
+	function auto_generate($table){
 		global $aiki, $db;
 
 		$form_array = array();
@@ -489,39 +489,43 @@ class aiki_forms
 
 		foreach ($db->col_info as $column){
 
-			$i++;
-
 			$column = $aiki->array->object2array($column);
 
 			if ($column['primary_key'] == 1){
 				$form_array["pkey"] = $column['name'];
+			}else{
+
+				$i++;
+
+				switch ($column['type']){
+
+					case "int":
+						$column['type'] = 'textinput';
+						break;
+
+					case "string":
+						$column['type'] = 'textinput';
+						break;
+
+					case "blob":
+						$column['type'] = 'textblock';
+						break;
+				}
+
+				$column_display_name = str_replace('_', ' ', $column['name']);
+				$column_display_name = str_replace('-', ' ', $column_display_name);
+
+				$form_array[$column['type'].$i] = $column['name']."|SystemGOD:$column_display_name";
 			}
-
-			switch ($column['type']){
-
-				case "int":
-					$column['type'] = 'textinput';
-					break;
-
-				case "string":
-					$column['type'] = 'textinput';
-					break;
-
-				case "blob":
-					$column['type'] = 'textblock';
-					break;
-			}
-
-			$column_display_name = str_replace('_', ' ', $column['name']);
-			$column_display_name = str_replace('-', ' ', $column_display_name);
-				
-			$form_array[$column['type'].$i] = $column['name']."|SystemGOD:$column_display_name";
 
 		}
 
 		$form_array = serialize($form_array);
 
 		$insert_form = $db->query("insert into aiki_forms (form_name, form_array) values ('$table', '$form_array')");
+		if (isset ($insert_form)){
+			echo "Form $table created successfully";
+		}
 
 	}
 

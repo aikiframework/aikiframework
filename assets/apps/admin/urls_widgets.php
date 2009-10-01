@@ -7,6 +7,11 @@ define('IN_AIKI', true);
 require_once("../../../aiki.php");
 
 
+if ($membership->permissions != "SystemGOD"){
+	die("You do not have permissions to access this file");
+}
+
+
 echo '<?xml version="1.0" encoding="UTF-8"?>
 <root>';
 

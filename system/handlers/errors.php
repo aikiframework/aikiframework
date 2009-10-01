@@ -14,7 +14,7 @@ class aiki_errors
 		$request = urldecode($request);
 
 		$check_request = $db->get_row("SELECT * FROM aiki_redirects where url='$request'");
-		if ($check_request->url){
+		if (isset($check_request->url)){
 			$update_hits = $db->query("update aiki_redirects set hits=hits+1 where url='$request'");
 
 			if ($check_request->redirect){
