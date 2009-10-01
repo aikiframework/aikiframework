@@ -867,7 +867,7 @@ width:591px;
 					$output_result .= "<p dir='ltr'>".$name."</p>";
 				}
 			}else{
-				$output_result .= "Error inserting into database";
+				$output_result = "Error inserting into database";
 			}
 		}
 		return $output_result;

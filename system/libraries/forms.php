@@ -103,8 +103,8 @@ class aiki_forms
 			$form_data = $db->get_row("select * from $tablename where $pkey='$record_id' limit 1");
 		}
 
-
-		$form = "<form method=\"post\" enctype=\"multipart/form-data\" id=\"new_record_form\" name=\"new_record_form\">
+		
+		$form = "<form method=\"post\" enctype=\"multipart/form-data\" id=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\" name=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\">
 		<table border=\"0\" width=\"100%\">";
 
 		$i = 0;
@@ -400,7 +400,7 @@ class aiki_forms
 
 			$form = str_replace('$form_id', $form_id, $form);
 			$form = str_replace('$record_id', $record_id, $form);
-			$form = str_replace('$form_type', 'auto_filled_form', $form);
+			$form = str_replace('$form_type', 'edit_form', $form);
 			$form = str_replace('$submit', 'edit_form', $form);
 
 			$arraykeys = array_keys($form_array);
