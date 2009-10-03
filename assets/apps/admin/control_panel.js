@@ -178,7 +178,7 @@ function database_forms_tree(){
     	  
     	  }else{
 
-    	      $.get('admin_tools/edit/2/'+NODE.id,function(data) { 
+    	      $.get('admin_tools/edit/6/'+NODE.id,function(data) { 
                   $('#widget-form').html(data);
                   $('#edit_form').ajaxForm(formoptions);
                   code_mirror();
