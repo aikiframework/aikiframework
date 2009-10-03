@@ -45,10 +45,11 @@ class aiki_array
 
 
 
-	function array_editor($id, $name, $data, $table, $where){
+	function editor($id, $name, $data, $table, $where){
 		global $db;
 
 		$setting = array();
+
 		$settings = $db->get_results("SELECT $id, $data, $name FROM $table $where");
 		$i=0;
 		$y=0;
@@ -82,7 +83,7 @@ class aiki_array
 				}
 				//$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
 				$display = str_replace($toreplace, "", $arrykeys[$i]);
-				$html_form .= "<label>$display</label><input type='text' name=\"".$y.$arrykeys[$i]."\" value=\"".$field."\" size='35'>";
+				$html_form .= "<label><span class='title'>$display</span><input type='text' name=\"".$y.$arrykeys[$i]."\" value=\"".$field."\" size='35'></label><br />";
 				$i++;
 			}
 			$newfield = $setting_group->$name;
