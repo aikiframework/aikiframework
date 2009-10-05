@@ -10,6 +10,31 @@ if ($membership->permissions != "SystemGOD"){
 $do = $_REQUEST['do'];
 
 
+require ("aiki.php");
+?> 
+<style type="text/css">
+
+input {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:GhostWhite none repeat scroll 0 0;
+border:2px solid #C3C3C3;
+color:#555753;
+font-family:"Courier New";
+font-size:120%;
+margin:0 4px 12px;
+padding:3px;
+}
+
+label {
+margin-top:12px;
+}
+
+</style>
+
+<?php
+//echo $aiki->array->editor('id', 'form_name', 'form_array', 'aiki_forms', 'where id=10');
 
 switch ($do){
 
