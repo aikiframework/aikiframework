@@ -383,12 +383,13 @@ CREATE TABLE IF NOT EXISTS `aiki_forms` (
   `form_method` varchar(5) NOT NULL,
   `form_action` varchar(255) NOT NULL,
   `form_dir` varchar(155) NOT NULL,
+  `form_table` varchar(255) NOT NULL,
   `form_name` varchar(255) NOT NULL,
   `form_array` text NOT NULL,
   `form_html` text NOT NULL,
   `form_query` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --------------------------------------------------------
 
