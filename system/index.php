@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * Aikiframework
+ *
+ * @author		Bassel Khartabil
+ * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @license		http://www.gnu.org/licenses/gpl.html
+ * @link		http://www.aikiframework.org
+ */
+
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class aiki

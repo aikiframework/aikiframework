@@ -1,18 +1,23 @@
 <?php
 
+/*
+ * Aikiframework
+ *
+ * @author		Bassel Khartabil
+ * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @license		http://www.gnu.org/licenses/gpl.html
+ * @link		http://www.aikiframework.org
+ */
+
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class wiki_toc extends aiki
+class markup_toc extends aiki
 {
-
-	function  wiki_toc(){
-
-	}
 
 	//Original function: doHeadings from wikimedia /includes/parser/Parser.php
 	//Parts of the new rebuilt function are from function called formatHeadings
-	function do_wiki_toc($text){
+	function markup_toc($text){
 
 
 		for ( $i = 6; $i >= 1; --$i ) {
@@ -108,12 +113,12 @@ class wiki_toc extends aiki
 		}
 
 		if ($toc){
-			//TODO translate contents not المحتويات
+
 			$custome_toc_place = preg_match_all("/\[toc\]/", $text, $tocmatches);
 			if ($custome_toc_place > 0 ){
 				$text = str_replace("[toc]", "<br /><div id='toc'><p align='center'><b>المحتويات:</b></p><br /><ul>".$toc."</ul></div><br />", $text);
 			}else{
-				$text = "<br /><div id='toc'><p align='center'><b>المحتويات:</b></p><br /><ul>".$toc."</ul></div><br />".$text;
+				$text = "<br /><div id='toc'><p align='center'><b>Contents:</b></p><br /><ul>".$toc."</ul></div><br />".$text;
 			}
 		}
 			

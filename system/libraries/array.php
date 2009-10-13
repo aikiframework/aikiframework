@@ -7,6 +7,34 @@ class aiki_array
 	var $insertQuery;
 	var $new_array_field;
 
+
+	function displayArrayEditor($text){
+		global $db, $aiki;
+
+		$arrays_count = preg_match_all("/\(\#\(array\:(.*)\)\#\)/U", $text, $arrays);
+		//id:form_name:form_array:aiki_forms:3)#)
+		if ($arrays_count >0){
+
+			foreach ($arrays[1] as $array_data){
+
+				if ($array_data){
+
+					$arrayEditor = explode(":", $array_data);
+
+					$output = $aiki->array->editor($arrayEditor['1'], $arrayEditor['2'], $arrayEditor['3'], $arrayEditor['4'], "where ".$arrayEditor['1']."=".$arrayEditor['5']."");
+
+					$text = preg_replace("/\(\#\(array\:$array_data\)\#\)/U", $output, $text);
+
+				}
+			}
+
+
+		}
+
+		return $text;
+	}
+
+
 	public function CreateArrayByExploding ($data, $explodefactor){
 		if (isset($data)){
 			$this->createdArray = explode($explodefactor, $data);
@@ -48,20 +76,16 @@ class aiki_array
 	function editor($id, $name, $data, $table, $where){
 		global $db;
 
+		$pageURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+
 		$setting = array();
 
 		$settings = $db->get_results("SELECT $id, $data, $name FROM $table $where");
 		$i=0;
 		$y=0;
 
-		$domain = $_SERVER['HTTP_HOST'];
-		$path = $_SERVER['SCRIPT_NAME'];
-		$queryString = $_SERVER['QUERY_STRING'];
-		$thisurl = "http://" . $domain . $path . "?" . $queryString;
-
 		$html_form = "
-		<div id='stylized' class='myform'>
-		<form method='post'>";
+		<form method='post' id='edit_form' name='edit_form' action='$pageURL'>";
 		foreach ( $settings as $setting_group )
 		{
 
@@ -71,35 +95,65 @@ class aiki_array
 
 			$output_array = array();
 
-			$html_form .= "<h1>".$setting_group->$name.":</h1>";
+			$html_form .= "<h2>".$setting_group->$name."</h2>";
 			foreach($setting_group->$data as $field)
 			{
 
-				if ($_POST['submit']){
+				if (isset($_POST['edit_array'])){
 
-					$output_array[$arrykeys[$i]] = $_POST[$y.$arrykeys[$i]];
+					$outp_key = $_POST[$y.$arrykeys[$i]."_type"];
+					if ($outp_key != 'tablename' and $outp_key != 'pkey'){
+						$outp_key = $outp_key.$i;
+					}
+
+					$output_array[$outp_key] = $_POST[$y.$arrykeys[$i]];
 
 					$field = $_POST[$y.$arrykeys[$i]];
 				}
-				//$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
+				$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
 				$display = str_replace($toreplace, "", $arrykeys[$i]);
-				$html_form .= "<label><span class='title'>$display</span><input type='text' name=\"".$y.$arrykeys[$i]."\" value=\"".$field."\" size='35'></label><br />";
+
+				//TODO insert new field and consider other arrays like config
+				$html_form .= '<select name="'.$y.$arrykeys[$i]."_type".'" >
+				<option value="'.$display.'" selected="selected">'.$display.'</option>
+				<option value="selection" >selection</option>
+				<option value="staticselect" >staticselect</option>
+				<option value="unique_textinput" >unique_textinput</option>
+				<option value="password" >password</option>
+				<option value="textblock" >textblock</option>
+				<option value="bigtextblock" >bigtextblock</option>
+				<option value="textinput" >textinput</option>
+				<option value="pkey" >pkey</option>
+				<option value="tablename" >tablename</option>
+				</select>';
+				$html_form .= "<input type='text' name=\"".$y.$arrykeys[$i]."\" value=\"".$field."\" size='35'><br /><br />";
 				$i++;
 			}
 			$newfield = $setting_group->$name;
 
-			//$html_form .= "<input type='hidden' name='$newfield' value='$newfield'>";
-			$html_form .= "<label><input type='text' name=\"left_$newfield\" value=\"\" size='20'></label><input type='text' name=\"right_$newfield\" value=\"\" size='35'></td></tr>";
+			$html_form .= '<select name="left_'.$newfield.'" >
+				<option value="selection" >selection</option>
+				<option value="staticselect" >staticselect</option>
+				<option value="unique_textinput" >unique_textinput</option>
+				<option value="password" >password</option>
+				<option value="textblock" >textblock</option>
+				<option value="bigtextblock" >bigtextblock</option>
+				<option value="textinput" selected="selected">textinput</option>
+				<option value="pkey" >pkey</option>
+				<option value="tablename" >tablename</option>
+				</select>';			
+			$html_form .= "<input type='text' name=\"right_$newfield\" value=\"\" size='35'></td></tr>";
 
 			$y++;
 			$i=0;
-			if (isset($_POST['submit'])){
+			if (isset($_POST['edit_array'])){
 
 
 				if ($_POST['left_'.$newfield] and $_POST['right_'.$newfield]){
 					$output_array[$_POST['left_'.$newfield]] = $_POST['right_'.$newfield];
 					$this->new_array_field = true;
 				}
+
 				$output_array = serialize($output_array);
 
 				$output_id = $setting_group->$id;
@@ -113,16 +167,13 @@ class aiki_array
 
 		}
 		$html_form .= "
-		
-		<input type=\"hidden\" value=\"$thisurl\" name=\"httpreferer\">
-		<button type='submit' name='submit' value='submit'>Save</button>
-		</form></div>";
+		<p class=\"form-buttons\">
+		<input class=\"button\" type=\"submit\" value=\"Save\" name=\"edit_array\">
+		</p>
+		</form>";
 
-		if ($this->new_array_field){
-			Header("Location: $_POST[httpreferer]");
-		}else{
-			return $html_form;
-		}
+		return $html_form;
+
 	}
 
 	public function CreateInsertsFromArray ($array, $inArrayExplodeFactor, $tablename, $QueryExample){

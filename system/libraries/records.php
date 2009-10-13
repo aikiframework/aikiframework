@@ -464,9 +464,6 @@ width:591px;
 		if (in_array("upload", $arraykeys))
 		$upload = $form_array["upload"];
 
-		if (in_array("imagefolderupload", $arraykeys))
-		$imagefolderupload = $form_array["imagefolderupload"];
-
 		if (isset($post['unique_filename']))
 		$unique_filename = $_REQUEST['unique_filename'];
 
@@ -759,44 +756,6 @@ width:591px;
 				//print_r($filename);
 			}
 
-			if (isset($imagefolderupload) and $field == $insertArray['imagefolderupload']){
-				$uploadexploded = explode(":", $imagefolderupload);
-				$path = $aiki->setting[url]."/".$uploadexploded[5]."/";
-				$handle=opendir($_POST[$intwalker[0]]);
-				while (($file = readdir($handle))!==false) {
-					if ($file != "." and $file != ".."){
-						$form .= "$file <br>";
-						mysql_query ("insert into aiki_photographers_photos values ('', '39', '', '', '800', '800', '', '$file')");
-						if (!copy($_POST[$intwalker[0]]."/".$file, $aiki->setting[top_folder]."/".$uploadexploded[5]."/$file")) {
-							$form .= "failed to copy $file\n";
-						}else{
-							$filename = $file;
-						}
-
-
-					}
-
-					if ($filename){
-						$imageresize = explode("|", $intwalker[4]);
-
-						foreach($imageresize as $resizeop){
-							$oldprefix = $imageprefix;
-							if (is_numeric($resizeop)){
-								$sizenum = $resizeop;
-							}else{
-								$imageprefix = $resizeop;
-							}
-							if ($imageprefix and $sizenum and $oldprefix != $imageprefix){
-								$this->imageresize($path, $filename, $sizenum, $imageprefix);
-							}
-						}
-
-					}
-
-				}
-				closedir($handle);
-			}
-
 			if (!isset($send_email)){
 				$send_email = '';
 			}
@@ -817,7 +776,7 @@ width:591px;
 
 		}
 
-		if (!isset($imagefolderupload) and !$this->stop){
+		if (!$this->stop){
 
 			$insertQuery .= "($tableFields) values ($preinsertQuery)";
 
@@ -930,9 +889,6 @@ width:591px;
 			$upload = '';
 		}
 
-		if (in_array("imagefolderupload", $arraykeys))
-		$imagefolderupload = $form_array["imagefolderupload"];
-
 		if (isset($post['unique_filename']))
 		$unique_filename = $_REQUEST['unique_filename'];
 
@@ -989,10 +945,11 @@ width:591px;
 		$editQuery = str_replace("set ,", "set", $editQuery);
 
 		$editResult = $db->query($editQuery);
-		if ($editResult){
+		if (isset($editResult)){
 			$output_result = "Edited record $record_id in $tablename successfully";
 			//$this->unlockdocument($pkey, $postedpkey, $tablename);
-
+		}else{
+			$output_result = "Faild to edit record $record_id in $tablename";
 		}
 
 		return $output_result;

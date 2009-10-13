@@ -1,44 +1,28 @@
 <?php
-/***************************************************************************
- *   Copyright (C) 2008-2009 by Bassel Khartabil                           *
- *   http://www.aikicms.org                                                *
- *   bassel@aikicms.org                                                    *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   GNU General Public License Version 2 or later (the "GPL")             *
- *    http://www.gnu.org/licenses/gpl.html                                 *
- ***************************************************************************/
+
 /*
- V6
- Rewriten on 22/5/2009
+ * Aikiframework
+ *
+ * @author		Bassel Khartabil
+ * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @license		http://www.gnu.org/licenses/gpl.html
+ * @link		http://www.aikiframework.org
  */
 
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class linkTags extends aiki
+class markup_intlinks extends aiki
 {
 
-	function  linkTags(){
 
-	}
-
-	function do_linkTags($text){
+	function markup_intlinks($text){
 		global $aiki, $membership, $db;
 
 
 		if (preg_match('/\(\+\((.*)\)\+\)/', $text)){
 
-			$link_tags = $db->get_results("SELECT * FROM aiki_linker_tags");
+			$link_tags = $db->get_results("SELECT * FROM aiki_internal_links");
 			$query = '';
 			if ($link_tags){
 

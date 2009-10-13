@@ -1,16 +1,22 @@
 <?php
 
+/*
+ * Aikiframework
+ *
+ * @author		Bassel Khartabil
+ * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @license		http://www.gnu.org/licenses/gpl.html
+ * @link		http://www.aikiframework.org
+ */
+
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
-class doQuotes extends aiki
+class markup_quotes extends aiki
 {
 
-	function doQuotes(){
-		
-	}
 	
 	//From mediawiki 1.14.0 Parser
-	public function do_doQuotes( $text ) {
+	function markup_quotes( $text ) {
 		$arr = preg_split( "/(''+)/", $text, -1, PREG_SPLIT_DELIM_CAPTURE );
 		if ( count( $arr ) == 1 )
 		return $text;

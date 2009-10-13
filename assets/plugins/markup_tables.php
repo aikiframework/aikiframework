@@ -1,17 +1,21 @@
 <?php
 
+/*
+ * Aikiframework
+ *
+ * @author		Bassel Khartabil
+ * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @license		http://www.gnu.org/licenses/gpl.html
+ * @link		http://www.aikiframework.org
+ */
+
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class doTables extends aiki
+class markup_tables extends aiki
 {
 
-	function doTables(){
-
-
-	}
-
-	function do_doTables($text){
+	function markup_tables($text){
 		
 		global $aiki;
 		//TODO colspan and cellspan and table header and footer and colored columns

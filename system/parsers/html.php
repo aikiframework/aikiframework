@@ -30,10 +30,9 @@ class aiki_html
 
 		$header .= '
 		<title>'; if (!$title){$header .= $aiki->languages->L10n($site_info->site_name);}else{$header .= $title." - ".$aiki->languages->L10n($site_info->site_name);} $header .='</title>
-		<meta name="keywords" content="'; $header .= $config['static_keywords']; $header .= '" />
-		<meta name="description" content="'; $header .= $config['static_description']; $header .= '" />
-		<meta name="author" content="'; $header .= $config['static_author']; $header .= '" />
-		<meta name="generator" content="Aikiframework 1.0.0" />
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<meta name="generator" content="Aikiframework '.AIKI_VERSION.'" />
 		';
 
 		//a fix for the w3  Markup Validation Service

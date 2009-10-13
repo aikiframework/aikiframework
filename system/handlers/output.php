@@ -8,7 +8,7 @@ class aiki_output
 	function output_from_cache(){
 		global $config;
 
-		if ($config['html_cache'] and !preg_match('/admin/i', $_SERVER['QUERY_STRING'])){ //TODO: add here urls not to cache
+		if ($config['html_cache']){ 
 
 			$start = (float) array_sum(explode(' ',microtime()));
 

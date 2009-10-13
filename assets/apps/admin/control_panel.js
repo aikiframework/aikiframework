@@ -37,6 +37,10 @@ function refreshthetree(){
 	$.tree_reference('widgettree').refresh();
 }
 
+function refreshdatabasetree(){
+	$.tree_reference('databaseformstree').refresh();
+}
+
 function create_form(selector, id, name, code){
 	   $(selector).click(function(event){
 			$("#widget-form").load("admin_tools/new/"+id,  {limit: 25}, function(){
@@ -151,7 +155,7 @@ function database_forms_tree(){
 
     var formoptions = { 
         target:        '#widget-form',
-        success:       refreshthetree  
+        success:       refreshdatabasetree  
     }; 
 	
 	 
@@ -178,10 +182,12 @@ function database_forms_tree(){
     	  
     	  }else{
 
-    	      $.get('admin_tools/edit/6/'+NODE.id,function(data) { 
+    	      $.get('admin_tools/array/id/form_name/form_array/aiki_forms/'+NODE.id,function(data) { 
                   $('#widget-form').html(data);
-                  $('#edit_form').ajaxForm(formoptions);
-                  code_mirror();
+                  $('#edit_form').ajaxForm(function() { 
+                	 refreshdatabasetree();
+					$("#edit_form").html("Edited successfully");
+	           }); 
     	      });
     		  
     	  }

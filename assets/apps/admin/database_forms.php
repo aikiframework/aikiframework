@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Aikiframework
+ *
+ * @author		Bassel Khartabil
+ * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @license		http://www.gnu.org/licenses/gpl.html
+ * @link		http://www.aikiframework.org
+ */
+
 header('Content-type: text/xml');
 
 define('IN_AIKI', true);

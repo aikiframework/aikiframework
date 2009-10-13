@@ -1,17 +1,21 @@
 <?php
 
+/*
+ * Aikiframework
+ *
+ * @author		Bassel Khartabil
+ * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @license		http://www.gnu.org/licenses/gpl.html
+ * @link		http://www.aikiframework.org
+ */
+
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class doImages extends aiki
+class markup_images extends aiki
 {
 
-	function doImages(){
-		
-		
-	}
-	
-	function do_doImages($text){
+	function markup_images($text){
 		global $db, $aiki;
 		$numMatches = preg_match_all( '/\{\+\{/', $text, $matches);
 

@@ -289,18 +289,16 @@ CREATE TABLE IF NOT EXISTS `aiki_config` (
   `config_type` varchar(255) default NULL,
   `config_data` mediumtext,
   PRIMARY KEY  (`config_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --------------------------------------------------------
 
 INSERT INTO `aiki_config` (`config_id`, `app_id`, `config_type`, `config_data`) VALUES
 (1, 0, \'global_settings\', \'a:9:{s:4:"site";s:7:"default";s:3:"url";s:'.$page_strlen.':"'.$pageURL.'";s:13:"cookie_domain";s:0:"";s:13:"default_chmod";s:4:"0777";s:11:"pretty_urls";s:1:"1";s:16:"default_language";s:7:"english";s:19:"default_time_format";s:9:"d - m - Y";s:8:"site_dir";s:3:"ltr";s:19:"language_short_name";s:2:"en";}\'),
-(2, 0, \'database_settings\', \'a:6:{s:7:"db_type";s:5:"mysql";s:10:"disk_cashe";s:1:"1";s:13:"cache_timeout";s:2:"24";s:9:"cache_dir";s:7:"somedir";s:13:"cache_queries";s:1:"1";s:16:"charset_encoding";s:4:"utf8";}\'),
+(2, 0, \'database_settings\', \'a:6:{s:7:"db_type";s:5:"mysql";s:10:"disk_cashe";s:1:"1";s:13:"cache_timeout";s:2:"24";s:9:"cache_dir";s:5:"cache";s:13:"cache_queries";s:1:"1";s:16:"charset_encoding";s:4:"utf8";}\'),
 (3, 0, \'paths_settings\', \'a:1:{s:10:"top_folder";s:'.$system_folder_strlen.':"'.$system_folder.'";}\'),
-(4, 0, \'metatags_settings\', \'a:5:{s:10:"site_title";s:11:"[[AikiCms]]";s:13:"dynamic_metas";s:1:"1";s:13:"static_author";s:7:"Aikicms";s:15:"static_keywords";s:0:"";s:18:"static_description";s:0:"";}\'),
-(5, 0, \'feed_settings\', \'a:10:{s:10:"feed_title";s:18:"[[discover_syria]]";s:16:"feed_description";s:0:"";s:9:"feed_link";s:29:"http://www.discover-syria.com";s:13:"feed_language";s:2:"ar";s:16:"feed_image_title";s:14:"Discover Syria";s:14:"feed_image_url";s:41:"images/skins/discover_syria/watermark.png";s:15:"feed_image_link";s:29:"http://www.discover-syria.com";s:16:"feed_image_width";s:3:"144";s:17:"feed_image_height";s:2:"50";s:15:"feed_def_module";s:8:"articles";}\'),
-(6, 0, \'images_settings\', \'a:4:{s:7:"max_res";s:3:"650";s:20:"default_photo_module";s:21:"modules_photo_archive";s:23:"store_native_extensions";s:4:"true";s:13:"new_extension";s:5:".news";}\'),
-(7, 0, \'admin_settings\', \'a:1:{s:17:"show_edit_widgets";s:1:"0";}\');
+(4, 0, \'images_settings\', \'a:4:{s:7:"max_res";s:3:"650";s:20:"default_photo_module";s:18:"apps_photo_archive";s:23:"store_native_extensions";s:4:"true";s:13:"new_extension";s:5:".aiki";}\'),
+(5, 0, \'admin_settings\', \'a:1:{s:17:"show_edit_widgets";s:1:"0";}\');
 
 --------------------------------------------------------
 
@@ -321,7 +319,7 @@ CREATE TABLE IF NOT EXISTS `aiki_css` (
 --------------------------------------------------------
 
 INSERT INTO `aiki_css` (`id`, `app_id`, `css_name`, `css_group`, `css_folder`, `father_module`, `style_sheet`, `if_ie`, `media`, `is_active`) VALUES
-(1, 0, \'html, body, div, span, applet, object, h1, h2, h3, h4, h5, h6, p, a, em, img, strong, ol, ul, li, dl, dd, dt, form, label\', \'default\', \'\', \'\', \'  margin: 0;\r\n    padding: 0;\r\n    border: 0;\r\n    outline: 0;\r\n    font-style: inherit;\r\n    font-size: 100%;\r\n    font-family: inherit;\r\n    vertical-align: baseline;\r\n    background: transparent;\', \'\', \'\', 1),
+(1, 0, \'html, body, div, span, applet, object, p, a, em, img, strong, ol, ul, li, dl, dd, dt, label, h1, h2, h3, h4, h5, h6\', \'default\', \'\', \'\', \'  margin: 0;\r\n    padding: 0;\r\n    border: 0;\r\n    outline: 0;\r\n    font-style: inherit;\r\n    font-size: 100%;\r\n    font-family: inherit;\r\n    vertical-align: baseline;\r\n    background: transparent;\', \'\', \'\', 1),
 (2, 0, \':focus\', \'default\', \'\', \'\', \'outline: 0;\', \'\', \'\', 1),
 (3, 0, \'ul\', \'default\', \'\', \'\', \' list-style: none;\', \'\', \'\', 1),
 (4, 0, \'ol\', \'default\', \'\', \'\', \'list-style-position: inside; \', \'\', \'\', 1),
@@ -346,34 +344,7 @@ CREATE TABLE IF NOT EXISTS `aiki_dictionary` (
   `lang_arabic` text NOT NULL,
   `lang_german` text NOT NULL,
   PRIMARY KEY  (`term_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS `aiki_filed_types` (
-  `type_id` int(11) NOT NULL auto_increment,
-  `type_name` varchar(255) NOT NULL,
-  `type_full_name` varchar(255) NOT NULL,
-  `type_father` int(11) NOT NULL,
-  `sons_number` int(11) NOT NULL,
-  `type_static` text NOT NULL,
-  PRIMARY KEY  (`type_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
-
---------------------------------------------------------
-
-INSERT INTO `aiki_filed_types` (`type_id`, `type_name`, `type_full_name`, `type_father`, `sons_number`, `type_static`) VALUES
-(1, \'selection\', \'Selection Menu\', 0, 0, \'\'),
-(2, \'textinput\', \'Text filed\', 0, 0, \'\'),
-(3, \'iaselection\', \'Interactive selection\', 0, 0, \'\'),
-(4, \'textblock\', \'Text Block\', 0, 0, \'\'),
-(5, \'datetime\', \'Date and Time\', 0, 0, \'\'),
-(6, \'staticselect\', \'Static Selection\', 0, 2, \'\'),
-(7, \'imagefolderupload\', \'Upload Images Folder\', 0, 0, \'\'),
-(8, \'arabicletters\', \'Arabic Letters Selection\', 6, 0, \'<option value="1">أ</option>\r\n			<option value="2">ب</option>\r\n			<option value="3">ت</option>\r\n			<option value="4">ث</option>\r\n			<option value="5">ج</option>\r\n			<option value="6">ح</option>\r\n			<option value="7">خ</option>\r\n			<option value="8">د</option>\r\n			<option value="9">ذ</option>\r\n			<option value="10">ر</option>\r\n			<option value="11">ز</option>\r\n			<option value="12">س</option>\r\n			<option value="13">ش</option>\r\n			<option value="14">ص</option>\r\n			<option value="15">ض</option>\r\n			<option value="16">ط</option>\r\n			<option value="17">ظ</option>\r\n			<option value="18">ع</option>\r\n			<option value="19">غ</option>\r\n			<option value="20">ف</option>\r\n			<option value="21">ق</option>\r\n			<option value="22">ك</option>\r\n			<option value="23">ل</option>\r\n			<option value="24">م</option>\r\n			<option value="25">ن</option>\r\n			<option value="26">ه</option>\r\n			<option value="27">و</option>\r\n			<option value="28">ي</option>\'),
-(9, \'englishletters\', \'English Letters Selection\', 6, 0, \'<option value="1">a</option>\r\n			<option value="2">b</option>\r\n			<option value="3">c</option>\r\n			<option value="4">d</option>\r\n			<option value="5">e</option>\r\n			<option value="6">f</option>\r\n			<option value="7">g</option>\r\n			<option value="8">h</option>\r\n			<option value="9">i</option>\r\n			<option value="10">j</option>\r\n			<option value="11">k</option>\r\n			<option value="12">l</option>\r\n			<option value="13">m</option>\r\n			<option value="14">n</option>\r\n			<option value="15">o</option>\r\n			<option value="16">p</option>\r\n			<option value="17">q</option>\r\n			<option value="18">r</option>\r\n			<option value="19">s</option>\r\n			<option value="20">t</option>\r\n			<option value="21">u</option>\r\n			<option value="22">v</option>\r\n			<option value="23">w</option>\r\n			<option value="24">x</option>\r\n			<option value="25">y</option>\r\n			<option value="26">z</option>\'),
-(10, \'upload\', \'Upload an image\', 0, 0, \'\'),
-(11, \'no_yes\', \'No Yes\', 6, 0, \'<option value="1">yes</option>\r\n<option value="0" selected>no</option>\');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --------------------------------------------------------
 
@@ -395,25 +366,19 @@ CREATE TABLE IF NOT EXISTS `aiki_forms` (
 
 INSERT INTO `aiki_forms` (`id`, `app_id`, `form_method`, `form_action`, `form_dir`, `form_table`, `form_name`, `form_array`, `form_html`, `form_query`) VALUES
 (1, 0, \'\', \'\', \'\', \'aiki_apps\', \'aiki_apps\', \'a:3:{s:9:"tablename";s:9:"aiki_apps";s:4:"pkey";s:2:"id";s:10:"textinput1";s:27:"app_name|SystemGOD:app name";}\', \'\', \'\'),
-(2, 0, \'\', \'\', \'\', \'aiki_config\', \'aiki_config\', \'a:5:{s:9:"tablename";s:11:"aiki_config";s:4:"pkey";s:9:"config_id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:33:"config_type|SystemGOD:config type";s:10:"textblock3";s:33:"config_data|SystemGOD:config data";}\', \'\', \'\'),
-(3, 0, \'\', \'\', \'\', \'aiki_css\', \'aiki_css\', \'a:11:{s:9:"tablename";s:8:"aiki_css";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:27:"css_name|SystemGOD:css name";s:10:"textinput3";s:29:"css_group|SystemGOD:css group";s:10:"textinput4";s:31:"css_folder|SystemGOD:css folder";s:10:"textinput5";s:37:"father_module|SystemGOD:father module";s:10:"textblock6";s:33:"style_sheet|SystemGOD:style sheet";s:10:"textblock7";s:21:"if_ie|SystemGOD:if ie";s:10:"textinput8";s:21:"media|SystemGOD:media";s:10:"textinput9";s:29:"is_active|SystemGOD:is active";}\', \'\', \'\'),
+(3, 0, \'\', \'\', \'\', \'aiki_css\', \'aiki_css\', \'a:11:{s:9:"tablename";s:8:"aiki_css";s:4:"pkey";s:2:"id";s:10:"textinput2";s:23:"app_id|SystemGOD:app id";s:10:"textinput3";s:27:"css_name|SystemGOD:css name";s:10:"textinput4";s:29:"css_group|SystemGOD:css group";s:10:"textinput5";s:31:"css_folder|SystemGOD:css folder";s:10:"textinput6";s:37:"father_module|SystemGOD:father module";s:10:"textblock7";s:33:"style_sheet|SystemGOD:style sheet";s:10:"textblock8";s:21:"if_ie|SystemGOD:if ie";s:10:"textinput9";s:21:"media|SystemGOD:media";s:11:"textinput10";s:29:"is_active|SystemGOD:is active";}\', \'\', \'\'),
 (4, 0, \'\', \'\', \'\', \'aiki_dictionary\', \'aiki_dictionary\', \'a:7:{s:9:"tablename";s:15:"aiki_dictionary";s:4:"pkey";s:7:"term_id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:31:"short_term|SystemGOD:short term";s:10:"textblock3";s:35:"lang_english|SystemGOD:lang english";s:10:"textblock4";s:33:"lang_arabic|SystemGOD:lang arabic";s:10:"textblock5";s:33:"lang_german|SystemGOD:lang german";}\', \'\', \'\'),
-(5, 0, \'\', \'\', \'\', \'aiki_filed_types\', \'aiki_filed_types\', \'a:7:{s:9:"tablename";s:16:"aiki_filed_types";s:4:"pkey";s:7:"type_id";s:10:"textinput1";s:29:"type_name|SystemGOD:type name";s:10:"textinput2";s:39:"type_full_name|SystemGOD:type full name";s:10:"textinput3";s:33:"type_father|SystemGOD:type father";s:10:"textinput4";s:33:"sons_number|SystemGOD:sons number";s:10:"textblock5";s:33:"type_static|SystemGOD:type static";}\', \'\', \'\'),
 (6, 0, \'\', \'\', \'\', \'aiki_forms\', \'aiki_forms\', \'a:11:{s:9:"tablename";s:10:"aiki_forms";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:33:"form_method|SystemGOD:form method";s:10:"textinput3";s:33:"form_action|SystemGOD:form action";s:10:"textinput4";s:27:"form_dir|SystemGOD:form dir";s:10:"textinput5";s:31:"form_table|SystemGOD:form table";s:10:"textinput6";s:29:"form_name|SystemGOD:form name";s:10:"textblock7";s:31:"form_array|SystemGOD:form array";s:10:"textblock8";s:29:"form_html|SystemGOD:form html";s:10:"textblock9";s:31:"form_query|SystemGOD:form query";}\', \'\', \'\'),
-(7, 0, \'\', \'\', \'\', \'aiki_guests\', \'aiki_guests\', \'a:11:{s:9:"tablename";s:11:"aiki_guests";s:4:"pkey";s:6:"userid";s:9:"datetime1";s:33:"first_login|SystemGOD:first login";s:9:"datetime2";s:27:"last_hit|SystemGOD:last hit";s:10:"textinput3";s:37:"last_hit_unix|SystemGOD:last hit unix";s:10:"textinput4";s:15:"ip|SystemGOD:ip";s:10:"textinput5";s:25:"last_ip|SystemGOD:last ip";s:10:"textinput6";s:27:"username|SystemGOD:username";s:10:"textinput7";s:37:"guest_session|SystemGOD:guest session";s:10:"textinput8";s:19:"hits|SystemGOD:hits";s:10:"textinput9";s:29:"is_online|SystemGOD:is online";}\', \'\', \'\'),
 (8, 0, \'\', \'\', \'\', \'aiki_javascript\', \'aiki_javascript\', \'a:10:{s:9:"tablename";s:15:"aiki_javascript";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:33:"script_name|SystemGOD:script name";s:10:"textinput3";s:35:"script_group|SystemGOD:script group";s:10:"textinput4";s:37:"script_folder|SystemGOD:script folder";s:10:"textblock5";s:23:"script|SystemGOD:script";s:10:"textinput6";s:23:"father|SystemGOD:father";s:10:"textinput7";s:31:"global_use|SystemGOD:global use";s:10:"textinput8";s:29:"is_active|SystemGOD:is active";}\', \'\', \'\'),
 (9, 0, \'\', \'\', \'\', \'aiki_languages\', \'aiki_languages\', \'a:8:{s:9:"tablename";s:14:"aiki_languages";s:4:"pkey";s:2:"id";s:10:"textinput1";s:19:"name|SystemGOD:name";s:10:"textinput2";s:27:"sys_name|SystemGOD:sys name";s:10:"textinput3";s:31:"short_name|SystemGOD:short name";s:10:"textinput4";s:17:"dir|SystemGOD:dir";s:10:"textinput5";s:21:"align|SystemGOD:align";s:10:"textinput6";s:31:"is_default|SystemGOD:is default";}\', \'\', \'\'),
-(10, 0, \'\', \'\', \'\', \'aiki_linker_tags\', \'aiki_linker_tags\', \'a:11:{s:9:"tablename";s:16:"aiki_linker_tags";s:10:"textinput1";s:19:"name|SystemGOD:name";s:10:"textinput2";s:27:"tagstart|SystemGOD:tagstart";s:10:"textinput3";s:23:"tagend|SystemGOD:tagend";s:10:"textinput4";s:25:"parlset|SystemGOD:parlset";s:10:"textinput5";s:33:"linkexample|SystemGOD:linkexample";s:10:"textinput6";s:25:"dbtable|SystemGOD:dbtable";s:10:"textinput7";s:31:"namecolumn|SystemGOD:namecolumn";s:10:"textinput8";s:27:"idcolumn|SystemGOD:idcolumn";s:10:"textinput9";s:27:"extrasql|SystemGOD:extrasql";s:11:"textinput10";s:43:"is_extrasql_loop|SystemGOD:is extrasql loop";}\', \'\', \'\'),
 (11, 0, \'\', \'\', \'\', \'aiki_plugins\', \'aiki_plugins\', \'a:7:{s:9:"tablename";s:12:"aiki_plugins";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:39:"modifiers_name|SystemGOD:modifiers name";s:10:"textinput3";s:41:"modifiers_group|SystemGOD:modifiers group";s:10:"textinput4";s:39:"modifiers_type|SystemGOD:modifiers type";s:10:"textinput5";s:41:"plugin_filename|SystemGOD:plugin filename";}\', \'\', \'\'),
 (12, 0, \'\', \'\', \'\', \'aiki_redirects\', \'aiki_redirects\', \'a:4:{s:9:"tablename";s:14:"aiki_redirects";s:10:"textinput1";s:17:"url|SystemGOD:url";s:10:"textinput2";s:27:"redirect|SystemGOD:redirect";s:10:"textinput3";s:19:"hits|SystemGOD:hits";}\', \'\', \'\'),
 (13, 0, \'\', \'\', \'\', \'aiki_sites\', \'aiki_sites\', \'a:6:{s:9:"tablename";s:10:"aiki_sites";s:4:"pkey";s:7:"site_id";s:10:"textinput1";s:29:"site_name|SystemGOD:site name";s:10:"textinput2";s:37:"site_shortcut|SystemGOD:site shortcut";s:10:"textinput3";s:29:"is_active|SystemGOD:is active";s:10:"textblock4";s:43:"if_closed_output|SystemGOD:if closed output";}\', \'\', \'\'),
-(14, 0, \'\', \'\', \'\', \'aiki_synchronization\', \'aiki_synchronization\', \'a:6:{s:9:"tablename";s:20:"aiki_synchronization";s:4:"pkey";s:2:"id";s:10:"textinput1";s:31:"table_name|SystemGOD:table name";s:10:"textinput2";s:29:"record_id|SystemGOD:record id";s:10:"textinput3";s:29:"server_id|SystemGOD:server id";s:10:"textinput4";s:37:"date_and_time|SystemGOD:date and time";}\', \'\', \'\'),
 (15, 0, \'\', \'\', \'\', \'aiki_template\', \'aiki_template\', \'a:6:{s:9:"tablename";s:13:"aiki_template";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:37:"template_name|SystemGOD:template name";s:10:"textblock3";s:39:"template_input|SystemGOD:template input";s:10:"textblock4";s:41:"template_output|SystemGOD:template output";}\', \'\', \'\'),
 (16, 0, \'\', \'\', \'\', \'aiki_urls\', \'aiki_urls\', \'a:5:{s:9:"tablename";s:9:"aiki_urls";s:4:"pkey";s:2:"id";s:10:"textinput1";s:17:"url|SystemGOD:url";s:10:"textinput2";s:29:"cacheable|SystemGOD:cacheable";s:10:"textinput3";s:19:"site|SystemGOD:site";}\', \'\', \'\'),
 (17, 0, \'\', \'\', \'\', \'aiki_users\', \'aiki_users\', \'a:21:{s:9:"tablename";s:10:"aiki_users";s:4:"pkey";s:6:"userid";s:10:"textinput1";s:27:"username|SystemGOD:username";s:10:"textinput2";s:29:"full_name|SystemGOD:full name";s:10:"textinput3";s:25:"country|SystemGOD:country";s:10:"textinput4";s:17:"sex|SystemGOD:sex";s:10:"textinput5";s:17:"job|SystemGOD:job";s:10:"textinput6";s:27:"password|SystemGOD:password";s:10:"textinput7";s:29:"usergroup|SystemGOD:usergroup";s:10:"textinput8";s:21:"email|SystemGOD:email";s:10:"textinput9";s:23:"avatar|SystemGOD:avatar";s:11:"textinput10";s:27:"homepage|SystemGOD:homepage";s:11:"textinput11";s:27:"first_ip|SystemGOD:first ip";s:10:"datetime12";s:33:"first_login|SystemGOD:first login";s:10:"datetime13";s:31:"last_login|SystemGOD:last login";s:11:"textinput14";s:25:"last_ip|SystemGOD:last ip";s:11:"textblock15";s:43:"user_permissions|SystemGOD:user permissions";s:11:"textinput16";s:27:"maillist|SystemGOD:maillist";s:11:"textinput17";s:37:"logins_number|SystemGOD:logins number";s:11:"textinput18";s:25:"randkey|SystemGOD:randkey";s:11:"textinput19";s:29:"is_active|SystemGOD:is active";}\', \'\', \'\'),
 (18, 0, \'\', \'\', \'\', \'aiki_users_groups\', \'aiki_users_groups\', \'a:6:{s:9:"tablename";s:17:"aiki_users_groups";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:19:"name|SystemGOD:name";s:10:"textinput3";s:45:"group_permissions|SystemGOD:group permissions";s:10:"textinput4";s:33:"group_level|SystemGOD:group level";}\', \'\', \'\'),
-(19, 0, \'\', \'\', \'\', \'aiki_users_sessions\', \'aiki_users_sessions\', \'a:7:{s:9:"tablename";s:19:"aiki_users_sessions";s:4:"pkey";s:10:"session_id";s:10:"textinput1";s:25:"user_id|SystemGOD:user id";s:10:"textinput2";s:29:"user_name|SystemGOD:user name";s:9:"datetime3";s:35:"session_date|SystemGOD:session date";s:10:"textinput4";s:35:"user_session|SystemGOD:user session";s:10:"textinput5";s:25:"user_ip|SystemGOD:user ip";}\', \'\', \'\'),
-(20, 0, \'\', \'\', \'\', \'aiki_widgets\', \'aiki_widgets\', \'a:36:{s:9:"tablename";s:12:"aiki_widgets";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:33:"widget_name|SystemGOD:widget name";s:10:"textinput3";s:33:"widget_site|SystemGOD:widget site";s:10:"textinput4";s:37:"widget_target|SystemGOD:widget target";s:10:"textinput5";s:33:"widget_type|SystemGOD:widget type";s:10:"textinput6";s:37:"display_order|SystemGOD:display order";s:10:"textinput7";s:27:"style_id|SystemGOD:style id";s:10:"textinput8";s:29:"is_father|SystemGOD:is father";s:10:"textinput9";s:37:"father_widget|SystemGOD:father widget";s:11:"textblock10";s:35:"display_urls|SystemGOD:display urls";s:11:"textblock11";s:29:"kill_urls|SystemGOD:kill urls";s:11:"textblock12";s:37:"normal_select|SystemGOD:normal select";s:11:"textblock13";s:45:"authorized_select|SystemGOD:authorized select";s:11:"textblock14";s:37:"if_no_results|SystemGOD:if no results";s:11:"textblock15";s:23:"widget|SystemGOD:widget";s:11:"textblock16";s:17:"css|SystemGOD:css";s:11:"textblock17";s:35:"nogui_widget|SystemGOD:nogui widget";s:11:"textinput18";s:45:"display_in_row_of|SystemGOD:display in row of";s:11:"textinput19";s:41:"records_in_page|SystemGOD:records in page";s:11:"textinput20";s:35:"link_example|SystemGOD:link example";s:11:"textinput21";s:41:"operators_order|SystemGOD:operators order";s:11:"textinput22";s:45:"dynamic_pagetitle|SystemGOD:dynamic pagetitle";s:11:"textblock23";s:29:"pagetitle|SystemGOD:pagetitle";s:11:"textblock24";s:43:"output_modifiers|SystemGOD:output modifiers";s:11:"textinput25";s:27:"is_admin|SystemGOD:is admin";s:11:"textblock26";s:37:"if_authorized|SystemGOD:if authorized";s:11:"textblock27";s:33:"permissions|SystemGOD:permissions";s:11:"textinput28";s:43:"remove_container|SystemGOD:remove container";s:11:"textinput29";s:37:"edit_in_place|SystemGOD:edit in place";s:11:"textinput30";s:51:"widget_cache_timeout|SystemGOD:widget cache timeout";s:11:"textinput31";s:39:"custome_output|SystemGOD:custome output";s:11:"textblock32";s:39:"custome_header|SystemGOD:custome header";s:11:"textinput33";s:29:"is_active|SystemGOD:is active";s:11:"textinput34";s:31:"javascript|SystemGOD:javascript";}\', \'\', \'\');
+(20, 0, \'\', \'\', \'\', \'aiki_widgets\', \'aiki_widgets\', \'a:36:{s:9:"tablename";s:12:"aiki_widgets";s:4:"pkey";s:2:"id";s:10:"textinput2";s:23:"app_id|SystemGOD:app id";s:10:"textinput3";s:33:"widget_name|SystemGOD:widget name";s:10:"textinput4";s:33:"widget_site|SystemGOD:widget site";s:13:"staticselect5";s:69:"widget_target|SystemGOD:widget target:custome:body>body&header>header";s:13:"staticselect6";s:213:"widget_type|SystemGOD:widget type:custome:div>div&span>span&paragraph>p&link>a&---html 5--->0&header>header&nav>nav&article>article&aside>aside&figure>figure&footer>footer&section>section&address>address&abbr>abbr";s:10:"textinput7";s:37:"display_order|SystemGOD:display order";s:10:"textinput8";s:27:"style_id|SystemGOD:style id";s:13:"staticselect9";s:48:"is_father|SystemGOD:is father:custome:No>0&Yes>1";s:11:"textinput10";s:37:"father_widget|SystemGOD:father widget";s:11:"textblock11";s:35:"display_urls|SystemGOD:display urls";s:11:"textblock12";s:29:"kill_urls|SystemGOD:kill urls";s:11:"textblock13";s:37:"normal_select|SystemGOD:normal select";s:11:"textblock14";s:45:"authorized_select|SystemGOD:authorized select";s:11:"textblock15";s:37:"if_no_results|SystemGOD:if no results";s:11:"textblock16";s:23:"widget|SystemGOD:widget";s:11:"textblock17";s:17:"css|SystemGOD:css";s:11:"textblock18";s:35:"nogui_widget|SystemGOD:nogui widget";s:11:"textinput19";s:45:"display_in_row_of|SystemGOD:display in row of";s:11:"textinput20";s:41:"records_in_page|SystemGOD:records in page";s:11:"textinput21";s:35:"link_example|SystemGOD:link example";s:11:"textinput22";s:41:"operators_order|SystemGOD:operators order";s:11:"textinput23";s:45:"dynamic_pagetitle|SystemGOD:dynamic pagetitle";s:11:"textblock24";s:29:"pagetitle|SystemGOD:pagetitle";s:11:"textblock25";s:43:"output_modifiers|SystemGOD:output modifiers";s:14:"staticselect26";s:64:"is_admin|SystemGOD:Require special permission:custome:No>0&Yes>1";s:11:"textblock27";s:37:"if_authorized|SystemGOD:if authorized";s:11:"textblock28";s:33:"permissions|SystemGOD:permissions";s:11:"textinput29";s:43:"remove_container|SystemGOD:remove container";s:11:"textinput30";s:37:"edit_in_place|SystemGOD:edit in place";s:11:"textinput31";s:51:"widget_cache_timeout|SystemGOD:widget cache timeout";s:11:"textinput32";s:39:"custome_output|SystemGOD:custome output";s:11:"textblock33";s:39:"custome_header|SystemGOD:custome header";s:14:"staticselect34";s:48:"is_active|SystemGOD:is active:custome:Yes>1&No>0";s:11:"textinput35";s:31:"javascript|SystemGOD:javascript";}\', \'\', \'\');
 
 --------------------------------------------------------
 
@@ -433,6 +398,26 @@ CREATE TABLE IF NOT EXISTS `aiki_guests` (
 
 --------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS `aiki_internal_links` (
+  `name` varchar(250) NOT NULL default \'\',
+  `tagstart` varchar(250) NOT NULL default \'\',
+  `tagend` varchar(250) NOT NULL default \'\',
+  `parlset` varchar(250) NOT NULL default \'\',
+  `linkexample` varchar(250) NOT NULL default \'\',
+  `dbtable` varchar(250) NOT NULL default \'\',
+  `namecolumn` varchar(250) NOT NULL default \'\',
+  `idcolumn` varchar(250) NOT NULL default \'\',
+  `extrasql` varchar(255) NOT NULL default \'\',
+  `is_extrasql_loop` int(1) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+--------------------------------------------------------
+
+INSERT INTO `aiki_internal_links` (`name`, `tagstart`, `tagend`, `parlset`, `linkexample`, `dbtable`, `namecolumn`, `idcolumn`, `extrasql`, `is_extrasql_loop`) VALUES
+(\'wikilinks\', \'(+(\', \')+)\', \'\', \'wiki\', \'apps_wiki_text\', \'title\', \'id\', \'\', 0);
+
+--------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `aiki_javascript` (
   `id` int(11) NOT NULL auto_increment,
   `app_id` int(11) NOT NULL,
@@ -444,7 +429,7 @@ CREATE TABLE IF NOT EXISTS `aiki_javascript` (
   `global_use` int(1) NOT NULL,
   `is_active` int(1) NOT NULL default \'1\',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --------------------------------------------------------
 
@@ -463,57 +448,38 @@ CREATE TABLE IF NOT EXISTS `aiki_languages` (
   `align` varchar(10) NOT NULL,
   `is_default` int(1) NOT NULL default \'0\',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --------------------------------------------------------
 
 INSERT INTO `aiki_languages` (`id`, `name`, `sys_name`, `short_name`, `dir`, `align`, `is_default`) VALUES
 (1, \'عربي\', \'arabic\', \'ar\', \'rtl\', \'right\', 0),
 (2, \'English\', \'english\', \'en\', \'ltr\', \'left\', 1),
-(5, \'German\', \'german\', \'de\', \'ltr\', \'left\', 0);
-
---------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS `aiki_linker_tags` (
-  `name` varchar(250) NOT NULL default \'\',
-  `tagstart` varchar(250) NOT NULL default \'\',
-  `tagend` varchar(250) NOT NULL default \'\',
-  `parlset` varchar(250) NOT NULL default \'\',
-  `linkexample` varchar(250) NOT NULL default \'\',
-  `dbtable` varchar(250) NOT NULL default \'\',
-  `namecolumn` varchar(250) NOT NULL default \'\',
-  `idcolumn` varchar(250) NOT NULL default \'\',
-  `extrasql` varchar(255) NOT NULL default \'\',
-  `is_extrasql_loop` int(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
-
---------------------------------------------------------
-
-INSERT INTO `aiki_linker_tags` (`name`, `tagstart`, `tagend`, `parlset`, `linkexample`, `dbtable`, `namecolumn`, `idcolumn`, `extrasql`, `is_extrasql_loop`) VALUES
-(\'wikilinks\', \'(+(\', \')+)\', \'\', \'bank\', \'modules_wiki_text\', \'title\', \'id\', \'\', 0);
+(3, \'German\', \'german\', \'de\', \'ltr\', \'left\', 0);
 
 --------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `aiki_plugins` (
   `id` int(11) NOT NULL auto_increment,
   `app_id` int(11) NOT NULL,
-  `modifiers_name` varchar(255) NOT NULL,
+  `plugin_name` varchar(255) NOT NULL,
   `modifiers_group` varchar(255) NOT NULL,
   `modifiers_type` varchar(255) NOT NULL,
   `plugin_filename` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --------------------------------------------------------
 
-INSERT INTO `aiki_plugins` (`id`, `app_id`, `modifiers_name`, `modifiers_group`, `modifiers_type`, `plugin_filename`) VALUES
-(1, 0, \'linkTags\', \'aiki_defaults\', \'output_modifier\', \'\'),
-(2, 0, \'doImages\', \'aiki_defaults\', \'output_modifier\', \'\'),
-(3, 0, \'external_links\', \'aiki_defaults\', \'output_modifier\', \'\'),
-(4, 0, \'getRemotePages\', \'aiki_defaults\', \'output_modifier\', \'\'),
-(5, 0, \'doQuotes\', \'wikipedia_markup\', \'output_modifier\', \'\'),
-(7, 0, \'doTables\', \'aiki_defaults\', \'output_modifier\', \'\'),
-(8, 0, \'ajax\', \'aiki_defaults\', \'output_modifier\', \'\');
+INSERT INTO `aiki_plugins` (`id`, `app_id`, `plugin_name`, `modifiers_group`, `modifiers_type`, `plugin_filename`) VALUES
+(1, 0, \'markup_intlinks\', \'aiki_markup\', \'output_modifier\', \'\'),
+(2, 0, \'markup_images\', \'aiki_markup\', \'output_modifier\', \'\'),
+(3, 0, \'markup_extlinks\', \'aiki_markup\', \'output_modifier\', \'\'),
+(4, 0, \'markup_inline\', \'aiki_markup\', \'output_modifier\', \'\'),
+(5, 0, \'markup_quotes\', \'wikimedia_markup\', \'output_modifier\', \'\'),
+(7, 0, \'markup_tables\', \'wikimedia_markup\', \'output_modifier\', \'\'),
+(8, 0, \'markup_ajax\', \'aiki_markup\', \'output_modifier\', \'\'),
+(9, 0, \'markup_toc\', \'wikimedia_markup\', \'output_modifier\', \'\');
 
 --------------------------------------------------------
 
@@ -535,6 +501,7 @@ CREATE TABLE IF NOT EXISTS `aiki_sites` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --------------------------------------------------------
+
 
 INSERT INTO `aiki_sites` (`site_id`, `site_name`, `site_shortcut`, `is_active`, `if_closed_output`) VALUES
 (1, \'default\', \'default\', 1, \'\');
@@ -560,17 +527,7 @@ CREATE TABLE IF NOT EXISTS `aiki_template` (
   `template_output` text NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `template_name` (`template_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
-
---------------------------------------------------------
-
-INSERT INTO `aiki_template` (`id`, `app_id`, `template_name`, `template_input`, `template_output`) VALUES
-(1, 0, \'Coin image box 2 singles\', \'{{Coin image box 2 singles\n| header =\n| image_left =\n| image_right =\n| caption_left =\n| caption_right =\n| width_left =\n| width_right =\n| footer =\n| position =\n| margin =\n| background =\n}}\', \'<table id="Coin Image Box" style="" align="(position)">\n    <tbody>\n        <tr>\n            <th colspan="2" style="padding: 2px; width: 176px;">(header)</th>\n        </tr>\n        <tr>\n            <td colspan="2" style="border: 1px solid rgb(204, 204, 204); padding: 0px;">\n            <img alt="" src="(image_left)" border="0" height="93" width="90">\n            <img alt="" src="(image_right)" border="0" height="93" width="90">\n            </td>\n        </tr>\n        <tr style="font-size: 85%; vertical-align: top;">\n            <td style="border: 1px solid rgb(204, 204, 204); padding: 2px; width: 86px; line-height: 1.5em;">(caption_left)</td>\n            <td style="border: 1px solid rgb(204, 204, 204); padding: 2px 1px 2px 2px; width: 86px; line-height: 1.5em;">(caption_right)</td>\n        </tr>\n        <tr>\n            <td colspan="2" style="padding: 2px; width: 176px; font-size: 85%; line-height: 1.5em;">(footer)</td>\n        </tr>\n    </tbody>\n</table>\'),
-(3, 0, \'redirect\', \'{{redirect\r\n| url = http://www.discover-syria.com/results/538}}\r\n\', \'(#(header:(url))#)\r\n<p align="center">\r\n المحتوى المطلوب انتقل إلى الرابط التالي:<br />\r\n<a href="(url)">(url)</a><br />\r\nاذا لم يتم تحويلك تلقائياً خلال 3 ثوان<br />\r\n<a href="(url)">الرجاء اضغط هنا</a>\r\n</p>\'),
-(4, 0, \'Bank Titles\', \'{{Bank Titles\r\n|title = معلومات عن دمشق\r\n|position = right\r\n|term = دمشق\r\n}}\', \'<div id="sub_contents" style="clear: (position); float: (position); border-width: .5em 0 .8em 1.4em;  padding-left: 20px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; width: 320px">\r\n<div style="width: 100%; border: 1px solid #ccc; padding: 3px; background-color: #f9f9f9;font-size: 99%;text-align: right;overflow: hidden;">\r\n<p>(title)</p>\r\n<ul>\r\n\r\n(@(select id, title from dsyria_bank_text where title RLIKE "(term)"||<li><a href="(+(1)+)">(+(2)+)</a></li>)@)\r\n\r\n</ul>\r\n</div>\r\n</div>\'),
-(9, 0, \'box\', \'{{box\r\n| contents =\r\n| position =\r\n}}\', \'<table id="box" style="" align="(position)">\r\n    <tbody>\r\n        <tr>\r\n            <td colspan="2" style="border: 1px solid rgb(204, 204, 204); padding: 0px;">\r\n		(contents)\r\n            </td>\r\n        </tr>\r\n    </tbody>\r\n</table>\'),
-(11, 0, \'refresh\', \'{{refresh\r\n| url = http://www.discover-syria.com/results/538}}\r\n\', \'<p align="center">\r\n المحتوى المطلوب انتقل إلى الرابط التالي:<br />\r\n<a href="(url)">(url)</a><br />\r\nاذا لم يتم تحويلك تلقائياً خلال 3 ثوان<br />\r\n<a href="(url)">الرجاء اضغط هنا</a>\r\n</p>\r\n<meta HTTP-EQUIV="REFRESH" content="3; url=(url)">\'),
-(12, 0, \'inline\', \'{{inline\r\n| id = 538\r\n}}\r\n\', \'(#(inline:aikicore->setting[url]/mini_articles/news|(id)?noheaders=1&nogui=1)#)\');
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --------------------------------------------------------
 
@@ -580,7 +537,7 @@ CREATE TABLE IF NOT EXISTS `aiki_urls` (
   `cacheable` int(1) NOT NULL,
   `site` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
 
 --------------------------------------------------------
 
@@ -588,8 +545,8 @@ INSERT INTO `aiki_urls` (`id`, `url`, `cacheable`, `site`) VALUES
 (1, \'admin\', 0, \'aikiadmin\'),
 (2, \'admin_tools/edit/\', 0, \'aikiadmin\'),
 (3, \'login\', 0, \'aikiadmin\'),
-(6, \'admin_tools/new/\', 0, \'aikiadmin\'),
-(7, \'admin_tools/delete/\', 0, \'aikiadmin\');
+(4, \'admin_tools/new/\', 0, \'aikiadmin\'),
+(5, \'admin_tools/delete/\', 0, \'aikiadmin\');
 
 --------------------------------------------------------
 
@@ -621,7 +578,7 @@ CREATE TABLE IF NOT EXISTS `aiki_users` (
 
 INSERT INTO `aiki_users` (`userid`, `username`, `full_name`, `country`, `sex`, `job`, `password`, `usergroup`, `email`, `avatar`, `homepage`, `first_ip`, `first_login`, `last_login`, `last_ip`, `user_permissions`, `maillist`, `logins_number`, `randkey`, `is_active`) VALUES
 (1, \'guest\', \'guest\', \'\', \'\', \'\', \'\', 3, \'\', \'\', \'\', \'\', \'0000-00-00 00:00:00\', \'0000-00-00 00:00:00\', \'\', \'\', 0, 0, \'\', 0),
-(2, \'admin\', \'System admin\', \'\', \'male\', \'\', \'c3284d0f94606de1fd2af172aba15bf3\', 1, \'\', \'\', \'\', \'\', \'0000-00-00 00:00:00\', \'2009-09-24 18:49:07\', \'127.0.0.1\', \'\', 0, 83, \'\', 0);
+(2, \'admin\', \'System admin\', \'\', \'male\', \'\', \'c3284d0f94606de1fd2af172aba15bf3\', 1, \'\', \'\', \'\', \'\', \'0000-00-00 00:00:00\', \'2009-10-13 15:39:56\', \'::1\', \'\', 0, 112, \'\', 0);
 
 --------------------------------------------------------
 
@@ -695,15 +652,15 @@ CREATE TABLE IF NOT EXISTS `aiki_widgets` (
   `is_active` int(1) NOT NULL,
   `javascript` int(3) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
 --------------------------------------------------------
 
 INSERT INTO `aiki_widgets` (`id`, `app_id`, `widget_name`, `widget_site`, `widget_target`, `widget_type`, `display_order`, `style_id`, `is_father`, `father_widget`, `display_urls`, `kill_urls`, `normal_select`, `authorized_select`, `if_no_results`, `widget`, `css`, `nogui_widget`, `display_in_row_of`, `records_in_page`, `link_example`, `operators_order`, `dynamic_pagetitle`, `pagetitle`, `output_modifiers`, `is_admin`, `if_authorized`, `permissions`, `remove_container`, `edit_in_place`, `widget_cache_timeout`, `custome_output`, `custome_header`, `is_active`, `javascript`) VALUES
-(1, 1, \'header\', \'default\', \'body\', \'div\', 1, \'\', \'0\', 6, \'admin\', \'\', \'\', \'\', \'\', \'(#(header:[root]/login)#)\', \'#header {\r\n    height: 28px;\r\n    background: #eeeeee;\r\n    position: relative;\r\n    border-bottom:1px solid #666666;\r\n    border-top:1px solid #666666;\r\n    text-align:center;\r\n}\r\n\r\n#main-navigation {\r\n    	position: relative;\r\n	float:left;\r\n	line-height:25px;\r\n}\r\n\r\n#main-navigation li{\r\n	float:left;\r\n	line-height:25px;\r\n	margin-right: 10px;\r\n	margin-left: 10px;\r\n}\r\n\r\n#main-navigation li a img{\r\n	margin-top:5px;\r\n}\r\n\r\n#main-navigation .aiki-icon {\r\n	margin-left:-5px;\r\n	margin-right:-10px;\r\n}\r\n\r\n#main-navigation a.active{\r\n	font-weight:bold;\r\n}\r\n\r\n#user-navigation {\r\n    	position: relative;\r\n	float:right;\r\n	line-height:25px;\r\n}\r\n\r\n#user-navigation li{\r\n	float:left;\r\n	line-height:25px;\r\n	\r\n}\r\n\r\n#user-navigation li a, #user-navigation li strong{\r\n	margin-right: 10px;\r\n	margin-left: 10px;\r\n}\r\n\r\n#user-navigation li a img{\r\n	margin-top:5px;\r\n}\r\n\r\n#user-navigation .aiki-icon {\r\n	margin-left:-5px;\r\n	margin-right:-10px;\r\n}\r\n\r\n#user-navigation a.active{\r\n	font-weight:bold;\r\n}\r\n\', \'\', 0, 0, \'\', \'\', \'\', \'aiki AdminPanel\', \'[all]\', 1, \'	<ul id="main-navigation" class="clearfix">\r\n		<li><a href="#" class="aiki-icon" id="aiki-icon-button"><img src="[root]/assets/images/aiki-icon.png" /></a></li>\r\n 		<li><a href="#" id="structur_button" class="active">Structure</a></li>\r\n		<li><a href="#">Apps</a></li>\r\n		<li><a href="#" id="system_button">System</a></li>\r\n	</ul>\r\n\r\n(ajax_a(structur_button;\r\n[\'\'[root]/index.php?widget=widget_accordion\'\',\'\'#ui-layout-center\'\', \'\'widget_accordion()\'\'];\r\n[\'\'[root]/index.php?widget=structur_accordion\'\',\'\'#ui-layout-west\'\', \'\'structur_accordion()\'\']\r\n)ajax_a)\r\n\r\n(ajax_a(system_button;\r\n[\'\'[root]/language\'\',\'\'#ui-layout-center\'\'];\r\n[\'\'[root]/index.php?widget=system_accordion\'\',\'\'#ui-layout-west\'\', \'\'system_accordion()\'\']\r\n)ajax_a)\r\n\r\n	<ul id="user-navigation" class="clearfix">\r\n		<li><strong>[username] @ aikiframework.com</strong>|</li>\r\n 		<li><a href="#">Settings</a>|</li>\r\n		<li><a href="#" class="help-toggler">Help</a>|</li>\r\n		<li><a href="#">Signout</a></li>\r\n	</ul>\r\n\r\n<div id="dialog" title="About your aiki installation">\r\n	<p>\r\n		<img src="[root]/assets/images/logo-aikiframework.png" />\r\n		<br /><br />\r\n		<h2>aiki framework 1.0.0</h2>\r\n		<br />\r\n		<a href="http://www.aikiframework.org">http://www.aikiframework.org</a>\r\n		<br /><br />\r\n		<h2>Credits:</h2>	\r\n		Bassel Safadi (Code)<br />\r\n		Michi Krnac (GUI)<br />\r\n		Vera Lobatcheva (HTML/CSS)<br />	\r\n	</p>\r\n</div>\', \'SystemGOD\', 0, \'\', 0, 0, \'\', 1, 2),
+(1, 1, \'header\', \'default\', \'body\', \'div\', 1, \'\', \'0\', 6, \'admin\', \'\', \'\', \'\', \'\', \'(#(header:[root]/login)#)\', \'#header {\r\n    height: 28px;\r\n    background: #eeeeee;\r\n    position: relative;\r\n    border-bottom:1px solid #666666;\r\n    border-top:1px solid #666666;\r\n    text-align:center;\r\n}\r\n\r\n#main-navigation {\r\n    	position: relative;\r\n	float:left;\r\n	line-height:25px;\r\n}\r\n\r\n#main-navigation li{\r\n	float:left;\r\n	line-height:25px;\r\n	margin-right: 10px;\r\n	margin-left: 10px;\r\n}\r\n\r\n#main-navigation li a img{\r\n	margin-top:5px;\r\n}\r\n\r\n#main-navigation .aiki-icon {\r\n	margin-left:-5px;\r\n	margin-right:-10px;\r\n}\r\n\r\n#main-navigation a.active{\r\n	font-weight:bold;\r\n}\r\n\r\n#user-navigation {\r\n    	position: relative;\r\n	float:right;\r\n	line-height:25px;\r\n}\r\n\r\n#user-navigation li{\r\n	float:left;\r\n	line-height:25px;\r\n	\r\n}\r\n\r\n#user-navigation li a, #user-navigation li strong{\r\n	margin-right: 10px;\r\n	margin-left: 10px;\r\n}\r\n\r\n#user-navigation li a img{\r\n	margin-top:5px;\r\n}\r\n\r\n#user-navigation .aiki-icon {\r\n	margin-left:-5px;\r\n	margin-right:-10px;\r\n}\r\n\r\n#user-navigation a.active{\r\n	font-weight:bold;\r\n}\r\n\', \'\', 0, 0, \'\', \'\', \'\', \'aiki AdminPanel\', \'markup_ajax\', 1, \'	<ul id="main-navigation" class="clearfix">\r\n		<li><a href="#" class="aiki-icon" id="aiki-icon-button"><img src="[root]/assets/images/aiki-icon.png" /></a></li>\r\n 		<li><a href="#" id="structur_button" class="active">Structure</a></li>\r\n		<li><a href="#">Apps</a></li>\r\n		<li><a href="#" id="system_button">System</a></li>\r\n	</ul>\r\n\r\n(ajax_a(structur_button;\r\n[\'\'[root]/index.php?widget=widget_accordion\'\',\'\'#ui-layout-center\'\', \'\'widget_accordion()\'\'];\r\n[\'\'[root]/index.php?widget=structur_accordion\'\',\'\'#ui-layout-west\'\', \'\'structur_accordion()\'\']\r\n)ajax_a)\r\n\r\n(ajax_a(system_button;\r\n[\'\'[root]/language\'\',\'\'#ui-layout-center\'\'];\r\n[\'\'[root]/index.php?widget=system_accordion\'\',\'\'#ui-layout-west\'\', \'\'system_accordion()\'\']\r\n)ajax_a)\r\n\r\n	<ul id="user-navigation" class="clearfix">\r\n		<li><strong>[username] @ aikiframework.com</strong>|</li>\r\n 		<li><a href="#">Settings</a>|</li>\r\n		<li><a href="#" class="help-toggler">Help</a>|</li>\r\n		<li><a href="#">Signout</a></li>\r\n	</ul>\r\n\r\n<div id="dialog" title="About your aiki installation">\r\n	<p>\r\n		<img src="[root]/assets/images/logo-aikiframework.png" />\r\n		<br /><br />\r\n		<h2>aiki framework 1.0.0</h2>\r\n		<br />\r\n		<a href="http://www.aikiframework.org">http://www.aikiframework.org</a>\r\n		<br /><br />\r\n		<h2>Credits:</h2>	\r\n		Bassel Safadi (Code)<br />\r\n		Michi Krnac (GUI)<br />\r\n		Vera Lobatcheva (HTML/CSS)<br />	\r\n	</p>\r\n</div>\', \'SystemGOD\', 0, \'\', 0, 0, \'\', 1, 2),
 (2, 1, \'search\', \'default\', \'body\', \'div\', 2, \'\', \'0\', 6, \'admin\', \'\', \'\', \'\', \'\', \'\', \'#search {\r\n    	height: 80px;\r\n    	position: relative;\r\n	text-align:left;\r\n}\r\n\r\n#search .logo{\r\n	position:relative;\r\n	float:left;\r\n	margin:5px;\r\n}\r\n\r\n#search form{\r\n	position:relative;\r\n	float:left;\r\n	margin-top:15px;\r\n}\r\n\r\ninput.oneLine{\r\n	border: 1px solid #999999;\r\n	background:url(assets/images/input_bg.png) repeat-x bottom;\r\n    	font-size:12pt;\r\n	padding:2px;\r\n	margin-left:10px;\r\n}\r\n\r\ninput.button{\r\n	background:url(assets/images/input_button.png) no-repeat;\r\n	width:80px;\r\n	height:25px;\r\n    	font-size:10pt;\r\n	font-weight:bold;\r\n	padding:2px;\r\n	margin-left:10px;\r\n        border:0;\r\n}\r\n\r\n#search input.button:hover{\r\n	background:url(assets/images/input_button_active.png) no-repeat;\r\n}\r\n\r\n#content_button {\r\n  position:absolute;\r\n  right:-5px;\r\n  top:5px;\r\n}\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'<a href="#" class="logo"><img src="[root]/assets/images/logo.png" /></a>\r\n<a href="[root]/content" ><img id="content_button" src="[root]/assets/images/content-button.png" /></a>\', \'SystemGOD\', 0, \'\', 0, 0, \'\', 1, 0),
 (3, 1, \'structur_accordion\', \'default\', \'body\', \'div\', 6, \'\', \'0\', 7, \'admin\', \'\', \'\', \'\', \'\', \'\', \'#tree-menu {\r\n	border-bottom: 1px dashed #d3d7cf;\r\ndisplay:block;\r\nposition:relative;\r\n}\r\n\r\n#tree-menu li{\r\n	float:left;\r\n	line-height:25px;\r\n	\r\n}\r\n\r\n#tree-menu li a{\r\n	margin-right: 5px;\r\n	margin-left: 5px;\r\n}\r\n\r\n#tree-menu li a img{\r\n	margin-top:5px;\r\n	height:12px;\r\n	margin-right:2px;\r\n}\r\n\r\n#widget-tree {\r\n	text-align:left;\r\n}\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'<h3><a href="#" id="urls_widgets">Urls & Widgets</a></h3>\r\n<div>\r\n	<ul id="tree-menu" class="clearfix">\r\n		<li><a href="#" id="create_new_url"><img src="[root]/assets/images/icons/link_add.png" />Add URL</a></li>\r\n		<li><a href="#" id="create_new_widget"><img src="[root]/assets/images/icons/layout_add.png" />Create Widget</a></li>\r\n	</ul>\r\n	<div id="widgettree" class="demo"></div>\r\n</div>\r\n\r\n<h3><a href="#" id="database_forms">Databases & Forms</a></h3>\r\n<div>\r\n	<ul id="tree-menu" class="clearfix">\r\n		<li><a href="#" id="create_new_table"><img src="[root]/assets/images/icons/database.png" />Create Table</a></li>\r\n		<li><a href="#" id="create_new_form"><img src="[root]/assets/images/icons/application_form.png" />Create Form</a></li>\r\n	</ul>\r\n<div id="databaseformstree" class="demo"></div>\r\n</div>\r\n\r\n<h3><a href="#" id="js_css">Global JS & CSS</a></h3>\r\n<div>\r\n	<ul id="tree-menu" class="clearfix">\r\n		<li><a href="#" onclick="$.tree_reference(\'\'widgettree\'\').create({ attributes : { \'\'class\'\' : \'\'site\'\' }, data: { title : \'\'New Site\'\', icon : \'\'[root]/assets/images/icons/page_gear.png\'\' } },-1);"><img src="[root]/assets/images/icons/page_gear.png" />Add Javascrip</a></li>\r\n		<li><a href="#" onclick="$.tree_reference(\'\'widgettree\'\').create({ attributes : { \'\'class\'\' : \'\'site\'\' }, data: { title : \'\'New Site\'\', icon : \'\'[root]/assets/images/icons/page_link.png\'\' } },-1);"><img src="[root]/assets/images/icons/page_link.png" />Add CSS</a></li>\r\n	</ul>\r\n</div>\', \'SystemGOD\', 0, \'\', 0, 0, \'\', 1, 0),
-(4, 1, \'widget_accordion\', \'default\', \'body\', \'div\', 0, \'\', \'\', 8, \'admin\', \'\', \'\', \'\', \'\', \'\', \'#breadcrumbs li{\r\n	float:left;	\r\n}\r\n\r\n#breadcrumbs li a{\r\n	float:left;\r\n}\r\n\r\n#breadcrumbs li a img{\r\n	height:12px;\r\n	margin-right:4px;\r\n	top: 5px;\r\n}\r\n\r\n#breadcrumbs li img{\r\n	float:left;\r\n	position: relative; \r\n	top: 8px;\r\n	margin-left:10px;\r\n}\r\n\r\n.widget_form h2 {\r\n	margin:15px 15px 0 15px;\r\n	font-size:120%;\r\n	color:#2e3436;\r\n}\r\n.widget_form h3 {\r\n	margin:0 15px 0 15px;\r\n	font-size:110%;\r\n	color:#2e3436;\r\n}\r\n\r\n.codetext {\r\n	margin:0 15px 0 15px;\r\n	color:#555753;\r\n	font-size:80%;\r\n}\r\n\r\n.options-button {\r\n	background:#eeeeee;\r\n	margin:15px 15px 0 15px;\r\n	width:80px;\r\n	height:20px;\r\n	text-align:center;\r\n}\r\n\r\n.options-button a{\r\n	margin:5px;\r\n	color: #1b3b6b;\r\n}\r\n.options-button a:hover {\r\n    	text-decoration: none;\r\n}\r\n\r\n.options {\r\n	border:1px solid #eeeeee;\r\n	margin:0px 15px 0 15px;\r\n	padding:10px;\r\n	color: #1b3b6b;\r\n}\r\n#big_form {\r\n	margin:0px 15px 0 15px;\r\n}\r\n.widget_form textarea, .widget_form input, .widget_form select {\r\n	border:2px solid #c3c3c3;\r\n	font-family: "Courier New";\r\n	padding:3px;\r\n	color:#555753;\r\n	margin:0 15px 0 15px;\r\n	font-size:120%;\r\n	background:GhostWhite ;\r\n}\r\n\r\n.form-buttons {\r\n	text-align:right;\r\n}\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'<h3><a href="#">Widgets</a></h3>\r\n\r\n<div id="widget-form" class="accordeon-content">\r\nHere\r\n</div>\', \'SystemGOD\', 0, \'\', 0, 0, \'\', 1, 0),
+(4, 1, \'widget_accordion\', \'default\', \'body\', \'div\', 0, \'\', \'\', 8, \'admin\', \'\', \'\', \'\', \'\', \'\', \'#breadcrumbs li{\r\n	float:left;	\r\n}\r\n\r\n#breadcrumbs li a{\r\n	float:left;\r\n}\r\n\r\n#breadcrumbs li a img{\r\n	height:12px;\r\n	margin-right:4px;\r\n	top: 5px;\r\n}\r\n\r\n#breadcrumbs li img{\r\n	float:left;\r\n	position: relative; \r\n	top: 8px;\r\n	margin-left:10px;\r\n}\r\n\r\n.codetext {\r\n	margin:0 15px 0 15px;\r\n	color:#555753;\r\n	font-size:80%;\r\n}\r\n\r\n.options-button {\r\n	background:#eeeeee;\r\n	margin:15px 15px 0 15px;\r\n	width:80px;\r\n	height:20px;\r\n	text-align:center;\r\n}\r\n\r\n.options-button a{\r\n	margin:5px;\r\n	color: #1b3b6b;\r\n}\r\n.options-button a:hover {\r\n    	text-decoration: none;\r\n}\r\n\r\n.options {\r\n	border:1px solid #eeeeee;\r\n	margin:0px 15px 0 15px;\r\n	padding:10px;\r\n	color: #1b3b6b;\r\n}\r\n#big_form {\r\n	margin:0px 15px 0 15px;\r\n}\r\ntextarea, input, select {\r\n	border:2px solid #c3c3c3;\r\n	font-family: "Courier New";\r\n	padding:3px;\r\n	color:#555753;\r\n	margin:0 15px 0 15px;\r\n	font-size:120%;\r\n	background:GhostWhite ;\r\n}\r\n\r\n.form-buttons {\r\n	text-align:right;\r\n}\r\n\r\n#widget_container, #normal_select_container{\r\nborder: 1px solid black;\r\npadding: 3px;\r\nbackground-color: #F8F8F8\r\n}\r\n\r\n#widget-form h2{\r\nborder-color:#CCCCCC;\r\nborder-style:dotted none;\r\nborder-width:1px 0 0;\r\ndisplay:block;\r\nmargin-top:16px;\r\npadding-bottom:6px;\r\npadding-top:4px;\r\n}\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'<h3><a href="#">Widgets</a></h3>\r\n\r\n<div id="widget-form" class="accordeon-content">\r\nYou can start building your cms from the left menu.\r\n</div>\', \'SystemGOD\', 0, \'\', 0, 0, \'\', 1, 0),
 (5, 1, \'edit_record\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'admin_tools/edit/(.*)/(.*)\', \'\', \'\', \'\', \'\', \'\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'(#(form:edit:(!(2)!):(!(3)!))#)\', \'SystemGOD\', 0, \'\', 0, 1, \'\', 1, 0),
 (6, 1, \'ui-layout-north\', \'default\', \'body\', \'div\', 0, \'ui-layout-north\', \'1\', 0, \'admin\', \'\', \'\', \'\', \'\', \'\', \'.ui-layout-pane-north {\r\n/* OVERRIDE \'\'default styles\'\' */\r\npadding: 0 !important;\r\noverflow: hidden !important;\r\n}\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'\', \'SystemGOD\', 0, \'\', 0, 0, \'\', 1, 0),
 (7, 1, \'ui-layout-west\', \'default\', \'body\', \'div\', 3, \'ui-layout-west\', \'1\', 0, \'admin\', \'\', \'\', \'\', \'\', \'\', \'	.ui-layout-pane-west {\r\n		/* OVERRIDE \'\'default styles\'\' */\r\n		padding: 0 !important;\r\n		overflow: hidden !important;\r\n	}\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'\', \'SystemGOD\', 0, \'\', 0, 0, \'\', 1, 0),
@@ -712,7 +669,9 @@ INSERT INTO `aiki_widgets` (`id`, `app_id`, `widget_name`, `widget_site`, `widge
 (10, 1, \'system_accordion\', \'default\', \'body\', \'div\', 6, \'\', \'0\', 0, \'\', \'\', \'\', \'\', \'\', \'\', \'#system_accordion h3.ui-state-active{\r\n	background:url(assets/images/accordeon_active.png) repeat-x bottom;\r\n	text-align:left;\r\n	height:15px;\r\n	padding:5px;\r\n	border-top: 1px solid #999999;\r\n	border-bottom: 1px solid #999999;\r\n}\r\n\r\n#system_accordion h3.ui-state-active a{\r\n	color: #000;\r\n	text-decoration:none;\r\n}\r\n\r\n#system_accordion h3.ui-state-default{\r\n	background:url(assets/images/accordeon_default.png) repeat-x bottom;\r\n	text-align:left;\r\n	height:15px;\r\n	padding:5px;\r\n	border-top: 1px solid #d3d7cf;\r\n}\r\n\r\n#system_accordion h3.ui-state-default a{\r\n	color: #888a85;\r\n	text-decoration:none;\r\n}\r\n\r\n#tree-menu {\r\n	border-bottom: 1px dashed #d3d7cf;\r\ndisplay:block;\r\nposition:relative;\r\n}\r\n\r\n#tree-menu li{\r\n	float:left;\r\n	line-height:25px;\r\n	\r\n}\r\n\r\n#tree-menu li a{\r\n	margin-right: 5px;\r\n	margin-left: 5px;\r\n}\r\n\r\n#tree-menu li a img{\r\n	margin-top:5px;\r\n	height:12px;\r\n	margin-right:2px;\r\n}\r\n\r\n#widget-tree {\r\n	text-align:left;\r\n}\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'<h3><a href="#">Users</a></h3>\r\n			<div>\r\n			<ul id="tree-menu" class="clearfix">\r\n 				<li><a href="#" onclick="$.tree_reference(\'\'widgettree\'\').create({ attributes : { \'\'class\'\' : \'\'site\'\' }, data: { title : \'\'New Site\'\', icon : \'\'[root]/assets/images/icons/group.png\'\' } },-1);"><img src="[root]/assets/images/icons/group.png" />Add Group</a></li>\r\n\r\n				<li><a href="#" onclick="$.tree_reference(\'\'widgettree\'\').create({ attributes : { \'\'class\'\' : \'\'url\'\' }, data: { title : \'\'New URL\'\', icon : \'\'[root]/assets/images/icons/user.png\'\' } },0);"><img src="[root]/assets/images/icons/user.png" />Add User</a></li>\r\n\r\n			</ul>\r\n		\r\n			<div id="widgettree" class="demo"></div>\r\n\r\n\r\n\r\n		\r\n			</div>\r\n		\r\n			<h3><a href="#">Language</a></h3>\r\n			<div>\r\n			<ul id="tree-menu" class="clearfix">\r\n 				<li><a href="#" onclick="$.tree_reference(\'\'widgettree\'\').create({ attributes : { \'\'class\'\' : \'\'site\'\' }, data: { title : \'\'New Site\'\', icon : \'\'[root]/assets/images/icons/world.png\'\' } },-1);"><img src="[root]/assets/images/icons/world.png" />Add Language</a></li>\r\n\r\n			</ul>\r\n			</div>\r\n\r\n			<h3><a href="#">Configuration</a></h3>\r\n			<div>\r\n			<p>\r\n			Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.\r\n			Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero\r\n			ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis\r\n			lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.\r\n			</p>\r\n		\r\n			</div>\', \'SystemGOD\', 0, \'\', 0, 0, \'\', 1, 0),
 (11, 1, \'new_record\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'admin_tools/new/(.*)\', \'\', \'\', \'\', \'\', \'\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'(#(form:add:(!(2)!))#)\', \'SystemGOD\', 0, \'\', 0, 1, \'\', 1, 0),
 (12, 1, \'confirmations\', \'default\', \'body\', \'div\', 0, \'\', \'\', 0, \'admin\', \'\', \'\', \'\', \'\', \'<div id="deletewidgetdialog" title="Delete widget">\r\n	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This widget will be permanently deleted and cannot be recovered. Are you sure?</p>\r\n</div>\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 0, \'\', \'\', 0, \'\', 0, 0, \'\', 1, 0),
-(13, 1, \'delete_record\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'admin_tools/delete/(.*)/(.*)\', \'\', \'\', \'\', \'\', \'\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'{#{delete_record}#}\', \'SystemGOD\', 0, \'\', 0, 1, \'\', 1, 0);
+(13, 1, \'delete_record\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'admin_tools/delete/(.*)/(.*)\', \'\', \'\', \'\', \'\', \'\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'{#{delete_record}#}\', \'SystemGOD\', 0, \'\', 0, 1, \'\', 1, 0),
+(14, 1, \'aiki_home\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'homepage\', \'\', \'\', \'\', \'\', \'<h2>Welcome to aikiframework</h2><br/><br/>\r\n<img src="[root]assets/images/logo.png" />\r\n<br/><br/>\r\nYou\'\'ve successfully installed your aiki..\r\n<br/><br/>\r\nPlease go to <a href=\'\'admin\'\'>admin panel</a> to start creating your own cms and to change this default page \r\n<br/><br/>\r\nfor documentation please visit <a target=\'\'_blank\'\' href=\'\'http://www.aikiframework.org\'\'>aikiframework.org</a>\', \'\r\n#aiki_home {\r\n border:1px solid #c3c3c3;\r\n width:400px;\r\nmargin: 200px auto;\r\ntext-align:center;\r\nbackground:GhostWhite ;\r\npadding:30px;\r\n}\r\n\r\n#aiki_home img{\r\nmargin:5px;\r\n}\r\n\r\n#aiki_home div{\r\nwidth: 260px; \r\nmargin: 0 auto;\r\n}\r\n\r\n#aiki_home table{\r\ntext-align:right;\r\nwidth: 100%;\r\n}\', \'\', 0, 0, \'\', \'\', \'\', \'Aikiframework\', \'\', 0, \'\', \'\', 0, \'\', 0, 0, \'\', 1, 0),
+(15, 1, \'edit_array\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'admin_tools/array/(.*)/(.*)/(.*)/(.*)/(.*)\', \'\', \'\', \'\', \'\', \'\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'(#(array:edit:(!(2)!):(!(3)!):(!(4)!):(!(5)!):(!(6)!))#)\', \'SystemGOD\', 0, \'\', 0, 1, \'\', 1, 0);
 
 --------------------------------------------------------
 
@@ -737,23 +696,13 @@ CREATE TABLE IF NOT EXISTS `apps_photo_archive` (
   `description` text NOT NULL,
   `current_owner` varchar(255) NOT NULL,
   `photographer` varchar(255) NOT NULL,
-  `original_artist_id` int(11) NOT NULL,
-  `original_artist_name` varchar(255) NOT NULL,
-  `original_width` int(11) NOT NULL,
-  `original_height` int(11) NOT NULL,
-  `article_title` varchar(255) NOT NULL,
-  `article_keywords` text NOT NULL,
-  `article_source` varchar(255) NOT NULL,
-  `article_pubdate` int(11) NOT NULL,
-  `article_writer` varchar(255) NOT NULL,
-  `article_id` int(11) NOT NULL,
   `event` varchar(255) NOT NULL,
   `event_date` int(11) NOT NULL,
   `published_by` varchar(255) NOT NULL,
   `right_term` varchar(255) NOT NULL,
   `people_in_photo` varchar(255) NOT NULL,
   `scene` varchar(255) NOT NULL,
-  `full_path` varchar(255) NOT NULL default \'assets/uploads/\',
+  `full_path` varchar(255) NOT NULL default \'upload/dsyria/\',
   `resolution` varchar(255) NOT NULL,
   `depth` varchar(255) NOT NULL,
   `color_space` varchar(255) NOT NULL,

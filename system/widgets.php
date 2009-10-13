@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * Aikiframework
+ *
+ * @author		Bassel Khartabil
+ * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @license		http://www.gnu.org/licenses/gpl.html
+ * @link		http://www.aikiframework.org
+ */
+
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
@@ -21,12 +31,12 @@ class CreateLayout
 		global $db, $site, $aiki, $url, $errors, $layout;
 
 
-		$this->output_modifiers = $db->get_results("SELECT modifiers_name from aiki_plugins where modifiers_type = 'output_modifier'");
+		$this->output_modifiers = $db->get_results("SELECT plugin_name from aiki_plugins where modifiers_type = 'output_modifier'");
 
-		$output_modifiers = $db->get_results("SELECT modifiers_name from aiki_plugins where modifiers_type = 'output_modifier'");
+		$output_modifiers = $db->get_results("SELECT plugin_name from aiki_plugins where modifiers_type = 'output_modifier'");
 		foreach ($output_modifiers as $output_modifier){
 
-			$output_modifier = $output_modifier->modifiers_name;
+			$output_modifier = $output_modifier->plugin_name;
 
 			if (file_exists("assets/plugins/$output_modifier.php")){
 				require_once ("assets/plugins/$output_modifier.php");
@@ -637,20 +647,18 @@ class CreateLayout
 					if ($widget->output_modifiers != '[all]'){
 						$output_modifier = trim($output_modifier);
 					}else{
-						$output_modifier = $output_modifier->modifiers_name;
+						$output_modifier = $output_modifier->plugin_name;
 					}
 
-					//TODO: STOP creating the same class over and over
-					$modifier = new $output_modifier();
+					$modifier = new $output_modifier('');
 
-					$output_modifier_function = "do_$output_modifier";
+					$output_modifier_function = $output_modifier;
 
 					$processed_widget = $modifier->$output_modifier_function($processed_widget);
 
 
 				}
 			}
-
 
 			//apply new location for the whole page
 			$new_header = preg_match("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);
@@ -726,6 +734,7 @@ class CreateLayout
 
 
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
+			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
 
 			$this->widget_html .=  $processed_widget;
 
@@ -808,7 +817,7 @@ class CreateLayout
 	}
 
 	function inline_widgets($widget){
-		//TODO: put the widget in it's place not in top .i.e replace (#(widget:123)#) with contents
+
 		$numMatches = preg_match_all( '/\(\#\(widget\:(.*)\)\#\)/', $widget, $matches);
 		if ($numMatches > 0){
 			foreach ($matches[1] as $widget_id){

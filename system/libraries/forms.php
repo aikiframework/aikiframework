@@ -105,7 +105,7 @@ class aiki_forms
 
 
 		$form = "<form method=\"post\" enctype=\"multipart/form-data\" id=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\" name=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\">
-		<table border=\"0\" width=\"100%\">";
+		";
 
 		$i = 0;
 
@@ -141,7 +141,7 @@ class aiki_forms
 
 					case "staticselect":
 
-						$form .= "<tr><td>$intwalker[1]</td><td>";
+						$form .= "<h2>$intwalker[1]</h2>";
 						if ($intwalker[2] == "custome" and $intwalker[3]){
 							$form .= '<select name="'.$intwalker[0].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '">';
 							$explodeStaticSelect = explode("&", $intwalker[3]);
@@ -155,12 +155,12 @@ class aiki_forms
 							}
 							$form .= '</select>';
 						}
-						$form .= "</td></tr>";
+
 						break;
 
 					case "selection":
-						$form .= '<tr><td>'.$intwalker['1'].'</td>
-							<td><select name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '">
+						$form .= '<h2>'.$intwalker['1'].'</h2>
+							<select name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '">
 							<option value="0">Please Select</option>';
 
 						$aquery = $db->get_results("select $intwalker[3], $intwalker[4] from $intwalker[2] order by BINARY $intwalker[4]");
@@ -177,59 +177,59 @@ class aiki_forms
 								$form .= ">$name</option>";
 							}
 						}
-						$form .= ("</select></td></tr>");
+						$form .= ("</select>");
 						break;
 
 					case "textinput":
-						$form .= '<tr><td>'.$intwalker['1'].'</td><td><input type="text" name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '"></td></tr>';
+						$form .= '<h2>'.$intwalker['1'].'</h2><input type="text" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
 
 					case "imagenoupload":
-						$form .= ("<tr><td>$intwalker[1]</td><td><input type=\"text\" name=\"$intwalker[0]\" dir=\"$get_permission_and_man_info[3]\" value=\""); $form .= $_POST[$intwalker[0]]; $form .= ("\"></td></tr>");
+						$form .= ("<h2>$intwalker[1]</h2><input type=\"text\" name=\"$intwalker[0]\" dir=\"$get_permission_and_man_info[3]\" value=\""); $form .= $_POST[$intwalker[0]]; $form .= ("\">");
 						break;
 
 					case "image":
-						$form .= ("<tr><td>$intwalker[1]</td><td><input type=\"text\" name=\"$intwalker[0]\" dir=\"$get_permission_and_man_info[3]\" value=\""); $form .= $_POST[$intwalker[0]]; $form .= ("\"></td></tr>");
-						$form .= ("<tr><td>$intwalker[1]</td><td><input type=\"file\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\"></td></tr>");
+						$form .= ("<h2>$intwalker[1]</h2><input type=\"text\" name=\"$intwalker[0]\" dir=\"$get_permission_and_man_info[3]\" value=\""); $form .= $_POST[$intwalker[0]]; $form .= ("\">");
+						$form .= ("<h2>$intwalker[1]</h2><input type=\"file\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\">");
 						break;
 
 					case "unique_textinput":
-						$form .= '<tr><td>'.$intwalker['1'].'</td><td><input type="text" name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '"></td></tr>';
+						$form .= '<h2>'.$intwalker['1'].'</h2><input type="text" name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
 
 					case "password":
-						$form .= ("<tr><td>$intwalker[1]</td><td><input type=\"password\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\" \"></td></tr>");
+						$form .= ("<h2>$intwalker[1]</h2><input type=\"password\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\" \">");
 						break;
 
 					case "verify_password":
-						//$form .= ("<tr><td>لا تظهر تأكيد كلمة المرور</td></tr>");
+						//$form .= ("<h2>لا تظهر تأكيد كلمة المرور</h2>");
 						break;
 
 
 					case "bigtextblock":
-						$form .= '<tr><td>'.$intwalker[1].'</td><td><textarea id="bigfont" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" style="height: 500px; width: 600px; display: block;" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea></td></tr>';
+						$form .= '<h2>'.$intwalker[1].'</h2><textarea id="bigfont" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" style="height: 500px; width: 600px; display: block;" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea>';
 						break;
 
 
 					case "bigwikiblock":
 
-						$form .= ("<tr><td>$intwalker[1]</td><td>
+						$form .= ("<h2>$intwalker[1]</h2>
 							<div id=\"toolbar\">
 							<span class='button' onmouseover=\"mouseover(this);\"  onmouseout=\"mouseout(this);\"  onmousedown=\"mousedown(this);\"  onmouseup=\"mouseup(this);\" onclick=\"FormatSelection('\'\'\'','\'\'\'','$intwalker[0]');\"><b>Bold</b></span>
 							<span class='button' onmouseover=\"mouseover(this);\"  onmouseout=\"mouseout(this);\"  onmousedown=\"mousedown(this);\"  onmouseup=\"mouseup(this);\" onclick=\"FormatSelection('==','==','$intwalker[0]');\">سطر</span>
 							<span class='button' onmouseover=\"mouseover(this);\"  onmouseout=\"mouseout(this);\"  onmousedown=\"mousedown(this);\"  onmouseup=\"mouseup(this);\" onclick=\"FormatSelection('{+{','|0|left|v:10|h:10|300px|0}+}','$intwalker[0]');\">Image</span>				
 							</div>
-							<textarea id=\"bigfont\" dir=\"$get_permission_and_man_info[3]\" style=\"height: 500px; width: 600px; display: block;\" name=\"$intwalker[0]\">"); $form .= $_POST[$intwalker['0']]; $form .=("</textarea></td></tr>");
+							<textarea id=\"bigfont\" dir=\"$get_permission_and_man_info[3]\" style=\"height: 500px; width: 600px; display: block;\" name=\"$intwalker[0]\">"); $form .= $_POST[$intwalker['0']]; $form .=("</textarea>");
 						break;
 
 					case "textblock":
-						$form .= '<tr><td>'.$intwalker['1'].'</td><td><textarea rows="7" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" cols="50" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea></td></tr>';
+						$form .= '<h2>'.$intwalker['1'].'</h2><div id="'.$intwalker['0'].'_container"><textarea rows="7" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" cols="50" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea></div>';
 						break;
 
 					case "upload":
 						if (isset($form_data)){
 
-							$form .= ("<tr><td>$intwalker[1]</td><td>");
+							$form .= ("<h2>$intwalker[1]</h2>");
 							$site_path = $config['url'];
 							$img = "<img src=\"";
 							$img .= substr($intwalker[6], 1);
@@ -237,18 +237,18 @@ class aiki_forms
 							$img .= $form_data->$intwalker[0];
 							$img = str_replace("//", "/", $img);
 
-							$form .=("$img</td></tr>");
+							$form .=("$img");
 						}else{
-							$form .= ("<tr><td>$intwalker[1]</td><td><input type=\"file\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\"></td></tr>");
+							$form .= ("<h2>$intwalker[1]</h2><input type=\"file\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\">");
 						}
 						break;
 
 					case "imagefolderupload":
-						$form .= ("<tr><td>$intwalker[1]</td><td><input type=\"text\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\"></td></tr>");
+						$form .= ("<h2>$intwalker[1]</h2><input type=\"text\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\">");
 						break;
 
 					case "datetime":
-						$form .= ("<tr><td>$intwalker[1]</td><td>$intwalker[0]</td></tr>");
+						$form .= ("<h2>$intwalker[1]</h2>$intwalker[0]</h2>");
 						break;
 
 					case "hidden":
@@ -256,7 +256,7 @@ class aiki_forms
 						break;
 
 					case "static_input":
-						$form .= '<tr><td>'.$intwalker[1].'</td><td><input type="text" dir="'.$get_permission_and_man_info[3].'" name="'.$intwalker[0].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '"></td></tr>';
+						$form .= '<h2>'.$intwalker[1].'</h2><input type="text" dir="'.$get_permission_and_man_info[3].'" name="'.$intwalker[0].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
 
 
@@ -265,7 +265,7 @@ class aiki_forms
 						switch ($intwalker[2]){
 
 							case "unique_filename":
-								$form .= ("<tr><td>$intwalker[1]</td><td><input dir=\"$get_permission_and_man_info[3]\" type=\"file\" name=\"$intwalker[0]\"></td></tr>");
+								$form .= ("<h2>$intwalker[1]</h2><input dir=\"$get_permission_and_man_info[3]\" type=\"file\" name=\"$intwalker[0]\">");
 								$form .= ("<input type=\"hidden\" name=\"unique_filename\" value=\"unique_filename\">");
 								break;
 
@@ -277,7 +277,7 @@ class aiki_forms
 							case "autofiled":
 								switch ($intwalker[2]){
 									case "publishdate":
-										$form .= ("<tr><td>$intwalker[1]</td><td><input type=\"text\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\" value=\""); $form .= $_POST[$intwalker[0]]; $form .= ("\"></td></tr>");
+										$form .= ("<h2>$intwalker[1]</h2><input type=\"text\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\" value=\""); $form .= $_POST[$intwalker[0]]; $form .= ("\">");
 										break;
 
 									case "uploaddate":
@@ -345,7 +345,7 @@ class aiki_forms
 
 			$i++;
 		}
-		$form .= ("<tr><td colspan=\"2\">");
+		$form .= ('<p class="form-buttons">');
 		$form .= ("<input type=\"hidden\" value=\"$form_id\" name=\"form_id\">");
 		if (isset($form_data)){
 			$record_id = $form_data->$pkey;
@@ -354,8 +354,7 @@ class aiki_forms
 		}else{
 			$form .= ("<input type=\"submit\" value=\"Ok\" name=\"add_to_form\">");
 		}
-		$form .= ("</td></tr>");
-		$form .= ("</table></form>");
+		$form .= ("</p></form>");
 
 		return $form;
 

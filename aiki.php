@@ -6,7 +6,7 @@
  * @author		Bassel Khartabil
  * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
  * @license		http://www.gnu.org/licenses/gpl.html
- * @link		http://aikiframework.org
+ * @link		http://www.aikiframework.org
  */
 
 // Framework Version
@@ -48,10 +48,8 @@ $aiki->load("records");
 $aiki->load("input");
 
 $aiki->load("output");
-$aiki->output->output_from_cache();
 
 $aiki->load("forms");
-$aiki->load("cache");
 $aiki->load("events");
 $aiki->load("upload");
 $aiki->load("url");
