@@ -779,6 +779,7 @@ width:591px;
 		if (!$this->stop){
 
 			$insertQuery .= "($tableFields) values ($preinsertQuery)";
+			$insertQuery = str_replace(', )', ')', $insertQuery);
 
 			$insertResult = $db->query($insertQuery);
 
