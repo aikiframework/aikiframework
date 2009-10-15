@@ -111,7 +111,7 @@ if (!isset($noheaders)){
 
 
 // Tidy from php5-tidy using libtidy
-if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $html_tidy and $tidy_config) {
+if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and isset($html_tidy) and isset($tidy_config)) {
 
 	$tidy = new tidy();
 	$tidy->parseString($html_output, $tidy_config, 'utf8');
