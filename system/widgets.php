@@ -285,7 +285,7 @@ class CreateLayout
 
 				$widget->normal_select = $aiki->url->apply_url_on_query($widget->normal_select);
 
-				$widget->normal_select = $aiki->processVars ($aiki->L10n ("$widget->normal_select"));
+				$widget->normal_select = $aiki->processVars ($aiki->languages->L10n ("$widget->normal_select"));
 				$widget->normal_select = $this->get_global_vars_in_text($widget->normal_select);
 
 				$widget->normal_select = preg_replace('/and(.*)RLIKE \'\'/U', '', $widget->normal_select, 999, $num_no_res);
