@@ -46,17 +46,16 @@ function create_form(selector, id, name, code){
 			$("#widget-form").load("admin_tools/new/"+id,  {limit: 25}, function(){
 				
 				var current_form = $("#new_record_form").html();
-				
-				$('#new_record_form').ajaxForm(function() { 
-					refreshthetree();
-					$("#new_record_form").html(current_form + "Added new " + name + " successfully");
-					if (code == 1){
+				if (code == 1){
 					code_mirror();
 					}
+				$('#new_record_form').ajaxForm(function() { 
+					refreshthetree();
+			
+					$("#new_record_form").html(current_form + "Added new " + name + " successfully");
+
 	           }); 
-				if (code == 1){
-				code_mirror();
-				}
+
 			});	
 	   });		
 }
@@ -95,8 +94,9 @@ function urls_widgets_tree(){
 
     	      $.get('admin_tools/edit/20/'+NODE.id,function(data) { 
                   $('#widget-form').html(data);
-                  $('#edit_form').ajaxForm(formoptions);
                   code_mirror();
+                  $('#edit_form').ajaxForm(formoptions);
+                  
     	      });
     		  
     	  }
