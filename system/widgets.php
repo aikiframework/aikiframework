@@ -280,7 +280,9 @@ class CreateLayout
 			//TODO: Finish the last page first thing
 			//TODO: add this to settings editor
 			$last_page_first = false;
-
+			
+			$widget->normal_select = trim($widget->normal_select);
+			
 			if ($widget->normal_select){
 
 				$widget->normal_select = $aiki->url->apply_url_on_query($widget->normal_select);
