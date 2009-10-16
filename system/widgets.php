@@ -159,7 +159,6 @@ class CreateLayout
 
 			if ($widget->if_no_results){
 				$widget->if_no_results =  $aiki->processVars ($aiki->L10n ("$widget->if_no_results"));
-				$widget->if_no_results = $this->doAikiDefines($widget->if_no_results);
 				$widget->if_no_results = $this->get_global_vars_in_text($widget->if_no_results);
 
 				$dead_widget = '<'.$widget->widget_type.' id="'.$widget->style_id.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
@@ -280,9 +279,9 @@ class CreateLayout
 			//TODO: Finish the last page first thing
 			//TODO: add this to settings editor
 			$last_page_first = false;
-			
+
 			$widget->normal_select = trim($widget->normal_select);
-			
+
 			if ($widget->normal_select){
 
 				$widget->normal_select = $aiki->url->apply_url_on_query($widget->normal_select);
@@ -303,8 +302,8 @@ class CreateLayout
 					preg_match('/select DISTINCT(.*)from/i', $widget->normal_select, $get_DISTINCT);
 
 					preg_match('/select(.*)from/i', $widget->normal_select, $selectionmatch);
-					if ($selectionmatch[1]){
-						if ($get_DISTINCT[1]){
+					if ($selectionmatch['1']){
+						if (isset ($get_DISTINCT['1'])){
 							$mysql_count = ' count(DISTINCT('.$get_DISTINCT[1].')) ';
 						}else{
 							$mysql_count = ' count(*) ';
@@ -445,7 +444,7 @@ class CreateLayout
 
 
 
-				$widget->widget = str_replace("[#[language]#]", $aiki->setting['default_language'], $widget->widget);
+				$widget->widget = str_replace("[#[language]#]", $config['default_language'], $widget->widget);
 				$widget->widget = str_replace("[#[dir]#]", $dir, $widget->widget);
 				$widget->widget = str_replace("[#[align]#]", $align, $widget->widget);
 
@@ -465,7 +464,7 @@ class CreateLayout
 						}
 						$widget->widget = $newwidget;
 
-						$widget->widget = $this->datetime($widget->widget, $widget_value);
+						$widget->widget = $aiki->aiki_markup->datetime($widget->widget, $widget_value);
 
 						//TODO: add output modifiers like this in mysql
 						$normaldatetime = $aiki->get_string_between($widget->widget, "(#(normaldatetime:", ")#)");
@@ -559,10 +558,8 @@ class CreateLayout
 					$widgetContents = $this->noaiki($widgetContents);
 
 
-					$widgetContents = $this->inlinePermissions($widgetContents);
+					$widgetContents = $aiki->security->inlinePermissions($widgetContents);
 
-
-					$widgetContents= $this->doAikiDefines($widgetContents);
 
 					$no_loop_part = $this->parsDBpars($no_loop_part, $widget_value);
 					$no_loop_bottom_part = $this->parsDBpars($no_loop_bottom_part, $widget_value);
@@ -572,11 +569,12 @@ class CreateLayout
 					$widgetContents = $this->inline_widgets($widgetContents);
 					$widgetContents = $this->inherent_widgets($widgetContents);
 
-					$widgetContents = $this->aikiTemplates($widgetContents);
+					$widgetContents = $aiki->aiki_markup->aikiTemplates($widgetContents);
 
-					$widgetContents = $this->call_javascripts($widgetContents, $widget_id);
+					$widgetContents = $aiki->javascript->call_javascripts($widgetContents, $widget->id);
 
-					$widgetContents = $this->sql($widgetContents);
+
+					$widgetContents = $aiki->sql_markup->sql($widgetContents);
 					//TODO: Make hits counter a function and let it work when widget is cached man !!!
 					$hits_counter = preg_match("/\(\#\(hits\:(.*)\)\#\)/U",$widgetContents, $hits_counter_match);
 					if ($hits_counter > 0){
