@@ -15,7 +15,7 @@ class aiki_html
 	public function write_title_and_metas($title){
 		global $site_info, $db, $config, $aiki;
 		$header = '
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset='.$config['db_encoding'].'" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />';
 
 		$site = $config['site'];
