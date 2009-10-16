@@ -158,7 +158,7 @@ class CreateLayout
 		if ($this->kill_widget){
 
 			if ($widget->if_no_results){
-				$widget->if_no_results =  $aiki->processVars ($aiki->L10n ("$widget->if_no_results"));
+				$widget->if_no_results =  $aiki->processVars ($aiki->languages->L10n ("$widget->if_no_results"));
 				$widget->if_no_results = $this->get_global_vars_in_text($widget->if_no_results);
 
 				$dead_widget = '<'.$widget->widget_type.' id="'.$widget->style_id.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
@@ -635,7 +635,7 @@ class CreateLayout
 
 			/////////End OF select and not select
 
-			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
+			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ($processed_widget));
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
 
 
