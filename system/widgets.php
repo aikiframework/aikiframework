@@ -575,6 +575,9 @@ class CreateLayout
 
 
 					$widgetContents = $aiki->sql_markup->sql($widgetContents);
+					$widgetContents = $aiki->sql_markup->doInnerSql($widgetContents);
+					
+					
 					//TODO: Make hits counter a function and let it work when widget is cached man !!!
 					$hits_counter = preg_match("/\(\#\(hits\:(.*)\)\#\)/U",$widgetContents, $hits_counter_match);
 					if ($hits_counter > 0){
