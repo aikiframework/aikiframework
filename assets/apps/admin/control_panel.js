@@ -10,6 +10,35 @@ function globalajaxify(file, targetwidget){
 		      }); 
 }
 
+function code_mirror_javascript(){
+	
+    var script = CodeMirror.fromTextArea('script', {
+        height: "350px",
+        parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
+                     "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
+        stylesheet: ["assets/plugins/codemirror/css/xmlcolors.css", "assets/plugins/codemirror/css/jscolors.css", "assets/plugins/codemirror/css/csscolors.css", "assets/plugins/codemirror/css/phpcolors.css"],
+        path: "assets/plugins/codemirror/js/",
+        continuousScanning: 500,
+        lineNumbers: true,
+      });  
+	
+}
+
+
+function code_mirror_css(){
+
+	   var css = CodeMirror.fromTextArea('style_sheet', {
+	       height: "350px",
+	       parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
+	                    "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
+	       stylesheet: ["assets/plugins/codemirror/css/xmlcolors.css", "assets/plugins/codemirror/css/jscolors.css", "assets/plugins/codemirror/css/csscolors.css", "assets/plugins/codemirror/css/phpcolors.css"],
+	       path: "assets/plugins/codemirror/js/",
+	       continuousScanning: 500,
+	       lineNumbers: true,
+	     }); 
+	
+}
+
 
 function code_mirror(){
 	
@@ -37,7 +66,7 @@ function code_mirror(){
         height: "250px",
         parserfile: "parsesparql.js",
         stylesheet: ["assets/plugins/codemirror/css/sparqlcolors.css"],
-        path: "assets/plugins/codemirror/js/",
+        path: "assets/plugins/codemirror/js/"
       });  
 	
 }
@@ -70,6 +99,80 @@ function create_form(selector, id, name, code){
 	   });		
 }
 
+function css_tree(){
+
+    var formoptions = { 
+        target:        '#widget-form',
+        success:       refreshthetree  
+    }; 
+ 
+    create_form("#create_new_css", 3, "Css", 0);
+   
+   $("#csstree").tree( {
+      
+      data  : {
+        type  : "xml_flat",
+        url   : "assets/apps/admin/css.php"
+      },
+      
+      rules : {
+        deletable : "all",
+        draggable : "all"      	
+      },
+      
+      callback : {
+        onselect : function(NODE,TREE_OBJ) {
+
+    	      $.get('admin_tools/edit/3/'+NODE.id,function(data) { 
+                  $('#widget-form').html(data);
+                  $('#edit_form').ajaxForm(formoptions);
+                  
+    	      });
+    	 
+        }	        
+       }
+
+    } );
+}
+
+
+function js_tree(){
+
+    var formoptions = { 
+        target:        '#widget-form',
+        success:       refreshthetree  
+    }; 
+ 
+   create_form("#create_new_javascript", 8, "Widget", 1);
+   
+     
+   $("#javascripttree").tree( {
+      
+      data  : {
+        type  : "xml_flat",
+        url   : "assets/apps/admin/javascript.php"
+      },
+      
+      rules : {
+        deletable : "all",
+        draggable : "all"      	
+      },
+      
+      callback : {
+        onselect : function(NODE,TREE_OBJ) {
+
+    	      $.get('admin_tools/edit/8/'+NODE.id,function(data) { 
+                  $('#widget-form').html(data);
+                   code_mirror_javascript();                
+                  $('#edit_form').ajaxForm(formoptions);
+                  
+    	      });
+    	 
+        }	        
+       }
+
+    } );
+}
 
 function urls_widgets_tree(){
 
@@ -88,7 +191,7 @@ function urls_widgets_tree(){
       
       data  : {
         type  : "xml_flat",
-        url   : "assets/apps/admin/urls_widgets.php",
+        url   : "assets/apps/admin/urls_widgets.php"
       },
       
       rules : {
@@ -178,7 +281,7 @@ function database_forms_tree(){
       
       data  : {
         type  : "xml_flat",
-        url   : "assets/apps/admin/database_forms.php",
+        url   : "assets/apps/admin/database_forms.php"
       },
       
       rules : {
@@ -307,14 +410,21 @@ $().ready(function() {
 	 });	
 	 	 
 	   $("#database_forms").click(function(event){
-		   $.tree_reference('widgettree').destroy();
 		   database_forms_tree();
 	   });	 
 	   
 	   $("#urls_widgets").click(function(event){
-		   $.tree_reference('databaseformstree').destroy();
 		   urls_widgets_tree();
 	   });	   
 	   
-
+	   $("#javascript").click(function(event){
+		   js_tree();
+	   });
+	   
+	   $("#css").click(function(event){
+		   css_tree();
+	   });	   
+	   
+	   
+	   
 });
