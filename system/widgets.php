@@ -123,7 +123,7 @@ class CreateLayout
 				$this->CallJavaScript[$widget_id] = $widget->javascript;
 			}
 
-			if (!$custome_output){
+			if (!$custome_output and $widget->widget_type){
 				$this->widget_html .= "\n <!--start $widget->id--> \n";
 				//$this->widget_html .= "<div id=\"$widget->style_id\">\n";
 				$this->widget_html .= "<$widget->widget_type id=\"$widget->widget_name\" class=\"$widget->style_id\">\n";
@@ -149,7 +149,7 @@ class CreateLayout
 				}
 			}
 
-			if (!$custome_output){
+			if (!$custome_output and $widget->widget_type){
 				$this->widget_html .= "\n</$widget->widget_type>\n\r";
 				$this->widget_html .= "\n <!--$widget->id end--> \n";
 			}
