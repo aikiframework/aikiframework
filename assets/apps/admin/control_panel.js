@@ -13,7 +13,7 @@ function globalajaxify(file, targetwidget){
 
 function code_mirror(){
 	
-    htmleditor = CodeMirror.fromTextArea('widget', {
+   var htmleditor = CodeMirror.fromTextArea('widget', {
         height: "350px",
         parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
                      "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
@@ -23,7 +23,17 @@ function code_mirror(){
         lineNumbers: true,
       }); 
     
-    sqleditor = CodeMirror.fromTextArea('normal_select', {
+   var if_authorized = CodeMirror.fromTextArea('if_authorized', {
+        height: "350px",
+        parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
+                     "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
+        stylesheet: ["assets/plugins/codemirror/css/xmlcolors.css", "assets/plugins/codemirror/css/jscolors.css", "assets/plugins/codemirror/css/csscolors.css", "assets/plugins/codemirror/css/phpcolors.css"],
+        path: "assets/plugins/codemirror/js/",
+        continuousScanning: 500,
+        lineNumbers: true,
+      });     
+    
+   var sqleditor = CodeMirror.fromTextArea('normal_select', {
         height: "250px",
         parserfile: "parsesparql.js",
         stylesheet: ["assets/plugins/codemirror/css/sparqlcolors.css"],

@@ -4,9 +4,9 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class aiki_html
 {
-	
+
 	var $title;
-	
+
 	function set_title($title){
 		global $aiki;
 		$this->title = $aiki->languages->L10n($title);
@@ -16,19 +16,7 @@ class aiki_html
 		global $site_info, $db, $config, $aiki;
 		$header = '
 		<meta http-equiv="Content-Type" content="text/html; charset='.$config['db_encoding'].'" />
-		<meta http-equiv="Content-Style-Type" content="text/css" />';
-
-		$site = $config['site'];
-
-		$get_rss = $db->get_results("SELECT display_name, module_link from aiki_modules where rss != '0' and module_group='$site'");
-		if ($get_rss){
-
-			foreach ($get_rss as $rss){
-				$header .= '<link rel="alternate" type="application/rss+xml" title="'.$rss->display_name.'" href="'.$this->setting['url'].'feed.php?module='.$rss->module_link.'&type=rss" />';
-			}
-		}
-
-		$header .= '
+		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<title>'; if (!$title){$header .= $aiki->languages->L10n($site_info->site_name);}else{$header .= $title." - ".$aiki->languages->L10n($site_info->site_name);} $header .='</title>
 		<meta name="keywords" content="" />
 		<meta name="description" content="" />
@@ -102,8 +90,8 @@ class aiki_html
 
 			$header .= $aiki->processVars($script);
 		}
-		
-		
+
+
 		return $header;
 
 	}
@@ -128,6 +116,11 @@ class aiki_html
 
 
 		}
+
+		if (isset ($layout->head_output)){
+			$header .= $layout->head_output;
+		}
+
 		$header .= "</head>";
 
 		//TODO: custome onload and onuload

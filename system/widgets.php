@@ -25,6 +25,7 @@ class CreateLayout
 	var $output_modifiers;
 	var $widgets_css;
 	var $widget_custome_output;
+	var $head_output;
 
 
 	function CreateLayout(){
@@ -170,10 +171,17 @@ class CreateLayout
 			$this->kill_widget = '';
 		}
 
-		//Fix & problem in links for the w3  Markup Validation Service
-		//$this->widget_html = str_replace("&", "&amp;", $this->widget_html);
+		
+		if ($widget->widget_target == 'body'){
+			
+			$this->html_output .= $this->widget_html;
+			
+		}else if($widget->widget_target == 'header'){
+			
+			$this->head_output .= $this->widget_html;
+			
+		}
 
-		$this->html_output .= $this->widget_html;
 		$this->widget_html = "";
 
 	}
@@ -576,8 +584,8 @@ class CreateLayout
 
 					$widgetContents = $aiki->sql_markup->sql($widgetContents);
 					$widgetContents = $aiki->sql_markup->doInnerSql($widgetContents);
-					
-					
+
+
 					//TODO: Make hits counter a function and let it work when widget is cached man !!!
 					$hits_counter = preg_match("/\(\#\(hits\:(.*)\)\#\)/U",$widgetContents, $hits_counter_match);
 					if ($hits_counter > 0){

@@ -74,12 +74,12 @@ if ($layout->widget_custome_output){
 
 if (!isset($noheaders)){
 	$html_output = $aiki->html->write_headers();
-	//$html_output .= "<div id=\"container\">\n\r";
 }
 
 
+
 if ($config['html_cache'] and $html_cache_file and !$noheaders){
-	$full_html_input = $aiki->write_headers();
+	$full_html_input = $aiki->html->write_headers();
 	//$full_html_input .= "<div id=\"container\">\n\r";
 }
 
