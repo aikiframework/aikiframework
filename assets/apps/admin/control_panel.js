@@ -101,10 +101,6 @@ function create_form(selector, id, name, code){
 
 function css_tree(){
 
-    var formoptions = { 
-        target:        '#widget-form',
-        success:       refreshthetree  
-    }; 
  
     create_form("#create_new_css", 3, "Css", 0);
    
@@ -125,8 +121,9 @@ function css_tree(){
 
     	      $.get('admin_tools/edit/3/'+NODE.id,function(data) { 
                   $('#widget-form').html(data);
-                  $('#edit_form').ajaxForm(formoptions);
-                  
+                  $('#edit_form').ajaxForm(function() { 
+ 					$("#widget-form").html("Edited successfully");
+ 	           });                   
     	      });
     	 
         }	        
@@ -138,10 +135,6 @@ function css_tree(){
 
 function js_tree(){
 
-    var formoptions = { 
-        target:        '#widget-form',
-        success:       refreshthetree  
-    }; 
  
    create_form("#create_new_javascript", 8, "Widget", 1);
    
@@ -164,8 +157,9 @@ function js_tree(){
     	      $.get('admin_tools/edit/8/'+NODE.id,function(data) { 
                   $('#widget-form').html(data);
                    code_mirror_javascript();                
-                  $('#edit_form').ajaxForm(formoptions);
-                  
+                   $('#edit_form').ajaxForm(function() { 
+    					$("#widget-form").html("Edited successfully");
+    	           });                      
     	      });
     	 
         }	        
