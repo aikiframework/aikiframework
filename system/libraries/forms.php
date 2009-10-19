@@ -521,7 +521,7 @@ class aiki_forms
 
 		$form_array = serialize($form_array);
 
-		$insert_form = $db->query("insert into aiki_forms (form_name, form_array) values ('$table', '$form_array')");
+		$insert_form = $db->query("insert into aiki_forms (form_name, form_array, form_table) values ('$table', '$form_array', '$table')");
 		if (isset ($insert_form)){
 			echo "Form $table created successfully";
 		}
