@@ -173,13 +173,13 @@ class CreateLayout
 
 
 		if ($widget->widget_target == 'body'){
-				
+
 			$this->html_output .= $this->widget_html;
-				
+
 		}else if($widget->widget_target == 'header'){
-				
+
 			$this->head_output .= $this->widget_html;
-				
+
 		}
 
 		$this->widget_html = "";
@@ -565,7 +565,8 @@ class CreateLayout
 
 					$widgetContents = $this->noaiki($widgetContents);
 
-
+					$widgetContents  = $aiki->url->apply_url_on_query($widgetContents);
+						
 					$widgetContents = $aiki->security->inlinePermissions($widgetContents);
 
 
@@ -627,6 +628,7 @@ class CreateLayout
 			}else{
 
 				$widget->widget = $this->noaiki($widget->widget);
+				$widget->widget  = $aiki->url->apply_url_on_query($widget->widget);
 				$widget->widget = $aiki->security->inlinePermissions($widget->widget);
 				$widget->widget = $this->inline_widgets($widget->widget);
 				$widget->widget = $this->inherent_widgets($widget->widget);
@@ -634,7 +636,6 @@ class CreateLayout
 
 				//TODO: $widget->widget = $this->call_javascripts($widget->widget, $widget_id);
 
-				//TODO: $widget->widget = $this->sql($widget->widget);
 				$widget->widget = $aiki->sql_markup->sql($widget->widget);
 
 				$processed_widget =  $widget->widget;
