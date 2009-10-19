@@ -91,6 +91,7 @@ class aiki_html
 			$header .= $aiki->processVars($script);
 		}
 
+		$header  = $aiki->url->apply_url_on_query($header );
 
 		return $header;
 
@@ -113,7 +114,6 @@ class aiki_html
 <link rel="icon" href="'.$config['url'].'/assets/images/favicon.ico" type="image/x-icon" />';
 
 			$header .= $this->write_javascript();
-
 
 		}
 
