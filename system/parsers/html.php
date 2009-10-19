@@ -91,7 +91,8 @@ class aiki_html
 			$header .= $aiki->processVars($script);
 		}
 
-		$header  = $aiki->url->apply_url_on_query($header );
+		$header = $aiki->url->apply_url_on_query($header);
+		$header = $aiki->sql_markup->sql($header);
 
 		return $header;
 

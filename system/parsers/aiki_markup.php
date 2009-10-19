@@ -23,15 +23,14 @@
  9- (+(GeoCo:33,11222|24,22111)+)
  10- (+(GeoAdd:address goes here)+)
 
- 67:
- TODO insert current date and time:
+insert current date and time:
  ~~~~~
 
 
- TODO catagorize the article, like in wiki style some who:
+catagorize the article, like in wiki style some who:
  {{Cities}} {{Canada}}
 
- TODO Related Links:
+Related Links:
  [##related:photos##]
  [##related:news##]
  [##related:photos=Canada##]
