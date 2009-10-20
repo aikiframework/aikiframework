@@ -761,6 +761,10 @@ width:591px;
 			if (!isset($send_email)){
 				$send_email = '';
 			}
+				
+			if (!isset($submit)){
+				$submit = '';
+			}
 
 			if ($field != $tablename and $field != $send_email and $field != $submit and isset($_POST[$intwalker[0]]) and $_POST[$intwalker[0]]){
 				//$_POST[$intwalker[0]] = mysql_real_escape_string($_POST[$intwalker[0]]);

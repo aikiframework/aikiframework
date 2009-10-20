@@ -51,21 +51,22 @@ class aiki_forms
 
 
 
-					/*if ($form_sides[3]){
-					 $form_static_values = explode("|", $form_sides[1]);
+					if (isset ($form_sides[3])){
+					 $form_static_values = explode("|", $form_sides[3]);
 					 $form_inner_data = "";
 					 foreach($form_static_values as $static_vaule){
-					 $static_value_sides = explode("=", $static_vaule);
+					 	$static_value_sides = explode("=", $static_vaule);
 
-					 $form = preg_replace("/name\=\"$static_value_sides[0]\"/U", "name='$static_value_sides[0]' value='$static_value_sides[1]'", $form);
+					 	$form_output = preg_replace("/name\=\"$static_value_sides[0]\"/U", "name='$static_value_sides[0]' value='$static_value_sides[1]'", $form_output);
 
-					 $form_inner_data .= $static_vaule;
+					 	$form_inner_data .= $static_vaule;
 					 }
-						}*/
+					}
 
 				}
 				if (isset($form_inner_data)){
-					$text = preg_replace("/\(\#\(form\:$form_data:$form_inner_data\)\#\)/U", $form, $text);
+					
+					$text = preg_replace("/\(\#\(form\:$form_data(.*)\)\#\)/U", $form_output, $text);
 
 				}else{
 					$text = preg_replace("/\(\#\(form\:$form_data\)\#\)/U", $form_output, $text);
