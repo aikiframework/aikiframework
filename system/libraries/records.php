@@ -836,27 +836,30 @@ width:591px;
 	}
 
 
-	function delete_record(){
+	function delete_record($tablename, $recordid, $confirm, $pkey){
+		global $db;
 
-		if (!$postedpkey){
-			die("Fatel Error: No primary key, nothing to do");
+		if (!$recordid){
+			return "Fatel Error: No primary key, nothing to do";
 		}
-		$pkeyexploded = explode(":", $postedpkey);
-		if (!$pkeyexploded[2] or $pkeyexploded[2] != "yes"){
-			$layout->forms .= ("Delete record #");
-			$layout->forms .= ("<b>$pkeyexploded[0]</b>");
-			$layout->forms .= (" From: ");
-			$layout->forms .= ("<b>$pkeyexploded[1]</b> ?");
-			$layout->forms .= ("<br />");
-			$layout->forms .= ("<a href=\"index.php?language=$_GET[language]&module=admin&operators=$_GET[operators]&op=del&do=del&pkey=$pkeyexploded[0]:$pkeyexploded[1]:yes&extras=$extras\">Yes</a> | <a href=\"\">No</a>");
+
+		if (!isset($confirm) or $confirm != "yes"){
+			$result = ("Delete record #");
+			$result .= ("<b>$recordid</b>");
+			$result .= (" From: ");
+			$result .= ("<b>$tablename</b> ?");
+			$result .= ("<br />");
+			$result .= ("<a href=\"index.php?language=$_GET[language]&module=admin&operators=$_GET[operators]&op=del&do=del&pkey=$pkeyexploded[0]:$pkeyexploded[1]:yes&extras=$extras\">Yes</a> | <a href=\"\">No</a>");
 		}else{
-			$deletequery = "delete from $pkeyexploded[1] where $pkey=".$pkeyexploded[0];
-			$deleteresult = mysql_query($deletequery);
-			if ($deleteresult){
-				$layout->forms .= ("Record <b>#$pkeyexploded[0]</b> Deleted from <b>$pkeyexploded[1]</b>");
+
+			$delete = $db->query("delete from $tablename where $pkey=".$recordid);
+
+			if ($tablename){
+				$result = ("Record <b>#$recordid</b> Deleted from <b>$tablename</b>");
 			}
 		}
 
+		return $result;
 	}
 
 	//$layout->forms = $aiki->sql_markup->sql($module_form);

@@ -231,7 +231,7 @@ function urls_widgets_tree(){
 					if(isNaN(NODE.id)) {
 					//delete url	
 					}else{
-						$("#widget-form").load("admin_tools/delete/2/"+NODE.id+":aiki_widgets:yes",  {limit: 25}, function(){
+						$("#widget-form").load("admin_tools/delete/20/"+NODE.id+":yes",  {limit: 25}, function(){
 							$.tree_reference('widgettree').refresh();
      					});
 					}
@@ -298,51 +298,7 @@ function database_forms_tree(){
     	      });
     		  
     	  }
-        },
-
-	
-		beforedelete    : function(NODE, TREE_OBJ,RB) { 
-				
-		$("#deletewidgetdialog").dialog({
-			bgiframe: true,
-			resizable: false,
-			height:140,
-			modal: true,
-			overlay: {
-				backgroundColor: '#000',
-				opacity: 0.5
-			},
-			close: function(event, ui) {
-				$(this).dialog('destroy');
-			},
-			buttons: {
-				'Delete widget': function() {
-
-
-					if(isNaN(NODE.id)) {
-					//delete url	
-					}else{
-						$("#widget-form").load("admin_tools/delete/2/"+NODE.id+":aiki_widgets:yes",  {limit: 25}, function(){
-							$.tree_reference('widgettree').refresh();
-     					});
-					}
-     				
-     				$(this).dialog('close');
-     				$(this).dialog('destroy');
-     				
-				},
-				Cancel: function() {
-					$(this).dialog('close');
-					$(this).dialog('destroy');
-				}
-			}
-		});
-
-				
-
- 
-		}
-        
+        }
        }
 
     } );

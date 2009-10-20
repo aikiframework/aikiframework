@@ -7,7 +7,7 @@ class aiki_forms
 	var $submit_button;
 
 	function displayForms($text){
-		global $db, $records_libs;
+		global $db, $aiki;
 
 		$forms_count = preg_match_all("/\(\#\(form\:(.*)\)\#\)/U", $text, $forms);
 
@@ -39,6 +39,11 @@ class aiki_forms
 
 						case "process":
 
+							break;
+
+
+						case "delete":
+							$form_output = $aiki->records->delete_record($form_array['tablename'], $form_sides[2],  $form_sides[3], $form_array['pkey']);
 							break;
 
 					}

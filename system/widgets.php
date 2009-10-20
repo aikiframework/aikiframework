@@ -566,7 +566,7 @@ class CreateLayout
 					$widgetContents = $this->noaiki($widgetContents);
 
 					$widgetContents  = $aiki->url->apply_url_on_query($widgetContents);
-						
+
 					$widgetContents = $aiki->security->inlinePermissions($widgetContents);
 
 
@@ -723,11 +723,6 @@ class CreateLayout
 						$array_tools = new array_tools();
 						$processed_widget .= $array_tools->array_editor('config_id', 'config_type', 'config_data', 'aiki_config', '');
 
-						break;
-
-
-					case "delete_record":
-						$processed_widget .= $records_libs->dbUpdateDelete($url->url[2], 'del', $url->url[3], '', '', "", "");
 						break;
 
 					case "LogOut":
