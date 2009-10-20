@@ -123,6 +123,9 @@ class aiki_array
 				<option value="textblock" >textblock</option>
 				<option value="bigtextblock" >bigtextblock</option>
 				<option value="textinput" >textinput</option>
+				<option value="hidden" >hidden</option>
+				<option value="autofield" >autofield</option>
+				<option value="submit" >submit</option>
 				<option value="pkey" >pkey</option>
 				<option value="tablename" >tablename</option>
 				</select>';
@@ -139,6 +142,9 @@ class aiki_array
 				<option value="textblock" >textblock</option>
 				<option value="bigtextblock" >bigtextblock</option>
 				<option value="textinput" selected="selected">textinput</option>
+				<option value="hidden" >hidden</option>
+				<option value="autofield" >autofield</option>	
+				<option value="submit" >submit</option>			
 				<option value="pkey" >pkey</option>
 				<option value="tablename" >tablename</option>
 				</select>';			

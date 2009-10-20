@@ -451,6 +451,8 @@ width:591px;
 		if (in_array("tablename", $arraykeys))
 		$tablename = $form_array["tablename"];
 
+		if (in_array("submit", $arraykeys))
+		$submit = $form_array["submit"];
 
 		if (in_array("send_email", $arraykeys))
 		$send_email = $form_array["send_email"];
@@ -760,7 +762,7 @@ width:591px;
 				$send_email = '';
 			}
 
-			if ($field != $tablename and $field != $send_email and isset($_POST[$intwalker[0]]) and $_POST[$intwalker[0]]){
+			if ($field != $tablename and $field != $send_email and $field != $submit and isset($_POST[$intwalker[0]]) and $_POST[$intwalker[0]]){
 				//$_POST[$intwalker[0]] = mysql_real_escape_string($_POST[$intwalker[0]]);
 
 				if ($insertCount == $i+1){
@@ -874,6 +876,8 @@ width:591px;
 		if (in_array("tablename", $arraykeys))
 		$tablename = $form_array["tablename"];
 
+		if (in_array("submit", $arraykeys))
+		$submit = $form_array["submit"];
 
 		if (in_array("send_email", $arraykeys))
 		$send_email = $form_array["send_email"];
@@ -905,7 +909,7 @@ width:591px;
 		$viewCount = count($form_array);
 		foreach($form_array as $field)
 		{
-			if ($field != $tablename and $field != $pkey and $field != $upload){
+			if ($field != $tablename and $field != $pkey and $field != $upload and $field != $submit){
 				$intwalker = explode(":", $field);
 
 				$get_permission_and_man_info = explode("|", $intwalker[0]);

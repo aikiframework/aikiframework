@@ -4,6 +4,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_forms
 {
 
+	var $submit_button;
 
 	function displayForms($text){
 		global $db, $records_libs;
@@ -68,7 +69,7 @@ class aiki_forms
 
 		}
 
-		
+
 		return $text;
 	}
 
@@ -114,7 +115,7 @@ class aiki_forms
 		{
 
 			$field = $aiki->url->apply_url_on_query($field);
-								
+
 			$intwalker = explode(":", $field);
 			$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
 			$switcher = str_replace($toreplace, '', $arraykeys[$i]);
@@ -202,6 +203,10 @@ class aiki_forms
 
 					case "password":
 						$form .= ("<h2>$intwalker[1]</h2><input type=\"password\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\" \">");
+						break;
+
+					case "submit":
+						$this->submit_button = $intwalker[0];
 						break;
 
 					case "verify_password":
@@ -316,7 +321,7 @@ class aiki_forms
 
 										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_username\">");
 										break;
-										
+
 									case "insertedby_id":
 										if (isset ($form_data)){
 											$insertedby_userid = $form_data->$intwalker['0'];
@@ -325,7 +330,7 @@ class aiki_forms
 										}
 
 										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_userid\">");
-										break;										
+										break;
 
 									case "hitscounter":
 										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"0\">");
@@ -360,12 +365,17 @@ class aiki_forms
 		}
 		$form .= ('<p class="form-buttons">');
 		$form .= ("<input type=\"hidden\" value=\"$form_id\" name=\"form_id\">");
+
+		if (!isset ($this->submit_button)){
+			$this->submit_button = 'Ok';
+		}
+
 		if (isset($form_data)){
 			$record_id = $form_data->$pkey;
 			$form .= ("<input type=\"hidden\" value=\"$record_id\" name=\"record_id\">");
-			$form .= ("<input type=\"submit\" value=\"Ok\" name=\"edit_form\">");
+			$form .= ("<input type=\"submit\" value=\"$this->submit_button\" name=\"edit_form\">");
 		}else{
-			$form .= ("<input type=\"submit\" value=\"Ok\" name=\"add_to_form\">");
+			$form .= ("<input type=\"submit\" value=\"$this->submit_button\" name=\"add_to_form\">");
 		}
 		$form .= ("</p></form>");
 
