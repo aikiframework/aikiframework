@@ -537,7 +537,7 @@ CREATE TABLE IF NOT EXISTS `aiki_urls` (
   `cacheable` int(1) NOT NULL,
   `site` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --------------------------------------------------------
 
@@ -547,7 +547,7 @@ INSERT INTO `aiki_urls` (`id`, `url`, `cacheable`, `site`) VALUES
 (3, \'login\', 0, \'aikiadmin\'),
 (4, \'admin_tools/new/\', 0, \'aikiadmin\'),
 (5, \'admin_tools/delete/\', 0, \'aikiadmin\');
-
+(6, \'homepage\', 0, \'default\');
 --------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `aiki_users` (

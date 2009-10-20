@@ -7,6 +7,7 @@ class aiki_membership
 	var $permissions;
 	var $full_name;
 	var $username;
+	var $userid;
 	var $group_level;
 
 	function aiki_membership(){
@@ -65,6 +66,7 @@ class aiki_membership
 			$this->full_name = $user->full_name;
 			$this->username = $user->username;
 			$this->group_level= $group_permissions->group_level;
+			$this->userid = $user->userid;
 
 
 		}else{
