@@ -68,6 +68,7 @@ class aiki_forms
 
 		}
 
+		
 		return $text;
 	}
 
@@ -112,6 +113,8 @@ class aiki_forms
 		foreach($form_array as $field)
 		{
 
+			$field = $aiki->url->apply_url_on_query($field);
+								
 			$intwalker = explode(":", $field);
 			$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
 			$switcher = str_replace($toreplace, '', $arraykeys[$i]);
