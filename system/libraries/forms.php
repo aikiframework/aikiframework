@@ -6,7 +6,7 @@ class aiki_forms
 
 	var $submit_button;
 
-	function displayForms($text){
+	function displayForms($text ){
 		global $db, $aiki;
 
 		$forms_count = preg_match_all("/\(\#\(form\:(.*)\)\#\)/U", $text, $forms);
@@ -50,27 +50,19 @@ class aiki_forms
 
 
 
-
 					if (isset ($form_sides[3])){
 					 $form_static_values = explode("|", $form_sides[3]);
-					 $form_inner_data = "";
 					 foreach($form_static_values as $static_vaule){
 					 	$static_value_sides = explode("=", $static_vaule);
 
 					 	$form_output = preg_replace("/name\=\"$static_value_sides[0]\"/U", "name='$static_value_sides[0]' value='$static_value_sides[1]'", $form_output);
 
-					 	$form_inner_data .= $static_vaule;
 					 }
 					}
 
 				}
-				if (isset($form_inner_data)){
-					
-					$text = preg_replace("/\(\#\(form\:$form_data(.*)\)\#\)/U", $form_output, $text);
 
-				}else{
-					$text = preg_replace("/\(\#\(form\:$form_data\)\#\)/U", $form_output, $text);
-				}
+				$text = str_replace("(#(form:$form_data)#)", $form_output, $text);
 			}
 
 		}
@@ -120,7 +112,7 @@ class aiki_forms
 		foreach($form_array as $field)
 		{
 
-			$field = $aiki->url->apply_url_on_query($field);
+			//$field = $aiki->url->apply_url_on_query($field);
 
 			$intwalker = explode(":", $field);
 			$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
