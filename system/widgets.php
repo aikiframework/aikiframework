@@ -584,7 +584,6 @@ class CreateLayout
 
 
 					$widgetContents = $aiki->sql_markup->sql($widgetContents);
-					//$widgetContents = $aiki->sql_markup->doInnerSql($widgetContents);
 
 
 					$hits_counter = preg_match("/\(\#\(hits\:(.*)\)\#\)/U",$widgetContents, $hits_counter_match);

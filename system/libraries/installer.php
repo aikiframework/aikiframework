@@ -162,7 +162,7 @@ before we start doing the hard work ( filling the form bellow ) I need you to ch
 5- I am not tested on windows machines so if you have problems during the one step installation, please consider Linux alternative
 <br />
 <br />
-6- I told you that I\'m still in alpha mode. while you are installing this some one is either pushing changes to lp:~aikiframework.admins/aikiframework/release-1.0.0 or playing xmoto ;) so if you have problems please join #aiki on freenode 
+6- aiki framework is in alpha mode. if you have problems please join #aiki on freenode 
 </p>	
 	
 <form method="post" id="form">
@@ -546,8 +546,9 @@ INSERT INTO `aiki_urls` (`id`, `url`, `cacheable`, `site`) VALUES
 (2, \'admin_tools/edit/\', 0, \'aikiadmin\'),
 (3, \'login\', 0, \'aikiadmin\'),
 (4, \'admin_tools/new/\', 0, \'aikiadmin\'),
-(5, \'admin_tools/delete/\', 0, \'aikiadmin\');
+(5, \'admin_tools/delete/\', 0, \'aikiadmin\'),
 (6, \'homepage\', 0, \'default\');
+
 --------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `aiki_users` (

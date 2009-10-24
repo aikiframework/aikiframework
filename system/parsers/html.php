@@ -127,7 +127,6 @@ class aiki_html
 		//TODO: custome onload and onuload
 		$header .= "\n<body>\n";
 
-		//TODO: $header = $layout->doInnerSql($header);
 		return $header;
 
 	}

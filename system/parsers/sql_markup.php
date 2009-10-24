@@ -54,11 +54,9 @@ class aiki_sql_markup
 
 				if ($results){
 
-
 					foreach ($results as $result) {
-
+						
 						$html =  $sql_html[1];
-
 
 						$result_key = array_flip($result);
 
