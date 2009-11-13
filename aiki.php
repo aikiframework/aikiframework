@@ -61,8 +61,6 @@ $aiki->load("image");
 $aiki->load("security");
 $aiki->load("text");
 $aiki->load("aiki_markup");
-$aiki->load("bbcode");
-$aiki->load("creole_markup");
 $aiki->load("html");
 $aiki->load("javascript");
 $aiki->load("sql_markup");
