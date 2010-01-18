@@ -761,7 +761,7 @@ width:591px;
 			if (!isset($send_email)){
 				$send_email = '';
 			}
-				
+
 			if (!isset($submit)){
 				$submit = '';
 			}
@@ -909,7 +909,9 @@ width:591px;
 		if (isset($_REQUEST['orderby']))
 		$orderby = $_REQUEST['orderby'];
 
-
+		if (!isset($submit)){
+			$submit = '';
+		}
 
 		$editQuery = "update $tablename set ";
 		$i = 0;

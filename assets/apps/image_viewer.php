@@ -4,13 +4,15 @@
  * Aikiframework
  *
  * @author		Bassel Khartabil
- * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @copyright	Copyright (C) 2009-2010 Aikilab inc
  * @license		http://www.gnu.org/licenses/gpl.html
  * @link		http://www.aikiframework.org
  */
 
+
 $id = $_GET['id'];
 $size = $_GET['size'];
+$mode = $_GET['mode'];
 
 $ext = substr($id, strrpos($id, '.') + 1);
 
@@ -39,43 +41,52 @@ switch ($ext){
 
 }
 
-define('IN_AIKICMS', true);
-
-require_once("system/index.php");
-$aiki = new aiki();
-require_once("system/database/index.php");
-
-
-
-$default_photo_module = $aiki->setting['default_photo_module'];
+switch ($mode){
+	case "svg_to_png":
+		$ext = "svg";
+		break;
+}
 
 
-//$id = mysql_real_escape_string($_GET['id']);
+define('IN_AIKI', true);
+
+require_once("../../aiki.php");
+
+
+
+
+$default_photo_module = $config['default_photo_module'];
+
+
 
 if ($id){
 
 	if (!preg_match('/jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG/i', $id)){
-		$image = $db->get_row("SELECT filename, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where  id='$id'");
+
+		$image = $db->get_row("SELECT filename, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where id='$id'");
 		$id = $image->filename;
+
 	}else{
 		$file = $id;
-		$file = str_replace(".svg", ".png", $file);
+		switch ($mode){
+			case "svg_to_png":
+				$file = str_replace(".png", ".svg", $file);
+				break;
+		}
 
 		$image = $db->get_row("SELECT id, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where filename='$file'");
 	}
 
 
-
 	if ($image){
 
 
-		$get_root = str_replace("//", "/", $_SERVER['DOCUMENT_ROOT'].$_SERVER['PHP_SELF']);
-		$get_root = str_replace("image_viewer.php", "", $get_root);
+		$get_root = $system_folder."/";
 
 		$original_filename = $get_root.$image->full_path.$id;
 
-		if ($aiki->setting['max_res'] and !$size){
-			$size = $aiki->setting['max_res'];
+		if ($config['max_res'] and !$size){
+			$size = $config['max_res'];
 		}
 
 		if ($size == '_'){
@@ -83,38 +94,84 @@ if ($id){
 		}
 
 		if ($ext == "svg"){
+
+			switch ($mode){
+				case "svg_to_png":
+					$original_filename = str_replace(".png", ".svg", $original_filename );
+					break;
+			}
+
 			$svgfile = implode(file($original_filename));
 			if ($size){
 				$size = str_replace('px', '', $size);
 
 				$header = get_string_between($svgfile, "<svg", ">");
-				$width = get_string_between($header, 'width="', '"');
-				$hight = get_string_between($header, 'height="', '"');
+				
+				$or_width = get_string_between($header, 'width="', '"');
+				$width = str_replace("px", "", $or_width );
+				$width  = intval($width);
+				
+				$or_height = get_string_between($header, 'height="', '"');
+				$height  = str_replace("px", "", $or_height);
+				$height = intval($height);
 
 				$newvalue = $size;
-				if ($width < $hight){
+				if ($width < $height){
 					$newhight = $newvalue;
-					$newwidth = round(($newvalue * $width)/$hight);
-				}elseif ($width == $hight) {
+					$newwidth = round(($newvalue * $width)/$height);
+				}elseif ($width == $height) {
 					$newhight = $newvalue;
 					$newwidth = $newvalue;
 				}else{
 					$newwidth = $newvalue;
-					$newhight = round(($newvalue * $hight)/$width);
+					$newhight = round(($newvalue * $height)/$width);
 				}
 
-				$headerfixed = str_replace('width="'.$width.'"', 'width="'.$newwidth.'"', $header);
-				$headerfixed = str_replace('height="'.$hight.'"', 'height="'.$newhight.'"', $headerfixed);
+				$headerfixed = str_replace('width="'.$or_width.'"', 'width="'.$newwidth.'"', $header);
+				$headerfixed = str_replace('height="'.$or_height.'"', 'height="'.$newhight.'"', $headerfixed);
 
 				$svgfile = str_replace($header, $headerfixed, $svgfile);
 
-				echo $svgfile;
+				switch ($mode){
+					case "svg_to_png":
 
-				$FileHandle = fopen($get_root.$image->full_path."$size"."px-".$id, 'w') or die("can't open file");
-				fwrite($FileHandle, $svgfile);
-				fclose($FileHandle);
+						if(file_exists($get_root.$image->full_path."$size"."px-".$id)){
+							$final_image = imagecreatefrompng($get_root.$image->full_path."$size"."px-".$id);
 
-				$image_processing->rsvg_convert_svg_png($get_root.$image->full_path."$size"."px-".$id);
+							imagealphablending($final_image, false);
+							imagesavealpha($final_image, true);
+
+							imagepng($final_image);
+							imagedestroy($final_image);
+						}else{
+							$or_svg_file = $get_root.$image->full_path."$size"."px-".$id;
+							$or_svg_file = str_replace(".png", ".svg", $or_svg_file );
+
+							$FileHandle = fopen($or_svg_file, 'w') or die("can't open file");
+							fwrite($FileHandle, $svgfile);
+							fclose($FileHandle);
+
+							$aiki->image->rsvg_convert_svg_png($or_svg_file);
+
+							$final_image = imagecreatefrompng($get_root.$image->full_path."$size"."px-".$id);
+
+							imagealphablending($final_image, false);
+							imagesavealpha($final_image, true);
+
+							imagepng($final_image);
+							imagedestroy($final_image);
+						}
+						break;
+
+					default:
+						echo $svgfile;
+						break;
+				}
+
+
+
+
+
 
 
 			}else{
@@ -216,21 +273,21 @@ function imageresize($path,$filename,$newvalue,$imageprefix)
 	$filename2 =$path.$filename;
 	$size = getimagesize($filename2);
 	$width = $size["0"];
-	$hight = $size["1"];
+	$height = $size["1"];
 	$type = $size["mime"];
-	if ($width < $hight){
+	if ($width < $height){
 		$newhight = $newvalue;
-		$newwidth = round(($newvalue * $width)/$hight);
-	}elseif ($width == $hight) {
+		$newwidth = round(($newvalue * $width)/$height);
+	}elseif ($width == $height) {
 		$newhight = $newvalue;
 		$newwidth = $newvalue;
 	}else{
 		$newwidth = $newvalue;
-		$newhight = round(($newvalue * $hight)/$width);
+		$newhight = round(($newvalue * $height)/$width);
 	}
 
-	if ($width < $newwidth or $hight < $newhight){
-		$newhight = $hight;
+	if ($width < $newwidth or $height < $newhight){
+		$newhight = $height;
 		$newwidth = $width;
 	}
 
@@ -241,7 +298,7 @@ function imageresize($path,$filename,$newvalue,$imageprefix)
 			$thumb = imagecreatetruecolor($newwidth, $newhight);
 
 			$source = imagecreatefromjpeg($filename2);
-			imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newhight, $width, $hight);
+			imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newhight, $width, $height);
 			imagejpeg($thumb,$path.$imageprefix.$filename);
 
 			imagedestroy($thumb);
@@ -251,7 +308,7 @@ function imageresize($path,$filename,$newvalue,$imageprefix)
 			$thumb = imagecreatetruecolor($newwidth, $newhight);
 
 			$source = imagecreatefromgif($filename2);
-			imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newhight, $width, $hight);
+			imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newhight, $width, $height);
 			imagegif($thumb,$path.$imageprefix.$filename);
 
 			imagedestroy($thumb);
@@ -271,7 +328,7 @@ function imageresize($path,$filename,$newvalue,$imageprefix)
 			imagealphablending($thumb, false);
 			imagesavealpha($thumb, true);
 
-			imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newhight, $width, $hight);
+			imagecopyresampled($thumb, $source, 0, 0, 0, 0, $newwidth, $newhight, $width, $height);
 			imagepng($thumb,$path.$imageprefix.$filename);
 
 			imagedestroy($thumb);

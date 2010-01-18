@@ -364,10 +364,10 @@ class CreateLayout
 
 				if ($widget->link_example){
 
-					$widget->link_example = str_replace("[operators]", $operators, $widget->link_example);
-					$widget->link_example = str_replace("[global_index]", $global_index, $widget->link_example);
-					$widget->link_example = str_replace("[operators_key]", $operators_key, $widget->link_example);
-					$widget->link_example = $this->get_global_vars_in_text($widget->link_example);
+					/*		$widget->link_example = str_replace("[operators]", $operators, $widget->link_example);
+					 $widget->link_example = str_replace("[global_index]", $global_index, $widget->link_example);
+					 $widget->link_example = str_replace("[operators_key]", $operators_key, $widget->link_example);
+					 $widget->link_example = $this->get_global_vars_in_text($widget->link_example);*/
 					if ($numpages > 1){
 
 						//TODO: add this to settings editor
@@ -381,7 +381,7 @@ class CreateLayout
 
 						if( $page ) {
 							$first_page = str_replace("[page]", '0', $widget->link_example);
-							$pagination .= "<a href=\"$first_page\"><-الأولى</a>";
+							$pagination .= "<a href=\"$first_page\"><-First page</a>";
 						}
 						if ($group_pages){
 
@@ -443,7 +443,7 @@ class CreateLayout
 
 						if( $page != ($numpages-1) ) {
 							$last_page = str_replace("[page]", $full_numb_of_pages -1, $widget->link_example);
-							$pagination .= "<a href=\"$last_page\">الأخيرة-></a>";
+							$pagination .= "<a href=\"$last_page\">Last page-></a>";
 						}
 						$pagination .= "</p>";
 					}
@@ -560,7 +560,7 @@ class CreateLayout
 						}
 					}
 					if ($widget->display_in_row_of > 0){
-						$widgetContents = $this->displayInTable($widgetContents, $widget->display_in_row_of);
+						$widgetContents = $aiki->html->displayInTable($widgetContents, $widget->display_in_row_of);
 					}
 
 					$widgetContents = $this->noaiki($widgetContents);
@@ -696,7 +696,8 @@ class CreateLayout
 				$processed_widget = $processed_widget."<a href='".$aiki->setting[url]."index.php?language=arabic&module=admin&operators=module|aiki_widgets|edit&op=edit&do=editaiki_widgets&pkey=".$widget->id."'><small>Edit Widget</small></a>";
 			}
 
-
+			$processed_widget = $aiki->php->parser($processed_widget);
+			
 
 			$replace_string = $aiki->get_string_between($processed_widget, "{#{", "}#}");
 			if ($replace_string){
@@ -740,7 +741,7 @@ class CreateLayout
 
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
 			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
-
+						
 			$this->widget_html .=  $processed_widget;
 
 

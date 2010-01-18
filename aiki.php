@@ -4,7 +4,7 @@
  * Aikiframework
  *
  * @author		Bassel Khartabil
- * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @copyright	Copyright (C) 2009-2010 Aikilab inc
  * @license		http://www.gnu.org/licenses/gpl.html
  * @link		http://www.aikiframework.org
  */
@@ -44,11 +44,8 @@ $membership = $aiki->load("membership");
 
 
 $aiki->load("records");
-
 $aiki->load("input");
-
 $aiki->load("output");
-
 $aiki->load("forms");
 $aiki->load("events");
 $aiki->load("upload");
@@ -62,13 +59,11 @@ $aiki->load("security");
 $aiki->load("text");
 $aiki->load("aiki_markup");
 $aiki->load("html");
+$aiki->load("php");
 $aiki->load("javascript");
 $aiki->load("sql_markup");
 $aiki->load("wiki_markup");
 $aiki->load("languages");
-
-
-
 
 
 

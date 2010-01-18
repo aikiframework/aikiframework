@@ -3,7 +3,15 @@ define('IN_AIKI', true);
 
 require_once("aiki.php");
 
-$update = $db->query("UPDATE aiki_widgets SET `if_authorized` = '(#(form:delete:(!(2)!):(!(3)!))#)' where id = 13");
 
-echo "done :)";
+//set_time_limit('999999999999999999');
+
+$files = $db->get_results("select id, filename from ocal_files");
+
+foreach ($files as $file){
+	$png = str_replace(".svg", '.png', $file->filename);
+	$update = $db->query("update ocal_files set filename_png = '$png' where id = '$file->id'");
+}
+
+echo "nothing to do";
 ?>
