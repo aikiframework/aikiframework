@@ -24,7 +24,7 @@ class aiki_membership
 
 		$get_user = $db->get_row("SELECT * FROM aiki_users where username='".$username."' and password='".$password."' limit 1");
 
-		if($get_user->username == $username and $get_user->password == $password){
+		if($get_user and $get_user->username == $username and $get_user->password == $password){
 
 			$host_name = $_SERVER['HTTP_HOST'];
 			$user_ip = $this->get_ip();
@@ -40,7 +40,7 @@ class aiki_membership
 			//die();
 			
 		} else{
-			//echo '<center><b>عذراً كلمة المرور أو اسم المستخدم خطأ</b></center>';
+			echo '<center><b>Sorry wrong username or password</b></center>';
 		}
 
 	}

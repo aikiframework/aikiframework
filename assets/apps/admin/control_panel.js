@@ -2,11 +2,9 @@ function globalajaxify(file, targetwidget){
 
 		      $('<div class="loading"></div>').html("Loading please wait").appendTo('body').fadeIn(); 
 		      $.get(file,function(data) { 
-		          $(targetwidget).slideUp('slow',function(){ 
-		              $(this).html(data).slideDown('slow',function(){ 
-		                  $('.loading').fadeOut('slow',function(){$(this).remove();}); 
+		              $(targetwidget).html(data ,function(){ 
+		                  $('.loading').remove(); 
 		              }); 
-		          }); 
 		      }); 
 }
 

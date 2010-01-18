@@ -526,7 +526,7 @@ width:591px;
 
 					case "password":
 						if (!$_POST[$intwalker[0]]){
-							$form .= "<b>تنبيه: الرجاء ادخال كلمة المرور</b><br />";
+							$form .= "<b>Please enter a password</b><br />";
 							$this->stop = true;
 						}
 
@@ -918,6 +918,8 @@ width:591px;
 		$viewCount = count($form_array);
 		foreach($form_array as $field)
 		{
+			$do_not_update = '';
+			
 			if ($field != $tablename and $field != $pkey and $field != $upload and $field != $submit){
 				$intwalker = explode(":", $field);
 
@@ -928,13 +930,30 @@ width:591px;
 				if (isset($intwalker['2'])){
 					switch ($intwalker['2']){
 
-
 						case "orderby":
 							//$_POST[$intwalker[0]] = $_POST['editpkey'];
 							$_POST[$intwalker[0]] = ($_POST['publish_date'] * 1000)+$_POST['editpkey'];
 							break;
 
+						case "password":
 
+							if (!$_POST[$intwalker[0]]){
+								echo "<b>Please enter a password</b><br />";
+								$do_not_update = $intwalker['0'];
+							}
+
+							if(!$intwalker['3']){
+								$intwalker['3'] = "md5|md5";
+							}
+								
+							if ($intwalker['3'] and $_POST[$intwalker['0']]){
+								$num_levels = explode("|", $intwalker['3']);
+								foreach ($num_levels as $crypt_level){
+									$_POST[$intwalker[0]] = md5(stripcslashes($_POST[$intwalker[0]]));
+								}
+							}
+
+							break;
 					}
 				}
 
@@ -943,7 +962,7 @@ width:591px;
 					$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_permission_and_man_info[1]'");
 				}
 
-				if (!$get_permission_and_man_info[1] or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level){
+				if (!$get_permission_and_man_info[1] or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level and $do_not_update != $intwalker['0']){
 
 					$_POST[$intwalker[0]] = str_replace('&lt;', '<' , $_POST[$intwalker[0]]);
 					$_POST[$intwalker[0]] = str_replace('&gt;', '>' , $_POST[$intwalker[0]]);
