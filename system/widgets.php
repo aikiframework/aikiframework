@@ -189,9 +189,13 @@ class CreateLayout
 
 	function createWidgetContent($widget){
 		global $aiki, $db, $widget_cache, $widget_cache_dir, $url, $language, $dir, $align, $membership, $nogui, $highlight, $records_libs, $image_processing, $custome_output, $config;
-		
-		$page = mysql_escape_string($_GET['page']);
-		
+
+		if (isset($_GET['page'])){
+			$page = mysql_escape_string($_GET['page']);
+		}else{
+			$page = "";
+		}
+
 		//Set page title
 		if ($widget->pagetitle){
 
@@ -699,7 +703,7 @@ class CreateLayout
 			}
 
 			$processed_widget = $aiki->php->parser($processed_widget);
-				
+
 
 			$replace_string = $aiki->get_string_between($processed_widget, "{#{", "}#}");
 			if ($replace_string){
