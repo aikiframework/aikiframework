@@ -9,6 +9,7 @@
  * @link		http://www.aikiframework.org
  */
 
+
 // Framework Version
 define('AIKI_VERSION',	'1.0.0');
 

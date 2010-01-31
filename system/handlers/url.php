@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Aikiframework
+ *
+ * @author		Bassel Khartabil
+ * @copyright	Copyright (C) 2009-2010 Aikilab inc
+ * @license		http://www.gnu.org/licenses/gpl.html
+ * @link		http://www.aikiframework.org
+ */
+
 class aiki_url
 {
 
@@ -15,11 +24,6 @@ class aiki_url
 		if (isset($_GET["pretty"])){
 			$pretty = $_GET["pretty"];
 			$this->url = $pretty;
-		}
-
-		if (isset($_GET["page"])){
-			$page= $_GET["page"];
-			$this->url = $page;
 		}
 
 		$this->url = str_replace("|", "/", $this->url);

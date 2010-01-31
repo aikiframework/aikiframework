@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Aikiframework
+ *
+ * @author		Bassel Khartabil
+ * @copyright	Copyright (C) 2009-2010 Aikilab inc
+ * @license		http://www.gnu.org/licenses/gpl.html
+ * @link		http://www.aikiframework.org
+ */
+
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
@@ -7,14 +16,14 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class aiki_image
 {
-	function rsvg_convert_svg_png($file){
+	function rsvg_convert_svg_png($file, $newwidth, $newhight){
 
 		exec("rsvg -v", $checkversion);//check if rsvg is exists and the eninge can access it and get me the version
 
 		if ($checkversion[0]){
 			$filenamepng = str_replace(".svg", ".png", $file);
 
-			exec("rsvg $file $filenamepng", $output);
+			exec("rsvg --width $newwidth --height $newhight $file $filenamepng", $output);
 		}else{
 			$output = "<b>Fatal Error: </b>Can't find (rsvg)";
 		}

@@ -4,10 +4,11 @@
  * Aikiframework
  *
  * @author		Bassel Khartabil
- * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @copyright	Copyright (C) 2009-2010 Aikilab inc
  * @license		http://www.gnu.org/licenses/gpl.html
  * @link		http://www.aikiframework.org
  */
+
 
 header('Content-type: text/xml');
 

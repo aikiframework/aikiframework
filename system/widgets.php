@@ -4,7 +4,7 @@
  * Aikiframework
  *
  * @author		Bassel Khartabil
- * @copyright	Copyright (C) 2008-2009 Bassel Khartabil.
+ * @copyright	Copyright (C) 2009-2010 Aikilab inc
  * @license		http://www.gnu.org/licenses/gpl.html
  * @link		http://www.aikiframework.org
  */
@@ -188,8 +188,10 @@ class CreateLayout
 
 
 	function createWidgetContent($widget){
-		global $aiki, $db, $widget_cache, $widget_cache_dir, $url, $language, $dir, $align, $page, $membership, $nogui, $highlight, $records_libs, $image_processing, $custome_output, $config;
-
+		global $aiki, $db, $widget_cache, $widget_cache_dir, $url, $language, $dir, $align, $membership, $nogui, $highlight, $records_libs, $image_processing, $custome_output, $config;
+		
+		$page = mysql_escape_string($_GET['page']);
+		
 		//Set page title
 		if ($widget->pagetitle){
 
@@ -697,7 +699,7 @@ class CreateLayout
 			}
 
 			$processed_widget = $aiki->php->parser($processed_widget);
-			
+				
 
 			$replace_string = $aiki->get_string_between($processed_widget, "{#{", "}#}");
 			if ($replace_string){
@@ -741,7 +743,7 @@ class CreateLayout
 
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
 			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
-						
+
 			$this->widget_html .=  $processed_widget;
 
 

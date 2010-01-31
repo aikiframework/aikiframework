@@ -9,7 +9,6 @@
  * @link		http://www.aikiframework.org
  */
 
-
 $id = $_GET['id'];
 $size = $_GET['size'];
 $mode = $_GET['mode'];
@@ -102,15 +101,16 @@ if ($id){
 			}
 
 			$svgfile = implode(file($original_filename));
+			
 			if ($size){
 				$size = str_replace('px', '', $size);
 
 				$header = get_string_between($svgfile, "<svg", ">");
-				
+
 				$or_width = get_string_between($header, 'width="', '"');
 				$width = str_replace("px", "", $or_width );
 				$width  = intval($width);
-				
+
 				$or_height = get_string_between($header, 'height="', '"');
 				$height  = str_replace("px", "", $or_height);
 				$height = intval($height);
@@ -127,10 +127,7 @@ if ($id){
 					$newhight = round(($newvalue * $height)/$width);
 				}
 
-				$headerfixed = str_replace('width="'.$or_width.'"', 'width="'.$newwidth.'"', $header);
-				$headerfixed = str_replace('height="'.$or_height.'"', 'height="'.$newhight.'"', $headerfixed);
 
-				$svgfile = str_replace($header, $headerfixed, $svgfile);
 
 				switch ($mode){
 					case "svg_to_png":
@@ -144,22 +141,21 @@ if ($id){
 							imagepng($final_image);
 							imagedestroy($final_image);
 						}else{
-							$or_svg_file = $get_root.$image->full_path."$size"."px-".$id;
-							$or_svg_file = str_replace(".png", ".svg", $or_svg_file );
+							$id_svg = str_replace(".png", ".svg", $id);
+							$or_svg_file = $get_root.$image->full_path.$id_svg;
 
-							$FileHandle = fopen($or_svg_file, 'w') or die("can't open file");
-							fwrite($FileHandle, $svgfile);
-							fclose($FileHandle);
+							if (file_exists($or_svg_file)){
+								
+								$aiki->image->rsvg_convert_svg_png($or_svg_file, $newwidth, $newhight);
 
-							$aiki->image->rsvg_convert_svg_png($or_svg_file);
+								$final_image = imagecreatefrompng($get_root.$image->full_path.$id);
 
-							$final_image = imagecreatefrompng($get_root.$image->full_path."$size"."px-".$id);
+								imagealphablending($final_image, false);
+								imagesavealpha($final_image, true);
 
-							imagealphablending($final_image, false);
-							imagesavealpha($final_image, true);
-
-							imagepng($final_image);
-							imagedestroy($final_image);
+								imagepng($final_image);
+								imagedestroy($final_image);
+							}
 						}
 						break;
 
