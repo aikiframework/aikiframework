@@ -251,6 +251,8 @@ $config["error_404"] = "<h1>404 Page Not Found</h1>
 ?>
 ';	
 
+	$conn = @mysql_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass']) or die ('Error connecting to mysql');
+	@mysql_select_db($_POST['db_name']) or die ("Unable to select database");
 
 
 	$config_file_name = "config.php";
@@ -276,8 +278,7 @@ RewriteRule ^(.*)$ index.php?pretty=$1 [L,QSA]';
 	fwrite($FileHandle, $htaccess_file);
 	fclose($FileHandle);
 
-	$conn = mysql_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass']) or die ('Error connecting to mysql');
-	mysql_select_db($_POST['db_name']);
+
 
 	$sql = '
 
