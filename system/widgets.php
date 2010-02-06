@@ -703,6 +703,7 @@ class CreateLayout
 			}
 
 			$processed_widget = $aiki->php->parser($processed_widget);
+			$processed_widget = $aiki->xml->rss_parser($processed_widget);
 
 
 			$replace_string = $aiki->get_string_between($processed_widget, "{#{", "}#}");

@@ -61,6 +61,7 @@ $aiki->load("text");
 $aiki->load("aiki_markup");
 $aiki->load("html");
 $aiki->load("php");
+$aiki->load("xml");
 $aiki->load("javascript");
 $aiki->load("sql_markup");
 $aiki->load("wiki_markup");
