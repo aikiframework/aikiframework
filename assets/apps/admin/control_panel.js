@@ -134,7 +134,7 @@ function css_tree(){
 function js_tree(){
 
  
-   create_form("#create_new_javascript", 8, "Widget", 1);
+   create_form("#create_new_javascript", 8, "Widget", 0);
    
      
    $("#javascripttree").tree( {
@@ -154,7 +154,7 @@ function js_tree(){
 
     	      $.get('admin_tools/edit/8/'+NODE.id,function(data) { 
                   $('#widget-form').html(data);
-                   code_mirror_javascript();                
+                   //code_mirror_javascript();                
                    $('#edit_form').ajaxForm(function() { 
     					$("#widget-form").html("Edited successfully");
     	           });                      
