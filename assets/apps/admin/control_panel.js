@@ -70,15 +70,15 @@ function code_mirror(){
 }
 
 
-function refreshthetree(){
-	$.tree_reference('widgettree').refresh();
+function refreshthetree(tree){
+	$.tree_reference(tree).refresh();
 }
 
 function refreshdatabasetree(){
 	$.tree_reference('databaseformstree').refresh();
 }
 
-function create_form(selector, id, name, code){
+function create_form(selector, id, name, code, tree){
 	   $(selector).click(function(event){
 			$("#widget-form").load("admin_tools/new/"+id,  {limit: 25}, function(){
 				
@@ -87,7 +87,7 @@ function create_form(selector, id, name, code){
 					code_mirror();
 					}
 				$('#new_record_form').ajaxForm(function() { 
-					refreshthetree();
+					refreshthetree(tree);
 			
 					$("#new_record_form").html(current_form + "Added new " + name + " successfully");
 
@@ -100,7 +100,7 @@ function create_form(selector, id, name, code){
 function css_tree(){
 
  
-    create_form("#create_new_css", 3, "Css", 0);
+    create_form("#create_new_css", 3, "Css", 0, "csstree");
    
    $("#csstree").tree( {
       
@@ -121,6 +121,7 @@ function css_tree(){
                   $('#widget-form').html(data);
                   $('#edit_form').ajaxForm(function() { 
  					$("#widget-form").html("Edited successfully");
+ 					$.tree_reference('csstree').refresh();
  	           });                   
     	      });
     	 
@@ -133,8 +134,8 @@ function css_tree(){
 
 function js_tree(){
 
- 
-   create_form("#create_new_javascript", 8, "Widget", 0);
+	
+   create_form("#create_new_javascript", 8, "Widget", 0, "javascripttree");
    
      
    $("#javascripttree").tree( {
@@ -157,6 +158,7 @@ function js_tree(){
                    //code_mirror_javascript();                
                    $('#edit_form').ajaxForm(function() { 
     					$("#widget-form").html("Edited successfully");
+    					$.tree_reference('javascripttree').refresh();
     	           });                      
     	      });
     	 
@@ -175,8 +177,8 @@ function urls_widgets_tree(){
 	
 	 
 
-   create_form("#create_new_url", 16, "url", 0);
-   create_form("#create_new_widget", 20, "Widget", 1);   
+   create_form("#create_new_url", 16, "url", 0, "widgettree");
+   create_form("#create_new_widget", 20, "Widget", 1, "widgettree");   
     
     
    $("#widgettree").tree( {
@@ -266,7 +268,7 @@ function database_forms_tree(){
 	 
 
    //create_form("#create_new_table", 3, "Table", 0);
-   create_form("#create_new_form", 6, "Form", 0);   
+   create_form("#create_new_form", 6, "Form", 0, "databaseformstree");   
     
     
    $("#databaseformstree").tree( {
