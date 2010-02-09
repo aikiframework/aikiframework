@@ -369,10 +369,7 @@ class CreateLayout
 
 				if ($widget->link_example){
 
-					/*		$widget->link_example = str_replace("[operators]", $operators, $widget->link_example);
-					 $widget->link_example = str_replace("[global_index]", $global_index, $widget->link_example);
-					 $widget->link_example = str_replace("[operators_key]", $operators_key, $widget->link_example);
-					 $widget->link_example = $this->get_global_vars_in_text($widget->link_example);*/
+
 					if ($numpages > 1){
 
 						//TODO: add this to settings editor
@@ -645,7 +642,6 @@ class CreateLayout
 
 			}
 
-			/////////End OF select and not select
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ($processed_widget));
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
@@ -792,13 +788,10 @@ class CreateLayout
 
 		foreach ($matches[1] as $parsed){
 
-			//$parsed = "";
-			//$parsed = $aiki->get_string_between($text, "((", "))");
-
 
 			if ($parsed){
 
-				//((if||writers||الكاتب: _self))
+				//((if||writers||writer: _self))
 
 				$parsedExplode = explode("||", $parsed);
 				if (isset($parsedExplode[1]) and $parsedExplode[0] == "if"){
@@ -868,17 +861,6 @@ class CreateLayout
 		}
 		return $widget;
 	}
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

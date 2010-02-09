@@ -8,28 +8,11 @@
  * @link		http://www.aikiframework.org
  */
 
-/*
- * metaphone($str);
- * nl2br("Welcome\r\nThis is my HTML document", false);
 
- * Allow <p> and <a>
- * strip_tags($text, '<p><a>');
- *
- *
- *
- *
- */
 class aiki_text
 {
 
 
-
-	/**
-	 * strip numbers from given text
-	 * @author Bassel Khartabil <b@ssel.me>
-	 * @copyright Copyright (c) 2009, Bassel Khartabil
-	 * @version 1
-	 */
 	function strip_numbers($value){
 		$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
 		$value = str_replace($toreplace, '', $value);

@@ -8,54 +8,6 @@
  * @link		http://www.aikiframework.org
  */
 
-/*
- Page History
- [##KeepCopies##]
- [##KeepCopies|public##]
- [##KeepCopies|admins##]
- [##KeepCopies|user group##]
-
-
-
- 1- (+(bank:Canada#Ottawa)+)
- 2- (+(bank:Canda=Canada#Ottawa)+)
-
- in the same Page:
- 3- (+(#Ottawa)+)
- 4- (+(Otawa=#Ottawa)+)
-
-
- 7- (+(wikipedia:Canada)+)
- 8- (+(wikipedia:Canda=Canada)+)
-
- 9- (+(GeoCo:33,11222|24,22111)+)
- 10- (+(GeoAdd:address goes here)+)
-
-insert current date and time:
- ~~~~~
-
-
-catagorize the article, like in wiki style some who:
- {{Cities}} {{Canada}}
-
-Related Links:
- [##related:photos##]
- [##related:news##]
- [##related:photos=Canada##]
-
-
- [##sound:filename.flv##]
- [##sound:filename.mp3|player:some player##]
-
- [##flv:filename.flv##]
- [##mov:filename.mov##]
- [##flv:http://www.google.com/filename.flv##]
-
-
-
- L10n:
- [[some_string]]
- */
 
 class aiki_aiki_markup
 {
@@ -118,7 +70,7 @@ class aiki_aiki_markup
 
 			}
 			$widget = str_replace ("{{".$templateFullText."}}", $template_output, $widget);
-			//$widget = preg_replace("", "bassel", $widget);
+
 		}
 
 		return $widget;

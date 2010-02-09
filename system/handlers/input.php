@@ -15,18 +15,14 @@ class aiki_input
 		global $aiki, $layout;
 
 		foreach ($_GET as $key => $req){
-			$req = mysql_escape_string($req);
+			$req = $aiki->escape($req);
 			$_GET[$key] = $req;
 		}
 
 
 		foreach ($_POST as $key => $req){
 
-			$req = stripcslashes($req);
-			$req = str_replace('\"', '"', $req);
-			$req = str_replace("\'", "'", $req);
-			$req = str_replace('"', '\"', $req);
-			$req = str_replace("'", "\'", $req);
+			$req = $aiki->escape($req);
 
 
 			$_POST[$key] = $req;
@@ -66,9 +62,9 @@ class aiki_input
 			switch ($key_request){
 
 				case "process":
-						
+
 					$this->form_handler($process_type, $_POST);
-						
+
 					break;
 
 				case "add_to_form":

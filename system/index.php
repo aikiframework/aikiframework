@@ -13,9 +13,6 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki
 {
 
-
-
-
 	var $aikiarray;
 	var $title = "";
 	var $array_fields;
@@ -31,7 +28,7 @@ class aiki
 
 	function load($class){
 		global $system_folder;
-		
+
 		static $objects = array();
 
 		if (isset($objects[$class]))
@@ -89,6 +86,17 @@ class aiki
 	}
 
 
+	function escape($text){
+
+		$text = stripcslashes($text);
+		$text = str_replace('\"', '"', $text);
+		$text = str_replace("\'", "'", $text);
+		$text = str_replace('"', '\"', $text);
+		$text = str_replace("'", "\'", $text);
+
+		return $text;
+	}
+
 
 	function get_string_between($string, $start, $end){
 		$string = " ".$string;
@@ -122,7 +130,7 @@ class aiki
 		$text = str_replace($config['url'].'/', $config['url'], $text);
 
 		return $text;
-	}	
+	}
 
 
 

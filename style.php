@@ -14,8 +14,8 @@ define('IN_AIKI', true);
 
 require_once("aiki.php");
 
-$site = $_GET['site'];
-$widgets = $_GET['widgets'];
+$site = $aiki->escape($_GET['site']);
+$widgets = $aiki->escape($_GET['widgets']);
 
 if (!$site){
 	$site = "aiki_shared";
@@ -39,10 +39,11 @@ if (isset($widgets) and $widgets != ''){
 	}
 
 	$get_widgets_css = $db->get_results("SELECT css from aiki_widgets where id = $widgets and is_active = 1 order by id");
-
-	foreach ( $get_widgets_css as $widget_css )
-	{
-		echo $widget_css->css;
+	if ($get_widgets_css){
+		foreach ( $get_widgets_css as $widget_css )
+		{
+			echo $widget_css->css;
+		}
 	}
 }
 
