@@ -701,44 +701,7 @@ class CreateLayout
 			$processed_widget = $aiki->xml->rss_parser($processed_widget);
 
 
-			$replace_string = $aiki->get_string_between($processed_widget, "{#{", "}#}");
-			if ($replace_string){
-				$replace_string = explode(":", $replace_string);
-				switch ($replace_string[0]){
 
-					case "edit_css":
-						require_once ("system/libs/admin_tools/modules_tools.php");
-						$Modules_Tools = new Modules_Tools();
-						$Modules_Tools->EditMultiRecordsInPlace();
-						break;
-
-
-					case "edit_widget":
-						require_once ("system/libs/admin_tools/modules_tools.php");
-						$Modules_Tools = new Modules_Tools();
-						$Modules_Tools->EditMultiWidgetsInPlace();
-						break;
-
-					case "config_editor":
-
-						require_once ("system/libs/array_tools.php");
-						$array_tools = new array_tools();
-						$processed_widget .= $array_tools->array_editor('config_id', 'config_type', 'config_data', 'aiki_config', '');
-
-						break;
-
-					case "LogOut":
-						$membership->LogOut();
-
-						break;
-
-					default:
-						break;
-				}
-
-				$processed_widget = preg_replace("/\{\#\{(.*)\}\#\}/U", '', $processed_widget);
-
-			}
 
 
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
