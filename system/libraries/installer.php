@@ -664,7 +664,7 @@ CREATE TABLE IF NOT EXISTS `aiki_widgets` (
   `is_active` int(1) NOT NULL,
   `javascript` int(3) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --------------------------------------------------------
 
@@ -683,7 +683,8 @@ INSERT INTO `aiki_widgets` (`id`, `app_id`, `widget_name`, `widget_site`, `widge
 (12, 1, \'confirmations\', \'default\', \'body\', \'div\', 0, \'\', \'\', 0, \'admin\', \'\', \'\', \'\', \'\', \'<div id="deletewidgetdialog" title="Delete widget">\r\n	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This widget will be permanently deleted and cannot be recovered. Are you sure?</p>\r\n</div>\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 0, \'\', \'\', 0, \'\', 0, 0, \'\', 1, 0),
 (13, 1, \'delete_record\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'admin_tools/delete/(.*)/(.*)\', \'\', \'\', \'\', \'\', \'\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'(#(form:delete:(!(2)!):(!(3)!))#)\', \'SystemGOD\', 0, \'\', 0, 1, \'\', 1, 0),
 (14, 1, \'aiki_home\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'homepage\', \'\', \'\', \'\', \'\', \'<h2>Welcome to aikiframework</h2><br/><br/>\r\n<img src="[root]assets/images/logo.png" />\r\n<br/><br/>\r\nYou\'\'ve successfully installed your aiki..\r\n<br/><br/>\r\nPlease go to <a href=\'\'admin\'\'>admin panel</a> to start creating your own cms and to change this default page \r\n<br/><br/>\r\nfor documentation please visit <a target=\'\'_blank\'\' href=\'\'http://www.aikiframework.org\'\'>aikiframework.org</a>\', \'\r\n#aiki_home {\r\n border:1px solid #c3c3c3;\r\n width:400px;\r\nmargin: 200px auto;\r\ntext-align:center;\r\nbackground:GhostWhite ;\r\npadding:30px;\r\n}\r\n\r\n#aiki_home img{\r\nmargin:5px;\r\n}\r\n\r\n#aiki_home div{\r\nwidth: 260px; \r\nmargin: 0 auto;\r\n}\r\n\r\n#aiki_home table{\r\ntext-align:right;\r\nwidth: 100%;\r\n}\', \'\', 0, 0, \'\', \'\', \'\', \'Aikiframework\', \'\', 0, \'\', \'\', 0, \'\', 0, 0, \'\', 1, 0),
-(15, 1, \'edit_array\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'admin_tools/array/(.*)/(.*)/(.*)/(.*)/(.*)\', \'\', \'\', \'\', \'\', \'\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'(#(array:edit:(!(2)!):(!(3)!):(!(4)!):(!(5)!):(!(6)!))#)\', \'SystemGOD\', 0, \'\', 0, 1, \'\', 1, 0);
+(15, 1, \'edit_array\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'admin_tools/array/(.*)/(.*)/(.*)/(.*)/(.*)\', \'\', \'\', \'\', \'\', \'\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'(#(array:edit:(!(2)!):(!(3)!):(!(4)!):(!(5)!):(!(6)!))#)\', \'SystemGOD\', 0, \'\', 0, 1, \'\', 1, 0),
+(16, 1, \'auto_generate\', \'default\', \'body\', \'div\', 0, \'\', \'0\', 0, \'admin_tools/auto_generate/(.*)\', \'\', \'\', \'\', \'\', \'\', \'\', \'\', 0, 0, \'\', \'\', \'\', \'\', \'\', 1, \'(#(form:auto_generate:(!(2)!))#)\', \'SystemGOD\', 0, \'\', 0, 1, \'\', 1, 0);
 
 --------------------------------------------------------
 

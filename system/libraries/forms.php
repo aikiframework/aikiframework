@@ -26,11 +26,15 @@ class aiki_forms
 
 				if ($form_data){
 
+					$form_output = '';
+
 					$form_sides = explode(":", $form_data);
 
 					$form = $db->get_row("SELECT * from aiki_forms where id='$form_sides[1]' limit 1");
 
-					$form_array = unserialize($form->form_array);
+					if ($form){
+						$form_array = unserialize($form->form_array);
+					}
 
 					switch ($form_sides[0]){
 
@@ -50,13 +54,20 @@ class aiki_forms
 
 							break;
 
+						case "auto_generate":
+
+							if ($form_sides['1']){
+								$this->auto_generate($form_sides['1']);
+							}
+
+							break;
+
 
 						case "delete":
 							$form_output = $aiki->records->delete_record($form_array['tablename'], $form_sides[2],  $form_sides[3], $form_array['pkey']);
 							break;
 
 					}
-
 
 
 					if (isset ($form_sides[3])){
@@ -508,54 +519,68 @@ class aiki_forms
 	function auto_generate($table){
 		global $aiki, $db;
 
+		$table = mysql_escape_string($table);
+
+		$table_exists = $db->get_var("SELECT id FROM aiki_forms where form_table = '$table'");
+
+		if ($table_exists){
+			die("Form for db table: <b>$table</b> already exists");
+		}
+
 		$form_array = array();
 
-		$table_info = $db->get_results("SELECT * FROM $table");
+		$table_info = $db->get_results("SELECT * FROM $table limit 1");
 
-		$form_array["tablename"] = $table;
+		if ($table_info){
+			
+			$form_array["tablename"] = $table;
 
-		$i = 0;
+			$i = 0;
 
-		foreach ($db->col_info as $column){
+			foreach ($db->col_info as $column){
 
-			$column = $aiki->array->object2array($column);
+				$column = $aiki->array->object2array($column);
+					
+					
+				if ($column['primary_key'] == 1){
+					$form_array["pkey"] = $column['name'];
+				}else{
 
-			if ($column['primary_key'] == 1){
-				$form_array["pkey"] = $column['name'];
-			}else{
+					$i++;
 
-				$i++;
+					switch ($column['type']){
 
-				switch ($column['type']){
+						case "int":
+							$column['type'] = 'textinput';
+							break;
 
-					case "int":
-						$column['type'] = 'textinput';
-						break;
+						case "string":
+							$column['type'] = 'textinput';
+							break;
 
-					case "string":
-						$column['type'] = 'textinput';
-						break;
+						case "blob":
+							$column['type'] = 'textblock';
+							break;
+					}
 
-					case "blob":
-						$column['type'] = 'textblock';
-						break;
+					$column_display_name = str_replace('_', ' ', $column['name']);
+					$column_display_name = str_replace('-', ' ', $column_display_name);
+
+					$form_array[$column['type'].$i] = $column['name']."|SystemGOD:$column_display_name";
 				}
 
-				$column_display_name = str_replace('_', ' ', $column['name']);
-				$column_display_name = str_replace('-', ' ', $column_display_name);
-
-				$form_array[$column['type'].$i] = $column['name']."|SystemGOD:$column_display_name";
 			}
 
+			$form_array = serialize($form_array);
+
+			$insert_form = $db->query("insert into aiki_forms (form_name, form_array, form_table) values ('$table', '$form_array', '$table')");
+			if (isset ($insert_form)){
+				echo "Form for db table: <b>$table</b> created successfully";
+			}
+			
+		}else{
+			echo "Sorry db table: <b>$table</b> doesn't exists or unable to create form for it";
 		}
-
-		$form_array = serialize($form_array);
-
-		$insert_form = $db->query("insert into aiki_forms (form_name, form_array, form_table) values ('$table', '$form_array', '$table')");
-		if (isset ($insert_form)){
-			echo "Form $table created successfully";
-		}
-
 	}
 
 }

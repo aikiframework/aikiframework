@@ -286,7 +286,13 @@ function database_forms_tree(){
       callback : {
         onselect : function(NODE,TREE_OBJ) {
     	  if (isNaN(NODE.id)){
-    	  
+    	 
+    	      $.get('admin_tools/auto_generate/'+NODE.id,function(data) { 
+    	    	  $('#widget-form').html(data);
+    	    });
+    	    		
+    	      
+    		  
     	  }else{
 
     	      $.get('admin_tools/array/id/form_name/form_array/aiki_forms/'+NODE.id,function(data) { 
