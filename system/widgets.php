@@ -157,15 +157,15 @@ class CreateLayout
 				$son_widgets = $db->get_results("SELECT id, display_urls,kill_urls FROM aiki_widgets where father_widget='$widget->id' and is_active=1 and (widget_site='$site' or widget_site ='aiki_shared') and (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url[0]."%' or display_urls LIKE '%".$url->url[0]."|%' or display_urls = '*' or display_urls LIKE '%".$url->url[0]."/%') order by display_order, id");
 
 				if ($son_widgets){
-						
+
 					$son_widget_group = array();
-						
+
 					foreach ( $son_widgets as $son_widget )
 					{
 
 						$url->widget_if_match_url($son_widget);
 						if ($url->create_widget){
-								
+
 							$son_widget_group[] = $son_widget->id;
 							//$this->createWidget($son_widget->id);
 
@@ -209,14 +209,14 @@ class CreateLayout
 				$this->head_output .= $this->widget_html;
 
 			}
-			
+
 			$this->widget_html = "";
 		}
 
 	}
 
 
-	function createWidgetContent($widget){
+	function createWidgetContent($widget, $output_to_string=''){
 		global $aiki, $db, $widget_cache, $widget_cache_dir, $url, $language, $dir, $align, $membership, $nogui, $highlight, $records_libs, $image_processing, $custome_output, $config;
 
 		if (isset($_GET['page'])){
@@ -732,7 +732,11 @@ class CreateLayout
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
 			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
 
-			$this->widget_html .=  $processed_widget;
+			if ($output_to_string){
+				return $processed_widget;
+			}else{
+				$this->widget_html .=  $processed_widget;
+			}
 
 		}
 
@@ -821,24 +825,25 @@ class CreateLayout
 	function inherent_widgets($widget){
 		global $db;
 
-		//TODO: put the widget in it's place not in top i.e replace (#(inherent:123)#) with contents
 		$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/', $widget, $matches);
 		if ($numMatches > 0){
 			foreach ($matches[1] as $widget_id){
 
 				$widget_id = explode("|", $widget_id);
 
-				$this->inherent_operators = $widget_id[1];
+				if (isset($widget_id['1'])){
+					$this->inherent_operators = $widget_id['1'];
+				}
 				$this->inherent_id = $widget_id[0];
 				$widget_id = $widget_id[0];
 
 				$widget_data = $db->get_row("SELECT * FROM aiki_widgets where id='$widget_id' limit 1");
 
-				$this->createWidgetContent($widget_data);
+				$widget_data = $this->createWidgetContent($widget_data, true);
 
 			}
 
-			$widget = preg_replace('/\(\#\(inherent\:(.*)\)\#\)/', '', $widget);
+			$widget = preg_replace('/\(\#\(inherent\:(.*)\)\#\)/', $widget_data , $widget);
 
 
 		}
