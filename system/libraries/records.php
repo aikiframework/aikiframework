@@ -434,7 +434,7 @@ width:591px;
 		$form_array = unserialize($form->form_array);
 
 		$arraykeys = array_keys($form_array);
-
+		
 		if (in_array("tablename", $arraykeys))
 		$tablename = $form_array["tablename"];
 
@@ -452,6 +452,7 @@ width:591px;
 
 		if (in_array("upload", $arraykeys))
 		$upload = $form_array["upload"];
+		
 
 		if (isset($post['unique_filename']))
 		$unique_filename = $_REQUEST['unique_filename'];
@@ -487,7 +488,7 @@ width:591px;
 			}
 
 			if (isset($get_permission_and_man_info[2]) and $get_permission_and_man_info[2] == "true" and !$_POST[$intwalker[0]]){
-				$form .= "<b>تنبيه:</b> الرجاء ادخال $intwalker[1]<br />";
+				$form .= "<b>Warning:</b> Please fill $intwalker[1]<br />";
 				$this->stop = true;
 			}
 
@@ -499,10 +500,9 @@ width:591px;
 				$insert_values .= "'".$intwalker[0]."', ";
 			}
 
-			//echo $intwalker[2]."<br>";
-
 			if (isset($intwalker['2'])){
 				switch ($intwalker['2']){
+					
 					case "full_path":
 						$full_path = $_POST[$intwalker[0]]; //get full path dir value
 						if (!$full_path){
@@ -608,11 +608,6 @@ width:591px;
 
 				}
 			}
-
-
-
-
-
 
 			if (isset($unique_filename) and $unique_filename == $intwalker[2] and $full_path){ //unique_filename processing
 

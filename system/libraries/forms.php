@@ -96,8 +96,6 @@ class aiki_forms
 	function createForm ($form_array, $form_id, $record_id){
 		global $db, $membership, $aiki, $config;
 
-		//$_POST[$intwalker[0]]
-
 		$arraykeys = array_keys($form_array);
 
 		if (in_array("tablename", $arraykeys))
@@ -265,7 +263,7 @@ class aiki_forms
 
 							$form .=("$img");
 						}else{
-							$form .= ("<h2>$intwalker[1]</h2><input type=\"file\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\">");
+							$form .= '<h2>'.$intwalker['1'].'</h2><input type="file" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" name="'.$intwalker['0'].'">';
 						}
 						break;
 

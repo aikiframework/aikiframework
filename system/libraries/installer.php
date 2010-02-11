@@ -247,8 +247,9 @@ $config["error_404"] = "<h1>404 Page Not Found</h1>
 <p>This page is not found</p>
 <p>Please visit <a href=\"'.$pageURL.'\">Home page</a> so you may find what you are looking for.</p>"; 
 
-?>
-';	
+$config["debug"] = false;
+
+?>';	
 
 	$conn = @mysql_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass']) or die ('Error connecting to mysql');
 	@mysql_select_db($_POST['db_name']) or die ("Unable to select database");

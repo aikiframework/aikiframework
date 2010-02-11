@@ -546,15 +546,6 @@ class ezSQLcore
 
 	}
 
-	/**********************************************************************
-		*  Naughty little function to ask for some remuniration!
-		*/
-
-	function donation()
-	{
-		return "<font size=1 face=arial color=000000>If ezSQL has helped <a href=\"https://www.paypal.com/xclick/business=justin%40justinvincent.com&item_name=ezSQL&no_note=1&tax=0\" style=\"color: 0000CC;\">make a donation!?</a> &nbsp;&nbsp;<!--[ go on! you know you want to! ]--></font>";
-	}
-
 }
 
 
