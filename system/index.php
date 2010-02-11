@@ -78,14 +78,6 @@ class aiki
 	}
 
 
-
-
-	function aikiswitch($text){
-
-
-	}
-
-
 	function escape($text){
 
 		$text = stripcslashes($text);

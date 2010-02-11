@@ -49,7 +49,7 @@ class aiki_url
 		if ($count > 0){
 			foreach ($matches[1] as $parsed){
 				if (isset($parsed)){
-					$query = str_replace("(!($parsed)!)", $this->url[$parsed], $query);
+					$query = @str_replace("(!($parsed)!)", $this->url[$parsed], $query);
 				}
 			}
 		}
