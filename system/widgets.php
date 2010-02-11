@@ -358,8 +358,9 @@ class CreateLayout
 
 				}
 
-
-				$widget->widget = str_replace("[records_num]", $records_num, $widget->widget);
+				if (isset($records_num)){
+					$widget->widget = str_replace("[records_num]", $records_num, $widget->widget);
+				}
 
 
 
@@ -400,7 +401,7 @@ class CreateLayout
 				if ($widget->link_example){
 
 
-					if ($numpages > 1){
+					if (isset($numpages) and $numpages > 1){
 
 						//TODO: add this to settings editor
 						$pagesgroup = 10;
@@ -672,6 +673,10 @@ class CreateLayout
 
 			}
 
+			if (!isset($processed_widget)){
+				$processed_widget = '';
+			}
+			
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ($processed_widget));
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
@@ -801,7 +806,11 @@ class CreateLayout
 
 				}
 
+				if (!isset($widget_value->$parsed)){
+					$widget_value->$parsed = '';
+				}
 				$text = str_replace("(($parsed))", $widget_value->$parsed, $text);
+
 
 			}
 		}
