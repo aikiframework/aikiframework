@@ -49,7 +49,6 @@ $aiki->load("output");
 $aiki->load("forms");
 $aiki->load("events");
 $aiki->load("upload");
-$aiki->load("url");
 $aiki->load("array");
 $aiki->load("cronjobs");
 $aiki->load("email");

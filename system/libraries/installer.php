@@ -282,19 +282,6 @@ RewriteRule ^(.*)$ index.php?pretty=$1 [L,QSA]';
 
 	$sql = '
 
-CREATE TABLE IF NOT EXISTS `aiki_apps` (
-  `id` int(11) NOT NULL auto_increment,
-  `app_name` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---------------------------------------------------------
-
-INSERT INTO `aiki_apps` (`id`, `app_name`) VALUES
-(1, \'Admin Panel\');
-
---------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS `aiki_config` (
   `config_id` int(11) unsigned NOT NULL auto_increment,
   `app_id` int(11) NOT NULL,
@@ -377,7 +364,6 @@ CREATE TABLE IF NOT EXISTS `aiki_forms` (
 --------------------------------------------------------
 
 INSERT INTO `aiki_forms` (`id`, `app_id`, `form_method`, `form_action`, `form_dir`, `form_table`, `form_name`, `form_array`, `form_html`, `form_query`) VALUES
-(1, 0, \'\', \'\', \'\', \'aiki_apps\', \'aiki_apps\', \'a:3:{s:9:"tablename";s:9:"aiki_apps";s:4:"pkey";s:2:"id";s:10:"textinput1";s:27:"app_name|SystemGOD:app name";}\', \'\', \'\'),
 (3, 0, \'\', \'\', \'\', \'aiki_css\', \'aiki_css\', \'a:11:{s:9:"tablename";s:8:"aiki_css";s:4:"pkey";s:2:"id";s:10:"textinput2";s:23:"app_id|SystemGOD:app id";s:10:"textinput3";s:27:"css_name|SystemGOD:css name";s:10:"textinput4";s:29:"css_group|SystemGOD:css group";s:10:"textinput5";s:31:"css_folder|SystemGOD:css folder";s:10:"textinput6";s:37:"father_module|SystemGOD:father module";s:10:"textblock7";s:33:"style_sheet|SystemGOD:style sheet";s:10:"textblock8";s:21:"if_ie|SystemGOD:if ie";s:10:"textinput9";s:21:"media|SystemGOD:media";s:11:"textinput10";s:29:"is_active|SystemGOD:is active";}\', \'\', \'\'),
 (4, 0, \'\', \'\', \'\', \'aiki_dictionary\', \'aiki_dictionary\', \'a:7:{s:9:"tablename";s:15:"aiki_dictionary";s:4:"pkey";s:7:"term_id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:31:"short_term|SystemGOD:short term";s:10:"textblock3";s:35:"lang_english|SystemGOD:lang english";s:10:"textblock4";s:33:"lang_arabic|SystemGOD:lang arabic";s:10:"textblock5";s:33:"lang_german|SystemGOD:lang german";}\', \'\', \'\'),
 (6, 0, \'\', \'\', \'\', \'aiki_forms\', \'aiki_forms\', \'a:11:{s:9:"tablename";s:10:"aiki_forms";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:33:"form_method|SystemGOD:form method";s:10:"textinput3";s:33:"form_action|SystemGOD:form action";s:10:"textinput4";s:27:"form_dir|SystemGOD:form dir";s:10:"textinput5";s:31:"form_table|SystemGOD:form table";s:10:"textinput6";s:29:"form_name|SystemGOD:form name";s:10:"textblock7";s:31:"form_array|SystemGOD:form array";s:10:"textblock8";s:29:"form_html|SystemGOD:form html";s:10:"textblock9";s:31:"form_query|SystemGOD:form query";}\', \'\', \'\'),
