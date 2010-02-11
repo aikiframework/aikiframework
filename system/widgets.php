@@ -676,7 +676,7 @@ class CreateLayout
 			if (!isset($processed_widget)){
 				$processed_widget = '';
 			}
-			
+				
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ($processed_widget));
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
@@ -836,9 +836,9 @@ class CreateLayout
 
 		$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/', $widget, $matches);
 		if ($numMatches > 0){
-			foreach ($matches[1] as $widget_id){
+			foreach ($matches[1] as $widget_info){
 
-				$widget_id = explode("|", $widget_id);
+				$widget_id = explode("|", $widget_info);
 
 				if (isset($widget_id['1'])){
 					$this->inherent_operators = $widget_id['1'];
@@ -850,9 +850,8 @@ class CreateLayout
 
 				$widget_data = $this->createWidgetContent($widget_data, true);
 
+				$widget = preg_replace('/\(\#\(inherent\:'.$widget_info.'\)\#\)/', $widget_data , $widget);
 			}
-
-			$widget = preg_replace('/\(\#\(inherent\:(.*)\)\#\)/', $widget_data , $widget);
 
 
 		}
