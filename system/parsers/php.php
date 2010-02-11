@@ -52,10 +52,10 @@ class aiki_php
 		$if_cond[1] = trim($if_cond[1]);
 
 		if ($if_cond[0] == $if_cond[1]){
-
 			$output = trim($string[1]);
+		}else{
+			$output = '';
 		}
-
 
 		return $output;
 	}
