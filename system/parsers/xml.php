@@ -55,40 +55,44 @@ class aiki_xml
 
 				if ($content !== false) {
 
-					$xml = new SimpleXMLElement($content);
+					$xml = @simplexml_load_string($content);
 
 					$i = 1;
 
 					$html_output = '';
+					if ($xml){
+						foreach ($xml->channel->item as $item) {
 
-					foreach ($xml->channel->item as $item) {
+							$items_matchs = preg_match_all('/\[\[(.*)\]\]/Us', $output, $elements);
 
-						$items_matchs = preg_match_all('/\[\[(.*)\]\]/Us', $output, $elements);
+							if ($items_matchs > 0){
 
-						if ($items_matchs > 0){
-								
-							$processed_output = $output;
+								$processed_output = $output;
 
-							foreach ($elements[1] as $element){
+								foreach ($elements[1] as $element){
 
-								$element = trim($element);
+									$element = trim($element);
 
-								$processed_output = str_replace("[[".$element."]]", $item->$element, $processed_output);
+									$processed_output = str_replace("[[".$element."]]", $item->$element, $processed_output);
 
+								}
+
+								$html_output .= $processed_output;
+								$processed_output = '';
 							}
 
-							$html_output .= $processed_output;
-							$processed_output = '';
+
+
+							if (isset($limit) and $limit == $i){
+								break;
+							}
+							$i++;
 						}
 
-
-
-						if (isset($limit) and $limit == $i){
-							break;
-						}
-						$i++;
+					}else{
+						
+						
 					}
-
 				}
 
 				$text = str_replace("<rss>$rss</rss>", $html_output , $text);

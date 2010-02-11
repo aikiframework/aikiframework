@@ -150,7 +150,7 @@ if ($config['html_cache'] and $html_cache_file){
 	}
 }
 
-if ($config["debug"]){
+if (isset($config["debug"]) and $config["debug"]){
 	echo "\n <!-- queries: ".$db->num_queries." -->";
 }
 
