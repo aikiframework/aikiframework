@@ -699,22 +699,12 @@ class CreateLayout
 
 			$processed_widget = $aiki->php->parser($processed_widget);
 			$processed_widget = $aiki->xml->rss_parser($processed_widget);
-
-
-
-
-
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
 			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
 
 			$this->widget_html .=  $processed_widget;
 
-
-
-
 		}
-
-
 
 	}
 
@@ -801,7 +791,7 @@ class CreateLayout
 	function inherent_widgets($widget){
 		global $db;
 
-		//TODO: put the widget in it's place not in top .i.e replace (#(inherent:123)#) with contents
+		//TODO: put the widget in it's place not in top i.e replace (#(inherent:123)#) with contents
 		$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/', $widget, $matches);
 		if ($numMatches > 0){
 			foreach ($matches[1] as $widget_id){
