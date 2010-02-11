@@ -8,6 +8,9 @@
  * @link		http://www.aikiframework.org
  */
 
+if(!defined('IN_AIKI')){die('No direct script access allowed');}
+
+
 class aiki_email
 {
 	

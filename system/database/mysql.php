@@ -1,5 +1,8 @@
 <?php
 
+if(!defined('IN_AIKI')){die('No direct script access allowed');}
+
+
 /*
  * ezSQL
  *
@@ -7,8 +10,6 @@
  * @license		http://www.gnu.org/licenses/gpl.html
  * @link		http://php.justinvincent.com
  */
-
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
 /**********************************************************************

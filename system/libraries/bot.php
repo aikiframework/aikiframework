@@ -8,6 +8,9 @@
  * @link		http://www.aikiframework.org
  */
 
+if(!defined('IN_AIKI')){die('No direct script access allowed');}
+
+
 if ($membership->permissions != "SystemGOD"){
 	die("You do not have permissions to access this file");
 }
