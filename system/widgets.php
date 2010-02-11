@@ -59,6 +59,8 @@ class CreateLayout
 			if ($module_widgets){
 
 
+				$widget_group = array();
+
 				foreach ( $module_widgets as $widget )
 				{
 
@@ -66,10 +68,13 @@ class CreateLayout
 
 					if ($url->create_widget){
 
-						$this->createWidget($widget->id);
+						$widget_group[] = $widget->id;
+						//$this->createWidget($widget->id);
 
 					}
 				}
+
+				$this->createWidget('', $widget_group);
 
 			}else{
 
@@ -98,16 +103,33 @@ class CreateLayout
 
 
 
-	function createWidget($widget_id){
+	function createWidget($widget_id, $widget_group=''){
 		global $db, $aiki,$url, $operators, $language, $operators_key, $dir, $page, $site, $module, $custome_output;
 
-		$this->widgets_css .= $widget_id.'_';
 
-		//TODO: catch all widgets then select them with one query, then loop over them
-		//TODO: Make the catch all thing optional for special cases of memory usage
+		if ($widget_group){
 
-		$widget = $db->get_row("SELECT * FROM aiki_widgets where id='$widget_id' limit 1");
-		if ($widget){
+			$widgets_query = '';
+
+			foreach ($widget_group as $widget_id){
+				if (!$widgets_query){
+					$widgets_query .= " id = '$widget_id'";
+				}else{
+					$widgets_query .= " or id = '$widget_id'";
+				}
+			}
+
+			$widget_result = $db->get_results("SELECT * FROM aiki_widgets where $widgets_query order by display_order, id");
+
+		}elseif ($widget_id){
+
+			$widget_result = $db->get_results("SELECT * FROM aiki_widgets where id='$widget_id' limit 1");
+
+		}
+
+		foreach ($widget_result as $widget){
+
+			$this->widgets_css .= $widget->id.'_';
 
 			if ($widget->custome_output){
 				$custome_output = true;
@@ -119,7 +141,7 @@ class CreateLayout
 			}
 
 			if ($widget->javascript){
-				$this->CallJavaScript[$widget_id] = $widget->javascript;
+				$this->CallJavaScript[$widget->id] = $widget->javascript;
 			}
 
 			if (!$custome_output and $widget->widget_type){
@@ -135,15 +157,22 @@ class CreateLayout
 				$son_widgets = $db->get_results("SELECT id, display_urls,kill_urls FROM aiki_widgets where father_widget='$widget->id' and is_active=1 and (widget_site='$site' or widget_site ='aiki_shared') and (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url[0]."%' or display_urls LIKE '%".$url->url[0]."|%' or display_urls = '*' or display_urls LIKE '%".$url->url[0]."/%') order by display_order, id");
 
 				if ($son_widgets){
+						
+					$son_widget_group = array();
+						
 					foreach ( $son_widgets as $son_widget )
 					{
 
 						$url->widget_if_match_url($son_widget);
 						if ($url->create_widget){
-							$this->createWidget($son_widget->id);
+								
+							$son_widget_group[] = $son_widget->id;
+							//$this->createWidget($son_widget->id);
 
 						}
 					}
+					$this->createWidget('', $son_widget_group);
+					$son_widget_group = '';
 
 				}
 			}
@@ -153,35 +182,36 @@ class CreateLayout
 				$this->widget_html .= "\n <!--$widget->id end--> \n";
 			}
 
-		}
 
-		if ($this->kill_widget){
 
-			if ($widget->if_no_results){
-				$widget->if_no_results =  $aiki->processVars ($aiki->languages->L10n ("$widget->if_no_results"));
-				$widget->if_no_results = $this->get_global_vars_in_text($widget->if_no_results);
+			if ($this->kill_widget){
 
-				$dead_widget = '<'.$widget->widget_type.' id="'.$widget->style_id.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
+				if ($widget->if_no_results){
+					$widget->if_no_results =  $aiki->processVars ($aiki->languages->L10n ("$widget->if_no_results"));
+					$widget->if_no_results = $this->get_global_vars_in_text($widget->if_no_results);
 
-			}else{
-				$dead_widget = "";
+					$dead_widget = '<'.$widget->widget_type.' id="'.$widget->style_id.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
+
+				}else{
+					$dead_widget = "";
+				}
+				$this->widget_html = preg_replace("/<!--start $this->kill_widget-->(.*)<!--$this->kill_widget end-->/s", $dead_widget, $this->widget_html, 1, $count);
+				$this->kill_widget = '';
 			}
-			$this->widget_html = preg_replace("/<!--start $this->kill_widget-->(.*)<!--$this->kill_widget end-->/s", $dead_widget, $this->widget_html, 1, $count);
-			$this->kill_widget = '';
+
+
+			if ($widget->widget_target == 'body'){
+
+				$this->html_output .= $this->widget_html;
+
+			}else if($widget->widget_target == 'header'){
+
+				$this->head_output .= $this->widget_html;
+
+			}
+			
+			$this->widget_html = "";
 		}
-
-
-		if ($widget->widget_target == 'body'){
-
-			$this->html_output .= $this->widget_html;
-
-		}else if($widget->widget_target == 'header'){
-
-			$this->head_output .= $this->widget_html;
-
-		}
-
-		$this->widget_html = "";
 
 	}
 
