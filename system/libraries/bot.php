@@ -19,10 +19,40 @@ if ($membership->permissions != "SystemGOD"){
 class aiki_bot
 {
 
+	function improt_mockup(){
+
+	}
+
+	function import_css(){
+
+
+	}
+
+
+	function import_javascript(){
+
+
+	}
+
+	function import_image(){
+
+
+	}
+
+	function create_mockup_from_psd(){
+
+
+	}
+
+	function create_mockup_from_svg(){
+
+
+	}
+
 	function rename_files_give_timestamp($path){
-		
+
 		if (!isset($path)){return;}
-		
+
 		$handle = opendir($path);
 		$path = str_replace(" ", "\ ", $path);
 		while (($file = readdir($handle))!==false) {
