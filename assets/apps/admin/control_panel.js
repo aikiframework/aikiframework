@@ -14,8 +14,8 @@ function code_mirror_javascript(){
         height: "350px",
         parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
                      "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
-        stylesheet: ["assets/plugins/codemirror/css/xmlcolors.css", "assets/plugins/codemirror/css/jscolors.css", "assets/plugins/codemirror/css/csscolors.css", "assets/plugins/codemirror/css/phpcolors.css"],
-        path: "assets/plugins/codemirror/js/",
+        stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
+        path: "assets/javascript/codemirror/js/",
         continuousScanning: 500,
         lineNumbers: true,
       });  
@@ -29,8 +29,8 @@ function code_mirror_css(){
 	       height: "350px",
 	       parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
 	                    "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
-	       stylesheet: ["assets/plugins/codemirror/css/xmlcolors.css", "assets/plugins/codemirror/css/jscolors.css", "assets/plugins/codemirror/css/csscolors.css", "assets/plugins/codemirror/css/phpcolors.css"],
-	       path: "assets/plugins/codemirror/js/",
+	       stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
+	       path: "assets/javascript/codemirror/js/",
 	       continuousScanning: 500,
 	       lineNumbers: true,
 	     }); 
@@ -44,8 +44,8 @@ function code_mirror(){
         height: "350px",
         parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
                      "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
-        stylesheet: ["assets/plugins/codemirror/css/xmlcolors.css", "assets/plugins/codemirror/css/jscolors.css", "assets/plugins/codemirror/css/csscolors.css", "assets/plugins/codemirror/css/phpcolors.css"],
-        path: "assets/plugins/codemirror/js/",
+        stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
+        path: "assets/javascript/codemirror/js/",
         continuousScanning: 500,
         lineNumbers: true,
       }); 
@@ -54,8 +54,8 @@ function code_mirror(){
         height: "350px",
         parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
                      "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
-        stylesheet: ["assets/plugins/codemirror/css/xmlcolors.css", "assets/plugins/codemirror/css/jscolors.css", "assets/plugins/codemirror/css/csscolors.css", "assets/plugins/codemirror/css/phpcolors.css"],
-        path: "assets/plugins/codemirror/js/",
+        stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
+        path: "assets/javascript/codemirror/js/",
         continuousScanning: 500,
         lineNumbers: true,
       });     
@@ -63,8 +63,8 @@ function code_mirror(){
    var sqleditor = CodeMirror.fromTextArea('normal_select', {
         height: "250px",
         parserfile: "parsesparql.js",
-        stylesheet: ["assets/plugins/codemirror/css/sparqlcolors.css"],
-        path: "assets/plugins/codemirror/js/"
+        stylesheet: ["assets/javascript/codemirror/css/sparqlcolors.css"],
+        path: "assets/javascript/codemirror/js/"
       });  
 	
 }

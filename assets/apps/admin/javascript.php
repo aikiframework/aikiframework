@@ -28,7 +28,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
 $get_java = $db->get_results("select id, script_name from aiki_javascript order by script_name,id");
 
 foreach ($get_java as $javascript){
-	echo '<item parent_id="0" id="'.$javascript->id.'" ><content><name icon="'.$config['url'].'assets/images/icons/page_gear.png"><![CDATA['.$javascript->script_name.']]></name></content></item>';
+	echo '<item parent_id="0" id="'.$javascript->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/page_gear.png"><![CDATA['.$javascript->script_name.']]></name></content></item>';
 }
 
 echo "</root>";
