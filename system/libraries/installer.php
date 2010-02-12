@@ -465,7 +465,7 @@ CREATE TABLE IF NOT EXISTS `aiki_plugins` (
   `modifiers_type` varchar(255) NOT NULL,
   `plugin_filename` varchar(255) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --------------------------------------------------------
 
@@ -473,8 +473,7 @@ INSERT INTO `aiki_plugins` (`id`, `app_id`, `plugin_name`, `modifiers_group`, `m
 (1, 0, \'markup_intlinks\', \'aiki_markup\', \'output_modifier\', \'\'),
 (2, 0, \'markup_images\', \'aiki_markup\', \'output_modifier\', \'\'),
 (3, 0, \'markup_extlinks\', \'aiki_markup\', \'output_modifier\', \'\'),
-(4, 0, \'markup_inline\', \'aiki_markup\', \'output_modifier\', \'\'),
-(5, 0, \'markup_ajax\', \'aiki_markup\', \'output_modifier\', \'\');
+(4, 0, \'markup_inline\', \'aiki_markup\', \'output_modifier\', \'\');
 
 --------------------------------------------------------
 
