@@ -21,7 +21,6 @@ class CreateLayout
 	var $inherent_operators;
 	var $inherent_id;
 	var $create_widget_cache;
-	var $output_modifiers;
 	var $widgets_css;
 	var $widget_custome_output;
 	var $head_output;
@@ -30,18 +29,6 @@ class CreateLayout
 	function CreateLayout(){
 		global $db, $site, $aiki, $url, $errors, $layout;
 
-
-		$this->output_modifiers = $db->get_results("SELECT plugin_name from aiki_plugins where modifiers_type = 'output_modifier'");
-
-		$output_modifiers = $db->get_results("SELECT plugin_name from aiki_plugins where modifiers_type = 'output_modifier'");
-		foreach ($output_modifiers as $output_modifier){
-
-			$output_modifier = $output_modifier->plugin_name;
-
-			if (file_exists("assets/plugins/$output_modifier.php")){
-				require_once ("assets/plugins/$output_modifier.php");
-			}
-		}
 
 		if (isset($_REQUEST["widget"])){
 
@@ -676,35 +663,11 @@ class CreateLayout
 			if (!isset($processed_widget)){
 				$processed_widget = '';
 			}
-				
+
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ($processed_widget));
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
 
-
-			if($widget->output_modifiers){
-				if ($widget->output_modifiers != '[all]'){
-					$output_modifiers = explode("\n", $widget->output_modifiers);
-				}else{
-					$output_modifiers = $this->output_modifiers;
-				}
-				foreach ($output_modifiers as $output_modifier){
-
-					if ($widget->output_modifiers != '[all]'){
-						$output_modifier = trim($output_modifier);
-					}else{
-						$output_modifier = $output_modifier->plugin_name;
-					}
-
-					$modifier = new $output_modifier('');
-
-					$output_modifier_function = $output_modifier;
-
-					$processed_widget = $modifier->$output_modifier_function($processed_widget);
-
-
-				}
-			}
 
 			//apply new location for the whole page
 			$new_header = preg_match("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);

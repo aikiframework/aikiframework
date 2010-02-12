@@ -369,7 +369,6 @@ INSERT INTO `aiki_forms` (`id`, `app_id`, `form_method`, `form_action`, `form_di
 (6, 0, \'\', \'\', \'\', \'aiki_forms\', \'aiki_forms\', \'a:11:{s:9:"tablename";s:10:"aiki_forms";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:33:"form_method|SystemGOD:form method";s:10:"textinput3";s:33:"form_action|SystemGOD:form action";s:10:"textinput4";s:27:"form_dir|SystemGOD:form dir";s:10:"textinput5";s:31:"form_table|SystemGOD:form table";s:10:"textinput6";s:29:"form_name|SystemGOD:form name";s:10:"textblock7";s:31:"form_array|SystemGOD:form array";s:10:"textblock8";s:29:"form_html|SystemGOD:form html";s:10:"textblock9";s:31:"form_query|SystemGOD:form query";}\', \'\', \'\'),
 (8, 0, \'\', \'\', \'\', \'aiki_javascript\', \'aiki_javascript\', \'a:10:{s:9:"tablename";s:15:"aiki_javascript";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:33:"script_name|SystemGOD:script name";s:10:"textinput3";s:35:"script_group|SystemGOD:script group";s:10:"textinput4";s:37:"script_folder|SystemGOD:script folder";s:10:"textblock5";s:23:"script|SystemGOD:script";s:10:"textinput6";s:23:"father|SystemGOD:father";s:10:"textinput7";s:31:"global_use|SystemGOD:global use";s:10:"textinput8";s:29:"is_active|SystemGOD:is active";}\', \'\', \'\'),
 (9, 0, \'\', \'\', \'\', \'aiki_languages\', \'aiki_languages\', \'a:8:{s:9:"tablename";s:14:"aiki_languages";s:4:"pkey";s:2:"id";s:10:"textinput1";s:19:"name|SystemGOD:name";s:10:"textinput2";s:27:"sys_name|SystemGOD:sys name";s:10:"textinput3";s:31:"short_name|SystemGOD:short name";s:10:"textinput4";s:17:"dir|SystemGOD:dir";s:10:"textinput5";s:21:"align|SystemGOD:align";s:10:"textinput6";s:31:"is_default|SystemGOD:is default";}\', \'\', \'\'),
-(11, 0, \'\', \'\', \'\', \'aiki_plugins\', \'aiki_plugins\', \'a:7:{s:9:"tablename";s:12:"aiki_plugins";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:39:"modifiers_name|SystemGOD:modifiers name";s:10:"textinput3";s:41:"modifiers_group|SystemGOD:modifiers group";s:10:"textinput4";s:39:"modifiers_type|SystemGOD:modifiers type";s:10:"textinput5";s:41:"plugin_filename|SystemGOD:plugin filename";}\', \'\', \'\'),
 (12, 0, \'\', \'\', \'\', \'aiki_redirects\', \'aiki_redirects\', \'a:4:{s:9:"tablename";s:14:"aiki_redirects";s:10:"textinput1";s:17:"url|SystemGOD:url";s:10:"textinput2";s:27:"redirect|SystemGOD:redirect";s:10:"textinput3";s:19:"hits|SystemGOD:hits";}\', \'\', \'\'),
 (13, 0, \'\', \'\', \'\', \'aiki_sites\', \'aiki_sites\', \'a:6:{s:9:"tablename";s:10:"aiki_sites";s:4:"pkey";s:7:"site_id";s:10:"textinput1";s:29:"site_name|SystemGOD:site name";s:10:"textinput2";s:37:"site_shortcut|SystemGOD:site shortcut";s:10:"textinput3";s:29:"is_active|SystemGOD:is active";s:10:"textblock4";s:43:"if_closed_output|SystemGOD:if closed output";}\', \'\', \'\'),
 (15, 0, \'\', \'\', \'\', \'aiki_template\', \'aiki_template\', \'a:6:{s:9:"tablename";s:13:"aiki_template";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:37:"template_name|SystemGOD:template name";s:10:"textblock3";s:39:"template_input|SystemGOD:template input";s:10:"textblock4";s:41:"template_output|SystemGOD:template output";}\', \'\', \'\'),
@@ -454,26 +453,6 @@ INSERT INTO `aiki_languages` (`id`, `name`, `sys_name`, `short_name`, `dir`, `al
 (1, \'عربي\', \'arabic\', \'ar\', \'rtl\', \'right\', 0),
 (2, \'English\', \'english\', \'en\', \'ltr\', \'left\', 1),
 (3, \'German\', \'german\', \'de\', \'ltr\', \'left\', 0);
-
---------------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS `aiki_plugins` (
-  `id` int(11) NOT NULL auto_increment,
-  `app_id` int(11) NOT NULL,
-  `plugin_name` varchar(255) NOT NULL,
-  `modifiers_group` varchar(255) NOT NULL,
-  `modifiers_type` varchar(255) NOT NULL,
-  `plugin_filename` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---------------------------------------------------------
-
-INSERT INTO `aiki_plugins` (`id`, `app_id`, `plugin_name`, `modifiers_group`, `modifiers_type`, `plugin_filename`) VALUES
-(1, 0, \'markup_intlinks\', \'aiki_markup\', \'output_modifier\', \'\'),
-(2, 0, \'markup_images\', \'aiki_markup\', \'output_modifier\', \'\'),
-(3, 0, \'markup_extlinks\', \'aiki_markup\', \'output_modifier\', \'\'),
-(4, 0, \'markup_inline\', \'aiki_markup\', \'output_modifier\', \'\');
 
 --------------------------------------------------------
 
