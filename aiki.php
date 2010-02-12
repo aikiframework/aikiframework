@@ -66,7 +66,6 @@ $aiki->load("wiki_markup");
 $aiki->load("languages");
 
 
-
 if(isset($_GET['site'])){
 	$site=$_GET['site'];
 }else{

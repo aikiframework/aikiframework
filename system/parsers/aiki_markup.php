@@ -11,8 +11,17 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_aiki_markup
+class aiki_aiki_markup extends aiki
 {
+	
+	function aiki_parser($text){
+		
+		$text = $this->markup_ajax($text);
+		//$text = $this->datetime($text);
+		$text = $this->aikiTemplates($text);
+		
+		return $text;
+	}
 
 	function markup_ajax($text){
 		global $db;
