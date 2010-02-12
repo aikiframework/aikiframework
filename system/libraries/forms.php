@@ -527,10 +527,13 @@ class aiki_forms
 
 		$form_array = array();
 
+		//if table has records
 		$table_info = $db->get_results("SELECT * FROM $table limit 1");
 
+		//TODO: try again maybe the table is empty
+		
 		if ($table_info){
-			
+
 			$form_array["tablename"] = $table;
 
 			$i = 0;
@@ -575,7 +578,7 @@ class aiki_forms
 			if (isset ($insert_form)){
 				echo "Form for db table: <b>$table</b> created successfully";
 			}
-			
+
 		}else{
 			echo "Sorry db table: <b>$table</b> doesn't exists or unable to create form for it";
 		}
