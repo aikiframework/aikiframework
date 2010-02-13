@@ -18,7 +18,6 @@ class CreateLayout
 	var $kill_widget;
 	var $widget_html;
 	var $forms;
-	var $inherent_operators;
 	var $inherent_id;
 	var $create_widget_cache;
 	var $widgets_css;
@@ -91,8 +90,7 @@ class CreateLayout
 
 
 	function createWidget($widget_id, $widget_group=''){
-		global $db, $aiki,$url, $operators, $language, $operators_key, $dir, $page, $site, $module, $custome_output;
-
+		global $db, $aiki,$url, $language, $dir, $page, $site, $module, $custome_output;
 
 		if ($widget_group){
 
@@ -114,96 +112,99 @@ class CreateLayout
 
 		}
 
-		foreach ($widget_result as $widget){
+		if (isset($widget_result)){
 
-			$this->widgets_css .= $widget->id.'_';
+			foreach ($widget_result as $widget){
 
-			if ($widget->custome_output){
-				$custome_output = true;
-				$this->widget_custome_output = true;
+				$this->widgets_css .= $widget->id.'_';
 
-				if ($widget->custome_header){
-					header("$widget->custome_header");
-				}
-			}
+				if ($widget->custome_output){
+					$custome_output = true;
+					$this->widget_custome_output = true;
 
-			if ($widget->javascript){
-				$this->CallJavaScript[$widget->id] = $widget->javascript;
-			}
-
-			if (!$custome_output and $widget->widget_type){
-				$this->widget_html .= "\n <!--start $widget->id--> \n";
-				//$this->widget_html .= "<div id=\"$widget->style_id\">\n";
-				$this->widget_html .= "<$widget->widget_type id=\"$widget->widget_name\" class=\"$widget->style_id\">\n";
-			}
-
-			$this->createWidgetContent($widget);
-
-			if ($widget->is_father){
-
-				$son_widgets = $db->get_results("SELECT id, display_urls,kill_urls FROM aiki_widgets where father_widget='$widget->id' and is_active=1 and (widget_site='$site' or widget_site ='aiki_shared') and (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url[0]."%' or display_urls LIKE '%".$url->url[0]."|%' or display_urls = '*' or display_urls LIKE '%".$url->url[0]."/%') order by display_order, id");
-
-				if ($son_widgets){
-
-					$son_widget_group = array();
-
-					foreach ( $son_widgets as $son_widget )
-					{
-
-						$url->widget_if_match_url($son_widget);
-						if ($url->create_widget){
-
-							$son_widget_group[] = $son_widget->id;
-							//$this->createWidget($son_widget->id);
-
-						}
+					if ($widget->custome_header){
+						header("$widget->custome_header");
 					}
-					$this->createWidget('', $son_widget_group);
-					$son_widget_group = '';
+				}
+
+				if ($widget->javascript){
+					$this->CallJavaScript[$widget->id] = $widget->javascript;
+				}
+
+				if (!$custome_output and $widget->widget_type){
+					$this->widget_html .= "\n <!--start $widget->id--> \n";
+					//$this->widget_html .= "<div id=\"$widget->style_id\">\n";
+					$this->widget_html .= "<$widget->widget_type id=\"$widget->widget_name\" class=\"$widget->style_id\">\n";
+				}
+
+				$this->createWidgetContent($widget);
+
+				if ($widget->is_father){
+
+					$son_widgets = $db->get_results("SELECT id, display_urls,kill_urls FROM aiki_widgets where father_widget='$widget->id' and is_active=1 and (widget_site='$site' or widget_site ='aiki_shared') and (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url[0]."%' or display_urls LIKE '%".$url->url[0]."|%' or display_urls = '*' or display_urls LIKE '%".$url->url[0]."/%') order by display_order, id");
+
+					if ($son_widgets){
+
+						$son_widget_group = array();
+
+						foreach ( $son_widgets as $son_widget )
+						{
+
+							$url->widget_if_match_url($son_widget);
+							if ($url->create_widget){
+
+								$son_widget_group[] = $son_widget->id;
+								//$this->createWidget($son_widget->id);
+
+							}
+						}
+						$this->createWidget('', $son_widget_group);
+						$son_widget_group = '';
+
+					}
+				}
+
+				if (!$custome_output and $widget->widget_type){
+					$this->widget_html .= "\n</$widget->widget_type>\n\r";
+					$this->widget_html .= "\n <!--$widget->id end--> \n";
+				}
+
+
+
+				if ($this->kill_widget){
+
+					if ($widget->if_no_results){
+						$widget->if_no_results =  $aiki->processVars ($aiki->languages->L10n ("$widget->if_no_results"));
+						$widget->if_no_results = $this->get_global_vars_in_text($widget->if_no_results);
+
+						$dead_widget = '<'.$widget->widget_type.' id="'.$widget->style_id.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
+
+					}else{
+						$dead_widget = "";
+					}
+					$this->widget_html = preg_replace("/<!--start $this->kill_widget-->(.*)<!--$this->kill_widget end-->/s", $dead_widget, $this->widget_html, 1, $count);
+					$this->kill_widget = '';
+				}
+
+
+				if ($widget->widget_target == 'body'){
+
+					$this->html_output .= $this->widget_html;
+
+				}else if($widget->widget_target == 'header'){
+
+					$this->head_output .= $this->widget_html;
 
 				}
+
+				$this->widget_html = "";
 			}
-
-			if (!$custome_output and $widget->widget_type){
-				$this->widget_html .= "\n</$widget->widget_type>\n\r";
-				$this->widget_html .= "\n <!--$widget->id end--> \n";
-			}
-
-
-
-			if ($this->kill_widget){
-
-				if ($widget->if_no_results){
-					$widget->if_no_results =  $aiki->processVars ($aiki->languages->L10n ("$widget->if_no_results"));
-					$widget->if_no_results = $this->get_global_vars_in_text($widget->if_no_results);
-
-					$dead_widget = '<'.$widget->widget_type.' id="'.$widget->style_id.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
-
-				}else{
-					$dead_widget = "";
-				}
-				$this->widget_html = preg_replace("/<!--start $this->kill_widget-->(.*)<!--$this->kill_widget end-->/s", $dead_widget, $this->widget_html, 1, $count);
-				$this->kill_widget = '';
-			}
-
-
-			if ($widget->widget_target == 'body'){
-
-				$this->html_output .= $this->widget_html;
-
-			}else if($widget->widget_target == 'header'){
-
-				$this->head_output .= $this->widget_html;
-
-			}
-
-			$this->widget_html = "";
 		}
 
 	}
 
 
-	function createWidgetContent($widget, $output_to_string=''){
+	function createWidgetContent($widget, $output_to_string='', $normal_select=''){
 		global $aiki, $db, $widget_cache, $widget_cache_dir, $url, $language, $dir, $align, $membership, $nogui, $highlight, $records_libs, $image_processing, $custome_output, $config;
 
 		if (isset($_GET['page'])){
@@ -262,11 +263,7 @@ class CreateLayout
 			}
 
 
-			////
 			if ($this->inherent_id == $widget->id){
-				if ($this->inherent_operators){
-					$operators = $this->inherent_operators;
-				}
 				$widget->pagetitle = '';
 			}
 
@@ -310,7 +307,11 @@ class CreateLayout
 			//TODO: add this to settings editor
 			$last_page_first = false;
 
-			$widget->normal_select = trim($widget->normal_select);
+			if (isset($normal_select) and $normal_select){
+				$widget->normal_select = trim($normal_select);
+			}else{
+				$widget->normal_select = trim($widget->normal_select);
+			}
 
 			if ($widget->normal_select){
 
@@ -805,14 +806,17 @@ class CreateLayout
 				$widget_id = explode("|", $widget_info);
 
 				if (isset($widget_id['1'])){
-					$this->inherent_operators = $widget_id['1'];
+					$normal_select = $widget_id['1'];
+				}else{
+					$normal_select = '';
 				}
+
 				$this->inherent_id = $widget_id[0];
 				$widget_id = $widget_id[0];
 
 				$widget_data = $db->get_row("SELECT * FROM aiki_widgets where id='$widget_id' limit 1");
 
-				$widget_data = $this->createWidgetContent($widget_data, true);
+				$widget_data = $this->createWidgetContent($widget_data, true, $normal_select);
 
 				$widget = preg_replace('/\(\#\(inherent\:'.$widget_info.'\)\#\)/', $widget_data , $widget);
 			}

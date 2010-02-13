@@ -21,7 +21,6 @@ class aiki_url
 
 	function aiki_url(){
 
-		//TODO: Display urls from cache
 		
 		if (isset($_GET["pretty"])){
 			$pretty = $_GET["pretty"];
