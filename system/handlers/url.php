@@ -67,7 +67,13 @@ class aiki_url
 
 		foreach ($display_urls_array as $display_url){
 
-			if (preg_match('/^'.$this->url['0'].'$/D', $display_url)){
+			if (preg_match('/\//', $display_url)){
+				$match_pattern = '/'.$this->url['0'].'/D';
+			}else{
+				$match_pattern = '/^'.$this->url['0'].'$/D';
+			}
+				
+			if (preg_match($match_pattern, $display_url)){
 
 				$display_url = explode("/", $display_url);
 
@@ -95,7 +101,7 @@ class aiki_url
 						}else{
 
 							$display_widget = 1;
-							
+								
 						}
 					}
 
