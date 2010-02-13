@@ -39,11 +39,9 @@ class CreateLayout
 			}
 
 		}else{
-
-			$module_widgets = $db->get_results("SELECT id, display_urls, kill_urls FROM aiki_widgets where (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url['0']."%' or display_urls LIKE '%".$url->url['0']."|%' or display_urls LIKE '%".$url->url['0']."/%') and is_active=1 and father_widget=0 and widget_site='$site' order by display_order, id");
+			$module_widgets = $db->get_results("SELECT id, display_urls, kill_urls FROM aiki_widgets where (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url['0']."|%' or display_urls LIKE '%|".$url->url['0']."' or display_urls LIKE '".$url->url['0']."|%' or display_urls LIKE '%".$url->url['0']."/%') and is_active=1 and father_widget=0 and widget_site='$site' order by display_order, id");
 
 			if ($module_widgets){
-
 
 				$widget_group = array();
 
@@ -141,7 +139,7 @@ class CreateLayout
 
 				if ($widget->is_father){
 
-					$son_widgets = $db->get_results("SELECT id, display_urls,kill_urls FROM aiki_widgets where father_widget='$widget->id' and is_active=1 and (widget_site='$site' or widget_site ='aiki_shared') and (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url[0]."%' or display_urls LIKE '%".$url->url[0]."|%' or display_urls = '*' or display_urls LIKE '%".$url->url[0]."/%') order by display_order, id");
+					$son_widgets = $db->get_results("SELECT id, display_urls,kill_urls FROM aiki_widgets where father_widget='$widget->id' and is_active=1 and (widget_site='$site' or widget_site ='aiki_shared') and (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url['0']."|%' or display_urls LIKE '%|".$url->url['0']."' or display_urls LIKE '".$url->url['0']."|%' or display_urls = '*' or display_urls LIKE '%".$url->url['0']."/%') order by display_order, id");
 
 					if ($son_widgets){
 
@@ -818,10 +816,8 @@ class CreateLayout
 
 				$widget_data = $this->createWidgetContent($widget_data, true, $normal_select);
 
-				$widget = preg_replace('/\(\#\(inherent\:'.$widget_info.'\)\#\)/', $widget_data , $widget);
+				$widget = str_replace('(#(inherent:'.$widget_info.')#)', $widget_data , $widget);
 			}
-
-
 		}
 		return $widget;
 	}

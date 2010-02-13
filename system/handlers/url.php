@@ -21,7 +21,7 @@ class aiki_url
 
 	function aiki_url(){
 
-		
+
 		if (isset($_GET["pretty"])){
 			$pretty = $_GET["pretty"];
 			$this->url = $pretty;
@@ -67,7 +67,7 @@ class aiki_url
 
 		foreach ($display_urls_array as $display_url){
 
-			if (preg_match('/'.$this->url['0'].'/', $display_url)){
+			if (preg_match('/^'.$this->url['0'].'$/D', $display_url)){
 
 				$display_url = explode("/", $display_url);
 
@@ -93,8 +93,9 @@ class aiki_url
 							$do_not_display_widget = 1;
 
 						}else{
-							$display_widget = 1;
 
+							$display_widget = 1;
+							
 						}
 					}
 
