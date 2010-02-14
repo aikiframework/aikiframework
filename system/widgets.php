@@ -30,7 +30,7 @@ class CreateLayout
 
 
 		if (isset($_REQUEST["widget"])){
-
+			
 			$get_widget_id = $db->get_var("SELECT id from aiki_widgets where widget_name ='".$_REQUEST['widget']."' and is_active='1' and widget_group='$site'");
 			if ($get_widget_id){
 
@@ -252,7 +252,7 @@ class CreateLayout
 			$this->create_widget_cache = false;
 
 		}else{
-			//widget can't be displayed from cache, so go create it
+			//widget can't be rendered from cache
 
 			//Flag the widget as cachable, and try to delete the old cache file
 			$this->create_widget_cache = true;
@@ -271,7 +271,7 @@ class CreateLayout
 				$widget->widget = $widget->nogui_widget;
 			}
 
-			//security check to view which widget content to display
+			//security check to check which widget content to display
 			if ($widget->is_admin){
 
 				if ($membership->permissions and $widget->if_authorized){
@@ -377,7 +377,6 @@ class CreateLayout
 
 				if ($num_no_res == 0){
 					$widget_select = $db->get_results("$widget->normal_select");
-					//echo count($widget_select);
 				}
 
 

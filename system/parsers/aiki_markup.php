@@ -17,13 +17,17 @@ class aiki_aiki_markup extends aiki
 	function aiki_parser($text){
 
 		$text = $this->markup_ajax($text);
+		$text = $this->images($text);
+		$text = $this->inline($text);
+		$text = $this->intlinks($text);
+		$text = $this->extlinks($text);
 		//$text = $this->datetime($text);
 		$text = $this->aikiTemplates($text);
 
 		return $text;
 	}
 
-	function markup_images($text){
+	function images($text){
 		global $db, $aiki;
 		$numMatches = preg_match_all( '/\{\+\{/', $text, $matches);
 
@@ -66,7 +70,7 @@ class aiki_aiki_markup extends aiki
 				*/
 
 
-			//this will overwrite the alt value in the database
+			//this will overwrite the alt value from the database
 			if (isset($photo_info_array[1]) and $photo_info_array[1] != "0" ){
 				$html_photo .= "alt='$photo_info_array[1]' ";
 			}
@@ -107,7 +111,7 @@ class aiki_aiki_markup extends aiki
 	}
 
 
-	function markup_inline($text){
+	function inline($text){
 
 		$inline = preg_match_all('/\(\#\(inline\:(.*)\)\#\)/U', $text, $matchs);
 
@@ -126,7 +130,7 @@ class aiki_aiki_markup extends aiki
 		return $text;
 	}
 
-	function markup_intlinks($text){
+	function intlinks($text){
 		global $aiki, $membership, $db;
 
 
@@ -268,7 +272,7 @@ class aiki_aiki_markup extends aiki
 	}
 
 
-	function markup_extlinks($text){
+	function extlinks($text){
 		global $aiki;
 
 		$tags_output = array();
