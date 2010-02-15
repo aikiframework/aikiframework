@@ -42,6 +42,12 @@ $config = $aiki->get_config($config);
 
 $membership = $aiki->load("membership");
 
+if (!isset($username) and isset($_SESSION['aiki']))
+$username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aiki']."'");
+
+if (isset($username))
+$membership->getUserPermissions($username);
+
 
 $aiki->load("records");
 $aiki->load("input");
@@ -98,11 +104,5 @@ if(isset($_GET['language'])){
 	$language_short_name =$config['language_short_name'];
 }
 
-
-if (!isset($username) and isset($_SESSION['aiki']))
-$username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aiki']."'");
-
-if (isset($username))
-$membership->getUserPermissions($username);
 
 ?>
