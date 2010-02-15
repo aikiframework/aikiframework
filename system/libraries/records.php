@@ -945,8 +945,8 @@ width:591px;
 
 				if (!$get_permission_and_man_info[1] or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level and $do_not_update != $intwalker['0']){
 
-					$_POST[$intwalker[0]] = str_replace('&lt;', '<' , $_POST[$intwalker[0]]);
-					$_POST[$intwalker[0]] = str_replace('&gt;', '>' , $_POST[$intwalker[0]]);
+					$_POST[$intwalker[0]] = @str_replace('&lt;', '<' , $_POST[$intwalker[0]]);
+					$_POST[$intwalker[0]] = @str_replace('&gt;', '>' , $_POST[$intwalker[0]]);
 
 					$editQuery .= ", ".$intwalker[0]."='".$_POST[$intwalker[0]]."'";
 				}

@@ -31,11 +31,9 @@ class CreateLayout
 
 		if (isset($_REQUEST["widget"])){
 
-			$get_widget_id = $db->get_var("SELECT id from aiki_widgets where widget_name ='".$_REQUEST['widget']."' and is_active='1' and widget_group='$site'");
+			$get_widget_id = $db->get_var("SELECT id from aiki_widgets where widget_name ='".$_REQUEST['widget']."' or id = '".$_REQUEST['widget']."' and is_active='1'");
 			if ($get_widget_id){
-
 				$this->createWidget($get_widget_id);
-
 			}
 
 		}else{
@@ -820,31 +818,29 @@ class CreateLayout
 
 						$output = '
 <script type="text/javascript">
-   $(function () { 
-	$(".editready_'.$primary_value.'").live("click", function () {
-	  var htmldata = $(this).html();
-	  $(this).html(\'<textarea>\' + htmldata + \'</textarea><button id="button_'.$primary_value.'">save</button>\');
-	  $(this).removeClass(\'editready_'.$primary_value.'\');
-	  $(this).addClass(\'editdone_'.$primary_value.'\');
-	} );
+$(function () { 
+$(".editready_'.$primary_value.'").live("click", function () {
+var htmldata = $(this).html();
+$(this).html(\'<textarea>\' + htmldata + \'</textarea><button id="button_'.$primary_value.'">save</button>\');
+$(this).removeClass(\'editready_'.$primary_value.'\');
+$(this).addClass(\'editdone_'.$primary_value.'\');
+});
 
-	$("#button_'.$primary_value.'").live("click", function () {
-	  var htmldata = $("#'.$primary_value.' textarea").val();
-	  var originaldata = $("#'.$primary_value.' textarea").text();
+$("#button_'.$primary_value.'").live("click", function () {
+var htmldata = $("#'.$primary_value.' textarea").val();
+var originaldata = $("#'.$primary_value.' textarea").text();
 if (htmldata != originaldata){
-
-$.post("?",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
-   	  $("div #'.$primary_value.'").removeClass(\'editdone_'.$primary_value.'\');
-	  $("div #'.$primary_value.'").addClass(\'editready_'.$primary_value.'\');
-      $("div #'.$primary_value.'").html(htmldata);
- });
-
+$.post("?noheaders=true&nogui=true&widget=0",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
+$("div #'.$primary_value.'").removeClass(\'editdone_'.$primary_value.'\');
+$("div #'.$primary_value.'").addClass(\'editready_'.$primary_value.'\');
+$("div #'.$primary_value.'").html(htmldata);
+});
 }
-	} );
-
-    } );
-</script>				
-				';
+});
+});
+</script>
+';
+						$output = str_replace("\n", '', $output);
 
 						$output .= '<div id="'.$primary_value.'" class="editready_'.$primary_value.'">'.$widget_value->$field.'</div>';
 					}
