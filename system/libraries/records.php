@@ -539,7 +539,7 @@ width:591px;
 					case "email":
 
 						if (!$aiki_text_engine->is_valid("email",$_POST[$intwalker[0]])){
-							$form .= "<b>تنبيه: عنوان البريد الإلكتروني الذي أدخلته غير صحيح</b><br />";
+							$form .= "<b>The email address is not valid</b><br />";
 							$this->stop = true;
 						}
 
@@ -554,7 +554,7 @@ width:591px;
 
 						if ($this->record_exists($_POST[$intwalker[0]], $tablename, $intwalker[0])){
 
-							$form .= "<b>عذراً هذا الاسم مستخدم الرجاء اختيار اسم آخر.</b><br />";
+							$form .= "<b>This value is already in use</b><br />";
 							$this->stop = true;
 						}
 						break;
@@ -968,6 +968,7 @@ width:591px;
 
 		return $output_result;
 	}
+	
 
 }
 

@@ -20,7 +20,7 @@ class aiki_security
 
 
 		//TODO: add option to allow higer groups to view the contents
-		//for example: (#(permissions:ModulesGOD|allow_highers:<html></html>)#)
+		//for example: (#(permissions:ModulesGOD|allow_higher:<html></html>)#)
 
 		$inline = preg_match_all('/\(\#\(permissions\:(.*)\)\#\)/U', $text, $matchs);
 		if ($inline > 0){

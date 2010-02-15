@@ -30,7 +30,7 @@ class CreateLayout
 
 
 		if (isset($_REQUEST["widget"])){
-			
+
 			$get_widget_id = $db->get_var("SELECT id from aiki_widgets where widget_name ='".$_REQUEST['widget']."' and is_active='1' and widget_group='$site'");
 			if ($get_widget_id){
 
@@ -557,6 +557,9 @@ class CreateLayout
 
 						$widget->widget = $this->parsDBpars($widget->widget, $widget_value);
 
+						$widget->widget = $this->edit_in_place($widget->widget, $widget_value);
+
+
 
 						$nl2br = $aiki->get_string_between($widget->widget, "[*[", "]*]");
 						if ($nl2br){
@@ -778,6 +781,87 @@ class CreateLayout
 		}
 		return $text;
 	}
+
+
+	function edit_in_place($text, $widget_value){
+		global $aiki,$db, $membership;
+
+		$edit_matchs = preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
+
+		if ($edit_matchs > 0){
+
+			foreach ($matchs[1] as $edit){
+
+				$table = $aiki->get_string_between($edit , "<table>", "</table>");
+				$table = trim($table);
+				$form_num = $db->get_var("select id from aiki_forms where form_table = '$table'");
+
+				$field = $aiki->get_string_between($edit , "<field>", "</field>");
+				$field = trim($field);
+
+				$primary = $aiki->get_string_between($edit , "<primary>", "</primary>");
+				if (!$primary){$primary = 'id';}
+				$primary = trim($primary);
+				$primary_value = $widget_value->$primary;
+
+				$type = $aiki->get_string_between($edit , "<type>", "</type>");
+				if (!$type){$type = 'textarea';}
+				$type = trim($type);
+
+				if ($form_num){
+
+					$permissions = $aiki->get_string_between($edit , "<permissions>", "</permissions>");
+					$permissions = trim($permissions);
+					if ($permissions and $permissions != $membership->permissions){
+
+						$output = '';
+						
+					}else{
+
+						$output = '
+<script type="text/javascript">
+   $(function () { 
+	$(".editready_'.$primary_value.'").live("click", function () {
+	  var htmldata = $(this).html();
+	  $(this).html(\'<textarea>\' + htmldata + \'</textarea><button id="button_'.$primary_value.'">save</button>\');
+	  $(this).removeClass(\'editready_'.$primary_value.'\');
+	  $(this).addClass(\'editdone_'.$primary_value.'\');
+	} );
+
+	$("#button_'.$primary_value.'").live("click", function () {
+	  var htmldata = $("#'.$primary_value.' textarea").val();
+	  var originaldata = $("#'.$primary_value.' textarea").text();
+if (htmldata != originaldata){
+
+$.post("?",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
+   	  $("div #'.$primary_value.'").removeClass(\'editdone_'.$primary_value.'\');
+	  $("div #'.$primary_value.'").addClass(\'editready_'.$primary_value.'\');
+      $("div #'.$primary_value.'").html(htmldata);
+ });
+
+}
+	} );
+
+    } );
+</script>				
+				';
+
+						$output .= '<div id="'.$primary_value.'" class="editready_'.$primary_value.'">'.$widget_value->$field.'</div>';
+					}
+				}else{
+					$output = 'error: wrong table name';
+				}
+
+
+				$text = str_replace("<edit>$edit</edit>", $output , $text);
+
+			}
+
+		}
+
+		return $text;
+	}
+
 
 	function inline_widgets($widget){
 

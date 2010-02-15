@@ -27,7 +27,6 @@ class aiki_input
 
 			$req = $aiki->escape($req);
 
-
 			$_POST[$key] = $req;
 
 			switch ($key){
