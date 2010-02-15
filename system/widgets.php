@@ -553,6 +553,8 @@ class CreateLayout
 						}
 
 
+						$widgetContents = $this->noaiki($widgetContents);
+						
 						$widget->widget = $this->parsDBpars($widget->widget, $widget_value);
 
 						$widget->widget = $this->edit_in_place($widget->widget, $widget_value);
@@ -714,21 +716,18 @@ class CreateLayout
 	function noaiki($text){
 		global $aiki;
 
-		$widget_no_aiki = $aiki->get_string_between($text, "<no_aiki>", "</no_aiki>");
+		$widget_no_aiki = $aiki->get_string_between($text, "<noaiki>", "</noaiki>");
 
 		if ($widget_no_aiki){
 
 			$html_widget = htmlspecialchars($widget_no_aiki);
 
-			//For some reason htmlspecialchars() don't work all the time
-			//so we have to do this
-
-			$html_chars = array(")", "(", "[", "]", "{", "|", "}");
-			$html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;");
+			$html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">");
+			$html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;");
 
 			$html_widget = str_replace($html_chars, $html_entities, $html_widget);
 
-			$text = str_replace("<no_aiki>$widget_no_aiki</no_aiki>", $html_widget, $text);
+			$text = str_replace("<noaiki>$widget_no_aiki</noaiki>", $html_widget, $text);
 
 		}
 		return $text;
