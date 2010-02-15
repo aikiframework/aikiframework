@@ -501,7 +501,7 @@ width:591px;
 
 			if (isset($intwalker['2'])){
 				switch ($intwalker['2']){
-						
+
 					case "full_path":
 						$full_path = $_POST[$intwalker[0]]; //get full path dir value
 						if (!$full_path){
@@ -854,7 +854,7 @@ width:591px;
 
 	function edit_db_record_by_form_post($post, $form_id, $record_id){
 		global $db, $aiki, $membership;
-		
+
 		$form = $db->get_row("SELECT * from aiki_forms where id='$form_id' limit 1");
 
 		$form_array = unserialize($form->form_array);
@@ -900,7 +900,7 @@ width:591px;
 		foreach($form_array as $field)
 		{
 			$do_not_update = '';
-				
+
 			if ($field != $tablename and $field != $pkey and $field != $upload and $field != $submit){
 				$intwalker = explode(":", $field);
 
@@ -942,7 +942,6 @@ width:591px;
 				if ($get_permission_and_man_info[1]){
 					$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_permission_and_man_info[1]'");
 				}
-				
 
 				if ((!$get_permission_and_man_info[1] or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level) and $do_not_update != $intwalker['0'] and isset($_POST[$intwalker[0]])){
 

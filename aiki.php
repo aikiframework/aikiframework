@@ -45,8 +45,12 @@ $membership = $aiki->load("membership");
 if (!isset($username) and isset($_SESSION['aiki']))
 $username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aiki']."'");
 
-if (isset($username))
-$membership->getUserPermissions($username);
+if (isset($username)){
+	$membership->getUserPermissions($username);
+}else{
+	$membership->group_level = true;
+	$membership->permissions = 'ViewPublished';
+}
 
 
 $aiki->load("records");
