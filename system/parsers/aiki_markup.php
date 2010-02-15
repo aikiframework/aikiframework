@@ -21,10 +21,36 @@ class aiki_aiki_markup extends aiki
 		$text = $this->inline($text);
 		$text = $this->intlinks($text);
 		$text = $this->extlinks($text);
-		//$text = $this->datetime($text);
+		//$text = $this->datetime($text, $widget_value);
+		//$text = $this->tags($text, $widget_value);
 		$text = $this->aikiTemplates($text);
 
 		return $text;
+	}
+
+	function tags($text, $widget_value){
+		global $db, $aiki;
+
+		$tags = $aiki->get_string_between($text, "(#(tags:", ")#)");
+		if ($tags){
+			$tagsides = explode("||", $tags);
+
+			/*$tag_cloud = "[[relatedKeywords]]:
+			 <br />
+			 <ul>";*/
+			$tags_links = explode("|", $widget_value->$tagsides[0]);
+			foreach ($tags_links as $tag_link){
+				if ($tag_link){
+					$tag_cloud .= ' | <a href="[root]/'.$tagsides[1].'" rel="tag">'.$tag_link.'</a>';
+					$tag_cloud = str_replace("_self", $tag_link, $tag_cloud);
+				}
+			}
+			//$tag_cloud .= "</ul>";
+			$text = str_replace("(#(tags:$tags)#)", $tag_cloud , $text);
+		}
+
+		return $text;
+
 	}
 
 	function images($text){

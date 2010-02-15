@@ -532,27 +532,6 @@ class CreateLayout
 						}
 
 
-
-						//TODO: move this to a plugin
-						$tags = $aiki->get_string_between($widget->widget, "(#(tags:", ")#)");
-						if ($tags){
-							$tagsides = explode("||", $tags);
-
-							/*$tag_cloud = "[[relatedKeywords]]:
-							 <br />
-							 <ul>";*/
-							$tags_links = explode("|", $widget_value->$tagsides[0]);
-							foreach ($tags_links as $tag_link){
-								if ($tag_link){
-									$tag_cloud .= ' | <a href="aikicore->setting[url]/'.$tagsides[1].'" rel="tag">'.$tag_link.'</a>';
-									$tag_cloud = str_replace("_self", $tag_link, $tag_cloud);
-								}
-							}
-							//$tag_cloud .= "</ul>";
-							$widget->widget = str_replace("(#(tags:$tags)#)", $tag_cloud , $widget->widget);
-						}
-
-
 						$widgetContents = $this->noaiki($widgetContents);
 						
 						$widget->widget = $this->parsDBpars($widget->widget, $widget_value);
