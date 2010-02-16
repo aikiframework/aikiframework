@@ -16,7 +16,7 @@ class aiki_bot
 	var $timeout = 20;
 	var $url;
 
-	function improt_mockup($url, $theme, $display_url){
+	function import_mockup($url, $theme, $display_url){
 		global $aiki, $db, $config;
 
 		$this->url = $url;
