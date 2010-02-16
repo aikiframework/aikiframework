@@ -13,10 +13,13 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class aiki_bot
 {
-	var $timeout = 5;
+	var $timeout = 20;
+	var $url;
 
 	function improt_mockup($url, $theme, $display_url){
 		global $aiki, $db, $config;
+
+		$this->url = $url;
 
 		$ch = curl_init();
 		curl_setopt ($ch, CURLOPT_URL, $url);
@@ -40,6 +43,19 @@ class aiki_bot
 
 			}
 
+
+
+			$head = $aiki->get_string_between($content , "<head>", "</head>");
+
+			if (isset($head)){
+				$head = trim($head);
+				$css = $this->import_css($head);
+				$css = addslashes($css);
+			}else{
+				$css = '';
+			}
+
+
 			$body = $aiki->get_string_between($content , "<body>", "</body>");
 
 			if (isset($body)){
@@ -48,7 +64,7 @@ class aiki_bot
 				$body = str_replace('"', "'", $body);
 
 				$doc = new DOMDocument();
-				$doc->loadHTML($body);
+				@$doc->loadHTML($body);
 				$divs = $doc->getElementsByTagName('div');
 
 				$i = 0;
@@ -88,7 +104,8 @@ class aiki_bot
 						$father_name = $aiki->get_string_between($father_dev, "id='", "'");
 						$father_class = $aiki->get_string_between($father_dev, "class='", "'");
 
-						$do = $db->query("INSERT INTO aiki_widgets (`id` ,`widget_name` ,`widget_site` ,`widget_target` ,`widget_type` ,`display_order` ,`style_id` ,`is_father` ,`father_widget` ,`display_urls` ,`widget` ,`is_active`) VALUES (NULL, '$father_name', 'default', 'body', 'div', '$i', '$father_class', '1', '', '$display_url', '', '1')");
+						$do = $db->query("INSERT INTO aiki_widgets (`id` ,`widget_name` ,`widget_site` ,`widget_target` ,`widget_type` ,`display_order` ,`style_id` ,`is_father` ,`father_widget` ,`display_urls` ,`widget` ,`is_active`, `css`) VALUES (NULL, '$father_name', 'default', 'body', 'div', '$i', '$father_class', '1', '', '$display_url', '', '1', '$css')");
+						$css = '';
 
 					}
 
@@ -97,7 +114,7 @@ class aiki_bot
 				//set fathers:
 				$widgets = $db->get_results("select id, is_father from aiki_widgets where display_urls='$display_url' order by display_order");
 				if ($widgets){
-						
+
 					foreach ($widgets as $widget){
 
 						if (isset($next_is_son) and $next_is_son != 0){
@@ -128,9 +145,38 @@ class aiki_bot
 
 	}
 
-	function import_css(){
+	function import_css($head){
 
+		$css_matchs = preg_match_all('/\<link href\=\"(.*)\" type\=\"text\/css\" rel=\"stylesheet\" \/\>/Us', $head, $matchs);
 
+		if ($css_matchs > 0){
+			$css = '';
+			foreach ($matchs[1] as $css_link){
+
+				if (preg_match('/http/', $css_link)){
+					$link = $css_link;
+				}else{
+					$link = preg_replace('/(.*)\/(.*)/', '\\1'.'/'.$css_link, $this->url);
+				}
+
+				$ch = curl_init();
+				curl_setopt ($ch, CURLOPT_URL, $link);
+				curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
+
+				ob_start();
+				curl_exec($ch);
+				curl_close($ch);
+				$content = ob_get_contents();
+				ob_end_clean();
+
+				if ($content !== false) {
+					$css .= $content;
+				}
+
+			}
+		}
+
+		return $css;
 	}
 
 
