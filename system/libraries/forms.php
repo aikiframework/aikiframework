@@ -75,7 +75,7 @@ class aiki_forms
 					 foreach($form_static_values as $static_vaule){
 					 	$static_value_sides = explode("=", $static_vaule);
 
-					 	$form_output = preg_replace("/name\=\"$static_value_sides[0]\"/U", "name='$static_value_sides[0]' value='$static_value_sides[1]'", $form_output);
+					 	$form_output = @preg_replace("/name\=\"$static_value_sides[0]\"/U", "name='$static_value_sides[0]' value='$static_value_sides[1]'", $form_output);
 
 					 }
 					}

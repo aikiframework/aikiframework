@@ -45,8 +45,7 @@ class aiki_membership
 
 			$insert_session = $db->query("INSERT INTO aiki_users_sessions (`session_id`,`user_id`,`user_name`,`session_date`,`user_session`, `user_ip`) VALUES ('','$get_user->userid','$username',NOW(),'$usersession','$user_ip')");
 			$update_acces = $db->query("UPDATE `aiki_users` SET `last_login`= NOW(),`last_ip`='$user_ip', `logins_number`=`logins_number`+1 WHERE `userid`='$get_user->userid' LIMIT 1");
-			//echo '<META HTTP-EQUIV="refresh" content="1"><center><b>الرجاء الانتظار... جاري تسجيل الدخول</b></center>';
-			//die();
+			//echo '<META HTTP-EQUIV="refresh" content="1"><center><b>Logging in please wait</b></center>';
 			
 		} else{
 			echo '<center><b>Sorry wrong username or password</b></center>';
@@ -86,7 +85,7 @@ class aiki_membership
 	}
 
 	//function from Membership V1.0
-	//http://AwesomePHP.com/gpl.txt
+	//http://AwesomePHP.com/
 	function get_ip(){
 		$ipParts = explode(".", $_SERVER['REMOTE_ADDR']);
 		if ($ipParts[0] == "165" && $ipParts[1] == "21") {

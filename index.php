@@ -110,13 +110,13 @@ if (!isset($noheaders)){
 
 
 // Tidy from php5-tidy using libtidy
-if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and isset($html_tidy) and isset($tidy_config)) {
+if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $config["html_tidy"]) {
 
 	$tidy = new tidy();
-	$tidy->parseString($html_output, $tidy_config, 'utf8');
+	$tidy->parseString($html_output, $config["html_tidy_config"], 'utf8');
 	$tidy->cleanRepair();
 
-	if ($tidy_compress){
+	if ($config["tidy_compress"]){
 		echo preg_replace("/\r?\n/m", "",tidy_get_output($tidy));
 	}else{
 		echo tidy_get_output($tidy);

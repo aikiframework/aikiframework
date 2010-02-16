@@ -129,7 +129,6 @@ class CreateLayout
 
 				if (!$custome_output and $widget->widget_type){
 					$this->widget_html .= "\n <!--start $widget->id--> \n";
-					//$this->widget_html .= "<div id=\"$widget->style_id\">\n";
 					$this->widget_html .= "<$widget->widget_type id=\"$widget->widget_name\" class=\"$widget->style_id\">\n";
 				}
 
@@ -472,8 +471,6 @@ class CreateLayout
 				$widget->widget = str_replace("[#[dir]#]", $dir, $widget->widget);
 				$widget->widget = str_replace("[#[align]#]", $align, $widget->widget);
 
-				//$widget->widget = str_replace("((","((", $widget->widget, $count);
-				//$count = preg_match_all( '/\(\(/', $widget->widget, $matches );
 
 				$newwidget = $widget->widget;
 
@@ -509,8 +506,7 @@ class CreateLayout
 							foreach ($related_links as $related_link){
 
 								$get_sim_topics = $db->get_results("SELECT $relatedsides[2], $relatedsides[7] FROM $relatedsides[1] where ($relatedsides[3] LIKE '%|".$related_link."|%' or $relatedsides[3] LIKE '".$related_link."|%' or $relatedsides[3] LIKE '%|".$related_link."' or $relatedsides[3]='$related_link') and $relatedsides[7] != '$operators' and publish_cond=2 order by $relatedsides[5] DESC limit $relatedsides[4]");
-								//$get_sim_topics = $db->get_results("SELECT $relatedsides[2], $relatedsides[7] FROM $relatedsides[1] where ($relatedsides[3] LIKE '%".$related_link."|%' or $relatedsides[3] LIKE '%|".$related_link."%' or $relatedsides[3]='$related_link') and $relatedsides[7] != '$operators' and publish_cond=2 order by $relatedsides[5] DESC limit $relatedsides[4]");
-								//$get_sim_topics = $db->get_results("SELECT $relatedsides[2], $relatedsides[7] FROM $relatedsides[1] where $relatedsides[3]='$related_link' and $relatedsides[7] != '$operators' and publish_cond=2 order by $relatedsides[5] DESC limit $relatedsides[4]");
+
 								if ($get_sim_topics){
 
 									foreach($get_sim_topics as $related_topic){
@@ -533,7 +529,7 @@ class CreateLayout
 
 
 						$widgetContents = $this->noaiki($widgetContents);
-						
+
 						$widget->widget = $this->parsDBpars($widget->widget, $widget_value);
 
 						$widget->widget = $this->edit_in_place($widget->widget, $widget_value);
@@ -786,7 +782,7 @@ class CreateLayout
 					if ($permissions and $permissions != $membership->permissions){
 
 						$output = '';
-						
+
 					}else{
 
 						$output = '

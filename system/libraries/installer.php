@@ -156,22 +156,19 @@ if (!isset($_POST['db_type']) or !isset($_POST['db_host']) or !isset($_POST['db_
 before we start doing the hard work ( filling the form bellow ) I need you to check the following for me:
 <br />
 <br />
-1- please make sure that <b>'.$system_folder.'</b> has script write permissions that is: 777 ( I need to create config.php and .htaccess inside )
+1- please make sure that <b>'.$system_folder.'</b> has script write permissions that is: 775 ( I need to create config.php and .htaccess inside )
 <br />
 <br />
 2- please create an empty database, it will be great if you set the connection collation to utf8_general_ci.
 <br />
 <br />
-3- make sure you are using php 5.1 or above ( I am alpha and not fully tested on other versions )
+3- make sure you are using php 5.1 or above
 <br />
 <br />
 4- please enable mod_rewrite inside your apache2 httpd.conf (do not say you are still using apache 1) 
 <br />
 <br />
-5- I am not tested on windows machines so if you have problems during the one step installation, please consider Linux alternative
-<br />
-<br />
-6- aiki framework is in alpha mode. if you have problems please join #aiki on freenode 
+5- aiki framework is in beta mode. if you have problems please join #aiki on freenode 
 </p>	
 	
 <form method="post" id="form">
@@ -222,9 +219,12 @@ $config["cache_dir"] = "";//db cacheing
 $config["enable_query_cache"] = false;
 
 $config["html_tidy"] = false;
-
 $config["tidy_compress"] = false;
-
+$config["html_tidy_config"] = array(
+ \'indent\'         => true,
+ \'output-xhtml\' =>    true,
+ \'wrap\' =>    \'0\',
+);
 
 $config["widget_cache"] = false;
 $config["widget_cache_dir"] = "widgets";
