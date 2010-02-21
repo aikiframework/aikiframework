@@ -241,6 +241,7 @@ $config["javascript_cache_file"] = "";
 $config["html_cache"] = false;
 $config["cache_timeout"] = "24";
 
+$config["session_timeout"] = 3600; //ms
 $config["allow_multiple_sessions"] = false;
 
 $config["error_404"] = "<h1>404 Page Not Found</h1>

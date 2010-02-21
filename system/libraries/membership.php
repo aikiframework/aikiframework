@@ -21,7 +21,7 @@ class aiki_membership
 
 
 	function aiki_membership(){
-		global $db;
+		global $db, $config;
 
 		session_start();
 
@@ -50,10 +50,11 @@ class aiki_membership
 			$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' ,`last_ip`='$user_ip', `hits`=`hits`+1 WHERE `user_session`='$_SESSION[guest]' LIMIT 1");
 		}
 
-		//Delete inactive online users
-		$last_hour = time()."-3600";
-		$make_offline = $db->query("DELETE FROM `aiki_users_sessions` WHERE last_hit_unix < $last_hour");
-
+		if (isset($config["session_timeout"])){
+			$timeout = $config["session_timeout"];
+			$last_hour = time()."-$timeout";
+			$make_offline = $db->query("DELETE FROM `aiki_users_sessions` WHERE last_hit_unix < $last_hour");
+		}
 
 	}
 
