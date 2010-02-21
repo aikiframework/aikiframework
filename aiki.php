@@ -36,21 +36,23 @@ if (file_exists("$system_folder/config.php")){
 require_once("$system_folder/system/database/index.php");
 
 require_once ("$system_folder/system/index.php");
+
 $aiki = new aiki();
 
 $config = $aiki->get_config($config);
 
 $membership = $aiki->load("membership");
 
-if (!isset($username) and isset($_SESSION['aiki']))
-$username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aiki']."'");
 
-if (isset($username)){
-	$membership->getUserPermissions($username);
+if(isset($_GET['site'])){
+	$site=$_GET['site'];
 }else{
-	$membership->group_level = true;
-	$membership->permissions = 'ViewPublished';
+	$site = $config['site'];
 }
+
+$site_info = $db->get_row("SELECT * from aiki_sites where site_shortcut='$site' limit 1");
+if ($site_info->is_active != 1){ die($site_info->if_closed_output); }
+
 
 
 $aiki->load("records");
@@ -74,17 +76,6 @@ $aiki->load("javascript");
 $aiki->load("sql_markup");
 $aiki->load("wiki_markup");
 $aiki->load("languages");
-
-
-if(isset($_GET['site'])){
-	$site=$_GET['site'];
-}else{
-	$site = $config['site'];
-}
-
-$site_info = $db->get_row("SELECT * from aiki_sites where site_shortcut='$site' limit 1");
-if ($site_info->is_active != 1){ die($site_info->if_closed_output); }
-
 
 $errors = $aiki->load("errors");
 

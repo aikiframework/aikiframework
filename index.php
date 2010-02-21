@@ -30,42 +30,6 @@ if (isset($global_widget)){
 	$nogui = true;
 }
 
-$user_ip = $membership->get_ip();
-
-if (isset($_SESSION['guest']))
-$current_session = $_SESSION['guest'];
-
-
-if (isset($_SESSION['aiki']))
-$current_session = $_SESSION['aiki'];
-
-if (!isset($_SESSION['aiki']) and !isset($_SESSION['guest'])){
-
-	//session_start();
-	$_SESSION['guest'] = $membership->generate_session(100);
-	$current_session = $_SESSION['guest'];
-
-	$insert_session = $db->query("INSERT INTO aiki_guests VALUES ('', NOW(), NOW(),".time().",'$user_ip', '', 'guest' ,'$_SESSION[guest]','0', '1')");
-
-
-}elseif (isset($_SESSION['aiki']) and isset($_SESSION['guest'])){
-
-
-	$make_offline = $db->query("UPDATE `aiki_guests` SET `is_online`='0' WHERE `guest_session`='$_SESSION[guest]' LIMIT 1");
-
-	unset($_SESSION['guest']);
-	$current_session = $_SESSION['aiki'];
-
-	$insert_session = $db->query("INSERT INTO aiki_guests VALUES ('', NOW(), NOW(),".time().",'$user_ip', '', '$membership->username' ,'$_SESSION[aiki]','0', '1')");
-
-}else{
-	$update_guest = $db->query("UPDATE `aiki_guests` SET `last_hit`=NOW(), last_hit_unix = ".time()." ,`last_ip`='$user_ip', `hits`=`hits`+1 WHERE `guest_session`='$current_session' LIMIT 1");
-}
-
-//Delete inactive online users
-$last_hour = time()."-3600";
-$make_offline = $db->query("DELETE FROM `aiki_guests` WHERE last_hit_unix < $last_hour");
-
 
 if ($layout->widget_custome_output){
 	$noheaders = true;

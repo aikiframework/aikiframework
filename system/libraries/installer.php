@@ -379,22 +379,6 @@ INSERT INTO `aiki_forms` (`id`, `app_id`, `form_method`, `form_action`, `form_di
 
 --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `aiki_guests` (
-  `userid` int(9) unsigned NOT NULL auto_increment,
-  `first_login` datetime NOT NULL,
-  `last_hit` datetime NOT NULL,
-  `last_hit_unix` int(11) NOT NULL,
-  `ip` varchar(40) NOT NULL,
-  `last_ip` varchar(40) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `guest_session` varchar(255) NOT NULL,
-  `hits` int(11) NOT NULL,
-  `is_online` int(11) NOT NULL,
-  PRIMARY KEY  (`userid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS `aiki_internal_links` (
   `name` varchar(250) NOT NULL default \'\',
   `tagstart` varchar(250) NOT NULL default \'\',
@@ -578,13 +562,16 @@ INSERT INTO `aiki_users_groups` (`id`, `app_id`, `name`, `group_permissions`, `g
 --------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `aiki_users_sessions` (
-  `session_id` int(11) NOT NULL auto_increment,
+  `session_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `user_name` varchar(255) NOT NULL,
-  `session_date` datetime NOT NULL,
+  `session_start` int(11) NOT NULL,
+  `last_hit` int(11) NOT NULL,
   `user_session` varchar(255) NOT NULL,
+  `hits` int(11) NOT NULL,
   `user_ip` varchar(100) NOT NULL,
-  PRIMARY KEY  (`session_id`)
+  `last_ip` varchar(100) NOT NULL,
+  PRIMARY KEY (`session_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --------------------------------------------------------
