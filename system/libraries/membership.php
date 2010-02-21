@@ -58,7 +58,7 @@ class aiki_membership
 	}
 
 	function login ($username, $password){
-		global $db, $layout;
+		global $db, $layout, $config;
 
 		$password = stripslashes($password);
 		$password = md5(md5($password));
@@ -75,14 +75,16 @@ class aiki_membership
 			//setcookie("usersession", $usersession, time()+31104000000, "/", $host_name, 0);
 
 			$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='$get_user->userid', `user_name` = '$get_user->username' WHERE `user_session`='$_SESSION[aiki]' LIMIT 1");
-			
-			$delete_previous_open_sessions =$db->query("DELETE FROM `aiki_users_sessions` WHERE `user_session`!='$_SESSION[aiki]' and `user_name` = '$get_user->username' and `user_id`='$get_user->userid'");
-				
+
+			if (!isset($config["allow_multiple_sessions"])){
+				$delete_previous_open_sessions =$db->query("DELETE FROM `aiki_users_sessions` WHERE `user_session`!='$_SESSION[aiki]' and `user_name` = '$get_user->username' and `user_id`='$get_user->userid'");
+			}
+
 			$this->getUserPermissions($get_user->username);
 
 			$update_acces = $db->query("UPDATE `aiki_users` SET `last_login`= NOW(),`last_ip`='$user_ip', `logins_number`=`logins_number`+1 WHERE `userid`='$get_user->userid' LIMIT 1");
 
-				
+
 		} else{
 			echo '<center><b>Sorry wrong username or password</b></center>';
 		}
