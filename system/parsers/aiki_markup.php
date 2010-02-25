@@ -40,6 +40,7 @@ class aiki_aiki_markup extends aiki
 			$tag_cloud = '';
 			foreach ($tags_links as $tag_link){
 				if ($tag_link){
+					$tag_link = trim($tag_link);
 					$tag_cloud .= ' , <a href="[root]/'.$tagsides[1].'" rel="tag">'.$tag_link.'</a>';
 					$tag_cloud = str_replace("_self", $tag_link, $tag_cloud);
 				}
