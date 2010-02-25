@@ -486,6 +486,7 @@ class CreateLayout
 						$widget->widget = $newwidget;
 
 						$widget->widget = $aiki->aiki_markup->datetime($widget->widget, $widget_value);
+						$widget->widget = $aiki->aiki_markup->tags($widget->widget, $widget_value);
 
 						//TODO: add output modifiers like this in mysql
 						$normaldatetime = $aiki->get_string_between($widget->widget, "(#(normaldatetime:", ")#)");

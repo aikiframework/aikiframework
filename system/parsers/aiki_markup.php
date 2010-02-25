@@ -21,8 +21,6 @@ class aiki_aiki_markup extends aiki
 		$text = $this->inline($text);
 		$text = $this->intlinks($text);
 		$text = $this->extlinks($text);
-		//$text = $this->datetime($text, $widget_value);
-		//$text = $this->tags($text, $widget_value);
 		$text = $this->aikiTemplates($text);
 
 		return $text;
@@ -38,10 +36,11 @@ class aiki_aiki_markup extends aiki
 			/*$tag_cloud = "[[relatedKeywords]]:
 			 <br />
 			 <ul>";*/
-			$tags_links = explode("|", $widget_value->$tagsides[0]);
+			$tags_links = explode(",", $widget_value->$tagsides[0]);
+			$tag_cloud = '';
 			foreach ($tags_links as $tag_link){
 				if ($tag_link){
-					$tag_cloud .= ' | <a href="[root]/'.$tagsides[1].'" rel="tag">'.$tag_link.'</a>';
+					$tag_cloud .= ' , <a href="[root]/'.$tagsides[1].'" rel="tag">'.$tag_link.'</a>';
 					$tag_cloud = str_replace("_self", $tag_link, $tag_cloud);
 				}
 			}

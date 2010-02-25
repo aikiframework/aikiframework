@@ -289,7 +289,7 @@ class aiki_forms
 						switch ($intwalker[2]){
 
 							case "unique_filename":
-								$form .= ("<h2>$intwalker[1]</h2><input dir=\"$get_permission_and_man_info[3]\" type=\"file\" name=\"$intwalker[0]\">");
+								$form .= '<h2>'.$intwalker[1].'</h2><input type="file" name="'.$intwalker[0].'">';
 								$form .= ("<input type=\"hidden\" name=\"unique_filename\" value=\"unique_filename\">");
 								break;
 

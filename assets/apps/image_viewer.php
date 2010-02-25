@@ -127,7 +127,6 @@ if ($id){
 				}
 
 
-
 				switch ($mode){
 					case "svg_to_png":
 

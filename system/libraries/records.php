@@ -422,8 +422,9 @@ width:591px;
 
 
 	function insert_from_form_to_db($post, $form_id){
-		global $db, $aiki, $membership;
+		global $db, $aiki, $membership, $config;
 
+		$output_result = "";
 		$insert_values = "";
 		$tableFields = "";
 		$preinsertQuery = "";
@@ -442,6 +443,8 @@ width:591px;
 
 		if (in_array("send_email", $arraykeys))
 		$send_email = $form_array["send_email"];
+
+
 
 		if (in_array("pkey", $arraykeys)) {
 			$pkey = $form_array["pkey"];
@@ -487,7 +490,7 @@ width:591px;
 			}
 
 			if (isset($get_permission_and_man_info[2]) and $get_permission_and_man_info[2] == "true" and !$_POST[$intwalker[0]]){
-				$form .= "<b>Warning:</b> Please fill $intwalker[1]<br />";
+				$output_result .= "<b>Warning:</b> Please fill $intwalker[1]<br />";
 				$this->stop = true;
 			}
 
@@ -512,7 +515,7 @@ width:591px;
 
 					case "password":
 						if (!$_POST[$intwalker[0]]){
-							$form .= "<b>Please enter a password</b><br />";
+							$output_result .= "<b>Please enter a password</b><br />";
 							$this->stop = true;
 						}
 
@@ -528,6 +531,8 @@ width:591px;
 					case "value":
 						$_POST[$intwalker[0]] = $intwalker[3];
 
+						$_POST[$intwalker[0]] = str_replace("insertedby_username", $membership->username, $_POST[$intwalker[0]]);
+						
 						break;
 
 					case "rand":
@@ -538,8 +543,8 @@ width:591px;
 
 					case "email":
 
-						if (!$aiki_text_engine->is_valid("email",$_POST[$intwalker[0]])){
-							$form .= "<b>The email address is not valid</b><br />";
+						if (!$aiki->text->is_valid("email",$_POST[$intwalker[0]])){
+							$output_result .= "<b>The email address is not valid</b><br />";
 							$this->stop = true;
 						}
 
@@ -554,7 +559,7 @@ width:591px;
 
 						if ($this->record_exists($_POST[$intwalker[0]], $tablename, $intwalker[0])){
 
-							$form .= "<b>This value is already in use</b><br />";
+							$output_result .= "<b>This value is already in use</b><br />";
 							$this->stop = true;
 						}
 						break;
@@ -608,7 +613,12 @@ width:591px;
 				}
 			}
 
-			if (isset($unique_filename) and $unique_filename == $intwalker[2] and $full_path){ //unique_filename processing
+			if (!isset($full_path)){
+				//TODO: fix this
+				$full_path = "people/$membership->username/";
+			}
+
+			if (isset($unique_filename) and isset($intwalker[2]) and $unique_filename == $intwalker[2] and $full_path){ //unique_filename processing
 
 				$uploadexploded = explode(":", $intwalker[0]);
 				$filename = $_FILES[$uploadexploded[0]];
@@ -616,26 +626,32 @@ width:591px;
 				$this->file_name = $name;
 
 
-				$path = $aiki->setting[top_folder]."/".$full_path."";
+				$path = $config['top_folder']."/".$full_path."";
 
 				$tmp_filename = $filename['tmp_name'];
 
 				$this->file_size = filesize($tmp_filename);
 
-				$this->checksum_sha1 = sha1_file($tmp_filename);
-				$this->checksum_md5 = md5_file($tmp_filename);
-				$size = getimagesize($tmp_filename);
-				$this->width = $size["0"];
-				$this->hight = $size["1"];
+				$this->checksum_sha1 = @sha1_file($tmp_filename);
+				$this->checksum_md5 = @md5_file($tmp_filename);
+				$size = @getimagesize($tmp_filename);
+				if ($size){
+					$this->width = $size["0"];
+					$this->hight = $size["1"];
+				}
 
 
 				if ($tmp_filename) {
 					$filename_array = explode(".",$name);
 					//TODO: DOn't allow all extinsions
-					$type= $filename_array[1];
 
+					$type = $filename_array[1];
+					if ($type != "svg" and $type != "SVG"){
+						die("Only svg uploads are allowed");
+					}
 
 					//TODO: check also if file exists for renaming
+
 					if (!$this->record_exists($name, $tablename, $intwalker[0])){ //check if filename already exists
 						$newfile = $path.$name;
 
@@ -653,11 +669,11 @@ width:591px;
 						@$result = move_uploaded_file($tmp_filename,$newfile);
 						if (!$result) {
 
-							if (@mkdir($path,0777)){
-								$form .= "new directory created: $path";
+							if (@mkdir($path,0775)){
+								$output_result .= "new directory created: $path";
 								@$result = move_uploaded_file($tmp_filename,$newfile);
 							}else{
-								$form .= ("folder not found<br />");
+								$output_result .= ("folder not found<br />");
 							}
 						}
 
@@ -669,14 +685,14 @@ width:591px;
 							//$form .= $image_processing->rsvg_convert_svg_png($newfile);
 							//$form .= "</p>";
 
-							$image_processing->rsvg_convert_svg_png($newfile);
+							//$image_processing->rsvg_convert_svg_png($newfile);
 
-							$name = str_replace(".svg", ".png", $name);
+							//$name = str_replace(".svg", ".png", $name);
 
 						}
 
 					} else {
-						$form .=( "Sorry, but that file '$newfile' already exists.");
+						$output_result .=( "Sorry, but that file '$newfile' already exists.");
 					}
 				}
 
@@ -708,10 +724,10 @@ width:591px;
 							}
 
 						} else {
-							$form .=( "Sorry, but that file '$newfile' already exists.");
+							$output_result .=( "Sorry, but that file '$newfile' already exists.");
 						}
 					} else {
-						$form .=("Uploaded 0 files<br />");
+						$output_result .=("Uploaded 0 files<br />");
 					}
 					if ($filename){
 						$imageresize = explode("|", $intwalker[4]);
@@ -772,7 +788,7 @@ width:591px;
 
 			if ($insertResult){
 
-				$output_result = "Added successfully<br />";
+				$output_result .= "Added successfully<br />";
 
 				if ($send_email){
 
@@ -780,7 +796,7 @@ width:591px;
 
 					$get_email = $aiki->get_string_between($send_email[0], '[', ']');
 					if ($get_email){
-						$send_email[0] = $_POST[$get_email];
+						$send_email[0] = $_POST["$get_email"];
 					}
 
 					$get_from = $aiki->get_string_between($send_email[1], '[', ']');

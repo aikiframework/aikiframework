@@ -111,7 +111,7 @@ class aiki_array
 				if (isset($_POST['edit_array'])){
 
 					$outp_key = $_POST[$y.$arrykeys[$i]."_type"];
-					if ($outp_key != 'tablename' and $outp_key != 'pkey'){
+					if ($outp_key != 'tablename' and $outp_key != 'pkey' and $outp_key != 'send_email' and $outp_key != 'unique_filename'){
 						$outp_key = $outp_key.$i;
 					}
 
@@ -134,10 +134,14 @@ class aiki_array
 				<option value="bigtextblock" >bigtextblock</option>
 				<option value="textinput" >textinput</option>
 				<option value="hidden" >hidden</option>
+				<option value="static_input" >static_input</option>
 				<option value="autofield" >autofield</option>
 				<option value="submit" >submit</option>
 				<option value="pkey" >pkey</option>
+				<option value="send_email" >send_email</option>
 				<option value="tablename" >tablename</option>
+				<option value="unique_filename" >unique_filename</option>
+				<option value="filemanager" >filemanager</option>
 				</select>';
 				$html_form .= "<input type='text' name=\"".$y.$arrykeys[$i]."\" value=\"".$field."\" size='35'><br /><br />";
 				$i++;
@@ -154,10 +158,14 @@ class aiki_array
 				<option value="bigtextblock" >bigtextblock</option>
 				<option value="textinput" selected="selected">textinput</option>
 				<option value="hidden" >hidden</option>
+				<option value="static_input" >static_input</option>
 				<option value="autofield" >autofield</option>	
 				<option value="submit" >submit</option>			
 				<option value="pkey" >pkey</option>
+				<option value="send_email" >send_email</option>
 				<option value="tablename" >tablename</option>
+				<option value="unique_filename" >unique_filename</option>
+				<option value="filemanager" >filemanager</option>
 				</select>';			
 			$html_form .= "<input type='text' name=\"right_$newfield\" value=\"\" size='35'></td></tr>";
 

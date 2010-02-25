@@ -55,6 +55,7 @@ if ($site_info->is_active != 1){ die($site_info->if_closed_output); }
 
 
 
+$aiki->load("text");
 $aiki->load("records");
 $aiki->load("input");
 $aiki->load("output");
@@ -67,7 +68,6 @@ $aiki->load("email");
 $aiki->load("ftp");
 $aiki->load("image");
 $aiki->load("security");
-$aiki->load("text");
 $aiki->load("aiki_markup");
 $aiki->load("html");
 $aiki->load("php");
