@@ -17,10 +17,25 @@ class aiki_image
 
 		//check if rsvg exists
 		exec("rsvg -v", $checkversion);
-
+		
+		if ($newwidth < $newhight){
+			$size = $newhight;
+		}else{
+			$size = $newwidth;
+		}
+		
 		if ($checkversion[0]){
-			$filenamepng = str_replace(".svg", ".png", $file);
-
+			
+			$filenopath = explode("/", $file); 
+			$filenopath = array_reverse($filenopath); 
+			
+			$fileno = $filenopath[0];
+			$fileno = str_replace(".svg", ".png", $fileno);
+			$fileno = $size."px-".$fileno;
+			
+			$filenamepng = str_replace($filenopath[0], $fileno, $file);
+			
+			
 			exec("rsvg --width $newwidth --height $newhight $file $filenamepng", $output);
 		}else{
 			$output = "<b>Fatal Error: </b>Can't find (rsvg)";

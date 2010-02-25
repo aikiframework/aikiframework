@@ -99,7 +99,7 @@ if ($id){
 					break;
 			}
 
-			$svgfile = implode(file($original_filename));
+			
 
 			if ($size){
 				$size = str_replace('px', '', $size);
@@ -119,6 +119,8 @@ if ($id){
 
 						}else{
 
+							$svgfile = implode(file($original_filename));
+							
 							$header = get_string_between($svgfile, "<svg", ">");
 
 							$or_width = get_string_between($header, 'width="', '"');
@@ -149,9 +151,9 @@ if ($id){
 								$aiki->image->rsvg_convert_svg_png($or_svg_file, $newwidth, $newhight);
 
 
-								$final_image = imagecreatefrompng($get_root.$image->full_path.$id);
+								$final_image = imagecreatefrompng($get_root.$image->full_path.$size."px-".$id);
 
-								imageresize($get_root.$image->full_path,$id,$size,$size."px-");
+								//imageresize($get_root.$image->full_path,$id,$size,$size."px-");
 
 								imagealphablending($final_image, false);
 								imagesavealpha($final_image, true);
