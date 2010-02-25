@@ -100,31 +100,9 @@ if ($id){
 			}
 
 			$svgfile = implode(file($original_filename));
-			
+
 			if ($size){
 				$size = str_replace('px', '', $size);
-
-				$header = get_string_between($svgfile, "<svg", ">");
-
-				$or_width = get_string_between($header, 'width="', '"');
-				$width = str_replace("px", "", $or_width );
-				$width  = intval($width);
-
-				$or_height = get_string_between($header, 'height="', '"');
-				$height  = str_replace("px", "", $or_height);
-				$height = intval($height);
-
-				$newvalue = $size;
-				if ($width < $height){
-					$newhight = $newvalue;
-					$newwidth = round(($newvalue * $width)/$height);
-				}elseif ($width == $height) {
-					$newhight = $newvalue;
-					$newwidth = $newvalue;
-				}else{
-					$newwidth = $newvalue;
-					$newhight = round(($newvalue * $height)/$width);
-				}
 
 
 				switch ($mode){
@@ -138,15 +116,42 @@ if ($id){
 
 							imagepng($final_image);
 							imagedestroy($final_image);
+
 						}else{
+
+							$header = get_string_between($svgfile, "<svg", ">");
+
+							$or_width = get_string_between($header, 'width="', '"');
+							$width = str_replace("px", "", $or_width );
+							$width  = intval($width);
+
+							$or_height = get_string_between($header, 'height="', '"');
+							$height  = str_replace("px", "", $or_height);
+							$height = intval($height);
+
+							$newvalue = $size;
+							if ($width < $height){
+								$newhight = $newvalue;
+								$newwidth = round(($newvalue * $width)/$height);
+							}elseif ($width == $height) {
+								$newhight = $newvalue;
+								$newwidth = $newvalue;
+							}else{
+								$newwidth = $newvalue;
+								$newhight = round(($newvalue * $height)/$width);
+							}
+
 							$id_svg = str_replace(".png", ".svg", $id);
 							$or_svg_file = $get_root.$image->full_path.$id_svg;
 
 							if (file_exists($or_svg_file)){
-								
+
 								$aiki->image->rsvg_convert_svg_png($or_svg_file, $newwidth, $newhight);
 
+
 								$final_image = imagecreatefrompng($get_root.$image->full_path.$id);
+
+								imageresize($get_root.$image->full_path,$id,$size,$size."px-");
 
 								imagealphablending($final_image, false);
 								imagesavealpha($final_image, true);
