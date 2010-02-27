@@ -37,24 +37,28 @@ class aiki_membership
 
 		$time_now = time();
 
-		$user_ip = $this->get_ip();
+		//$user_ip = $this->get_ip();
 
 
 		if (!isset($_SESSION['aiki']) and !isset($_SESSION['guest'])){
 
 			$_SESSION['guest'] = $this->generate_session(100);
-			$insert_session = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '', 'guest' , '$time_now', '$time_now' ,'$_SESSION[guest]', '1', '$user_ip', '$user_ip')");
+			$insert_session = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '', 'guest' , '$time_now', '$time_now' ,'$_SESSION[guest]', '1', '', '')");
 
 		}else{
 
-			$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' ,`last_ip`='$user_ip', `hits`=`hits`+1 WHERE `user_session`='$_SESSION[guest]' LIMIT 1");
+			$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' WHERE `user_session`='$_SESSION[guest]' LIMIT 1");
 		}
 
 		if (isset($config["session_timeout"])){
 			$timeout = $config["session_timeout"];
-			$last_hour = time()."-$timeout";
-			$make_offline = $db->query("DELETE FROM `aiki_users_sessions` WHERE last_hit_unix < $last_hour");
+		}else{
+			$timeout = 3600;
 		}
+		
+		$last_hour = time()."-$timeout";
+		$make_offline = $db->query("DELETE FROM `aiki_users_sessions` WHERE last_hit < $last_hour");
+
 
 	}
 

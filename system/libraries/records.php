@@ -532,7 +532,7 @@ width:591px;
 						$_POST[$intwalker[0]] = $intwalker[3];
 
 						$_POST[$intwalker[0]] = str_replace("insertedby_username", $membership->username, $_POST[$intwalker[0]]);
-						
+
 						break;
 
 					case "rand":
@@ -554,6 +554,12 @@ width:591px;
 							
 						break;
 							
+
+					case "datetime":
+
+						$_POST[$intwalker[0]]= 'NOW()';
+
+						break;
 
 					case "unique":
 
@@ -783,7 +789,8 @@ width:591px;
 
 			$insertQuery .= "($tableFields) values ($preinsertQuery)";
 			$insertQuery = str_replace(', )', ')', $insertQuery);
-
+			$insertQuery = str_replace("'NOW()'", 'NOW()', $insertQuery);
+			//die("$insertQuery");
 			$insertResult = $db->query($insertQuery);
 
 			if ($insertResult){
