@@ -53,7 +53,7 @@ class aiki_membership
 		if (isset($config["session_timeout"])){
 			$timeout = $config["session_timeout"];
 		}else{
-			$timeout = 3600;
+			$timeout = 2000;
 		}
 		
 		$last_hour = time()."-$timeout";
