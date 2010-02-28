@@ -718,7 +718,7 @@ class CreateLayout
 				$is_array = $aiki->get_string_between($parsed, "[", "]");
 				if ($is_array){
 					$parsed_array = str_replace("[$is_array]", "", $parsed);
-					$array = unserialize($widget_value->$parsed_array);
+					$array = @unserialize($widget_value->$parsed_array);
 					if (isset($array["$is_array"])){
 						$widget_value->$parsed = $array["$is_array"];
 					}else{
@@ -777,6 +777,11 @@ class CreateLayout
 				$field = $aiki->get_string_between($edit , "<field>", "</field>");
 				$field = trim($field);
 
+				$label = $aiki->get_string_between($edit , "<label>", "</label>");
+				if ($label){
+					$label = trim($label);
+				}
+
 				$primary = $aiki->get_string_between($edit , "<primary>", "</primary>");
 				if (!$primary){$primary = 'id';}
 				$primary = trim($primary);
@@ -788,13 +793,26 @@ class CreateLayout
 
 				if ($form_num){
 
+					$user = $aiki->get_string_between($edit , "<user>", "</user>");
+					if ($user){
+						$user = $widget_value->$user;
+					}else{
+						$user = '';
+					}
+
 					$permissions = $aiki->get_string_between($edit , "<permissions>", "</permissions>");
 					$permissions = trim($permissions);
-					if ($permissions and $permissions != $membership->permissions){
 
-						$output = '';
+					if (($permissions and $permissions != $membership->permissions) and ($user and $user != $membership->username)){
+
+						$output = "(($field))";
+						$output = $this->parsDBpars($output, $widget_value);
 
 					}else{
+
+						if (!$widget_value->$field){
+							$widget_value->$field = 'Click here to edit';
+						}
 
 						$output = '
 <script type="text/javascript">
@@ -823,6 +841,7 @@ $("div #'.$primary_value.'").html(htmldata);
 						$output = str_replace("\n", '', $output);
 
 						$output .= '<div id="'.$primary_value.'" class="editready_'.$primary_value.'">'.$widget_value->$field.'</div>';
+
 					}
 				}else{
 					$output = 'error: wrong table name';
