@@ -56,7 +56,6 @@ require_once("../../aiki.php");
 $default_photo_module = $config['default_photo_module'];
 
 
-
 if ($id){
 
 	if (!preg_match('/jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG/i', $id)){

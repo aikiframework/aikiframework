@@ -962,7 +962,7 @@ width:591px;
 				}
 
 
-				if ($get_permission_and_man_info[1]){
+				if (isset($get_permission_and_man_info[1])){
 					$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_permission_and_man_info[1]'");
 				}
 

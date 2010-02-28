@@ -49,12 +49,22 @@ class aiki_php
 
 		$if_cond[0] = str_replace("if ", "", $if_cond[0]);
 		$if_cond[0] = trim($if_cond[0]);
-		$if_cond[1] = trim($if_cond[1]);
 
-		if ($if_cond[0] == $if_cond[1]){
-			$output = trim($string[1]);
+		if (!isset($if_cond[1])){
+			if ($if_cond[0]){
+				$output = trim($string[1]);
+			}else{
+				$output = '';
+			}
 		}else{
-			$output = '';
+				
+			$if_cond[1] = trim($if_cond[1]);
+			
+			if ($if_cond[0] == $if_cond[1]){
+				$output = trim($string[1]);
+			}else{
+				$output = '';
+			}
 		}
 
 		return $output;

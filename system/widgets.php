@@ -713,8 +713,18 @@ class CreateLayout
 
 		foreach ($matches[1] as $parsed){
 
-
 			if ($parsed){
+
+				$is_array = $aiki->get_string_between($parsed, "[", "]");
+				if ($is_array){
+					$parsed_array = str_replace("[$is_array]", "", $parsed);
+					$array = unserialize($widget_value->$parsed_array);
+					if (isset($array["$is_array"])){
+						$widget_value->$parsed = $array["$is_array"];
+					}else{
+						$widget_value->$parsed = '';
+					}
+				}
 
 				//((if||writers||writer: _self))
 
