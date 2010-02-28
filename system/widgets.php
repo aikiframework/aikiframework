@@ -782,6 +782,11 @@ class CreateLayout
 					$label = trim($label);
 				}
 
+				$output = $aiki->get_string_between($edit , "<output>", "</output>");
+				if ($output){
+					$output = trim($output);
+				}
+
 				$primary = $aiki->get_string_between($edit , "<primary>", "</primary>");
 				if (!$primary){$primary = 'id';}
 				$primary = trim($primary);
@@ -805,8 +810,10 @@ class CreateLayout
 
 					if (($permissions and $permissions != $membership->permissions) and ($user and $user != $membership->username)){
 
-						$output = "(($field))";
-						$output = $this->parsDBpars($output, $widget_value);
+						if (!$output){
+							$output = "(($field))";
+							$output = $this->parsDBpars($output, $widget_value);
+						}
 
 					}else{
 
@@ -817,21 +824,21 @@ class CreateLayout
 						$output = '
 <script type="text/javascript">
 $(function () { 
-$(".editready_'.$primary_value.'").live("click", function () {
+$(".editready_'.$primary_value.$field.'").live("click", function () {
 var htmldata = $(this).html();
-$(this).html(\'<textarea>\' + htmldata + \'</textarea><button id="button_'.$primary_value.'">save</button>\');
-$(this).removeClass(\'editready_'.$primary_value.'\');
-$(this).addClass(\'editdone_'.$primary_value.'\');
+$(this).html(\'<textarea>\' + htmldata + \'</textarea><button id="button_'.$primary_value.$field.'">save</button>\');
+$(this).removeClass(\'editready_'.$primary_value.$field.'\');
+$(this).addClass(\'editdone_'.$primary_value.$field.'\');
 });
 
-$("#button_'.$primary_value.'").live("click", function () {
-var htmldata = $("#'.$primary_value.' textarea").val();
-var originaldata = $("#'.$primary_value.' textarea").text();
+$("#button_'.$primary_value.$field.'").live("click", function () {
+var htmldata = $("#'.$primary_value.$field.' textarea").val();
+var originaldata = $("#'.$primary_value.$field.' textarea").text();
 if (htmldata != originaldata){
 $.post("?noheaders=true&nogui=true&widget=0",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
-$("div #'.$primary_value.'").removeClass(\'editdone_'.$primary_value.'\');
-$("div #'.$primary_value.'").addClass(\'editready_'.$primary_value.'\');
-$("div #'.$primary_value.'").html(htmldata);
+$("div #'.$primary_value.$field.'").removeClass(\'editdone_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").addClass(\'editready_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").html(htmldata);
 });
 }
 });
@@ -840,7 +847,7 @@ $("div #'.$primary_value.'").html(htmldata);
 ';
 						$output = str_replace("\n", '', $output);
 
-						$output .= '<div id="'.$primary_value.'" class="editready_'.$primary_value.'">'.$widget_value->$field.'</div>';
+						$output .= '<div id="'.$primary_value.$field.'" class="editready_'.$primary_value.$field.'">'.$widget_value->$field.'</div>';
 
 					}
 				}else{
