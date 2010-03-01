@@ -15,6 +15,7 @@ class aiki_image
 {
 	function rsvg_convert_svg_png($file, $newwidth, $newhight){
 
+		$file = str_replace(" ", "\ ",  $file);
 		//check if rsvg exists
 		exec("rsvg -v", $checkversion);
 		
