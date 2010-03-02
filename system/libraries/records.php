@@ -648,6 +648,12 @@ width:591px;
 
 
 				if ($tmp_filename) {
+
+					$tmp_filesize = filesize($tmp_filename);
+					if ($tmp_filesize == 0){
+						die("an error occurred while uploading 0 byte file size, please go back and try again");
+					}
+						
 					$filename_array = explode(".",$name);
 					//TODO: DOn't allow all extinsions
 
@@ -668,7 +674,6 @@ width:591px;
 
 						$newfile = $path.$name;
 					}
-
 
 
 					if (!file_exists($newfile)) {
