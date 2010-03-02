@@ -10,28 +10,32 @@
 
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
-/*
-
-VAR
-UPLOAD_DONE
-delete
-edit
-update
-
-before_get
-after_get
-
-before_post
-after_post
-
-before_pagerender
-after_pagerender
-
-before_form
-after_form
-*/
 class aiki_events
 {
+	
+	function register($event){
+		
+	}
+
+	function upload_success(){
+
+	}
+	
+	function before_get(){
+		
+	}
+	
+	function after_get(){
+		
+	}
+	
+	function before_post(){
+		
+	}
+	
+	function after_post(){
+		
+	}
 
 	function before_loading_widget(){
 

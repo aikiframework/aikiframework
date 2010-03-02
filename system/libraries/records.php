@@ -428,6 +428,7 @@ width:591px;
 		$insert_values = "";
 		$tableFields = "";
 		$preinsertQuery = "";
+		$values_array = array();
 
 		$form = $db->get_row("SELECT * from aiki_forms where id='$form_id' limit 1");
 
@@ -444,6 +445,9 @@ width:591px;
 		if (in_array("send_email", $arraykeys))
 		$send_email = $form_array["send_email"];
 
+
+		if (in_array("events", $arraykeys))
+		$events = $form_array["events"];
 
 
 		if (in_array("pkey", $arraykeys)) {
@@ -533,6 +537,8 @@ width:591px;
 
 						$_POST[$intwalker[0]] = str_replace("insertedby_username", $membership->username, $_POST[$intwalker[0]]);
 
+						$values_array[$intwalker[0]] = $_POST[$intwalker[0]];
+
 						break;
 
 					case "rand":
@@ -619,6 +625,7 @@ width:591px;
 				}
 			}
 
+
 			if (!isset($full_path)){
 				//TODO: fix this
 				$full_path = "people/$membership->username/";
@@ -653,7 +660,7 @@ width:591px;
 					if ($tmp_filesize == 0){
 						die("an error occurred while uploading 0 byte file size, please go back and try again");
 					}
-						
+
 					$filename_array = explode(".",$name);
 					//TODO: DOn't allow all extinsions
 
@@ -711,6 +718,7 @@ width:591px;
 				//$insertQuery .= "'".$_POST[$intwalker[0]]."', ";
 				//check if file checksum match another file
 				$_POST[$intwalker[0]] = $name;
+
 			}
 
 
@@ -773,6 +781,7 @@ width:591px;
 			if (!isset($submit)){
 				$submit = '';
 			}
+
 
 			if ($field != $tablename and $field != $send_email and $field != $submit and isset($_POST[$intwalker[0]]) and $_POST[$intwalker[0]]){
 				//$_POST[$intwalker[0]] = mysql_real_escape_string($_POST[$intwalker[0]]);
@@ -844,7 +853,52 @@ width:591px;
 			}else{
 				$output_result = "Error inserting into database";
 			}
+
+
+			if (isset($events)){
+
+				$events_loop = explode("|", $events);
+				foreach ($events_loop as $event){
+					$event = explode(":", $event);
+					switch ($event[0]){
+
+						case "upload_success":
+
+							if (isset($filename) and isset($name)){
+
+								preg_match_all( '/\[(.*)\]/U', $event[1], $matches );
+								foreach ($matches[1] as $parsed){
+									$event[1] = str_replace("[$parsed]", $values_array["$parsed"], $event[1]);
+								}
+
+								$event[1] = $config['url'].$event[1];
+
+								$ch = curl_init();
+								curl_setopt ($ch, CURLOPT_URL, $event[1]);
+								curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 0);
+
+								ob_start();
+								curl_exec($ch);
+								curl_close($ch);
+								$content = ob_get_contents();
+								ob_end_clean();
+
+								if ($content !== false) {
+									echo $content;
+								}
+
+
+							}
+
+							break;
+
+					}
+
+				}
+			}
+
 		}
+
 		return $output_result;
 	}
 

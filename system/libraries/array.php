@@ -111,7 +111,7 @@ class aiki_array
 				if (isset($_POST['edit_array'])){
 
 					$outp_key = $_POST[$y.$arrykeys[$i]."_type"];
-					if ($outp_key != 'tablename' and $outp_key != 'pkey' and $outp_key != 'send_email' and $outp_key != 'unique_filename' and $outp_key != 'permission'){
+					if ($outp_key != 'tablename' and $outp_key != 'pkey' and $outp_key != 'send_email' and $outp_key != 'unique_filename' and $outp_key != 'permission' and $outp_key != 'events'){
 						$outp_key = $outp_key.$i;
 					}
 
@@ -143,6 +143,7 @@ class aiki_array
 				<option value="unique_filename" >unique_filename</option>
 				<option value="filemanager" >filemanager</option>
 				<option value="permission" >permission</option>
+				<option value="events" >events</option>
 				</select>';
 				$html_form .= "<input type='text' name=\"".$y.$arrykeys[$i]."\" value=\"".$field."\" size='35'><br /><br />";
 				$i++;
@@ -168,6 +169,7 @@ class aiki_array
 				<option value="unique_filename" >unique_filename</option>
 				<option value="filemanager" >filemanager</option>
 				<option value="permission" >permission</option>
+				<option value="events" >events</option>
 				</select>';			
 			$html_form .= "<input type='text' name=\"right_$newfield\" value=\"\" size='35'></td></tr>";
 
