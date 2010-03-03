@@ -27,8 +27,6 @@ class aiki_html
 		<meta http-equiv="Content-Type" content="text/html; charset='.$config['db_encoding'].'" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<title>'; if (!$title){$header .= $aiki->languages->L10n($site_info->site_name);}else{$header .= $title." - ".$aiki->languages->L10n($site_info->site_name);} $header .='</title>
-		<meta name="keywords" content="" />
-		<meta name="description" content="" />
 		<meta name="generator" content="Aikiframework '.AIKI_VERSION.'" />
 		';
 
