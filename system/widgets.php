@@ -117,9 +117,14 @@ class CreateLayout
 				if ($widget->custome_output){
 					$custome_output = true;
 					$this->widget_custome_output = true;
+				}
 
-					if ($widget->custome_header){
-						header("$widget->custome_header");
+				if ($widget->custome_header and $widget->custome_header != ''){
+					$custome_headers = explode("\n", $widget->custome_header);
+					foreach ($custome_headers as $custome_header){
+						if ($custome_header != ""){
+							header("$custome_header");
+						}
 					}
 				}
 
@@ -641,11 +646,32 @@ class CreateLayout
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
 
 
-			//apply new location for the whole page
-			$new_header = preg_match("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);
+			//apply new headers
+			$new_header = preg_match_all("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);
+
 			if ($new_header > 0 and $new_header_match[1]){
-				Header("Location: $new_header_match[1]", false, 301);
+				
+				foreach ($new_header_match[1] as $header_match){
+					
+					$header_parts = explode("|", $header_match);
+
+					if (isset($header_parts[0]) and isset($header_parts[1]) and isset($header_parts[2])){
+
+						header("$header_parts[0]", $header_parts[1], $header_parts[2]);
+
+					}elseif (isset($header_parts[0]) and isset($header_parts[1])){
+
+						header("$header_parts[0]", $header_parts[1]);
+
+					}elseif (isset($header_parts[0])){
+
+						header("$header_parts[0]");
+
+					}
+				}
 			}
+
+			$processed_widget = preg_replace("/\(\#\(header\:(.*)\)\#\)/U",'', $processed_widget);
 
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));

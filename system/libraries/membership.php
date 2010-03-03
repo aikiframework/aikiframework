@@ -23,7 +23,11 @@ class aiki_membership
 	function aiki_membership(){
 		global $db, $config;
 
-		session_start();
+		if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
+			session_start();
+		}elseif (@$_COOKIE["PHPSESSID"]){
+			session_start();
+		}
 
 		if (!isset($username) and isset($_SESSION['aiki']))
 		$username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aiki']."'");
@@ -31,23 +35,29 @@ class aiki_membership
 		if (isset($username)){
 			$this->getUserPermissions($username);
 		}else{
-			$this->group_level = true;
-			$this->permissions = 'ViewPublished';
+			$this->group_level = '';
+			$this->permissions = '';
 		}
 
 		$time_now = time();
 
 		//$user_ip = $this->get_ip();
 
+		if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
+			if (!isset($_SESSION['aiki']) and !isset($_SESSION['guest'])){
 
-		if (!isset($_SESSION['aiki']) and !isset($_SESSION['guest'])){
+				$_SESSION['guest'] = $this->generate_session(100);
+				$insert_session = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '', 'guest' , '$time_now', '$time_now' ,'$_SESSION[guest]', '1', '', '')");
 
-			$_SESSION['guest'] = $this->generate_session(100);
-			$insert_session = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '', 'guest' , '$time_now', '$time_now' ,'$_SESSION[guest]', '1', '', '')");
+			}else{
 
-		}else{
+				$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' WHERE `user_session`='$_SESSION[guest]' LIMIT 1");
+			}
 
-			$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' WHERE `user_session`='$_SESSION[guest]' LIMIT 1");
+		}elseif(isset($_SESSION['aiki'])){
+
+			$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' WHERE `user_session`='$_SESSION[aiki]' LIMIT 1");
+
 		}
 
 		if (isset($config["session_timeout"])){
@@ -55,7 +65,7 @@ class aiki_membership
 		}else{
 			$timeout = 2000;
 		}
-		
+
 		$last_hour = time()."-$timeout";
 		$make_offline = $db->query("DELETE FROM `aiki_users_sessions` WHERE last_hit < $last_hour");
 
@@ -68,6 +78,12 @@ class aiki_membership
 		$password = stripslashes($password);
 		$password = md5(md5($password));
 
+		$time_now = time();
+
+		if (!isset ($config["allow_guest_sessions"]) and !isset($_SESSION['aiki'])){
+			session_start();
+		}
+
 		$get_user = $db->get_row("SELECT * FROM aiki_users where username='$username' and password='$password' limit 1");
 
 		if($get_user and $get_user->username == $username and $get_user->password == $password){
@@ -75,11 +91,18 @@ class aiki_membership
 			$host_name = $_SERVER['HTTP_HOST'];
 			$user_ip = $this->get_ip();
 
+			if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
+				$_SESSION['aiki'] = $_SESSION['guest'];
+			}else{
+				$_SESSION['aiki'] = $this->generate_session(100);
+			}
 
-			$_SESSION['aiki'] = $_SESSION['guest'];
 			//setcookie("usersession", $usersession, time()+31104000000, "/", $host_name, 0);
-
-			$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='$get_user->userid', `user_name` = '$get_user->username' WHERE `user_session`='$_SESSION[aiki]' LIMIT 1");
+			if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
+				$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='$get_user->userid', `user_name` = '$get_user->username' WHERE `user_session`='$_SESSION[aiki]' LIMIT 1");
+			}else{
+				$register_user = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '$get_user->userid', '$get_user->username' , '$time_now', '$time_now' ,'$_SESSION[aiki]', '1', '', '')");
+			}
 
 			if (!isset($config["allow_multiple_sessions"])){
 				$delete_previous_open_sessions =$db->query("DELETE FROM `aiki_users_sessions` WHERE `user_session`!='$_SESSION[aiki]' and `user_name` = '$get_user->username' and `user_id`='$get_user->userid'");
@@ -91,7 +114,7 @@ class aiki_membership
 
 
 		} else{
-			echo '<center><b>Sorry wrong username or password</b></center>';
+			die('<center><b>Sorry wrong username or password</b></center>');
 		}
 
 	}
