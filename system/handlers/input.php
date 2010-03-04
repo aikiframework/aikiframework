@@ -112,14 +112,60 @@ class aiki_input
 
 	}
 
-	function get_handler(){
 
+	function requests($text){
+
+		$text = $this->get_handler($text);
+		$text = $this->post_handler($text);
+
+		return $text;
+	}
+
+
+	function get_handler($text){
+
+		$get_matchs = preg_match_all('/GET\[(.*)\]/Us', $text, $gets);
+
+		if ($get_matchs > 0){
+
+			foreach ($gets[1] as $get){
+
+				if (isset($_GET["$get"])){
+
+					$text =  str_replace("GET[$get]", $_GET["$get"], $text);
+				}
+
+			}
+
+			$text = preg_replace('/GET\[(.*)\]/Us', '', $text);
+
+		}
+
+		return $text;
 
 	}
 
-	function post_handler(){
+	function post_handler($text){
+
+		$post_matchs = preg_match_all('/POST\[(.*)\]/Us', $text, $posts);
+
+		if ($post_matchs > 0){
+
+			foreach ($posts[1] as $post){
+
+				if (isset($_POST["$post"])){
+
+					$text =  str_replace("POST[$post]", $_POST["$post"], $text);
+				}
+
+			}
+
+			$text = preg_replace('/POST\[(.*)\]/Us', '', $text);
+
+		}
 
 
+		return $text;
 	}
 
 

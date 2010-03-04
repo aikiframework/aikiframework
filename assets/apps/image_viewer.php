@@ -8,6 +8,8 @@
  * @link		http://www.aikiframework.org
  */
 
+error_reporting(0);
+
 $id = $_GET['id'];
 $size = $_GET['size'];
 $mode = $_GET['mode'];

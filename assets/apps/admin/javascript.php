@@ -8,6 +8,7 @@
  * @link		http://www.aikiframework.org
  */
 
+error_reporting(0);
 
 header('Content-type: text/xml');
 

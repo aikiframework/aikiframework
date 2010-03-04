@@ -8,6 +8,8 @@
  * @link		http://www.aikiframework.org
  */
 
+error_reporting(0);
+
 header('Content-type: text/css');
 
 define('IN_AIKI', true);

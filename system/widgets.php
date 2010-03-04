@@ -228,6 +228,7 @@ class CreateLayout
 				$title = $widget->pagetitle;
 			}
 
+			$title = $aiki->input->requests($title);
 
 			$aiki->html->set_title($title);
 		}
@@ -285,6 +286,9 @@ class CreateLayout
 					}
 				}
 			}
+
+			$widget->widget = $aiki->input->requests($widget->widget);
+			$widget->normal_select = $aiki->input->requests($widget->normal_select);
 
 
 			$widget->widget = htmlspecialchars_decode($widget->widget);
@@ -387,6 +391,7 @@ class CreateLayout
 
 				if ($widget->link_example){
 
+					$widget->link_example = $aiki->input->requests($widget->link_example);
 
 					if (isset($numpages) and $numpages > 1){
 
@@ -636,9 +641,9 @@ class CreateLayout
 			$new_header = preg_match_all("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);
 
 			if ($new_header > 0 and $new_header_match[1]){
-				
+
 				foreach ($new_header_match[1] as $header_match){
-					
+
 					$header_parts = explode("|", $header_match);
 
 					if (isset($header_parts[0]) and isset($header_parts[1]) and isset($header_parts[2])){
