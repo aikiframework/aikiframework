@@ -303,7 +303,7 @@ class CreateLayout
 
 
 
-			//TODO: Finish the last page first thing
+			//TODO: last page first
 			//TODO: add this to settings editor
 			$last_page_first = false;
 
@@ -493,13 +493,6 @@ class CreateLayout
 						$widget->widget = $aiki->aiki_markup->datetime($widget->widget, $widget_value);
 						$widget->widget = $aiki->aiki_markup->tags($widget->widget, $widget_value);
 
-						//TODO: add output modifiers like this in mysql
-						$normaldatetime = $aiki->get_string_between($widget->widget, "(#(normaldatetime:", ")#)");
-						if ($normaldatetime){
-							$widget_value->$normaldatetime = $aiki->createnormaldate($widget_value->$normaldatetime);
-							$widget->widget = str_replace("(#(normaldatetime:$normaldatetime)#)", $widget_value->$normaldatetime , $widget->widget);
-						}
-
 						$related = $aiki->get_string_between($widget->widget, "(#(related:", ")#)");
 						if ($related){
 							$relatedsides = explode("||", $related);
@@ -546,13 +539,6 @@ class CreateLayout
 						if ($nl2br){
 							$nl2br_processed = nl2br($nl2br);
 							$widget->widget = str_replace("[*[".$nl2br."]*]", $nl2br_processed, $widget->widget);
-						}
-
-						$dobluebr = $aiki->get_string_between($widget->widget, "[{[", "]}]");
-						if ($dobluebr){
-							$dobluebr_processed = str_replace("<br>", "<br><br>", $dobluebr);
-							$dobluebr_processed = str_replace("<br />", "<br /><br />", $dobluebr_processed);
-							$widget->widget = str_replace("[{[".$dobluebr."]}]", $dobluebr_processed, $widget->widget);
 						}
 
 

@@ -97,7 +97,6 @@ class aiki_membership
 				$_SESSION['aiki'] = $this->generate_session(100);
 			}
 
-			//setcookie("usersession", $usersession, time()+31104000000, "/", $host_name, 0);
 			if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
 				$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='$get_user->userid', `user_name` = '$get_user->username' WHERE `user_session`='$_SESSION[aiki]' LIMIT 1");
 			}else{
