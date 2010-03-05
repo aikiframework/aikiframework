@@ -36,8 +36,7 @@ class aiki
 			return $objects[$class];
 		}
 
-		if (file_exists($system_folder.'/system/libraries/'.$class.'.php'))
-		{
+		if (file_exists($system_folder.'/system/libraries/'.$class.'.php')){
 			require($system_folder.'/system/libraries/'.$class.'.php');
 		}elseif(file_exists($system_folder.'/system/handlers/'.$class.'.php')){
 			require($system_folder.'/system/handlers/'.$class.'.php');

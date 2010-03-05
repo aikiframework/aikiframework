@@ -69,22 +69,6 @@ class CreateLayout
 
 
 
-
-	function get_global_vars_in_text($text){
-		global $aiki;
-		$get_glob = $aiki->get_string_between($text, "({", "})");
-		if (isset($get_glob)){
-			if (isset(${$get_glob})){
-				$text = str_replace("({".$get_glob."})", ${$get_glob}, $text);
-			}else{
-				$text = str_replace("({".$get_glob."})", '', $text);
-			}
-		}
-		return $text;
-	}
-
-
-
 	function createWidget($widget_id, $widget_group=''){
 		global $db, $aiki,$url, $language, $dir, $page, $site, $module, $custome_output;
 
@@ -175,7 +159,6 @@ class CreateLayout
 
 					if ($widget->if_no_results){
 						$widget->if_no_results =  $aiki->processVars ($aiki->languages->L10n ("$widget->if_no_results"));
-						$widget->if_no_results = $this->get_global_vars_in_text($widget->if_no_results);
 
 						$dead_widget = '<'.$widget->widget_type.' id="'.$widget->style_id.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
 
@@ -217,8 +200,6 @@ class CreateLayout
 		if ($widget->pagetitle){
 
 			$widget->pagetitle = $aiki->processVars($widget->pagetitle);
-
-			$widget->pagetitle = $this->get_global_vars_in_text($widget->pagetitle);
 
 			$widget->pagetitle = $aiki->url->apply_url_on_query($widget->pagetitle);
 
@@ -295,8 +276,6 @@ class CreateLayout
 
 			$widget->widget = $aiki->processVars($widget->widget);
 
-			$widget->widget = $this->get_global_vars_in_text($widget->widget);
-
 			$no_loop_part = $aiki->get_string_between ($widget->widget, '(noloop(', ')noloop)');
 
 			$widget->widget = str_replace('(noloop('.$no_loop_part.')noloop)', '', $widget->widget);
@@ -322,7 +301,6 @@ class CreateLayout
 				$widget->normal_select = $aiki->url->apply_url_on_query($widget->normal_select);
 
 				$widget->normal_select = $aiki->processVars ($aiki->languages->L10n ("$widget->normal_select"));
-				$widget->normal_select = $this->get_global_vars_in_text($widget->normal_select);
 
 				$widget->normal_select = preg_replace('/and(.*)RLIKE \'\'/U', '', $widget->normal_select, 999, $num_no_res);
 				$widget->normal_select = preg_replace('/RLIKE \'\'/U', '', $widget->normal_select, 999, $num_no_res_first);

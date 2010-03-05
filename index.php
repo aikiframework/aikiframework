@@ -8,12 +8,14 @@
  * @link		http://www.aikiframework.org
  */
 
-error_reporting(0);
+//error_reporting(0);
+error_reporting(E_ALL);
 
 $html_output = '';
 
 require_once("aiki.php");
 
+$html_cache_file = $aiki->output->output_from_cache();
 
 require_once ("system/widgets.php");
 $layout = new CreateLayout();
@@ -41,13 +43,13 @@ if (!isset($noheaders)){
 
 
 
-if ($config['html_cache'] and $html_cache_file and !$noheaders){
+if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
 	$full_html_input = $aiki->html->write_headers();
 	//$full_html_input .= "<div id=\"container\">\n\r";
 }
 
 
-if ($config['html_cache'] and $html_cache_file){
+if ($config['html_cache'] and isset($html_cache_file)){
 
 	$full_html_input .= $layout->html_output;
 }
@@ -63,7 +65,7 @@ if (!isset($noheaders)){
 	//$html_output .= "</div>";
 }
 
-if ($config['html_cache'] and $html_cache_file and !$noheaders){
+if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
 	//$full_html_input .= "</div>";
 }
 
@@ -95,17 +97,17 @@ if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $con
 }
 
 
-if ($config['html_cache'] and $html_cache_file and !$noheaders){
+if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
 
-	$full_html_input .= $aiki->write_footer();
+	$full_html_input .= $aiki->html->write_footer();
 }
 
 
-if ($config['html_cache'] and $html_cache_file){
+if ($config['html_cache'] and isset($html_cache_file)){
 
-	if ( ! is_dir('var/'.$html_cache) )
+	if ( ! is_dir($config['html_cache']) )
 	{
-		echo("Could not open cache dir: var/$html_cache");
+		echo($config['html_cache']);
 	}
 	else
 	{

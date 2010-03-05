@@ -236,7 +236,7 @@ $config["javascript_cache_file"] = "";
 
 //$config["html_cache"] = "assets/var/cache/widgets";
 $config["html_cache"] = false;
-$config["cache_timeout"] = "24";
+$config["cache_timeout"] = "86400"; //ms
 
 $config["session_timeout"] = 3600; //ms
 $config["allow_multiple_sessions"] = false;
