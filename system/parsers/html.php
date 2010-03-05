@@ -54,13 +54,18 @@ class aiki_html
 		$header .= $this->write_doctype();
 		$header .= '<head>';
 		$header .= $this->write_title_and_metas("$this->title");
+
 		if (!$nogui){
-			$header .= '<link rel="stylesheet" type="text/css" href="'.$config['url'].'style.php?site='.$site.'';
+
 			if (isset($layout->widgets_css) and $layout->widgets_css != ''){
-				$header .= "&widgets=$layout->widgets_css";
+
+				$layout->widgets_css = eregi_replace('_$', '', $layout->widgets_css);
+
+				$header .= '<link rel="stylesheet" type="text/css" href="'.$config['url'].'style.php?site='.$site."&widgets=$layout->widgets_css\" />\n";
+
 			}
-			$header.= '" />
-<link rel="icon" href="'.$config['url'].'assets/images/favicon.ico" type="image/x-icon" />';
+
+			$header .= '<link rel="icon" href="'.$config['url'].'assets/images/favicon.ico" type="image/x-icon" />';
 
 		}
 

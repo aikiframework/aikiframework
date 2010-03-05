@@ -9,20 +9,6 @@ function globalajaxify(file, targetwidget){
 }
 
 
-function code_mirror_css(){
-
-	   var css = CodeMirror.fromTextArea('style_sheet', {
-	       height: "350px",
-	       parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
-	                    "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
-	       stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
-	       path: "assets/javascript/codemirror/js/",
-	       continuousScanning: 500,
-	       lineNumbers: true,
-	     }); 
-	
-}
-
 
 function code_mirror(){
 	
@@ -81,40 +67,6 @@ function create_form(selector, id, name, code, tree){
 
 			});	
 	   });		
-}
-
-function css_tree(){
-
- 
-    create_form("#create_new_css", 3, "Css", 0, "csstree");
-   
-   $("#csstree").tree( {
-      
-      data  : {
-        type  : "xml_flat",
-        url   : "assets/apps/admin/css.php"
-      },
-      
-      rules : {
-        deletable : "all",
-        draggable : "all"      	
-      },
-      
-      callback : {
-        onselect : function(NODE,TREE_OBJ) {
-
-    	      $.get('admin_tools/edit/3/'+NODE.id,function(data) { 
-                  $('#widget-form').html(data);
-                  $('#edit_form').ajaxForm(function() { 
- 					$("#widget-form").html("Edited successfully");
- 					$.tree_reference('csstree').refresh();
- 	           });                   
-    	      });
-    	 
-        }	        
-       }
-
-    } );
 }
 
 function urls_widgets_tree(){
@@ -321,11 +273,5 @@ $().ready(function() {
 	   $("#urls_widgets").click(function(event){
 		   urls_widgets_tree();
 	   });	   
-	   
-   
-	   $("#css").click(function(event){
-		   css_tree();
-	   });	   
-	   
 	   
 });
