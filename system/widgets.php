@@ -545,9 +545,6 @@ class CreateLayout
 					$widgetContents = $this->inline_widgets($widgetContents);
 					$widgetContents = $this->inherent_widgets($widgetContents);
 
-					$widgetContents = $aiki->javascript->call_javascripts($widgetContents, $widget->id);
-
-
 					$widgetContents = $aiki->sql_markup->sql($widgetContents);
 
 
@@ -595,7 +592,6 @@ class CreateLayout
 				$widget->widget = $aiki->security->inlinePermissions($widget->widget);
 				$widget->widget = $this->inline_widgets($widget->widget);
 				$widget->widget = $this->inherent_widgets($widget->widget);
-				$widget->widget = $aiki->javascript->call_javascripts($widget->widget, $widget->id);
 				$widget->widget = $aiki->sql_markup->sql($widget->widget);
 
 				$processed_widget =  $widget->widget;

@@ -46,15 +46,6 @@ class aiki_events
 
 	}
 
-	function before_loading_javascript(){
-
-	}
-
-	function after_loading_javascript(){
-
-
-	}
-
 
 }
 ?>
