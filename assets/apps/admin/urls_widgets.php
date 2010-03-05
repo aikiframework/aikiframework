@@ -26,13 +26,17 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
 <root>';
 
 
-$get_urls = $db->get_results("select id, url from aiki_urls order by url,id");
+$get_urls = $db->get_results("select id, url from aiki_urls order by BINARY url");
 $used = array();
 foreach ($get_urls as $url){
 
+	if ($url->url == "*"){
+		$url->url = "Global";
+	}
+
 	echo '<item parent_id="0" id="'.$url->url.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/link.png"><![CDATA['.$url->url.']]></name></content></item>';
 
-	$get_widgets = $db->get_results("select id, widget_name, father_widget, is_father from aiki_widgets where display_urls RLIKE '$url->url' order by father_widget,id");
+	$get_widgets = $db->get_results("select id, widget_name, father_widget, is_father from aiki_widgets where display_urls RLIKE '$url->url' or display_urls = '*' order by father_widget,id");
 	if($get_widgets){
 		foreach ($get_widgets as $widget){
 

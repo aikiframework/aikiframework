@@ -14,7 +14,6 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class CreateLayout
 {
 	var $html_output;
-	var $CallJavaScript;
 	var $kill_widget;
 	var $widget_html;
 	var $forms;
@@ -37,7 +36,7 @@ class CreateLayout
 			}
 
 		}else{
-			$module_widgets = $db->get_results("SELECT id, display_urls, kill_urls FROM aiki_widgets where (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url['0']."|%' or display_urls LIKE '%|".$url->url['0']."' or display_urls LIKE '".$url->url['0']."|%' or display_urls LIKE '%".$url->url['0']."/%') and is_active=1 and father_widget=0 and widget_site='$site' order by display_order, id");
+			$module_widgets = $db->get_results("SELECT id, display_urls, kill_urls FROM aiki_widgets where (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url['0']."|%' or display_urls LIKE '%|".$url->url['0']."' or display_urls LIKE '".$url->url['0']."|%' or display_urls LIKE '%".$url->url['0']."/%' or display_urls = '*') and is_active=1 and father_widget=0 and widget_site='$site' order by display_order, id");
 
 			if ($module_widgets){
 
@@ -48,7 +47,7 @@ class CreateLayout
 
 					$url->widget_if_match_url($widget);
 
-					if ($url->create_widget){
+					if ($url->create_widget or $widget->display_urls == "*"){
 
 						$widget_group[] = $widget->id;
 						//$this->createWidget($widget->id);
@@ -112,9 +111,6 @@ class CreateLayout
 					}
 				}
 
-				if ($widget->javascript){
-					$this->CallJavaScript[$widget->id] = $widget->javascript;
-				}
 
 				if (!$custome_output and $widget->widget_type){
 					$this->widget_html .= "\n <!--start $widget->id--> \n";

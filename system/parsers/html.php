@@ -47,65 +47,6 @@ class aiki_html
 	}
 
 
-	public function write_javascript(){
-		global $aiki, $db, $layout, $nogui, $site;
-
-		$header = '';
-
-		$JavaScriptsToUse = array();
-
-		//global use javascripts
-		$javascripts = $db->get_results("SELECT id, script FROM aiki_javascript where global_use=1 and is_active=1 order by script_group,id");
-
-		if ($javascripts){
-			foreach ( $javascripts as $javascript )
-			{
-				$JavaScriptsToUse[$javascript->id] = "\n\r".$javascript->script."\n\r";
-
-			}
-		}
-
-		//private javascripts called by widgets
-		if ($layout->CallJavaScript){
-			foreach ($layout->CallJavaScript as $PrivateScript){
-				$PrivateScripts = $db->get_row("SELECT id, father, script FROM aiki_javascript where id='$PrivateScript' and global_use=0 and is_active=1 order by id");
-
-
-				if ($PrivateScripts){
-
-
-					if ($PrivateScripts->father == 0){
-						$JavaScriptsToUse[$PrivateScripts->id] = "\n\r".$PrivateScripts->script."\n\r";
-					}else{
-						$father = $db->get_row("SELECT id, father, script FROM aiki_javascript where id='$PrivateScripts->father' and global_use=0 and is_active=1 order by id");
-						if ($father){
-
-							$JavaScriptsToUse[$father->id] = "\n\r".$father->script."\n\r";
-							$JavaScriptsToUse[$PrivateScripts->id] = "\n\r".$PrivateScripts->script."\n\r";
-
-						}
-					}
-
-				}
-
-			}
-		}
-
-
-		//print results
-		foreach ($JavaScriptsToUse as $script){
-
-			$header .= $aiki->processVars($script);
-		}
-
-		$header = $aiki->url->apply_url_on_query($header);
-		$header = $aiki->sql_markup->sql($header);
-
-		return $header;
-
-	}
-
-
 	public function write_headers(){
 		global $aiki, $db, $layout, $nogui, $site, $config;
 
@@ -120,8 +61,6 @@ class aiki_html
 			}
 			$header.= '" />
 <link rel="icon" href="'.$config['url'].'assets/images/favicon.ico" type="image/x-icon" />';
-
-			$header .= $this->write_javascript();
 
 		}
 
