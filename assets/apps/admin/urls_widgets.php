@@ -52,7 +52,7 @@ foreach ($get_urls as $url){
 }
 
 echo '<item parent_id="0" id="view_all_widgets" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/link.png"><![CDATA[All Widgets]]></name></content></item>';
-$get_widgets = $db->get_results("select id, widget_name, father_widget, is_father from aiki_widgets order by id");
+$get_widgets = $db->get_results("select id, widget_name, father_widget, is_father from aiki_widgets where app_id != 1 order by id");
 if($get_widgets){
 	foreach ($get_widgets as $widget){
 		echo '<item parent_id="view_all_widgets" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->id.' - '.$widget->widget_name.']]></name></content></item>';
