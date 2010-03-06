@@ -224,7 +224,7 @@ class CreateLayout
 			$widget_cache_timeout = $widget->widget_cache_timeout;
 		}
 
-		if ($widget_cache and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout*3600) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
+		if ($widget_cache and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
 
 			//Display widget from cache
 			$widget_html_output = file_get_contents($widget_file);

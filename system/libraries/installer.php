@@ -223,14 +223,17 @@ $config["html_tidy_config"] = array(
  \'wrap\' =>    \'0\',
 );
 
+
+//widget cache
 $config["widget_cache"] = false;
-$config["widget_cache_dir"] = "widgets";
+$config["widget_cache_dir"] = "widgets"; //full path to widgets cache directory
 
 $config["css_cache"] = true;
 $config["css_cache_timeout"] = 24;
 $config["css_cache_file"] = "";
 
-$config["html_cache"] = false; //full path to cache directory
+//full html cache
+$config["html_cache"] = false; //full path to full html cache directory
 $config["cache_timeout"] = "86400"; //ms
 
 $config["session_timeout"] = 3600; //ms
