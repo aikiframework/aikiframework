@@ -640,7 +640,11 @@ class CreateLayout
 
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
-
+			$processed_widget = $aiki->php->parser($processed_widget);
+			$processed_widget = $aiki->aiki_markup->aiki_parser($processed_widget);
+			$processed_widget = $aiki->xml->rss_parser($processed_widget);
+			$processed_widget = $aiki->forms->displayForms($processed_widget);
+			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
 
 			if (isset($widgetContents) and $widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
 				$this->kill_widget = $widget->id;
@@ -650,16 +654,11 @@ class CreateLayout
 					error_log ( $processed_widget_cach, 3, $widget_file);
 				}
 			}
-			
+				
 			if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1){
 				$processed_widget = $processed_widget."<a href='".$aiki->setting[url]."admin_tools/edit/20/".$widget->id."'>Edit Widget</a>";
 			}
 
-			$processed_widget = $aiki->php->parser($processed_widget);
-			$processed_widget = $aiki->aiki_markup->aiki_parser($processed_widget);
-			$processed_widget = $aiki->xml->rss_parser($processed_widget);
-			$processed_widget = $aiki->forms->displayForms($processed_widget);
-			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
 
 			if ($output_to_string){
 				return $processed_widget;
