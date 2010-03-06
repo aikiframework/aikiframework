@@ -28,15 +28,29 @@ class aiki_php
 				}
 
 				if (preg_match('/if(.*) then (.*)/Us', $php_function)){
-
 					$php_output = $this->aiki_if_then($php_function);
+				}
 
+				if (preg_match('/htmlspecialchars\((.*)\)/Us', $php_function)){
+					$php_output = $this->aiki_htmlspecialchars($php_function);
 				}
 
 				$text = str_replace("<php $php_function php>", $php_output , $text);
 			}
 		}
 
+		return $text;
+	}
+
+	function aiki_htmlspecialchars($text){
+		global $aiki;
+
+		$original_string = $aiki->get_string_between($text, "htmlspecialchars(", ")");
+
+		$string = htmlspecialchars($original_string);
+
+		$text = str_replace("htmlspecialchars($original_string)", $string, $text);
+			
 		return $text;
 	}
 
@@ -57,9 +71,9 @@ class aiki_php
 				$output = '';
 			}
 		}else{
-				
+
 			$if_cond[1] = trim($if_cond[1]);
-			
+
 			if ($if_cond[0] == $if_cond[1]){
 				$output = trim($string[1]);
 			}else{

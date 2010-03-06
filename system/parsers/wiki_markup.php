@@ -129,7 +129,6 @@ class aiki_wiki_markup
 	function markup_tables($text){
 
 		global $aiki;
-		//TODO colspan and cellspan and table header and footer and colored columns
 
 		$numMatches = preg_match_all( '/\{\|/', $text, $matches);
 		for ($i=0; $i<$numMatches; $i++){
