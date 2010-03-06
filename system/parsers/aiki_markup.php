@@ -325,7 +325,7 @@ class aiki_aiki_markup extends aiki
 
 
 				//TODO: make sure it's correct link and if not correct it, and check for email addresses
-				$processed_tag = "<a target=\"_blank\" href=\"$tag_equivalent\" style=\"background:transparent url(".$aiki->setting['url']."/images/skins/assets/external.png) no-repeat scroll left center; padding-left:13px;\">".$tag_text.'</a>';
+				$processed_tag = "<a target=\"_blank\" href=\"$tag_equivalent\" style=\"background:transparent url(".$aiki->setting['url']."/assets/images/external.png) no-repeat scroll left center; padding-left:13px;\">".$tag_text.'</a>';
 
 
 				$tags_output[] .= $processed_tag;
