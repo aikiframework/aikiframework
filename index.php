@@ -19,12 +19,6 @@ $html_cache_file = $aiki->output->output_from_cache();
 require_once ("system/widgets.php");
 $layout = new CreateLayout();
 
-if (isset($_GET['dc']) and $membership->permissions == "SystemGOD" and $widget_cache_dir){
-	$widget_file = 'var/'.$widget_cache_dir.'/'.$_GET['dc'];
-	if (file_exists($widget_file)){
-		unlink($widget_file);
-	}
-}
 
 if (isset($global_widget)){
 	$noheaders = true;

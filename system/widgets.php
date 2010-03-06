@@ -211,20 +211,24 @@ class CreateLayout
 		}
 
 
-		//Get ready for cache
-		if ($widget->normal_select){
-			$widget_cache_id = $widget->id."_".$_SERVER['QUERY_STRING'];
-		}else{
-			$widget_cache_id = $widget->id;
-		}
 
-		$widget_file = 'var/'.$widget_cache_dir.'/'.md5($widget_cache_id);
 
-		if ($widget->widget_cache_timeout){
+		if (isset($config["widget_cache"]) and isset($config["widget_cache_dir"]) and $widget->widget_cache_timeout){
+
+			//Get ready for cache
+			if ($widget->normal_select){
+				$widget_cache_id = $widget->id."_".$_SERVER['QUERY_STRING'];
+			}else{
+				$widget_cache_id = $widget->id;
+			}
+
+			$widget_file = $config["widget_cache_dir"].'/'.md5($widget_cache_id);
+
 			$widget_cache_timeout = $widget->widget_cache_timeout;
 		}
 
-		if ($widget_cache and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
+
+		if (isset($config["widget_cache"]) and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
 
 			//Display widget from cache
 			$widget_html_output = file_get_contents($widget_file);
@@ -641,17 +645,14 @@ class CreateLayout
 			if (isset($widgetContents) and $widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
 				$this->kill_widget = $widget->id;
 			}else{
-				if ($widget_cache and $this->create_widget_cache and $widget_cache_dir and $widget_cache_timeout>0 and is_dir('var/'.$widget_cache_dir) and !$membership->permissions and !$_GET['dc']){
+				if (isset($config["widget_cache"]) and $this->create_widget_cache and $config["widget_cache_dir"] and $widget_cache_timeout>0 and is_dir($config["widget_cache_dir"]) and !$membership->permissions){
 					$processed_widget_cach = $processed_widget."\n\n<!-- Served From Cache -->\n\n";
 					error_log ( $processed_widget_cach, 3, $widget_file);
 				}
-
-				if ($widget_cache and ($membership->permissions == "SystemGOD" or $membership->permissions == "ModulesGOD") and $widget_cache_dir and $widget_cache_timeout>0){
-					$processed_widget = $processed_widget."<a href='&dc=".md5($widget_cache_id)."'><small>Empty Cache</small></a><br />";
-				}
 			}
+			
 			if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1){
-				$processed_widget = $processed_widget."<a href='".$aiki->setting[url]."index.php?language=arabic&module=admin&operators=module|aiki_widgets|edit&op=edit&do=editaiki_widgets&pkey=".$widget->id."'><small>Edit Widget</small></a>";
+				$processed_widget = $processed_widget."<a href='".$aiki->setting[url]."admin_tools/edit/20/".$widget->id."'>Edit Widget</a>";
 			}
 
 			$processed_widget = $aiki->php->parser($processed_widget);

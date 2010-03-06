@@ -226,7 +226,7 @@ $config["html_tidy_config"] = array(
 
 //widget cache
 $config["widget_cache"] = false;
-$config["widget_cache_dir"] = "widgets"; //full path to widgets cache directory
+$config["widget_cache_dir"] = ""; //full path to widgets cache directory
 
 $config["css_cache"] = true;
 $config["css_cache_timeout"] = 24;
