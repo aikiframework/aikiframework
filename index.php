@@ -84,6 +84,12 @@ if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $con
 }else{
 
 
+	if (isset($config["compress_output"]) and $config["compress_output"]){
+		$html_output = preg_replace("/\<\!\-\-(.*)\-\-\>/U", "", $html_output);
+		$html_output = str_replace("\n", "", $html_output);
+		$html_output = str_replace("\r", "", $html_output);
+	}
+
 	print $html_output;
 
 

@@ -224,6 +224,8 @@ $config["html_tidy_config"] = array(
 );
 
 
+$config["compress_output"] = false;
+
 //widget cache
 $config["widget_cache"] = false;
 $config["widget_cache_dir"] = ""; //full path to widgets cache directory
