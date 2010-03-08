@@ -183,12 +183,17 @@ before we start you need to check the following for:
 	type="text" name="db_name" value="" /> <label>Database username</label><input
 	type="text" name="db_user" value="" /> <label>Database password</label><input
 	type="text" name="db_pass" value="" /> <label>Database encoding</label><input
-	type="text" name="db_encoding" value="utf8" /></fieldset>
+	type="text" name="db_encoding" value="utf8" />
+	<input
+	type="hidden" name="fullpath" value="'.$system_folder.'" />
+	</fieldset>
 
 <button type="submit">Next..</button>
 </form>';
 
 }else{
+
+	$system_folder = $_POST['fullpath'];
 
 	$pageURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 	$page_strlen =  strlen($pageURL);
@@ -223,6 +228,7 @@ $config["html_tidy_config"] = array(
  \'wrap\' =>    \'0\',
 );
 
+$config["full_path"] = "'.$_POST['fullpath'].'";
 
 $config["compress_output"] = false;
 
@@ -253,6 +259,30 @@ $config["debug"] = false;
 
 ?>';	
 
+
+	if (!function_exists('realpath')){
+
+
+		$file = '$full_path = "'.$_POST['fullpath'].'";';
+
+		$FileHandle = fopen($_POST['fullpath']."/aiki.php", 'r') or die("Sorry, can't read aiki.php file");
+		$content = fread($FileHandle, filesize($_POST['fullpath']."/aiki.php"));
+		$content = str_replace("<?php", "<?php \n $file", $content);
+
+		if (is_writable($_POST['fullpath']."/aiki.php")) {
+
+			$FileHandle = fopen($_POST['fullpath']."/aiki.php", 'w') or die("Sorry, can't read aiki.php file");
+			fwrite($FileHandle, $content);
+			fclose($FileHandle);
+
+		}else{
+			die ("can not write to aiki.php file please set its permissions to 0777 or add <br /> $file <br /> after the first line in the file. this process must happen once");
+		}
+
+
+
+	}
+
 	$conn = @mysql_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass']) or die ('Error connecting to mysql');
 	@mysql_select_db($_POST['db_name']) or die ("Unable to select database");
 
@@ -261,7 +291,6 @@ $config["debug"] = false;
 	$FileHandle = fopen($config_file_name, 'w') or die("Sorry, but I don't have write permissions to create config file");
 	fwrite($FileHandle, $config_file);
 	fclose($FileHandle);
-
 
 	$htaccess_file = 'Options +FollowSymLinks
 RewriteEngine on
