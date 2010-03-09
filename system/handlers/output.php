@@ -16,6 +16,11 @@ class aiki_output
 
 	var $html;
 
+	function __construct(){
+
+	}
+	
+	
 	function output_from_cache(){
 		global $config;
 

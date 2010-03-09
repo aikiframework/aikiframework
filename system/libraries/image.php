@@ -13,6 +13,11 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class aiki_image
 {
+	
+	function __construct(){
+
+	}
+	
 	function rsvg_convert_svg_png($file, $newwidth, $newhight){
 
 		$file = str_replace(" ", "\ ",  $file);

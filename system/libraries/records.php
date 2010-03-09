@@ -22,6 +22,10 @@ class aiki_records
 	var $width;
 	var $height;
 	var $rand;
+	
+	function __construct(){
+
+	}
 
 	function record_exists($value, $tablename, $field){
 		global $db;

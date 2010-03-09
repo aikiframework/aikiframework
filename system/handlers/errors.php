@@ -14,6 +14,10 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_errors
 {
 
+	function __construct(){
+
+	}
+	
 	function page_not_found(){
 		global $db, $aiki, $config;
 

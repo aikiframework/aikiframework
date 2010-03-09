@@ -16,6 +16,11 @@ class aiki_bot
 	var $timeout = 20;
 	var $url;
 
+	
+	function __construct(){
+
+	}
+	
 	function import_mockup($url, $theme, $display_url){
 		global $aiki, $db, $config;
 

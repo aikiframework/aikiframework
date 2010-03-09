@@ -14,6 +14,10 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_ftp
 {
 	
+	function __construct(){
+
+	}
+	
 } 
 
 

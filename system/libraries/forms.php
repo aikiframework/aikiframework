@@ -15,6 +15,11 @@ class aiki_forms
 
 	var $submit_button;
 
+	
+	function __construct(){
+
+	}
+	
 	function displayForms($text ){
 		global $db, $aiki;
 

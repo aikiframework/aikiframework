@@ -13,6 +13,12 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_events
 {
 	
+	
+	function __construct(){
+
+	}
+	
+	
 	function register($event){
 		
 	}

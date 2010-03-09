@@ -15,6 +15,10 @@ class aiki_text
 {
 
 
+	function __construct(){
+
+	}
+
 	//pascalaschwandenPLEASENOSPAM at gmail dot com
 	//http://ca.php.net/manual/en/function.ereg.php
 	/*Example:

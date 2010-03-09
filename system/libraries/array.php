@@ -16,6 +16,10 @@ class aiki_array
 	var $insertQuery;
 	var $new_array_field;
 
+	
+	function __construct(){
+
+	}
 
 	function displayArrayEditor($text){
 		global $db, $aiki;

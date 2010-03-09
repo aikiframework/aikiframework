@@ -22,7 +22,7 @@ class aiki
 	var $sql_tree_output;
 
 
-	function aiki(){
+	function __construct(){
 
 	}
 
