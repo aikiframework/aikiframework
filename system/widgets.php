@@ -39,6 +39,15 @@ class CreateLayout
 			$module_widgets = $db->get_results("SELECT id, display_urls, kill_urls FROM aiki_widgets where (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url['0']."|%' or display_urls LIKE '%|".$url->url['0']."' or display_urls LIKE '".$url->url['0']."|%' or display_urls LIKE '%".$url->url['0']."/%' or display_urls = '*') and is_active=1 and father_widget=0 and widget_site='$site' order by display_order, id");
 
 			if ($module_widgets){
+				$test_if_no_unique_widgets = $module_widgets;
+				foreach($test_if_no_unique_widgets as $tested_widget){
+					if ($tested_widget->display_urls != "*"){
+						$unique_widget_exists = true;
+					}
+				}
+			}
+
+			if ($module_widgets and isset($unique_widget_exists)){
 
 				$widget_group = array();
 
@@ -228,7 +237,7 @@ class CreateLayout
 		}
 
 
-		if (isset($config["widget_cache"]) and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
+		if (isset($config["widget_cache"]) and isset($widget_cache_timeout) and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
 
 			//Display widget from cache
 			$widget_html_output = file_get_contents($widget_file);
@@ -240,7 +249,7 @@ class CreateLayout
 
 			//Flag the widget as cachable, and try to delete the old cache file
 			$this->create_widget_cache = true;
-			if (file_exists($widget_file) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
+			if (isset ($widget_file) and file_exists($widget_file) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
 				unlink($widget_file);
 			}
 
@@ -654,7 +663,7 @@ class CreateLayout
 					error_log ( $processed_widget_cach, 3, $widget_file);
 				}
 			}
-				
+
 			if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1){
 				$processed_widget = $processed_widget."<a href='".$aiki->setting[url]."admin_tools/edit/20/".$widget->id."'>Edit Widget</a>";
 			}

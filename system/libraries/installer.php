@@ -271,12 +271,12 @@ $config["debug"] = false;
 
 		if (is_writable($_POST['fullpath']."/aiki.php")) {
 
-			$FileHandle = fopen($_POST['fullpath']."/aiki.php", 'w') or die("Sorry, can't read aiki.php file");
+			$FileHandle = fopen($_POST['fullpath']."/aiki.php", 'w') or die("Sorry, can't read ".$_POST['fullpath']."/aiki.php file");
 			fwrite($FileHandle, $content);
 			fclose($FileHandle);
 
 		}else{
-			die ("can not write to aiki.php file please set its permissions to 0777 or add <br /> $file <br /> after the first line in the file. this process must happen once");
+			die ("can not write to ".$_POST['fullpath']."/aiki.php file please set its permissions to 0777 (not recommended) or add <br /> $file <br /> after the first line in the file. <br /> refresh the page and proceed when done.<br /> this process will happen only once");
 		}
 
 
@@ -288,7 +288,7 @@ $config["debug"] = false;
 
 
 	$config_file_name = "config.php";
-	$FileHandle = fopen($config_file_name, 'w') or die("Sorry, but I don't have write permissions to create config file");
+	$FileHandle = fopen($config_file_name, 'w') or die("Sorry, no permissions to create config.php");
 	fwrite($FileHandle, $config_file);
 	fclose($FileHandle);
 
@@ -305,7 +305,7 @@ RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteRule ^(.*)$ index.php?pretty=$1 [L,QSA]';
 
 	$htaccess_file_name = ".htaccess";
-	$FileHandle = fopen($htaccess_file_name, 'w') or die("Sorry, but I don't have write permissions to create .htaccess file");
+	$FileHandle = fopen($htaccess_file_name, 'w') or die("Sorry, no permissions to create .htaccess file");
 	fwrite($FileHandle, $htaccess_file);
 	fclose($FileHandle);
 
