@@ -228,8 +228,6 @@ $config["html_tidy_config"] = array(
  \'wrap\' =>    \'0\',
 );
 
-$config["full_path"] = "'.$_POST['fullpath'].'";
-
 $config["compress_output"] = false;
 
 //widget cache
