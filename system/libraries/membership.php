@@ -29,8 +29,8 @@ class aiki_membership
 			session_start();
 		}
 
-		if (!isset($username) and isset($_SESSION['aiki']))
-		$username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aiki']."'");
+		if (!isset($username) and isset($_SESSION['aikiuser']))
+		$username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aikiuser']."'");
 
 		if (isset($username)){
 			$this->getUserPermissions($username);
@@ -44,7 +44,7 @@ class aiki_membership
 		//$user_ip = $this->get_ip();
 
 		if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
-			if (!isset($_SESSION['aiki']) and !isset($_SESSION['guest'])){
+			if (!isset($_SESSION['aikiuser']) and !isset($_SESSION['guest'])){
 
 				$_SESSION['guest'] = $this->generate_session(100);
 				$insert_session = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '', 'guest' , '$time_now', '$time_now' ,'$_SESSION[guest]', '1', '', '')");
@@ -54,9 +54,9 @@ class aiki_membership
 				$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' WHERE `user_session`='$_SESSION[guest]' LIMIT 1");
 			}
 
-		}elseif(isset($_SESSION['aiki'])){
+		}elseif(isset($_SESSION['aikiuser'])){
 
-			$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' WHERE `user_session`='$_SESSION[aiki]' LIMIT 1");
+			$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' WHERE `user_session`='$_SESSION[aikiuser]' LIMIT 1");
 
 		}
 
@@ -80,7 +80,7 @@ class aiki_membership
 
 		$time_now = time();
 
-		if (!isset ($config["allow_guest_sessions"]) and !isset($_SESSION['aiki'])){
+		if (!isset ($config["allow_guest_sessions"]) and !isset($_SESSION['aikiuser'])){
 			session_start();
 		}
 
@@ -92,19 +92,19 @@ class aiki_membership
 			$user_ip = $this->get_ip();
 
 			if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
-				$_SESSION['aiki'] = $_SESSION['guest'];
+				$_SESSION['aikiuser'] = $_SESSION['guest'];
 			}else{
-				$_SESSION['aiki'] = $this->generate_session(100);
+				$_SESSION['aikiuser'] = $this->generate_session(100);
 			}
 
 			if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
-				$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='$get_user->userid', `user_name` = '$get_user->username' WHERE `user_session`='$_SESSION[aiki]' LIMIT 1");
+				$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='$get_user->userid', `user_name` = '$get_user->username' WHERE `user_session`='$_SESSION[aikiuser]' LIMIT 1");
 			}else{
-				$register_user = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '$get_user->userid', '$get_user->username' , '$time_now', '$time_now' ,'$_SESSION[aiki]', '1', '', '')");
+				$register_user = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '$get_user->userid', '$get_user->username' , '$time_now', '$time_now' ,'$_SESSION[aikiuser]', '1', '', '')");
 			}
 
 			if (!isset($config["allow_multiple_sessions"])){
-				$delete_previous_open_sessions =$db->query("DELETE FROM `aiki_users_sessions` WHERE `user_session`!='$_SESSION[aiki]' and `user_name` = '$get_user->username' and `user_id`='$get_user->userid'");
+				$delete_previous_open_sessions =$db->query("DELETE FROM `aiki_users_sessions` WHERE `user_session`!='$_SESSION[aikiuser]' and `user_name` = '$get_user->username' and `user_id`='$get_user->userid'");
 			}
 
 			$this->getUserPermissions($get_user->username);
@@ -120,7 +120,7 @@ class aiki_membership
 
 	function isUserLogged ($userid){
 		global $db;
-		$user_session = $db->get_var("SELECT user_id FROM aiki_users_sessions where user_session='$_SESSION[aiki]'");
+		$user_session = $db->get_var("SELECT user_id FROM aiki_users_sessions where user_session='$_SESSION[aikiuser]'");
 		if ($user_session == $userid){
 			return true;
 		}else{
@@ -151,7 +151,7 @@ class aiki_membership
 		//hack attack red alert
 		if (!isset($group_permissions) or !$group_permissions){
 			unset($_SESSION['guest']);
-			unset($_SESSION['aiki']);
+			unset($_SESSION['aikiuser']);
 		}
 
 	}
@@ -189,9 +189,9 @@ class aiki_membership
 		$thisurlnologout = "http://" . $domain . $path . "?" . $queryString;
 		$thisurlnologout = str_replace("&operators=logout", "", $thisurlnologout);
 
-		$make_offline = $db->query("UPDATE `aiki_guests` SET `is_online`='0' WHERE `guest_session`='$_SESSION[aiki]' LIMIT 1");
-		$delete_session_data = $db->query("DELETE FROM aiki_users_sessions where user_session='$_SESSION[aiki]'");
-		unset($_SESSION['aiki']);
+		$make_offline = $db->query("UPDATE `aiki_guests` SET `is_online`='0' WHERE `guest_session`='$_SESSION[aikiuser]' LIMIT 1");
+		$delete_session_data = $db->query("DELETE FROM aiki_users_sessions where user_session='$_SESSION[aikiuser]'");
+		unset($_SESSION['aikiuser']);
 		unset($_SESSION['guest']);
 		session_destroy();
 		session_unset();
