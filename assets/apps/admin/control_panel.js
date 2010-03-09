@@ -8,12 +8,26 @@ function globalajaxify(file, targetwidget){
 		      }); 
 }
 
+function code_mirror_if_authorized(){
+	    
+	   var if_authorized = CodeMirror.fromTextArea('if_authorized', {
+	        height: "350px",
+	        parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
+	                     "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
+	        stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
+	        path: "assets/javascript/codemirror/js/",
+	        continuousScanning: 500,
+	        lineNumbers: true,
+	      });     
+	    
 
+		
+	}
 
 function code_mirror(){
 	
    var htmleditor = CodeMirror.fromTextArea('widget', {
-        height: "350px",
+        height: "400px",
         parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
                      "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
         stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
@@ -21,16 +35,6 @@ function code_mirror(){
         continuousScanning: 500,
         lineNumbers: true,
       }); 
-    
-   var if_authorized = CodeMirror.fromTextArea('if_authorized', {
-        height: "350px",
-        parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
-                     "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
-        stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
-        path: "assets/javascript/codemirror/js/",
-        continuousScanning: 500,
-        lineNumbers: true,
-      });     
     
    var sqleditor = CodeMirror.fromTextArea('normal_select', {
         height: "250px",
@@ -60,8 +64,8 @@ function create_form(selector, id, name, code, tree){
 					}
 				$('#new_record_form').ajaxForm(function() { 
 					refreshthetree(tree);
-			
-					$("#new_record_form").html(current_form + "Added new " + name + " successfully");
+
+					$("#widget-form").html("Added new " + name + " successfully");
 
 	           }); 
 
@@ -78,8 +82,7 @@ function urls_widgets_tree(){
 	
 	 
 
-   create_form("#create_new_url", 16, "url", 0, "widgettree");
-   create_form("#create_new_widget", 20, "Widget", 1, "widgettree");   
+   create_form("#create_new_widget", 1, "Widget", 1, "widgettree");   
     
     
    $("#widgettree").tree( {
@@ -99,13 +102,22 @@ function urls_widgets_tree(){
     	  if (isNaN(NODE.id)){
     	  
     	  }else{
+    		  
+  
+			$("#widget-form").load('admin_tools/edit/20/'+NODE.id,  {limit: 25}, function(){
+				
+				code_mirror();
+				code_mirror_if_authorized();
+				$('#edit_form').ajaxForm(function() { 
+					
+					$.tree_reference('widgettree').refresh();
+					
+					$("#widget-form").html("Edited widget successfully");
 
-    	      $.get('admin_tools/edit/20/'+NODE.id,function(data) { 
-                  $('#widget-form').html(data);
-                  code_mirror();
-                  $('#edit_form').ajaxForm(formoptions);
-                  
-    	      });
+	           }); 
+
+			});	
+
     		  
     	  }
         },
@@ -130,7 +142,7 @@ function urls_widgets_tree(){
 
 
 					if(isNaN(NODE.id)) {
-					//delete url	
+
 					}else{
 						$("#widget-form").load("admin_tools/delete/20/"+NODE.id+":yes",  {limit: 25}, function(){
 							$.tree_reference('widgettree').refresh();
