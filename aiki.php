@@ -9,7 +9,7 @@
  */
 
 
-// Framework Version
+// AikiFramework Version
 define('AIKI_VERSION',	'1.0.0');
 
 define('IN_AIKI', true);
@@ -21,6 +21,7 @@ if (function_exists('realpath') AND @realpath(dirname(__FILE__)) !== FALSE)
 
 }
 
+//if realpath didn't work for some reason ask user to enter it for the installation to work
 if (!isset($system_folder)){
 
 	if (!isset($full_path)){

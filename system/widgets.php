@@ -201,6 +201,10 @@ class CreateLayout
 			$page = "";
 		}
 
+		if ($page > 0){
+			$page = $page - 1;
+		}
+
 		//Set page title
 		if ($widget->pagetitle){
 
@@ -245,8 +249,8 @@ class CreateLayout
 			$this->create_widget_cache = false;
 
 		}else{
-			//widget can't be rendered from cache
 
+			//widget can't be rendered from cache
 			//Flag the widget as cachable, and try to delete the old cache file
 			$this->create_widget_cache = true;
 			if (isset ($widget_file) and file_exists($widget_file) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
@@ -260,7 +264,7 @@ class CreateLayout
 
 
 
-			if ($widget->nogui_widget and $nogui){
+			if ($widget->nogui_widget and isset($nogui)){
 				$widget->widget = $widget->nogui_widget;
 			}
 
@@ -293,11 +297,6 @@ class CreateLayout
 
 			$widget->widget = str_replace('(noloop_bottom('.$no_loop_bottom_part.')noloop_bottom)', '', $widget->widget);
 
-
-
-			//TODO: last page first
-			//TODO: add this to settings editor
-			$last_page_first = false;
 
 			if (isset($normal_select) and $normal_select){
 				$widget->normal_select = trim($normal_select);
@@ -342,27 +341,47 @@ class CreateLayout
 				}
 
 
+				//default pages links settings
+				$pagesgroup = 10;
+				$group_pages = false;
+
+				//custom pages links setting from link_example
+				if (isset($widget->link_example)){
+					$link_config = preg_match('/config\[(.*)\]/U', $widget->link_example, $link_config_data);
+					if ($link_config and isset($link_config_data[1])){
+
+						if (preg_match('/group\_by\:/', $link_config_data[1])){
+							$group_pages = true;
+							$pagesgroup = str_replace('group_by:', '', $link_config_data[1]);
+						}
+
+						$widget->link_example = preg_replace('/config\[(.*)\]/U', '', $widget->link_example);
+						$widget->link_example = trim($widget->link_example);
+					}
+				}
+
 
 				if ($widget->records_in_page and $widget->normal_select){
 
 					if ($records_num != $widget->records_in_page){
 						$numpages = $records_num / $widget->records_in_page;
-						$numpages = (int)($numpages+1);
+
+						if (is_float($numpages)){
+							$numpages = floor($numpages);
+							$numpages = $numpages+1;
+						}
+
 					}else{
 						$numpages = 1;
 					}
+
+
 					$fnumre = $page * $widget->records_in_page;
 
-					if($last_page_first){
 
-						$widget->normal_select = $widget->normal_select." limit $fnumre,".$widget->records_in_page;
-						$widget->normal_select = str_replace("DESC", "ASC", $widget->normal_select);
+					$widget->normal_select = $widget->normal_select." limit $fnumre,".$widget->records_in_page;
+					//$widget->normal_select = str_replace("ASC", "DESC", $widget->normal_select);
 
-					}else{
-
-						$widget->normal_select = $widget->normal_select." limit $fnumre,".$widget->records_in_page;
-						$widget->normal_select = str_replace("ASC", "DESC", $widget->normal_select);
-					}
 
 
 				}
@@ -375,30 +394,28 @@ class CreateLayout
 
 				$num_results = $db->num_rows;
 
-
 				if ($widget->link_example){
 
 					$widget->link_example = $aiki->input->requests($widget->link_example);
 
 					if (isset($numpages) and $numpages > 1){
 
-						//TODO: add this to settings editor
-						$pagesgroup = 10;
-						$group_pages = true;
+						$numpages = $numpages + 1;
+
 						$full_numb_of_pages = $numpages;
 						$pagination = '';
-						$page2 = $page + 1;
+						$page2 = $page;
 						$pagination .= "<br />
 			 <p class='pagination'>Move to page:<br />";
 
 						if( $page ) {
-							$first_page = str_replace("[page]", '0', $widget->link_example);
+							$first_page = str_replace("[page]", '1', $widget->link_example);
 							$pagination .= "<a href=\"$first_page\"><-First page</a>";
 						}
 						if ($group_pages){
 
 							$numpages = $pagesgroup;
-							$numpages = $numpages + $page;
+							$numpages = $numpages + $page + 1;
 
 							if ($page > ($pagesgroup / 2)){
 								$pages_to_display = $page - (int)($pagesgroup / 2);
@@ -411,44 +428,34 @@ class CreateLayout
 								$numpages = $full_numb_of_pages;
 							}
 
-							for ($i=$pages_to_display; $i <$numpages; $i++)
+
+							for ($i=$pages_to_display +1 ; $i <$numpages; $i++)
 							{
 
-								$y = $i+1;
-								if ($i == $page){
-									$pagination .= "<span class='pagination_notactive'> $y </span>";
+
+								if ($i == $page + 1 ){
+									$pagination .= "<span class='pagination_notactive'> $i </span>";
 								}else{
 									$next_link = str_replace("[page]", $i, $widget->link_example);
-									$pagination .= "<b> <a href=\"$next_link\">$y</a> </b>";
+									$pagination .= "<b> <a href=\"$next_link\">$i</a> </b>";
 								}
 							}
 
 
 
 						}else{
-							if($last_page_first){
-								for ($i=$numpages-1; $i>=0; $i--)
-								{
-									$y = $i + 1;
-									if ($i == $page){
-										$pagination .= "<b> $y </b>";
-									}else{
-										$next_link = str_replace("[page]", $i, $widget->link_example);
-										$pagination .= "<b> <a href=\"$next_link\">$y</a> </b>";
-									}
-								}
-							}else{
-								for ($i=0; $i <$numpages; $i++)
-								{
-									$y = $i + 1;
-									if ($i == $page){
-										$pagination .= "<b> $y </b>";
-									}else{
-										$next_link = str_replace("[page]", $i, $widget->link_example);
-										$pagination .= "<b> <a href=\"$next_link\">$y</a> </b>";
-									}
+
+							for ($i=1; $i <$numpages; $i++)
+							{
+
+								if ($i == $page + 1){
+									$pagination .= "<b> $i </b>";
+								}else{
+									$next_link = str_replace("[page]", $i, $widget->link_example);
+									$pagination .= "<b> <a href=\"$next_link\">$i</a> </b>";
 								}
 							}
+								
 
 
 						}
