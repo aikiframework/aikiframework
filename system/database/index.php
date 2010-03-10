@@ -587,10 +587,6 @@ switch ($config['db_type']){
 		break;
 }
 
-if (function_exists("mysql_set_charset") and $config['db_encoding'] and $config['db_use_mysql_set_charset']){
-	mysql_set_charset($config['db_encoding']);
-}
-
 
 if ($config['enable_query_cache']){
 	if (!isset($db_cache_timeout)){

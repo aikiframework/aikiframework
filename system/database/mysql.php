@@ -73,7 +73,7 @@ class ezSQL_mysql extends ezSQLcore
 
 	function connect($dbuser='', $dbpassword='', $dbhost='localhost')
 	{
-		global $ezsql_mysql_str; $return_val = false;
+		global $ezsql_mysql_str, $config; $return_val = false;
 
 		// Must have a user and a password
 		if ( ! $dbuser )
@@ -89,6 +89,14 @@ class ezSQL_mysql extends ezSQLcore
 		}
 		else
 		{
+
+			if (function_exists("mysql_set_charset") and isset($config['db_encoding']) and isset($config['db_use_mysql_set_charset']) and $config['db_use_mysql_set_charset']){
+				
+				$db_encoding = $config['db_encoding'];
+				
+				mysql_set_charset("$db_encoding ", $this->dbh);
+			}
+				
 			$this->dbuser = $dbuser;
 			$this->dbpassword = $dbpassword;
 			$this->dbhost = $dbhost;
@@ -194,7 +202,7 @@ class ezSQL_mysql extends ezSQLcore
 
 			//Count how many (not cached) queries there have been
 			$this->num_queries++;
-				
+
 			// If there is no existing database connection then try to connect
 			if ( ! isset($this->dbh) || ! $this->dbh )
 			{

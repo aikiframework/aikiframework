@@ -53,9 +53,9 @@ if (!isset($system_folder)){
 }
 
 
-if (isset($_REQUEST['nogui'])){ $nogui = true; }
-if (isset($_REQUEST['noheaders'])){ $noheaders = true; }
-if (isset($_REQUEST['custome_output'])){$custome_output = true;	$noheaders = true; }
+if (isset($_GET['nogui'])){ $nogui = true; }
+if (isset($_GET['noheaders'])){ $noheaders = true; }
+if (isset($_GET['custome_output'])){$custome_output = true;	$noheaders = true; }
 
 
 if (file_exists("$system_folder/config.php")){
@@ -67,7 +67,7 @@ if (file_exists("$system_folder/config.php")){
 
 require_once("$system_folder/system/database/index.php");
 
-require_once ("$system_folder/system/index.php");
+require_once ("$system_folder/system/core.php");
 
 $aiki = new aiki();
 
@@ -92,7 +92,6 @@ $aiki->load("records");
 $aiki->load("input");
 $aiki->load("output");
 $aiki->load("forms");
-$aiki->load("events");
 $aiki->load("upload");
 $aiki->load("array");
 $aiki->load("cronjobs");

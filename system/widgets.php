@@ -28,9 +28,9 @@ class CreateLayout
 		global $db, $site, $aiki, $url, $errors, $layout;
 
 
-		if (isset($_REQUEST["widget"])){
+		if (isset($_GET["widget"])){
 
-			$get_widget_id = $db->get_var("SELECT id from aiki_widgets where widget_name ='".$_REQUEST['widget']."' or id = '".$_REQUEST['widget']."' and is_active='1'");
+			$get_widget_id = $db->get_var("SELECT id from aiki_widgets where widget_name ='".$_GET['widget']."' or id = '".$_GET['widget']."' and is_active='1'");
 			if ($get_widget_id){
 				$this->createWidget($get_widget_id);
 			}

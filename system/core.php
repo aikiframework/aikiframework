@@ -63,13 +63,15 @@ class aiki
 		foreach ( $settings as $setting_group )
 		{
 			$this->processSettingsArray($setting_group->config_data);
-			$arrykeys = array_keys($this->aikiarray);
-			foreach($this->aikiarray as $field)
-			{
-				$field = explode("|", $field);
-				$field = $field[0];
-				$config[$arrykeys[$i]] = $field;
-				$i++;
+			if (is_array($this->aikiarray)){
+				$arrykeys = array_keys($this->aikiarray);
+				foreach($this->aikiarray as $field)
+				{
+					$field = explode("|", $field);
+					$field = $field[0];
+					$config[$arrykeys[$i]] = $field;
+					$i++;
+				}
 			}
 			$i=0;
 		}
