@@ -455,7 +455,7 @@ class CreateLayout
 									$pagination .= "<b> <a href=\"$next_link\">$i</a> </b>";
 								}
 							}
-								
+
 
 
 						}
@@ -483,6 +483,7 @@ class CreateLayout
 					$widgetContents = '';
 					foreach ( $widget_select as $widget_value )
 					{
+
 
 						if (!$custome_output){
 							$widgetContents .= "\n<!-- The Beginning of a Record -->\n";
@@ -525,8 +526,7 @@ class CreateLayout
 							$widget->widget = str_replace("(#(related:$related)#)", $related_cloud , $widget->widget);
 						}
 
-
-						$widgetContents = $this->noaiki($widgetContents);
+						$widget->widget = $this->noaiki($widget->widget);
 
 						$widget->widget = $this->parsDBpars($widget->widget, $widget_value);
 
@@ -755,6 +755,11 @@ class CreateLayout
 				if (!isset($widget_value->$parsed)){
 					$widget_value->$parsed = '';
 				}
+
+				$widget_value->$parsed = $aiki->security->removeAikiMarkup($widget_value->$parsed);
+				$widget_value->$parsed = $aiki->security->RemoveXSS($widget_value->$parsed);
+
+
 				$text = str_replace("(($parsed))", $widget_value->$parsed, $text);
 
 

@@ -8,7 +8,7 @@
  * @link		http://www.aikiframework.org
  */
 
-error_reporting(0);
+error_reporting(E_ALL & E_NOTICE);
 
 $html_output = '';
 
@@ -68,7 +68,7 @@ if (!isset($noheaders)){
 }
 
 
-// Tidy from php5-tidy using libtidy
+//Tidy html using libtidy
 if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $config["html_tidy"]) {
 
 	$tidy = new tidy();

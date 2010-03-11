@@ -35,11 +35,30 @@ class aiki_php
 					$php_output = $this->aiki_htmlspecialchars($php_function);
 				}
 
+				if (preg_match('/\$aiki\-\>(.*)\-\>(.*)\(\)\;/Us', $php_function)){
+					$php_output = $this->aiki_function($php_function);
+				}
+
 				$text = str_replace("<php $php_function php>", $php_output , $text);
 			}
 		}
 
 		return $text;
+	}
+
+	function aiki_function($text){
+		global $aiki;
+
+		$class = $aiki->get_string_between($text, '$aiki->', '->');
+		$function = $aiki->get_string_between($text, '$aiki->'.$class.'->', '();');
+
+		if (isset($aiki->$class)){
+			$output = $aiki->$class->$function();
+		}else{
+			$output = '';
+		}
+
+		return $output;
 	}
 
 	function aiki_htmlspecialchars($text){

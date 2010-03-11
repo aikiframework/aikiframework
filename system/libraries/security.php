@@ -18,6 +18,15 @@ class aiki_security
 
 	}
 	
+	function removeAikiMarkup($text){
+
+		$text = preg_replace("/\(\#\(form(.*)\)\#\)/Us", "", $text);
+		
+		$text = preg_replace("/\<edit\>(.*)\<\/edit\>/Us", "", $text);
+		
+		return $text;
+	}
+	
 	function inlinePermissions($text){
 		global $membership;
 

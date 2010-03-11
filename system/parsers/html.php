@@ -75,7 +75,6 @@ class aiki_html
 
 		$header .= "</head>";
 
-		//TODO: custome onload and onuload
 		$header .= "\n<body>\n";
 
 		return $header;

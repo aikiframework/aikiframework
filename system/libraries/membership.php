@@ -182,21 +182,23 @@ class aiki_membership
 
 
 	function LogOut(){
-		global $db, $layout;
-		$domain = $_SERVER['HTTP_HOST'];
-		$path = $_SERVER['SCRIPT_NAME'];
-		$queryString = $_SERVER['QUERY_STRING'];
-		$thisurlnologout = "http://" . $domain . $path . "?" . $queryString;
-		$thisurlnologout = str_replace("&operators=logout", "", $thisurlnologout);
+		global $db;
 
-		$make_offline = $db->query("UPDATE `aiki_guests` SET `is_online`='0' WHERE `guest_session`='$_SESSION[aikiuser]' LIMIT 1");
-		$delete_session_data = $db->query("DELETE FROM aiki_users_sessions where user_session='$_SESSION[aikiuser]'");
-		unset($_SESSION['aikiuser']);
-		unset($_SESSION['guest']);
-		session_destroy();
-		session_unset();
-		$layout->html_output .= '<META HTTP-EQUIV="refresh" content="1;URL=http://'.$domain.$path.'"><center><b>الرجاء الإنتظار جاري تسجيل الخروج</b></center>';
-		//die();
+		if (isset($_SESSION['aikiuser'])){
+			
+			$delete_session_data = $db->query("DELETE FROM aiki_users_sessions where user_session='$_SESSION[aikiuser]'");
+
+			unset($_SESSION['aikiuser']);
+			unset($_SESSION['guest']);
+			session_destroy();
+			session_unset();
+
+			return "Logged out";
+		}else{
+				
+			return "You are already logged out";
+		}
+
 	}
 
 }
