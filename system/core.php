@@ -62,7 +62,7 @@ class aiki
 		$i=0;
 		foreach ( $settings as $setting_group )
 		{
-			$this->processSettingsArray($setting_group->config_data);
+			$this->aikiarray = unserialize($setting_group->config_data);
 			if (is_array($this->aikiarray)){
 				$arrykeys = array_keys($this->aikiarray);
 				foreach($this->aikiarray as $field)
@@ -99,15 +99,6 @@ class aiki
 		$len = strpos($string,$end,$ini) - $ini;
 		return substr($string,$ini,$len);
 	}
-
-
-
-
-	function processSettingsArray($array){
-		$this->aikiarray = unserialize($array);
-	}
-
-
 
 
 	function processVars($text){
