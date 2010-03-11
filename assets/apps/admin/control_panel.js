@@ -84,9 +84,11 @@ function urls_widgets_tree(){
 
    create_form("#create_new_widget", 1, "Widget", 1, "widgettree");   
     
-    
+   var stop = 1;
+   
    $("#widgettree").tree( {
-      
+	   
+   
       data  : {
         type  : "xml_flat",
         url   : "assets/apps/admin/urls_widgets.php"
@@ -99,25 +101,31 @@ function urls_widgets_tree(){
       
       callback : {
         onselect : function(NODE,TREE_OBJ) {
+    	  
+    	    	  
     	  if (isNaN(NODE.id)){
     	  
     	  }else{
-    		  
-  
+    		 
+  if (stop == 1){
 			$("#widget-form").load('admin_tools/edit/20/'+NODE.id,  {limit: 25}, function(){
 				
 				code_mirror();
 				code_mirror_if_authorized();
 				$('#edit_form').ajaxForm(function() { 
 					
-					$.tree_reference('widgettree').refresh();
+					stop = 0;
 					
 					$("#widget-form").html("Edited widget successfully");
+					
+					$.tree_reference('widgettree').refresh();
 
+					stop = 1;
+					
 	           }); 
 
 			});	
-
+  }
     		  
     	  }
         },
