@@ -533,12 +533,8 @@ class CreateLayout
 						$widget->widget = $this->edit_in_place($widget->widget, $widget_value);
 
 
-
-						$nl2br = $aiki->get_string_between($widget->widget, "[*[", "]*]");
-						if ($nl2br){
-							$nl2br_processed = nl2br($nl2br);
-							$widget->widget = str_replace("[*[".$nl2br."]*]", $nl2br_processed, $widget->widget);
-						}
+						$widget->widget = $aiki->text->aiki_nl2br($widget->widget);
+						$widget->widget = $aiki->text->aiki_nl2p($widget->widget);
 
 
 						$widgetContents .= $widget->widget;
