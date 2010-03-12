@@ -195,9 +195,18 @@ class aiki_membership
 		$message = trim($vars_array[4]);
 
 
-		if (!$username or !$email){
+		if (!$username and !$email){
 			return '';
 		}
+
+		if (!$username){
+			return 'Username is needed to reset your password';
+		}
+
+		if (!$email){
+			return 'Email is needed to reset your password';
+		}
+
 
 
 		$is_user = $db->get_var("select userid from aiki_users where username = '$username' and email = '$email'");
@@ -227,6 +236,7 @@ class aiki_membership
 			<a href='".$config['url']."/secure/resetpassword/?key=".$randkey."'>".
 			$config['url']."/secure/resetpassword/?key=".$randkey."</a>";
 
+			return "an email has been sent to your address. please follow the link to reset your password";
 			mail($email,$subject,$message,$headers);
 
 		}

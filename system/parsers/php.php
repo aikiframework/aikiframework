@@ -17,6 +17,10 @@ class aiki_php
 	function parser($text){
 		global $aiki;
 
+		$text = str_replace("<?php", "<php", $text);
+		$text = str_replace("<?", "<php", $text);
+		$text = str_replace("?>", "php>", $text);
+
 		$php_matchs = preg_match_all('/\<php (.*) php\>/Us', $text, $matchs);
 
 		if ($php_matchs > 0){

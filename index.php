@@ -8,7 +8,7 @@
  * @link		http://www.aikiframework.org
  */
 
-error_reporting(0);
+error_reporting(E_ALL & E_NOTICE);
 
 $html_output = '';
 

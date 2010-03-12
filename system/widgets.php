@@ -346,6 +346,10 @@ class CreateLayout
 				$pagesgroup = 10;
 				$group_pages = false;
 
+				if ($widget->records_in_page and !$widget->link_example){
+					$widget->link_example = "?page=[page]";
+				}
+				
 				//custom pages links setting from link_example
 				if (isset($widget->link_example)){
 					$link_config = preg_match('/config\[(.*)\]/U', $widget->link_example, $link_config_data);
