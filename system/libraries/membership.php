@@ -180,12 +180,65 @@ class aiki_membership
 	}
 
 
+	function ResetPassword($input){
+		global $db, $aiki, $config;
+
+		$vars_array = str_replace('"', '', $input);
+		$vars_array = str_replace("'", '', $vars_array);
+		$vars_array = explode(',', $vars_array);
+
+
+		$username = trim($vars_array[0]);
+		$email = trim($vars_array[1]);
+		$emailfrom = trim($vars_array[2]);
+		$subject = trim($vars_array[3]);
+		$message = trim($vars_array[4]);
+
+
+		if (!$username or !$email){
+			return '';
+		}
+
+
+		$is_user = $db->get_var("select userid from aiki_users where username = '$username' and email = '$email'");
+		if (!$is_user){
+
+			$is_user = $db->get_var("select userid from aiki_users where username = '$username'");
+			if (!$is_user){
+
+				return "The user: $username doesn't exists. please make sure you typed the name correctly";
+			}else{
+
+				return "The email address doesn't match the username";
+			}
+
+		}else{
+
+			$randkey = substr(md5(uniqid(rand(),true)),1,15);
+
+			$add_rand_key = $db->query("update aiki_users set randkey = '$randkey' where userid = '$is_user' limit 1");
+
+			$headers  = "MIME-Version: 1.0\r\n";
+			$headers .= "Content-type: text/html; charset=utf-8\r\n";
+			$headers .= "From: $emailfrom\r\n";
+
+			$message = $message."\n\r".
+			"To reset your password please click this link: 
+			<a href='".$config['url']."/secure/resetpassword/?key=".$randkey."'>".
+			$config['url']."/secure/resetpassword/?key=".$randkey."</a>";
+
+			mail($email,$subject,$message,$headers);
+
+		}
+
+
+	}
 
 	function LogOut(){
 		global $db;
 
 		if (isset($_SESSION['aikiuser'])){
-			
+
 			$delete_session_data = $db->query("DELETE FROM aiki_users_sessions where user_session='$_SESSION[aikiuser]'");
 
 			unset($_SESSION['aikiuser']);
@@ -195,7 +248,7 @@ class aiki_membership
 
 			return "Logged out";
 		}else{
-				
+
 			return "You are already logged out";
 		}
 

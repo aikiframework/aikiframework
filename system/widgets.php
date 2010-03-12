@@ -282,6 +282,7 @@ class CreateLayout
 			}
 
 			$widget->widget = $aiki->input->requests($widget->widget);
+			
 			$widget->normal_select = $aiki->input->requests($widget->normal_select);
 
 

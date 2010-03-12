@@ -35,7 +35,7 @@ class aiki_php
 					$php_output = $this->aiki_htmlspecialchars($php_function);
 				}
 
-				if (preg_match('/\$aiki\-\>(.*)\-\>(.*)\(\)\;/Us', $php_function)){
+				if (preg_match('/\$aiki\-\>(.*)\-\>(.*)\((.*)\)\;/Us', $php_function)){
 					$php_output = $this->aiki_function($php_function);
 				}
 
@@ -49,13 +49,32 @@ class aiki_php
 	function aiki_function($text){
 		global $aiki;
 
-		$class = $aiki->get_string_between($text, '$aiki->', '->');
-		$function = $aiki->get_string_between($text, '$aiki->'.$class.'->', '();');
+		//function does not have vars
+		if (preg_match('/\$aiki\-\>(.*)\-\>(.*)\(\)\;/Us', $text)){
 
-		if (isset($aiki->$class)){
-			$output = $aiki->$class->$function();
-		}else{
-			$output = '';
+			$class = $aiki->get_string_between($text, '$aiki->', '->');
+			$function = $aiki->get_string_between($text, '$aiki->'.$class.'->', '();');
+
+			if (isset($aiki->$class)){
+				$output = $aiki->$class->$function();
+			}else{
+				$output = '';
+			}
+
+			//function has vars
+		}elseif (preg_match('/\$aiki\-\>(.*)\-\>(.*)\((.*)\)\;/Us', $text)){
+
+			$class = $aiki->get_string_between($text, '$aiki->', '->');
+			$function = $aiki->get_string_between($text, '$aiki->'.$class.'->', '(');
+			$vars_array = $aiki->get_string_between($text, '(', ');');
+			
+			if (isset($aiki->$class)){
+				$output = $aiki->$class->$function($vars_array);
+
+			}else{
+				$output = '';
+			}
+
 		}
 
 		return $output;

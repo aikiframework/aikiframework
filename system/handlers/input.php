@@ -151,6 +151,7 @@ class aiki_input
 
 		if ($post_matchs > 0){
 
+			
 			foreach ($posts[1] as $post){
 
 				if (isset($_POST["$post"])){
