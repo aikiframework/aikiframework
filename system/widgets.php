@@ -212,8 +212,13 @@ class CreateLayout
 
 			$widget->pagetitle = $aiki->url->apply_url_on_query($widget->pagetitle);
 
-			if ($widget->dynamic_pagetitle){
+			if (preg_match("/select (.*) from (.*)/Us", $widget->pagetitle)){
 				$title = $db->get_var("$widget->pagetitle");
+				
+				if (!$title){
+					$title = $widget->pagetitle;
+				}
+				
 			}else{
 				$title = $widget->pagetitle;
 			}
@@ -282,7 +287,7 @@ class CreateLayout
 			}
 
 			$widget->widget = $aiki->input->requests($widget->widget);
-			
+				
 			$widget->normal_select = $aiki->input->requests($widget->normal_select);
 
 
@@ -349,7 +354,7 @@ class CreateLayout
 				if ($widget->records_in_page and !$widget->link_example){
 					$widget->link_example = "?page=[page]";
 				}
-				
+
 				//custom pages links setting from link_example
 				if (isset($widget->link_example)){
 					$link_config = preg_match('/config\[(.*)\]/U', $widget->link_example, $link_config_data);
