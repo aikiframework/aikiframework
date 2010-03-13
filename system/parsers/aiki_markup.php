@@ -162,7 +162,7 @@ class aiki_aiki_markup extends aiki
 
 		if (preg_match('/\(\+\((.*)\)\+\)/', $text)){
 
-			$link_tags = $db->get_results("SELECT * FROM aiki_internal_links");
+			$link_tags = $db->get_results("SELECT * FROM apps_wiki_links");
 			$query = '';
 			if ($link_tags){
 
@@ -472,7 +472,7 @@ class aiki_aiki_markup extends aiki
 			if ($templateName){
 
 
-				$template_output = $db->get_var("SELECT template_output from aiki_template where template_name = '$templateName'");
+				$template_output = $db->get_var("SELECT template_output from apps_wiki_templates where template_name = '$templateName'");
 
 			}
 

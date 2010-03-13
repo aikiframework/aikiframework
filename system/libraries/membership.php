@@ -113,7 +113,7 @@ class aiki_membership
 
 
 		} else{
-			die('<center><b>Sorry wrong username or password</b></center>');
+			echo '<center><b>Sorry wrong username or password</b></center>';
 		}
 
 	}
