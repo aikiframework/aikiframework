@@ -187,11 +187,38 @@ before we start you need to check the following for:
 	<input
 	type="hidden" name="fullpath" value="'.$system_folder.'" />
 	</fieldset>
+	
+<fieldset><legend>Admin Settings</legend>
+<label>Username</label><input type="text" name="username" value="" /></label>
+<label>Full Name</label><input type="text" name="full_name" value="" /></label>
+<label>Email</label><input	type="text" name="email" value="" /></label>
+	</fieldset>	
 
 <button type="submit">Next..</button>
 </form>';
 
 }else{
+
+	if ($_POST['username']){
+		$username = $_POST['username'];
+	}else{
+		$username = "admin";
+	}
+
+	if ($_POST['full_name']){
+		$full_name = $_POST['full_name'];
+	}else{
+		$full_name = "System Admin";
+	}
+
+	if ($_POST['email']){
+		if (eregi("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$", $_POST['email'])){
+			$email = $_POST['email'];
+		}
+	}
+	if (!isset($email)){
+		$email = '';
+	}
 
 	$system_folder = $_POST['fullpath'];
 
@@ -318,8 +345,8 @@ RewriteRule ^(.*)$ index.php?pretty=$1 [L,QSA]';
 	fwrite($FileHandle, $htaccess_file);
 	fclose($FileHandle);
 
-$admin_password = substr(md5(uniqid(rand(),true)),1,8);
-$admin_password_md5_md5 = md5(md5($admin_password));
+	$admin_password = substr(md5(uniqid(rand(),true)),1,8);
+	$admin_password_md5_md5 = md5(md5($admin_password));
 
 	$sql = '
 
@@ -488,7 +515,7 @@ CREATE TABLE IF NOT EXISTS `aiki_users` (
 
 INSERT INTO `aiki_users` (`userid`, `username`, `full_name`, `country`, `sex`, `job`, `password`, `usergroup`, `email`, `avatar`, `homepage`, `first_ip`, `first_login`, `last_login`, `last_ip`, `user_permissions`, `maillist`, `logins_number`, `randkey`, `is_active`) VALUES
 (1, \'guest\', \'guest\', \'\', \'\', \'\', \'\', 3, \'\', \'\', \'\', \'\', \'0000-00-00 00:00:00\', \'0000-00-00 00:00:00\', \'\', \'\', 0, 0, \'\', 0),
-(2, \'admin\', \'System admin\', \'\', \'male\', \'\', \''.$admin_password_md5_md5.'\', 1, \'\', \'\', \'\', \'\', \'0000-00-00 00:00:00\', \'2009-10-13 15:39:56\', \'::1\', \'\', 0, 112, \'\', 0);
+(2, \''.$username.'\', \''.$full_name.'\', \'\', \'male\', \'\', \''.$admin_password_md5_md5.'\', 1, \''.$email.'\', \'\', \'\', \'\', \'0000-00-00 00:00:00\', \'2009-10-13 15:39:56\', \'::1\', \'\', 0, 112, \'\', 0);
 
 --------------------------------------------------------
 
@@ -668,12 +695,27 @@ CREATE TABLE IF NOT EXISTS `apps_wiki_text` (
 	}
 
 
-	echo '<h1>Great success, aiki framework installed</h1>';
+	echo '<h1>Great success '.$full_name.'! aiki framework installed</h1>';
 	echo '<a href="admin/">Click here to login and start creating a cms</a>';
 	echo '<br />';
-	echo 'Username: admin';
+	echo 'Username: '.$username;
 	echo '<br />';
 	echo 'Password: '.$admin_password;
+
+	if ($email){
+		
+		$headers  = "MIME-Version: 1.0\r\n";
+		$headers .= "Content-type: text/html; charset=utf-8\r\n";
+		$headers .= "From: noreply@aikiframework.org\r\n";
+
+		$message = "Hello $full_name \n\r your new aiki installation is ready to be used \n\r
+			Go to: ".$pageURL."admin \n\r
+Username: $username \n\r
+Password: $admin_password \n\r
+";
+
+		mail($email,'Your new aiki installation',$message,$headers);
+	}
 
 
 }
