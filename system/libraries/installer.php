@@ -282,8 +282,19 @@ $config["debug"] = false;
 	}
 
 	$conn = @mysql_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass']) or die ('Error connecting to mysql');
-	@mysql_select_db($_POST['db_name']) or die ("Unable to select database");
+	$select_db = @mysql_select_db($_POST['db_name']);
 
+	if (!$select_db){
+		echo "Can't select db, Trying to create database $_POST[db_name]";
+		$create_db = mysql_query("CREATE DATABASE `$_POST[db_name]` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
+		$select_db = @mysql_select_db($_POST['db_name']);
+
+		if (!$create_db and !$select_db){
+			die ("<br />Can't create database $_POST[db_name]");
+		}else{
+			echo "<br />Success! Created database $_POST[db_name]";
+		}
+	}
 
 	$config_file_name = "config.php";
 	$FileHandle = fopen($config_file_name, 'w') or die("Sorry, no permissions to create config.php");
@@ -359,7 +370,7 @@ CREATE TABLE IF NOT EXISTS `aiki_forms` (
 --------------------------------------------------------
 
 INSERT INTO `aiki_forms` (`id`, `app_id`, `form_method`, `form_action`, `form_dir`, `form_table`, `form_name`, `form_array`, `form_html`, `form_query`) VALUES
-(1, 0, \'\', \'\', \'\', \'aiki_widgets\', \'widgets_simple_editor\', \'a:13:{s:9:"tablename";s:12:"aiki_widgets";s:4:"pkey";s:2:"id";s:10:"textinput3";s:33:"widget_name|SystemGOD:widget name";s:7:"hidden4";s:47:"widget_site|SystemGOD:widget site:value:default";s:13:"staticselect5";s:69:"widget_target|SystemGOD:widget target:custome:body>body&header>header";s:7:"hidden6";s:43:"widget_type|SystemGOD:widget type:value:div";s:11:"textblock11";s:43:"display_urls|SystemGOD:Widget Address (url)";s:11:"textblock13";s:40:"normal_select|SystemGOD:SQL select query";s:11:"textblock16";s:23:"widget|SystemGOD:widget";s:11:"textblock17";s:17:"css|SystemGOD:css";s:11:"textinput20";s:41:"records_in_page|SystemGOD:records in page";s:14:"staticselect35";s:48:"is_active|SystemGOD:is active:custome:Yes>1&No>0";}\', \'\', \'\'),
+(1, 0, \'\', \'\', \'\', \'aiki_widgets\', \'widgets_simple_editor\', \'a:12:{s:9:"tablename";s:12:"aiki_widgets";s:4:"pkey";s:2:"id";s:10:"textinput3";s:33:"widget_name|SystemGOD:widget name";s:7:"hidden4";s:47:"widget_site|SystemGOD:widget site:value:default";s:13:"staticselect5";s:69:"widget_target|SystemGOD:widget target:custome:body>body&header>header";s:7:"hidden6";s:43:"widget_type|SystemGOD:widget type:value:div";s:11:"textblock11";s:43:"display_urls|SystemGOD:Widget Address (url)";s:11:"textblock13";s:40:"normal_select|SystemGOD:SQL select query";s:11:"textblock16";s:23:"widget|SystemGOD:widget";s:11:"textblock17";s:17:"css|SystemGOD:css";s:11:"textinput20";s:41:"records_in_page|SystemGOD:records in page";s:14:"staticselect35";s:48:"is_active|SystemGOD:is active:custome:Yes>1&No>0";}\', \'\', \'\'),
 (4, 0, \'\', \'\', \'\', \'aiki_dictionary\', \'aiki_dictionary\', \'a:7:{s:9:"tablename";s:15:"aiki_dictionary";s:4:"pkey";s:7:"term_id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:31:"short_term|SystemGOD:short term";s:10:"textblock3";s:35:"lang_english|SystemGOD:lang english";s:10:"textblock4";s:33:"lang_arabic|SystemGOD:lang arabic";s:10:"textblock5";s:33:"lang_german|SystemGOD:lang german";}\', \'\', \'\'),
 (6, 0, \'\', \'\', \'\', \'aiki_forms\', \'aiki_forms\', \'a:11:{s:9:"tablename";s:10:"aiki_forms";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:33:"form_method|SystemGOD:form method";s:10:"textinput3";s:33:"form_action|SystemGOD:form action";s:10:"textinput4";s:27:"form_dir|SystemGOD:form dir";s:10:"textinput5";s:31:"form_table|SystemGOD:form table";s:10:"textinput6";s:29:"form_name|SystemGOD:form name";s:10:"textblock7";s:31:"form_array|SystemGOD:form array";s:10:"textblock8";s:29:"form_html|SystemGOD:form html";s:10:"textblock9";s:31:"form_query|SystemGOD:form query";}\', \'\', \'\'),
 (9, 0, \'\', \'\', \'\', \'aiki_languages\', \'aiki_languages\', \'a:8:{s:9:"tablename";s:14:"aiki_languages";s:4:"pkey";s:2:"id";s:10:"textinput1";s:19:"name|SystemGOD:name";s:10:"textinput2";s:27:"sys_name|SystemGOD:sys name";s:10:"textinput3";s:31:"short_name|SystemGOD:short name";s:10:"textinput4";s:17:"dir|SystemGOD:dir";s:10:"textinput5";s:21:"align|SystemGOD:align";s:10:"textinput6";s:31:"is_default|SystemGOD:is default";}\', \'\', \'\'),

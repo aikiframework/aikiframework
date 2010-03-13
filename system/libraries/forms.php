@@ -153,7 +153,7 @@ class aiki_forms
 				$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_permission_and_man_info[1]'");
 			}
 
-
+			$form .= "<div class='$intwalker[0]'>";
 
 			if (!isset($get_permission_and_man_info[1]) or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level){
 
@@ -381,6 +381,8 @@ class aiki_forms
 								break;
 				}
 			}
+			
+			$form .= "</div>";
 
 			$i++;
 		}
