@@ -72,25 +72,6 @@ function create_form(selector, id, name, code, tree){
 }
 
 
-function create_widget_form(selector, id, name, code, tree){
-	   $(selector).click(function(event){
-			$("#widget-form").load("admin_tools/new/"+id,  {limit: 25}, function(){
-				
-				var current_form = $("#new_record_form").html();
-				if (code == 1){
-					code_mirror();
-					}
-				$('#new_record_form').ajaxForm(function() { 
-					refreshthetree(tree);
-
-					$("#widget-form").html("Added new " + name + " successfully");
-
-	           }); 
-
-			});	
-	   });		
-}
-
 function urls_widgets_tree(){
 
     var formoptions = { 
@@ -100,7 +81,7 @@ function urls_widgets_tree(){
 	
 	 
 
-    create_widget_form("#create_new_widget", 1, "Widget", 1, "widgettree");   
+    create_form("#create_new_widget", 1, "Widget", 1, "widgettree");   
     
    var stop = 1;
    
