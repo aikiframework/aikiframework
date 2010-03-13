@@ -448,17 +448,6 @@ INSERT INTO `aiki_sites` (`site_id`, `site_name`, `site_shortcut`, `is_active`, 
 
 --------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `aiki_synchronization` (
-  `id` int(11) NOT NULL auto_increment,
-  `table_name` varchar(255) NOT NULL,
-  `record_id` int(11) NOT NULL,
-  `server_id` int(11) NOT NULL,
-  `date_and_time` varchar(255) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS `aiki_template` (
   `id` int(11) NOT NULL auto_increment,
   `app_id` int(11) NOT NULL,
