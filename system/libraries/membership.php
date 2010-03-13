@@ -236,7 +236,7 @@ class aiki_membership
 			<a href='".$config['url']."/secure/resetpassword/?key=".$randkey."'>".
 			$config['url']."/secure/resetpassword/?key=".$randkey."</a>";
 
-			return "an email has been sent to your address. please follow the link to reset your password";
+			return "an email had been sent to your address. please follow the link to reset your password";
 			mail($email,$subject,$message,$headers);
 
 		}
