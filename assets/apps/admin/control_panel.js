@@ -253,6 +253,7 @@ function structur_accordion(){
 		$("#structur_accordion").accordion({
 			fillSpace: true
 });
+		$("#structur_button").addClass('active');
 		urls_widgets_tree(); 
 }
 
@@ -260,6 +261,7 @@ function widget_accordion(){
 	$("#widget_accordion").accordion({
 		fillSpace: true
 	});
+
 }
 
 $().ready(function() {
