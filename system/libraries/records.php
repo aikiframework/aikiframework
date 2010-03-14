@@ -198,6 +198,7 @@ width:591px;
 
 
 	function edit_all(){
+		global $config;
 
 		$pagekey = explode(":", $global_index);
 		if (isset($pagekey[1])){
@@ -374,7 +375,7 @@ width:591px;
 						if ($intwalker[6]){
 
 							$imagepath = "$layout->forms .= \"$intwalker[6]\";";
-							$path = $aiki->setting['url'];
+							$path = $config['url'];
 
 							$layout->forms .= "<td><img src='". $path. substr($intwalker[6].$intsub, 1) ."'><br />$intsub</td>";
 							//eval($imagepath);
@@ -384,9 +385,9 @@ width:591px;
 							//TODO: change this please (it's for unique images only) and custome min size
 
 							if ($intwalker[2] == "unique_filename"){
-								//$intsub = $aiki->setting[url]."/".$full_path.$intwalker[0];
+								//$intsub = $config[url]."/".$full_path.$intwalker[0];
 								//$intsub = str_replace("//", "/", $intsub);
-								$url = $aiki->setting['url'];
+								$url = $config['url'];
 								$intsub = "<img src=\""."$url"."image/150px/$intsub\"><br>$intsub";
 							}
 
@@ -731,7 +732,7 @@ width:591px;
 				////////////////////
 				if (isset($upload)){
 					$uploadexploded = explode(":", $upload);
-					$path = $aiki->setting[top_folder]."/".$uploadexploded[5]."/";
+					$path = $config['top_folder']."/".$uploadexploded[5]."/";
 					$filename = $_FILES[$uploadexploded[0]];
 					$name = $filename['name'];
 					$tmp_filename = $filename['tmp_name'];

@@ -54,7 +54,7 @@ class aiki_aiki_markup extends aiki
 	}
 
 	function images($text){
-		global $db, $aiki;
+		global $db, $aiki, $config;
 		$numMatches = preg_match_all( '/\{\+\{/', $text, $matches);
 
 		for ($i=0; $i<$numMatches; $i++){
@@ -64,7 +64,7 @@ class aiki_aiki_markup extends aiki
 			$html_photo = "";
 
 			if (!isset($photo_info_array[7])){
-				$html_photo .= "<a href='".$aiki->setting['url']."/file/image|".$photo_info_array[0]."'>";
+				$html_photo .= "<a href='".$config['url']."/file/image|".$photo_info_array[0]."'>";
 			}
 
 			$html_photo .= "<img ";
@@ -299,7 +299,7 @@ class aiki_aiki_markup extends aiki
 
 
 	function extlinks($text){
-		global $aiki;
+		global $aiki, $config;
 
 		$tags_output = array();
 
@@ -325,7 +325,7 @@ class aiki_aiki_markup extends aiki
 
 
 				//TODO: make sure it's correct link and if not correct it, and check for email addresses
-				$processed_tag = "<a target=\"_blank\" href=\"$tag_equivalent\" style=\"background:transparent url(".$aiki->setting['url']."/assets/images/external.png) no-repeat scroll left center; padding-left:13px;\">".$tag_text.'</a>';
+				$processed_tag = "<a target=\"_blank\" href=\"$tag_equivalent\" style=\"background:transparent url(".$config['url']."/assets/images/external.png) no-repeat scroll left center; padding-left:13px;\">".$tag_text.'</a>';
 
 
 				$tags_output[] .= $processed_tag;
@@ -429,7 +429,7 @@ class aiki_aiki_markup extends aiki
 	}
 
 	function datetime($text, $widget_value){
-		global $aiki;
+		global $aiki, $config;
 
 		$datetimes = preg_match_all('/\(\#\(datetime\:(.*)\)\#\)/Us', $text, $matchs);
 		if ($datetimes > 0){
@@ -437,7 +437,7 @@ class aiki_aiki_markup extends aiki
 
 				if (preg_match('/[0-9]{10}/', $widget_value->$datetime)){ //Check if valid unix timestamp
 
-					$widget_value->$datetime = date($aiki->setting['default_time_format'], $widget_value->$datetime);
+					$widget_value->$datetime = date($config['default_time_format'], $widget_value->$datetime);
 
 				}else{
 					$widget_value->$datetime = '';
