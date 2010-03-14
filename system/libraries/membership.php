@@ -180,6 +180,63 @@ class aiki_membership
 	}
 
 
+	function NewPassword($key){
+		global $db, $aiki, $config;
+
+		$is_user = $db->get_var("select userid, username from aiki_users where randkey = '$key'");
+		if ($is_user){
+
+			$form = '
+<form method=\'post\'>
+<div>
+<table border=0>
+  <tbody>
+    <tr>
+      <td><b>New Password:</b></td>
+      <td><input class="input" type="password" dir="" name="password"></td>
+    </tr>
+<tr>
+      <td><b>Confirm New Password:</b></td>
+      <td><input class="input" type="password" dir="" name="password_confirm"></td>
+    </tr>    
+    <tr>
+      <td></td>
+      <td><input class="button" type="submit" name="submit" value="Set Password"></td>
+    </tr>
+<input type="hidden" value="'.$key.'" name="key">
+  </tbody>
+</table>
+</div>
+<form>			
+';			
+				
+			if (!isset($_POST['password']) and !isset($_POST['password_confirm']) and !isset($_POST['key'])){
+
+				return $form;
+
+			}else{
+
+				if ($_POST['password'] and $_POST['password_confirm'] and $_POST['key'] and $_POST['password_confirm'] == $_POST['password']){
+						
+					$password = md5(md5($_POST['password']));
+					$update = $db->query("update aiki_users set password = '$password' where randkey = '$_POST[key]'");
+						
+					return "Password reseted! you can now login to your account";
+				}else{
+						
+					return "Sorry: the two passwords don't match, please try again <br /> $form ";
+				}
+
+
+			}
+
+
+		}else{
+			return "Sorry worng or expired key";
+		}
+
+	}
+
 	function ResetPassword($input){
 		global $db, $aiki, $config;
 
@@ -223,7 +280,7 @@ class aiki_membership
 
 		}else{
 
-			$randkey = substr(md5(uniqid(rand(),true)),1,15);
+			$randkey = md5(uniqid(rand(),true));
 
 			$add_rand_key = $db->query("update aiki_users set randkey = '$randkey' where userid = '$is_user' limit 1");
 
@@ -234,7 +291,7 @@ class aiki_membership
 			$message = $message."\n\r".
 			"To reset your password please click this link: 
 			<a href='".$config['url']."/secure/resetpassword/?key=".$randkey."'>".
-			$config['url']."/secure/resetpassword/?key=".$randkey."</a>";
+			$config['url']."/secure?key=".$randkey."</a>";
 
 			return "an email had been sent to your address. please follow the link to reset your password";
 			mail($email,$subject,$message,$headers);

@@ -52,10 +52,6 @@ if ($config['html_cache'] and isset($html_cache_file)){
 
 $html_output .= $layout->html_output;
 
-
-
-
-
 if (!isset($noheaders)){
 	//$html_output .= "</div>";
 }

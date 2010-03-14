@@ -214,11 +214,11 @@ class CreateLayout
 
 			if (preg_match("/select (.*) from (.*)/Us", $widget->pagetitle)){
 				$title = $db->get_var("$widget->pagetitle");
-				
+
 				if (!$title){
 					$title = $widget->pagetitle;
 				}
-				
+
 			}else{
 				$title = $widget->pagetitle;
 			}
@@ -287,7 +287,7 @@ class CreateLayout
 			}
 
 			$widget->widget = $aiki->input->requests($widget->widget);
-				
+
 			$widget->normal_select = $aiki->input->requests($widget->normal_select);
 
 
