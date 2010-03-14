@@ -28,25 +28,31 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
 
 $get_urls = $db->get_results("select distinct display_urls from aiki_widgets where display_urls NOT REGEXP 'admin' and display_urls != '' order by BINARY display_urls");
 $used = array();
+$used_url = array();
 foreach ($get_urls as $url){
 
 	if ($url->display_urls == "*"){
 		$url->display_urls = "Global";
 	}
 	$multi_url = explode("|", $url->display_urls);
-	
+
 	if (isset($multi_url[1])){
-		$url->display_urls = $multi_url[0]; 
+		$url->display_urls = $multi_url[0];
 	}
 
-	echo '<item parent_id="0" id="'.$url->display_urls.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/link.png"><![CDATA['.$url->display_urls.']]></name></content></item>';
+	if (!in_array($url->display_urls, $used_url)){
+		echo '<item parent_id="0" id="'.$url->display_urls.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/link.png"><![CDATA['.$url->display_urls.']]></name></content></item>';
+	}
 
-	$get_widgets = $db->get_results("select id, widget_name, father_widget, is_father from aiki_widgets where display_urls = '$url->display_urls' or display_urls LIKE '$url->display_urls|%' or display_urls LIKE '$url->display_urls/%' or display_urls = '*' order by father_widget,id");
+	$used_url[$url->display_urls] = $url->display_urls;
+
+	$get_widgets = $db->get_results("select id, widget_name, father_widget, is_father, display_urls from aiki_widgets where display_urls = '$url->display_urls' or display_urls LIKE '$url->display_urls|%' or display_urls LIKE '$url->display_urls/%' or display_urls = '*' order by father_widget,id");
 	if($get_widgets){
 		foreach ($get_widgets as $widget){
 
 			if (!in_array($widget->id, $used)){
-				if ($widget->father_widget == 0){
+				
+				if ($widget->father_widget == 0 or $widget->display_urls == $url->display_urls){
 					$used[$widget->id] = $widget->id;
 					echo '<item parent_id="'.$url->display_urls.'" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->widget_name.']]></name></content></item>';
 				}else{

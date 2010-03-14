@@ -678,7 +678,7 @@ class CreateLayout
 			}
 
 			if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1){
-				$processed_widget = $processed_widget."<a href='".$aiki->setting[url]."admin_tools/edit/20/".$widget->id."'>Edit Widget</a>";
+				$processed_widget = $processed_widget."<a href='".$config['url']."admin_tools/edit/20/".$widget->id."'>Edit Widget</a>";
 			}
 
 
