@@ -46,7 +46,7 @@ class aiki_output
 					echo $full_html_output;
 
 					$end = (float) array_sum(explode(' ',microtime()));
-					$end_time = sprintf("%.4f", ($end-$start));;
+					$end_time = sprintf("%.4f", ($end-$start));
 					die("\n<!--Served From Cache in $end_time seconds-->");
 				}
 			}

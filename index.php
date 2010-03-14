@@ -10,6 +10,8 @@
 
 error_reporting(E_ALL & E_NOTICE);
 
+$start_time = (float) array_sum(explode(' ',microtime()));
+
 $html_output = '';
 
 require_once("aiki.php");
@@ -116,7 +118,10 @@ if ($config['html_cache'] and isset($html_cache_file)){
 }
 
 if (isset($config["debug"]) and $config["debug"]){
-	echo "\n <!-- queries: ".$db->num_queries." -->";
+	$end = (float) array_sum(explode(' ',microtime()));
+	$end_time = sprintf("%.4f", ($end-$start_time));
+	echo "\n <!-- queries: ".$db->num_queries." -->\n";
+	echo "\n <!-- Time: ".$end_time." seconds -->";
 }
 
 ?>

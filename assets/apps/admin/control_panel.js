@@ -1,13 +1,3 @@
-function globalajaxify(file, targetwidget){ 
-
-		      $('<div class="loading"></div>').html("Loading please wait").appendTo('body').fadeIn(); 
-		      $.get(file,function(data) { 
-		              $(targetwidget).html(data ,function(){ 
-		                  $('.loading').remove(); 
-		              }); 
-		      }); 
-}
-
 function code_mirror_if_authorized(){
 	    
 	   var if_authorized = CodeMirror.fromTextArea('if_authorized', {
@@ -287,17 +277,6 @@ $().ready(function() {
 
 		widget_accordion();
 
-	
-	//global ajaxify
-	 $("a").click(function(event){
-
-		  if($(this).attr('rel') && $(this).attr('href') && $(this).attr('ajax')) {
-		      globalajaxify($(this).attr("rel"), $(this).attr("href")); 
-
-		  return false; 
-		  }
-			 
-	 });	
 	 	 
 	   $("#database_forms").click(function(event){
 		   database_forms_tree();

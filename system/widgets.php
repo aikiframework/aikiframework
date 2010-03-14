@@ -677,8 +677,8 @@ class CreateLayout
 				}
 			}
 
-			if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1){
-				$processed_widget = $processed_widget."<a href='".$config['url']."admin_tools/edit/20/".$widget->id."'>Edit Widget</a>";
+			if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1 and $widget->widget_target == 'body' and !preg_match("/admin/", $widget->display_urls) and $widget->custome_output == 0){
+				$processed_widget = $processed_widget."<a href='".$config['url']."admin_tools/edit/20/".$widget->id."' style='position: absolute; z-index: 100000; background: none repeat scroll 0% 0% rgb(204, 204, 204); padding: 3px; -moz-border-radius: 3px 3px 3px 3px; color: rgb(0, 0, 0);'>Edit Widget: ".$widget->widget_name."</a>";
 			}
 
 
