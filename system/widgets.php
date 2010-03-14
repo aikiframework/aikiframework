@@ -418,10 +418,16 @@ class CreateLayout
 						$pagination .= "<br />
 			 <p class='pagination'>Move to page:<br />";
 
-						if( $page ) {
+						/*if( $page ) {
 							$first_page = str_replace("[page]", '1', $widget->link_example);
-							$pagination .= "<a href=\"$first_page\"><-First page</a>";
+							$pagination .= "<a href=\"$first_page\"><<-First page</a>";
+							}*/
+
+						if ($page){
+							$previous = str_replace("[page]", $page, $widget->link_example);
+							$pagination .= "<a href=\"$previous\"><b><-Previous</b></a>";
 						}
+
 						if ($group_pages){
 
 							$numpages = $pagesgroup;
@@ -470,372 +476,377 @@ class CreateLayout
 
 						}
 
-						if( $page != ($numpages-1) ) {
-							$last_page = str_replace("[page]", $full_numb_of_pages -1, $widget->link_example);
-							$pagination .= "<a href=\"$last_page\">Last page-></a>";
+						//if( $page != ($numpages-1) ) {
+						//$last_page = str_replace("[page]", $full_numb_of_pages -1, $widget->link_example);
+						//$pagination .= "<a href=\"$last_page\">Last page->></a>";
+						//}
+
+						if( $page+2 != ($numpages) ) {
+							$next = str_replace("[page]", $page + 2, $widget->link_example);
+							$pagination .= "<a href=\"$next\"><b>Next-></b></a>";
 						}
 						$pagination .= "</p>";
-					}
 				}
+			}
 
 
 
 
-				$widget->widget = str_replace("[#[language]#]", $config['default_language'], $widget->widget);
-				$widget->widget = str_replace("[#[dir]#]", $dir, $widget->widget);
-				$widget->widget = str_replace("[#[align]#]", $align, $widget->widget);
+			$widget->widget = str_replace("[#[language]#]", $config['default_language'], $widget->widget);
+			$widget->widget = str_replace("[#[dir]#]", $dir, $widget->widget);
+			$widget->widget = str_replace("[#[align]#]", $align, $widget->widget);
 
 
-				$newwidget = $widget->widget;
+			$newwidget = $widget->widget;
 
-				if ($widget_select and $num_results and $num_results > 0){
+			if ($widget_select and $num_results and $num_results > 0){
 
-					$widgetContents = '';
-					foreach ( $widget_select as $widget_value )
-					{
+				$widgetContents = '';
+				foreach ( $widget_select as $widget_value )
+				{
 
 
-						if (!$custome_output){
-							$widgetContents .= "\n<!-- The Beginning of a Record -->\n";
-						}
-						$widget->widget = $newwidget;
+					if (!$custome_output){
+						$widgetContents .= "\n<!-- The Beginning of a Record -->\n";
+					}
+					$widget->widget = $newwidget;
 
-						$widget->widget = $aiki->aiki_markup->datetime($widget->widget, $widget_value);
-						$widget->widget = $aiki->aiki_markup->tags($widget->widget, $widget_value);
+					$widget->widget = $aiki->aiki_markup->datetime($widget->widget, $widget_value);
+					$widget->widget = $aiki->aiki_markup->tags($widget->widget, $widget_value);
 
-						$related = $aiki->get_string_between($widget->widget, "(#(related:", ")#)");
-						if ($related){
-							$relatedsides = explode("||", $related);
+					$related = $aiki->get_string_between($widget->widget, "(#(related:", ")#)");
+					if ($related){
+						$relatedsides = explode("||", $related);
 
-							$related_cloud = "
+						$related_cloud = "
 						<ul class='relatedKeywords'>";
 
-							$related_links = explode("|", $widget_value->$relatedsides[0]);
-							$related_array = array();
-							foreach ($related_links as $related_link){
+						$related_links = explode("|", $widget_value->$relatedsides[0]);
+						$related_array = array();
+						foreach ($related_links as $related_link){
 
-								$get_sim_topics = $db->get_results("SELECT $relatedsides[2], $relatedsides[7] FROM $relatedsides[1] where ($relatedsides[3] LIKE '%|".$related_link."|%' or $relatedsides[3] LIKE '".$related_link."|%' or $relatedsides[3] LIKE '%|".$related_link."' or $relatedsides[3]='$related_link') and $relatedsides[7] != '$operators' and publish_cond=2 order by $relatedsides[5] DESC limit $relatedsides[4]");
+							$get_sim_topics = $db->get_results("SELECT $relatedsides[2], $relatedsides[7] FROM $relatedsides[1] where ($relatedsides[3] LIKE '%|".$related_link."|%' or $relatedsides[3] LIKE '".$related_link."|%' or $relatedsides[3] LIKE '%|".$related_link."' or $relatedsides[3]='$related_link') and $relatedsides[7] != '$operators' and publish_cond=2 order by $relatedsides[5] DESC limit $relatedsides[4]");
 
-								if ($get_sim_topics){
+							if ($get_sim_topics){
 
-									foreach($get_sim_topics as $related_topic){
-										$related_cloud_input = '<li><a href="aikicore->setting[url]/'.$relatedsides[6].'">'.$related_topic->$relatedsides[2].'</a></li>';
-										$related_cloud_input = str_replace("_self", $related_topic->$relatedsides[7], $related_cloud_input);
-										$related_array[$related_topic->$relatedsides[7]] = $related_cloud_input;
-										$related_cloud_input = '';
-									}
-
+								foreach($get_sim_topics as $related_topic){
+									$related_cloud_input = '<li><a href="aikicore->setting[url]/'.$relatedsides[6].'">'.$related_topic->$relatedsides[2].'</a></li>';
+									$related_cloud_input = str_replace("_self", $related_topic->$relatedsides[7], $related_cloud_input);
+									$related_array[$related_topic->$relatedsides[7]] = $related_cloud_input;
+									$related_cloud_input = '';
 								}
 
 							}
-							foreach ($related_array as $related_cloud_output){
-								$related_cloud .= $related_cloud_output;
-							}
 
-							$related_cloud .= "</ul>";
-							$widget->widget = str_replace("(#(related:$related)#)", $related_cloud , $widget->widget);
+						}
+						foreach ($related_array as $related_cloud_output){
+							$related_cloud .= $related_cloud_output;
 						}
 
-						$widget->widget = $this->noaiki($widget->widget);
-
-						$widget->widget = $this->parsDBpars($widget->widget, $widget_value);
-
-						$widget->widget = $this->edit_in_place($widget->widget, $widget_value);
-
-
-						$widget->widget = $aiki->text->aiki_nl2br($widget->widget);
-						$widget->widget = $aiki->text->aiki_nl2p($widget->widget);
-
-
-						$widgetContents .= $widget->widget;
-						if (!$custome_output){
-							$widgetContents .= "\n<!-- The End of a Record -->\n";
-						}
-					}
-					if ($widget->display_in_row_of > 0){
-						$widgetContents = $aiki->html->displayInTable($widgetContents, $widget->display_in_row_of);
+						$related_cloud .= "</ul>";
+						$widget->widget = str_replace("(#(related:$related)#)", $related_cloud , $widget->widget);
 					}
 
-					$widgetContents = $this->noaiki($widgetContents);
+					$widget->widget = $this->noaiki($widget->widget);
 
-					$widgetContents  = $aiki->url->apply_url_on_query($widgetContents);
+					$widget->widget = $this->parsDBpars($widget->widget, $widget_value);
 
-					$widgetContents = $aiki->security->inlinePermissions($widgetContents);
-
-
-					$no_loop_part = $this->parsDBpars($no_loop_part, $widget_value);
-					$no_loop_bottom_part = $this->parsDBpars($no_loop_bottom_part, $widget_value);
-					$widgetContents = $no_loop_part.$widgetContents;
-					$widgetContents = $widgetContents.$no_loop_bottom_part;
-
-					$widgetContents = $this->inline_widgets($widgetContents);
-					$widgetContents = $this->inherent_widgets($widgetContents);
-
-					$widgetContents = $aiki->sql_markup->sql($widgetContents);
+					$widget->widget = $this->edit_in_place($widget->widget, $widget_value);
 
 
-					$hits_counter = preg_match("/\(\#\(hits\:(.*)\)\#\)/U",$widgetContents, $hits_counter_match);
-					if ($hits_counter > 0){
+					$widget->widget = $aiki->text->aiki_nl2br($widget->widget);
+					$widget->widget = $aiki->text->aiki_nl2p($widget->widget);
 
-						$aiki_hits_counter = explode("|", $hits_counter_match[1]);
-						$update_hits_counter = $db->query("UPDATE $aiki_hits_counter[0] set $aiki_hits_counter[2]=$aiki_hits_counter[2]+1 where $aiki_hits_counter[1]");
+
+					$widgetContents .= $widget->widget;
+					if (!$custome_output){
+						$widgetContents .= "\n<!-- The End of a Record -->\n";
 					}
-					$widgetContents = preg_replace("/\(\#\(hits\:(.*)\)\#\)/U", '', $widgetContents);
+				}
+				if ($widget->display_in_row_of > 0){
+					$widgetContents = $aiki->html->displayInTable($widgetContents, $widget->display_in_row_of);
+				}
+
+				$widgetContents = $this->noaiki($widgetContents);
+
+				$widgetContents  = $aiki->url->apply_url_on_query($widgetContents);
+
+				$widgetContents = $aiki->security->inlinePermissions($widgetContents);
 
 
-					if (isset($pagination)){
+				$no_loop_part = $this->parsDBpars($no_loop_part, $widget_value);
+				$no_loop_bottom_part = $this->parsDBpars($no_loop_bottom_part, $widget_value);
+				$widgetContents = $no_loop_part.$widgetContents;
+				$widgetContents = $widgetContents.$no_loop_bottom_part;
 
-						$widgetContents = str_replace ("[#[pagination]#]", $pagination, $widgetContents);
+				$widgetContents = $this->inline_widgets($widgetContents);
+				$widgetContents = $this->inherent_widgets($widgetContents);
 
-						$widgetContents .= $pagination;
-					}
-
-					if (isset($highlight)){
-						$widgetContents = $aiki->highlight_this($widgetContents, $highlight);
-					}
-
-					//Delete empty widgets
-					if ($widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
-						$this->kill_widget = $widget->id;
-					}else{
-
-						$processed_widget =  $widgetContents;
+				$widgetContents = $aiki->sql_markup->sql($widgetContents);
 
 
-					}
+				$hits_counter = preg_match("/\(\#\(hits\:(.*)\)\#\)/U",$widgetContents, $hits_counter_match);
+				if ($hits_counter > 0){
+
+					$aiki_hits_counter = explode("|", $hits_counter_match[1]);
+					$update_hits_counter = $db->query("UPDATE $aiki_hits_counter[0] set $aiki_hits_counter[2]=$aiki_hits_counter[2]+1 where $aiki_hits_counter[1]");
+				}
+				$widgetContents = preg_replace("/\(\#\(hits\:(.*)\)\#\)/U", '', $widgetContents);
 
 
-				}else{
+				if (isset($pagination)){
+
+					$widgetContents = str_replace ("[#[pagination]#]", $pagination, $widgetContents);
+
+					$widgetContents .= $pagination;
+				}
+
+				if (isset($highlight)){
+					$widgetContents = $aiki->highlight_this($widgetContents, $highlight);
+				}
+
+				//Delete empty widgets
+				if ($widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
 					$this->kill_widget = $widget->id;
-				}
+				}else{
 
+					$processed_widget =  $widgetContents;
+
+
+				}
 
 
 			}else{
-
-				$widget->widget = $this->noaiki($widget->widget);
-				$widget->widget  = $aiki->url->apply_url_on_query($widget->widget);
-				$widget->widget = $aiki->security->inlinePermissions($widget->widget);
-				$widget->widget = $this->inline_widgets($widget->widget);
-				$widget->widget = $this->inherent_widgets($widget->widget);
-				$widget->widget = $aiki->sql_markup->sql($widget->widget);
-
-				$processed_widget =  $widget->widget;
-
-			}
-
-			if (!isset($processed_widget)){
-				$processed_widget = '';
-			}
-
-
-			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ($processed_widget));
-			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
-
-
-			//apply new headers
-			$new_header = preg_match_all("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);
-
-			if ($new_header > 0 and $new_header_match[1]){
-
-				foreach ($new_header_match[1] as $header_match){
-
-					$header_parts = explode("|", $header_match);
-
-					if (isset($header_parts[0]) and isset($header_parts[1]) and isset($header_parts[2])){
-
-						header("$header_parts[0]", $header_parts[1], $header_parts[2]);
-
-					}elseif (isset($header_parts[0]) and isset($header_parts[1])){
-
-						header("$header_parts[0]", $header_parts[1]);
-
-					}elseif (isset($header_parts[0])){
-
-						header("$header_parts[0]");
-
-					}
-				}
-			}
-
-			$processed_widget = preg_replace("/\(\#\(header\:(.*)\)\#\)/U",'', $processed_widget);
-
-
-			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
-			$processed_widget = $aiki->php->parser($processed_widget);
-			$processed_widget = $aiki->aiki_markup->aiki_parser($processed_widget);
-			$processed_widget = $aiki->xml->rss_parser($processed_widget);
-			$processed_widget = $aiki->forms->displayForms($processed_widget);
-			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
-
-			if (isset($widgetContents) and $widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
 				$this->kill_widget = $widget->id;
-			}else{
-				if (isset($config["widget_cache"]) and $this->create_widget_cache and $config["widget_cache_dir"] and $widget_cache_timeout>0 and is_dir($config["widget_cache_dir"]) and !$membership->permissions){
-					$processed_widget_cach = $processed_widget."\n\n<!-- Served From Cache -->\n\n";
-					error_log ( $processed_widget_cach, 3, $widget_file);
+			}
+
+
+
+		}else{
+
+			$widget->widget = $this->noaiki($widget->widget);
+			$widget->widget  = $aiki->url->apply_url_on_query($widget->widget);
+			$widget->widget = $aiki->security->inlinePermissions($widget->widget);
+			$widget->widget = $this->inline_widgets($widget->widget);
+			$widget->widget = $this->inherent_widgets($widget->widget);
+			$widget->widget = $aiki->sql_markup->sql($widget->widget);
+
+			$processed_widget =  $widget->widget;
+
+		}
+
+		if (!isset($processed_widget)){
+			$processed_widget = '';
+		}
+
+
+		$processed_widget =  $aiki->processVars ($aiki->languages->L10n ($processed_widget));
+		$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
+
+
+		//apply new headers
+		$new_header = preg_match_all("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);
+
+		if ($new_header > 0 and $new_header_match[1]){
+
+			foreach ($new_header_match[1] as $header_match){
+
+				$header_parts = explode("|", $header_match);
+
+				if (isset($header_parts[0]) and isset($header_parts[1]) and isset($header_parts[2])){
+
+					header("$header_parts[0]", $header_parts[1], $header_parts[2]);
+
+				}elseif (isset($header_parts[0]) and isset($header_parts[1])){
+
+					header("$header_parts[0]", $header_parts[1]);
+
+				}elseif (isset($header_parts[0])){
+
+					header("$header_parts[0]");
+
 				}
 			}
+		}
 
-			if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1 and $widget->widget_target == 'body' and !preg_match("/admin/", $widget->display_urls) and $widget->custome_output == 0){
-				$processed_widget = $processed_widget."<a href='".$config['url']."admin_tools/edit/20/".$widget->id."' style='position: absolute; z-index: 100000; background: none repeat scroll 0% 0% rgb(204, 204, 204); padding: 3px; -moz-border-radius: 3px 3px 3px 3px; color: rgb(0, 0, 0);'>Edit Widget: ".$widget->widget_name."</a>";
+		$processed_widget = preg_replace("/\(\#\(header\:(.*)\)\#\)/U",'', $processed_widget);
+
+
+		$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
+		$processed_widget = $aiki->php->parser($processed_widget);
+		$processed_widget = $aiki->aiki_markup->aiki_parser($processed_widget);
+		$processed_widget = $aiki->xml->rss_parser($processed_widget);
+		$processed_widget = $aiki->forms->displayForms($processed_widget);
+		$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
+
+		if (isset($widgetContents) and $widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
+			$this->kill_widget = $widget->id;
+		}else{
+			if (isset($config["widget_cache"]) and $this->create_widget_cache and $config["widget_cache_dir"] and $widget_cache_timeout>0 and is_dir($config["widget_cache_dir"]) and !$membership->permissions){
+				$processed_widget_cach = $processed_widget."\n\n<!-- Served From Cache -->\n\n";
+				error_log ( $processed_widget_cach, 3, $widget_file);
 			}
+		}
+
+		if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1 and $widget->widget_target == 'body' and !preg_match("/admin/", $widget->display_urls) and $widget->custome_output == 0){
+			$processed_widget = $processed_widget."<a href='".$config['url']."admin_tools/edit/20/".$widget->id."' style='position: absolute; z-index: 100000; background: none repeat scroll 0% 0% rgb(204, 204, 204); padding: 3px; -moz-border-radius: 3px 3px 3px 3px; color: rgb(0, 0, 0);'>Edit Widget: ".$widget->widget_name."</a>";
+		}
 
 
-			if ($output_to_string){
-				return $processed_widget;
-			}else{
-				$this->widget_html .=  $processed_widget;
-			}
-
+		if ($output_to_string){
+			return $processed_widget;
+		}else{
+			$this->widget_html .=  $processed_widget;
 		}
 
 	}
 
+}
 
-	function noaiki($text){
-		global $aiki;
 
-		$widget_no_aiki = $aiki->get_string_between($text, "<noaiki>", "</noaiki>");
+function noaiki($text){
+	global $aiki;
 
-		if ($widget_no_aiki){
+	$widget_no_aiki = $aiki->get_string_between($text, "<noaiki>", "</noaiki>");
 
-			$html_widget = htmlspecialchars($widget_no_aiki);
+	if ($widget_no_aiki){
 
-			$html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">");
-			$html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;");
+		$html_widget = htmlspecialchars($widget_no_aiki);
 
-			$html_widget = str_replace($html_chars, $html_entities, $html_widget);
+		$html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">");
+		$html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;");
 
-			$text = str_replace("<noaiki>$widget_no_aiki</noaiki>", $html_widget, $text);
+		$html_widget = str_replace($html_chars, $html_entities, $html_widget);
 
-		}
-		return $text;
+		$text = str_replace("<noaiki>$widget_no_aiki</noaiki>", $html_widget, $text);
+
 	}
+	return $text;
+}
 
 
 
-	function parsDBpars($text, $widget_value){
-		global $aiki;
+function parsDBpars($text, $widget_value){
+	global $aiki;
 
-		$count = preg_match_all( '/\(\((.*)\)\)/U', $text, $matches );
+	$count = preg_match_all( '/\(\((.*)\)\)/U', $text, $matches );
 
-		foreach ($matches[1] as $parsed){
+	foreach ($matches[1] as $parsed){
 
-			if ($parsed){
+		if ($parsed){
 
-				$is_array = $aiki->get_string_between($parsed, "[", "]");
-				if ($is_array){
-					$parsed_array = str_replace("[$is_array]", "", $parsed);
-					$array = @unserialize($widget_value->$parsed_array);
-					if (isset($array["$is_array"])){
-						$widget_value->$parsed = $array["$is_array"];
-					}else{
-						$widget_value->$parsed = '';
-					}
-				}
-
-				//((if||writers||writer: _self))
-
-				$parsedExplode = explode("||", $parsed);
-				if (isset($parsedExplode[1]) and $parsedExplode[0] == "if"){
-					$parsedValue = $widget_value->$parsedExplode[1];
-
-					if ($parsedValue){
-						$parsedExplode[2] = str_replace("_self", $parsedValue, $parsedExplode[2]);
-						$widget_value->$parsed = $parsedExplode[2];
-					}
-					elseif ($parsedExplode[4] and $parsedExplode[3] == "else"){
-						$else_stetment = explode(":", $parsedExplode[4]);
-
-						if ($else_stetment[0] == "redirect" and $else_stetment[1]){
-							$text_values .="<meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=$else_stetment[1]\">";
-							if (!$widget_value->$parsed){
-								$widget_value->$parsed = $text_values;
-							}
-						}
-					}
-
-				}
-
-				if (!isset($widget_value->$parsed)){
+			$is_array = $aiki->get_string_between($parsed, "[", "]");
+			if ($is_array){
+				$parsed_array = str_replace("[$is_array]", "", $parsed);
+				$array = @unserialize($widget_value->$parsed_array);
+				if (isset($array["$is_array"])){
+					$widget_value->$parsed = $array["$is_array"];
+				}else{
 					$widget_value->$parsed = '';
 				}
+			}
 
-				$widget_value->$parsed = $aiki->security->removeAikiMarkup($widget_value->$parsed);
-				$widget_value->$parsed = $aiki->security->RemoveXSS($widget_value->$parsed);
+			//((if||writers||writer: _self))
 
+			$parsedExplode = explode("||", $parsed);
+			if (isset($parsedExplode[1]) and $parsedExplode[0] == "if"){
+				$parsedValue = $widget_value->$parsedExplode[1];
 
-				$text = str_replace("(($parsed))", $widget_value->$parsed, $text);
+				if ($parsedValue){
+					$parsedExplode[2] = str_replace("_self", $parsedValue, $parsedExplode[2]);
+					$widget_value->$parsed = $parsedExplode[2];
+				}
+				elseif ($parsedExplode[4] and $parsedExplode[3] == "else"){
+					$else_stetment = explode(":", $parsedExplode[4]);
 
+					if ($else_stetment[0] == "redirect" and $else_stetment[1]){
+						$text_values .="<meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=$else_stetment[1]\">";
+						if (!$widget_value->$parsed){
+							$widget_value->$parsed = $text_values;
+						}
+					}
+				}
 
 			}
+
+			if (!isset($widget_value->$parsed)){
+				$widget_value->$parsed = '';
+			}
+
+			$widget_value->$parsed = $aiki->security->removeAikiMarkup($widget_value->$parsed);
+			$widget_value->$parsed = $aiki->security->RemoveXSS($widget_value->$parsed);
+
+
+			$text = str_replace("(($parsed))", $widget_value->$parsed, $text);
+
+
 		}
-		return $text;
 	}
+	return $text;
+}
 
 
-	function edit_in_place($text, $widget_value){
-		global $aiki,$db, $membership;
+function edit_in_place($text, $widget_value){
+	global $aiki,$db, $membership;
 
-		$edit_matchs = preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
+	$edit_matchs = preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
 
-		if ($edit_matchs > 0){
+	if ($edit_matchs > 0){
 
-			foreach ($matchs[1] as $edit){
+		foreach ($matchs[1] as $edit){
 
-				$table = $aiki->get_string_between($edit , "<table>", "</table>");
-				$table = trim($table);
-				$form_num = $db->get_var("select id from aiki_forms where form_table = '$table'");
+			$table = $aiki->get_string_between($edit , "<table>", "</table>");
+			$table = trim($table);
+			$form_num = $db->get_var("select id from aiki_forms where form_table = '$table'");
 
-				$field = $aiki->get_string_between($edit , "<field>", "</field>");
-				$field = trim($field);
+			$field = $aiki->get_string_between($edit , "<field>", "</field>");
+			$field = trim($field);
 
-				$label = $aiki->get_string_between($edit , "<label>", "</label>");
-				if ($label){
-					$label = trim($label);
+			$label = $aiki->get_string_between($edit , "<label>", "</label>");
+			if ($label){
+				$label = trim($label);
+			}
+
+			$output = $aiki->get_string_between($edit , "<output>", "</output>");
+			if ($output){
+				$output = trim($output);
+			}
+
+			$primary = $aiki->get_string_between($edit , "<primary>", "</primary>");
+			if (!$primary){$primary = 'id';}
+			$primary = trim($primary);
+			$primary_value = $widget_value->$primary;
+
+			$type = $aiki->get_string_between($edit , "<type>", "</type>");
+			if (!$type){$type = 'textarea';}
+			$type = trim($type);
+
+			if ($form_num){
+
+				$user = $aiki->get_string_between($edit , "<user>", "</user>");
+				if ($user){
+					$user = $widget_value->$user;
+				}else{
+					$user = '';
 				}
 
-				$output = $aiki->get_string_between($edit , "<output>", "</output>");
-				if ($output){
-					$output = trim($output);
-				}
+				$permissions = $aiki->get_string_between($edit , "<permissions>", "</permissions>");
+				$permissions = trim($permissions);
 
-				$primary = $aiki->get_string_between($edit , "<primary>", "</primary>");
-				if (!$primary){$primary = 'id';}
-				$primary = trim($primary);
-				$primary_value = $widget_value->$primary;
+				if (($permissions and $permissions != $membership->permissions) and ($user and $user != $membership->username)){
 
-				$type = $aiki->get_string_between($edit , "<type>", "</type>");
-				if (!$type){$type = 'textarea';}
-				$type = trim($type);
-
-				if ($form_num){
-
-					$user = $aiki->get_string_between($edit , "<user>", "</user>");
-					if ($user){
-						$user = $widget_value->$user;
-					}else{
-						$user = '';
+					if (!$output){
+						$output = "(($field))";
+						$output = $this->parsDBpars($output, $widget_value);
 					}
 
-					$permissions = $aiki->get_string_between($edit , "<permissions>", "</permissions>");
-					$permissions = trim($permissions);
+				}else{
 
-					if (($permissions and $permissions != $membership->permissions) and ($user and $user != $membership->username)){
+					if (!$widget_value->$field){
+						$widget_value->$field = 'Click here to edit';
+					}
 
-						if (!$output){
-							$output = "(($field))";
-							$output = $this->parsDBpars($output, $widget_value);
-						}
-
-					}else{
-
-						if (!$widget_value->$field){
-							$widget_value->$field = 'Click here to edit';
-						}
-
-						$output = '
+					$output = '
 <script type="text/javascript">
 $(function () { 
 $(".editready_'.$primary_value.$field.'").live("click", function () {
@@ -859,67 +870,67 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 });
 </script>
 ';
-						$output = str_replace("\n", '', $output);
+					$output = str_replace("\n", '', $output);
 
-						$output .= '<div id="'.$primary_value.$field.'" class="editready_'.$primary_value.$field.'">'.$widget_value->$field.'</div>';
+					$output .= '<div id="'.$primary_value.$field.'" class="editready_'.$primary_value.$field.'">'.$widget_value->$field.'</div>';
 
-					}
-				}else{
-					$output = 'error: wrong table name';
 				}
-
-
-				$text = str_replace("<edit>$edit</edit>", $output , $text);
-
+			}else{
+				$output = 'error: wrong table name';
 			}
+
+
+			$text = str_replace("<edit>$edit</edit>", $output , $text);
 
 		}
 
-		return $text;
 	}
 
+	return $text;
+}
 
-	function inline_widgets($widget){
 
-		$numMatches = preg_match_all( '/\(\#\(widget\:(.*)\)\#\)/', $widget, $matches);
-		if ($numMatches > 0){
-			foreach ($matches[1] as $widget_id){
-				$this->createWidget($widget_id);
+function inline_widgets($widget){
+
+	$numMatches = preg_match_all( '/\(\#\(widget\:(.*)\)\#\)/', $widget, $matches);
+	if ($numMatches > 0){
+		foreach ($matches[1] as $widget_id){
+			$this->createWidget($widget_id);
+		}
+
+		$widget = preg_replace('/\(\#\(widget\:(.*)\)\#\)/', '', $widget);
+	}
+	return $widget;
+}
+
+
+function inherent_widgets($widget){
+	global $db;
+
+	$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/', $widget, $matches);
+	if ($numMatches > 0){
+		foreach ($matches[1] as $widget_info){
+
+			$widget_id = explode("|", $widget_info);
+
+			if (isset($widget_id['1'])){
+				$normal_select = $widget_id['1'];
+			}else{
+				$normal_select = '';
 			}
 
-			$widget = preg_replace('/\(\#\(widget\:(.*)\)\#\)/', '', $widget);
+			$this->inherent_id = $widget_id[0];
+			$widget_id = $widget_id[0];
+
+			$widget_data = $db->get_row("SELECT * FROM aiki_widgets where id='$widget_id' limit 1");
+
+			$widget_data = $this->createWidgetContent($widget_data, true, $normal_select);
+
+			$widget = str_replace('(#(inherent:'.$widget_info.')#)', $widget_data , $widget);
 		}
-		return $widget;
 	}
-
-
-	function inherent_widgets($widget){
-		global $db;
-
-		$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/', $widget, $matches);
-		if ($numMatches > 0){
-			foreach ($matches[1] as $widget_info){
-
-				$widget_id = explode("|", $widget_info);
-
-				if (isset($widget_id['1'])){
-					$normal_select = $widget_id['1'];
-				}else{
-					$normal_select = '';
-				}
-
-				$this->inherent_id = $widget_id[0];
-				$widget_id = $widget_id[0];
-
-				$widget_data = $db->get_row("SELECT * FROM aiki_widgets where id='$widget_id' limit 1");
-
-				$widget_data = $this->createWidgetContent($widget_data, true, $normal_select);
-
-				$widget = str_replace('(#(inherent:'.$widget_info.')#)', $widget_data , $widget);
-			}
-		}
-		return $widget;
-	}
+	return $widget;
+}
 
 
 }
