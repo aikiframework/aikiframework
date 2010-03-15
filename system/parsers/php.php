@@ -17,7 +17,14 @@ class aiki_php
 	function parser($text){
 		global $aiki;
 
-		$php_matchs = preg_match_all('/\<php (.*) php\>/Us', $text, $matchs);
+		if (!preg_match ("/\<form(.*)\<php (.*) php\>(.*)\<\/form\>/Us", $text)){
+			
+			$php_matchs = preg_match_all('/\<php (.*) php\>/Us', $text, $matchs);
+			
+		}else{
+			
+			$php_matchs = 0;
+		}
 
 		if ($php_matchs > 0){
 
@@ -67,7 +74,7 @@ class aiki_php
 			$class = $aiki->get_string_between($text, '$aiki->', '->');
 			$function = $aiki->get_string_between($text, '$aiki->'.$class.'->', '(');
 			$vars_array = $aiki->get_string_between($text, '(', ');');
-			
+				
 			if (isset($aiki->$class)){
 				$output = $aiki->$class->$function($vars_array);
 
