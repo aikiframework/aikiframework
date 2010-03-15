@@ -857,9 +857,16 @@ class CreateLayout
 $(function () { 
 $(".editready_'.$primary_value.$field.'").live("click", function () {
 var htmldata = $(this).html();
-$(this).html(\'<textarea>\' + htmldata + \'</textarea><button id="button_'.$primary_value.$field.'">save</button>\');
+$(this).html(\'<textarea>\' + htmldata + \'</textarea><br /><button id="button_'.$primary_value.$field.'">Save</button> <button id="cancel_'.$primary_value.$field.'">Cancel</button>\');
 $(this).removeClass(\'editready_'.$primary_value.$field.'\');
 $(this).addClass(\'editdone_'.$primary_value.$field.'\');
+});
+
+$("#cancel_'.$primary_value.$field.'").live("click", function () {
+var originaldata = $("#'.$primary_value.$field.' textarea").text();
+$("div #'.$primary_value.$field.'").removeClass(\'editdone_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").addClass(\'editready_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").html(originaldata);
 });
 
 $("#button_'.$primary_value.$field.'").live("click", function () {
