@@ -40,6 +40,18 @@ class aiki_records
 
 	}
 
+	function file_exists_sha1($tablename, $sha1){
+		global $db;
+
+		$get_value = $db->get_var("SELECT filename from $tablename where sha1='$sha1'");
+		if ($get_value){
+			return $get_value;
+		}else{
+			return false;
+		}
+
+	}
+
 	function lockdocument($pkeyname, $pkeybalue, $tablename){
 		global $db, $membership;
 		if ($pkeyname and $tablename){
@@ -677,7 +689,12 @@ width:591px;
 						die("Only svg uploads are allowed");
 					}
 
-					//TODO: check also if file exists for renaming
+
+					$exists_filename = $this->file_exists_sha1($tablename, $this->checksum_sha1);
+					if ($exists_filename){
+
+						return "Sorry the same file is already uploaded $exists_filename";
+					}
 
 					if (!file_exists($path.$name) or !$this->record_exists($name, $tablename, $intwalker[0])){ //check if filename already exists
 						$newfile = $path.$name;
