@@ -70,6 +70,7 @@ require_once("$system_folder/system/database/index.php");
 
 require_once ("$system_folder/system/core.php");
 
+
 $aiki = new aiki();
 
 $config = $aiki->get_config($config);
@@ -83,9 +84,11 @@ if(isset($_GET['site'])){
 	$site = $config['site'];
 }
 
-$site_info = $db->get_row("SELECT * from aiki_sites where site_shortcut='$site' limit 1");
-if ($site_info->is_active != 1){ die($site_info->if_closed_output); }
 
+$site_info = $db->get_row("SELECT * from aiki_sites where site_shortcut='$site' limit 1");
+if ($site_info->is_active != 1){
+	die($site_info->if_closed_output);
+}
 
 
 $aiki->load("text");

@@ -91,12 +91,12 @@ class ezSQL_mysql extends ezSQLcore
 		{
 
 			if (function_exists("mysql_set_charset") and isset($config['db_encoding']) and isset($config['db_use_mysql_set_charset']) and $config['db_use_mysql_set_charset']){
-				
+
 				$db_encoding = $config['db_encoding'];
-				
+
 				mysql_set_charset("$db_encoding ", $this->dbh);
 			}
-				
+
 			$this->dbuser = $dbuser;
 			$this->dbpassword = $dbpassword;
 			$this->dbhost = $dbhost;
@@ -126,6 +126,7 @@ class ezSQL_mysql extends ezSQLcore
 		{
 			$this->register_error($ezsql_mysql_str[4].' in '.__FILE__.' on line '.__LINE__);
 			$this->show_errors ? trigger_error($ezsql_mysql_str[4],E_USER_WARNING) : null;
+
 		}
 
 		// Try to connect to the database
@@ -137,6 +138,7 @@ class ezSQL_mysql extends ezSQLcore
 
 			$this->register_error($str.' in '.__FILE__.' on line '.__LINE__);
 			$this->show_errors ? trigger_error($str,E_USER_WARNING) : null;
+			die("Fatal error: Lost Connection to database. please make sure the information in your config.php are correct");
 		}
 		else
 		{
