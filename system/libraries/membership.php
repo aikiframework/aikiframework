@@ -209,7 +209,7 @@ class aiki_membership
 </div>
 <form>			
 ';			
-				
+
 			if (!isset($_POST['password']) and !isset($_POST['password_confirm']) and !isset($_POST['key'])){
 
 				return $form;
@@ -217,13 +217,13 @@ class aiki_membership
 			}else{
 
 				if ($_POST['password'] and $_POST['password_confirm'] and $_POST['key'] and $_POST['password_confirm'] == $_POST['password']){
-						
+
 					$password = md5(md5($_POST['password']));
 					$update = $db->query("update aiki_users set password = '$password' where randkey = '$_POST[key]'");
-						
+
 					return "Password reseted! you can now login to your account";
 				}else{
-						
+
 					return "Sorry: the two passwords don't match, please try again <br /> $form ";
 				}
 
@@ -290,11 +290,11 @@ class aiki_membership
 
 			$message = $message."\n\r".
 			"To reset your password please click this link: 
-			<a href='".$config['url']."/secure/resetpassword/?key=".$randkey."'>".
-			$config['url']."/secure?key=".$randkey."</a>";
+			<a href='".$config['url']."secure?key=".$randkey."'>".
+			$config['url']."secure?key=".$randkey."</a>";
 
-			return "an email had been sent to your address. please follow the link to reset your password";
 			mail($email,$subject,$message,$headers);
+			return "an email had been sent to your address. please follow the link to reset your password";
 
 		}
 
