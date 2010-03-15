@@ -99,7 +99,7 @@ class aiki_records
 		if (!$post){
 			return '';
 		}else{
-				
+
 			$post = unserialize($post);
 
 			if (empty($post)){
@@ -184,7 +184,7 @@ class aiki_records
 			}
 
 			$intwalker[0] = $get_permission_and_man_info[0];
-				
+
 
 			//Security Check to remove unauthorized POST data
 			if (isset($get_group_level)){
@@ -207,7 +207,7 @@ class aiki_records
 			}else{
 				$insert_values .= "'".$intwalker[0]."', ";
 			}
-				
+
 			if (isset($intwalker['2'])){
 				switch ($intwalker['2']){
 
@@ -491,7 +491,7 @@ class aiki_records
 				}
 
 			}
-				
+
 			$i++;
 
 		}
@@ -767,6 +767,7 @@ class aiki_records
 			$editResult = $db->query($editQuery);
 		}
 
+		
 		if (isset($editResult)){
 			$output_result = "Edited record $record_id in $tablename successfully";
 			//$this->unlockdocument($pkey, $postedpkey, $tablename);
