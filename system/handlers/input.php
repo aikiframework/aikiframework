@@ -114,7 +114,14 @@ class aiki_input
 
 	function get_handler($text){
 
-		$get_matchs = preg_match_all('/GET\[(.*)\]/Us', $text, $gets);
+		if (!preg_match ("/\<form(.*)GET\[(.*)\](.*)\<\/form\>/Us", $text)){
+
+			$get_matchs = preg_match_all('/GET\[(.*)\]/Us', $text, $gets);
+
+		}else{
+
+			$get_matchs = 0;
+		}
 
 		if ($get_matchs > 0){
 
@@ -137,10 +144,16 @@ class aiki_input
 
 	function post_handler($text){
 
-		$post_matchs = preg_match_all('/POST\[(.*)\]/Us', $text, $posts);
+		if (!preg_match ("/\<form(.*)POST\[(.*)\](.*)\<\/form\>/Us", $text)){
+
+			$post_matchs = preg_match_all('/POST\[(.*)\]/Us', $text, $posts);
+
+		}else{
+			$post_matchs = 0;
+		}
 
 		if ($post_matchs > 0){
-			
+
 			foreach ($posts[1] as $post){
 
 				if (isset($_POST["$post"])){
