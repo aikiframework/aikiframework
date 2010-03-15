@@ -22,7 +22,7 @@ class aiki_records
 	var $width;
 	var $height;
 	var $rand;
-	
+
 	function __construct(){
 
 	}
@@ -447,6 +447,9 @@ width:591px;
 		if (in_array("submit", $arraykeys))
 		$submit = $form_array["submit"];
 
+		if (in_array("permission", $arraykeys))
+		$permission = $form_array["permission"];
+
 		if (in_array("send_email", $arraykeys))
 		$send_email = $form_array["send_email"];
 
@@ -676,7 +679,7 @@ width:591px;
 
 					//TODO: check also if file exists for renaming
 
-					if (!$this->record_exists($name, $tablename, $intwalker[0])){ //check if filename already exists
+					if (!file_exists($path.$name) or !$this->record_exists($name, $tablename, $intwalker[0])){ //check if filename already exists
 						$newfile = $path.$name;
 
 					}else{
@@ -788,7 +791,7 @@ width:591px;
 			}
 
 
-			if ($field != $tablename and $field != $send_email and $field != $submit and isset($_POST[$intwalker[0]]) and $_POST[$intwalker[0]]){
+			if ($field != $tablename and $field != $permission and $field != $send_email and $field != $submit and isset($_POST[$intwalker[0]]) and $_POST[$intwalker[0]]){
 				//$_POST[$intwalker[0]] = mysql_real_escape_string($_POST[$intwalker[0]]);
 
 				if ($insertCount == $i+1){
