@@ -35,7 +35,7 @@ class aiki_membership
 		if (isset($username)){
 			$this->getUserPermissions($username);
 		}else{
-			$this->group_level = '';
+			$this->group_level = '1000000000';
 			$this->permissions = '';
 		}
 
