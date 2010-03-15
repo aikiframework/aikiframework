@@ -36,10 +36,6 @@ class aiki_input
 					$process_type = $req;
 					break;
 
-				case "add_to_form":
-					$key_request = "add_to_form";
-					break;
-
 				case "edit_form":
 					$key_request = "edit_form";
 					break;
@@ -66,12 +62,6 @@ class aiki_input
 				case "process":
 
 					$this->form_handler($process_type, $_POST);
-
-					break;
-
-				case "add_to_form":
-
-					echo $aiki->records->insert_from_form_to_db($_POST, $form_id);
 
 					break;
 
@@ -150,7 +140,6 @@ class aiki_input
 		$post_matchs = preg_match_all('/POST\[(.*)\]/Us', $text, $posts);
 
 		if ($post_matchs > 0){
-
 			
 			foreach ($posts[1] as $post){
 

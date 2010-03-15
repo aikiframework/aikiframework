@@ -15,11 +15,11 @@ class aiki_forms
 
 	var $submit_button;
 
-	
+
 	function __construct(){
 
 	}
-	
+
 	function displayForms($text ){
 		global $db, $aiki;
 
@@ -45,7 +45,11 @@ class aiki_forms
 
 						case "add":
 
-							$form_output = $this->create_insert_form($form_array, $form->form_html, $form->id);
+							$serial_post = serialize($_POST);
+
+							$form_output = '<php $aiki->records->insert_from_form_to_db('.$serial_post.'|||||'.$form->id.'|||||POST[form_id]); php>';
+
+							$form_output .= $this->create_insert_form($form_array, $form->form_html, $form->id);
 
 							break;
 
@@ -126,8 +130,12 @@ class aiki_forms
 			$form_data = $db->get_row("select * from $tablename where $pkey='$record_id' limit 1");
 		}
 
+		$domain = $_SERVER['HTTP_HOST'];
+		$path = $_SERVER['SCRIPT_NAME'];
+		$queryString = $_SERVER['QUERY_STRING'];
+		$thisurl = "http://" . $domain . $path . "?" . $queryString;
 
-		$form = "<form method=\"post\" enctype=\"multipart/form-data\" id=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\" name=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\">
+		$form = "<form action=\"$thisurl\" method=\"post\" enctype=\"multipart/form-data\" id=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\" name=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\">
 		";
 
 		$i = 0;
@@ -381,7 +389,7 @@ class aiki_forms
 								break;
 				}
 			}
-			
+
 			$form .= "</div>";
 
 			$i++;
@@ -538,7 +546,7 @@ class aiki_forms
 		$table_info = $db->get_results("SELECT * FROM $table limit 1");
 
 		//TODO: try again maybe the table is empty
-		
+
 		if ($table_info){
 
 			$form_array["tablename"] = $table;

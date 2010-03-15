@@ -83,131 +83,6 @@ class aiki_records
 		}
 	}
 
-	function wikieditor($formname){
-
-		$wikieditor = "
-		<script language=\"Javascript\">
-		<!--
-		function FormatSelection( aTag, eTag , fieldname ) {
-		var aTag =  aTag;
-		var eTag =  eTag;
-		var input = document.forms['$formname'].elements[fieldname];
-		input.focus();
-
-		//FOR IE
-		if	(typeof document.selection != 'undefined') {
-		var range = document.selection.createRange();
-		var insText = range.text;
-		range.text = aTag + insText + eTag;
-		range = document.selection.createRange();
-		if	(insText.length == 0) {
-		range.move('character', -eTag.length);
-	}	else {
-	range.moveStart('character', aTag.length + insText.length + eTag.length);
-	}
-	range.select();
-
-	}   else  {
-
-	// FOR Gecko Browser
-
-	if	(typeof input.selectionStart != 'undefined') {
-
-	var start = input.selectionStart;
-	var end = input.selectionEnd;
-	var insText = input.value.substring(start, end);
-	input.value = input.value.substr(0, start) + aTag + insText + eTag + input.value.substr(end);
-
-	var pos;
-	if	(insText.length == 0) {
-	pos = start + aTag.length;
-	} else {
-	pos = start + aTag.length + insText.length + eTag.length;
-	}
-	input.selectionStart = pos;
-	input.selectionEnd = pos;
-
-	}
-	}
-
-	};
-	//-->
-	</script>
-
-
-	<script type=\"text/javascript\">
-
-	function mouseover(el) {
-	el.className = \"raised\";
-	}
-
-	function mouseout(el) {
-	el.className = \"button\";
-	}
-
-	function mousedown(el) {
-	el.className = \"pressed\";
-	}
-
-	function mouseup(el) {
-	el.className = \"raised\";
-	}
-
-	</script>
-
-
-	<style type=\"text/css\">
-
-	#toolbar 	{
--moz-background-clip:border;
--moz-background-inline-policy:continuous;
--moz-background-origin:padding;
-background:buttonface none repeat scroll 0 0;
-border-color:buttonhighlight buttonshadow buttonshadow buttonhighlight;
-border-style:solid;
-border-width:1px;
-cursor:pointer;
-height:19px;
-margin:0;
-padding:6px;
-text-align:left;
-width:591px;
-	}
-
-	.button 	{
-	background: buttonface;
-	border: 1px solid buttonface;
-	padding:4px;
-
-	}
-
-	.raised		{
-	border-top: 1px solid buttonhighlight;
-	border-left: 1px solid buttonhighlight;
-	border-bottom: 1px solid buttonshadow;
-	border-right: 1px solid buttonshadow;
-	background: buttonface;
-	padding:4px;
-
-	}
-
-	.pressed	{
-	border-top: 1px solid buttonshadow;
-	border-left: 1px solid buttonshadow;
-	border-bottom: 1px solid buttonhighlight;
-	border-right: 1px solid buttonhighlight;
-	background: buttonface;
-	padding:4px;
-
-	}
-
-	</style>
-	";		
-
-		return $wikieditor;
-	}
-
-
 
 	function edit_all(){
 		global $config;
@@ -438,8 +313,41 @@ width:591px;
 
 
 
-	function insert_from_form_to_db($post, $form_id){
+	function insert_from_form_to_db($input_data){
 		global $db, $aiki, $membership, $config;
+
+		$vars = explode('|||||', $input_data);
+		$post = $vars[0];
+		$form_id = $vars[1];
+		$form_posted_id = $vars[2];
+
+		if (!$form_posted_id){
+			return '';
+		}
+
+		if (!$post){
+			return '';
+		}else{
+				
+			$post = unserialize($post);
+
+			if (empty($post)){
+				return '';
+			}else{
+
+				foreach ($post as $post_value){
+
+					if ($post_value and $post_value != ''){
+						$found_a_value = true;
+					}
+				}
+
+			}
+		}
+
+		if (!isset($found_a_value)){
+			return '';
+		}
 
 		$output_result = "";
 		$insert_values = "";
@@ -459,8 +367,11 @@ width:591px;
 		if (in_array("submit", $arraykeys))
 		$submit = $form_array["submit"];
 
-		if (in_array("permission", $arraykeys))
-		$permission = $form_array["permission"];
+		if (in_array("permission", $arraykeys)){
+			$permission = $form_array["permission"];
+		}else{
+			$permission = '';
+		}
 
 		if (in_array("send_email", $arraykeys))
 		$send_email = $form_array["send_email"];
@@ -502,18 +413,18 @@ width:591px;
 			}
 
 			$intwalker[0] = $get_permission_and_man_info[0];
-
+				
 
 			//Security Check to remove unauthorized POST data
 			if (isset($get_group_level)){
 				if (isset($get_permission_and_man_info['1']) and $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level){
 
 				}elseif (isset($get_permission_and_man_info[1])){
-					$_POST[$intwalker[0]] = '';
+					$post[$intwalker[0]] = '';
 				}
 			}
 
-			if (isset($get_permission_and_man_info[2]) and $get_permission_and_man_info[2] == "true" and !$_POST[$intwalker[0]]){
+			if (isset($get_permission_and_man_info[2]) and $get_permission_and_man_info[2] == "true" and !$post[$intwalker[0]]){
 				$output_result .= "<b>Warning:</b> Please fill $intwalker[1]<br />";
 				$this->stop = true;
 			}
@@ -525,51 +436,51 @@ width:591px;
 			}else{
 				$insert_values .= "'".$intwalker[0]."', ";
 			}
-
+				
 			if (isset($intwalker['2'])){
 				switch ($intwalker['2']){
 
 					case "full_path":
-						$full_path = $_POST[$intwalker[0]]; //get full path dir value
+						$full_path = $post[$intwalker[0]]; //get full path dir value
 						if (!$full_path){
 							$full_path = "upload/bank/"; //TODO Custome default upload folder
-							$_POST[$intwalker[0]] = $full_path;
+							$post[$intwalker[0]] = $full_path;
 						}
 						break;
 
 					case "password":
-						if (!$_POST[$intwalker[0]]){
+						if (!$post[$intwalker[0]]){
 							$output_result .= "<b>Please enter a password</b><br />";
 							$this->stop = true;
 						}
 
-						if ($intwalker[3] and $_POST[$intwalker[0]]){
+						if ($intwalker[3] and $post[$intwalker[0]]){
 							$num_levels = explode("|", $intwalker[3]);
 							foreach ($num_levels as $crypt_level){
 
-								$_POST[$intwalker[0]] = md5(stripcslashes($_POST[$intwalker[0]]));
+								$post[$intwalker[0]] = md5(stripcslashes($post[$intwalker[0]]));
 							}
 						}
 						break;
 
 					case "value":
-						$_POST[$intwalker[0]] = $intwalker[3];
+						$post[$intwalker[0]] = $intwalker[3];
 
-						$_POST[$intwalker[0]] = str_replace("insertedby_username", $membership->username, $_POST[$intwalker[0]]);
+						$post[$intwalker[0]] = str_replace("insertedby_username", $membership->username, $post[$intwalker[0]]);
 
-						$values_array[$intwalker[0]] = $_POST[$intwalker[0]];
+						$values_array[$intwalker[0]] = $post[$intwalker[0]];
 
 						break;
 
 					case "rand":
 
-						$_POST[$intwalker[0]] = substr(md5(uniqid(rand(),true)),1,15);
-						$this->rand = $_POST[$intwalker[0]];
+						$post[$intwalker[0]] = substr(md5(uniqid(rand(),true)),1,15);
+						$this->rand = $post[$intwalker[0]];
 						break;
 
 					case "email":
 
-						if (!$aiki->text->is_valid("email",$_POST[$intwalker[0]])){
+						if (!$aiki->text->is_valid("email",$post[$intwalker[0]])){
 							$output_result .= "<b>The email address is not valid</b><br />";
 							$this->stop = true;
 						}
@@ -583,13 +494,13 @@ width:591px;
 
 					case "datetime":
 
-						$_POST[$intwalker[0]]= 'NOW()';
+						$post[$intwalker[0]]= 'NOW()';
 
 						break;
 
 					case "unique":
 
-						if ($this->record_exists($_POST[$intwalker[0]], $tablename, $intwalker[0])){
+						if ($this->record_exists($post[$intwalker[0]], $tablename, $intwalker[0])){
 
 							$output_result .= "<b>This value is already in use</b><br />";
 							$this->stop = true;
@@ -607,38 +518,38 @@ width:591px;
 					case "upload_file_name":
 
 						if (isset($this->file_name)){
-							$_POST[$intwalker[0]] = $this->file_name;
+							$post[$intwalker[0]] = $this->file_name;
 						}
 
 						break;
 
 					case "upload_file_size":
 						if (isset($this->file_size)){
-							$_POST[$intwalker[0]] = $this->file_size;
+							$post[$intwalker[0]] = $this->file_size;
 						}
 						break;
 
 					case "width":
 						if (isset($this->width)){
-							$_POST[$intwalker[0]] = $this->width;
+							$post[$intwalker[0]] = $this->width;
 						}
 						break;
 
 					case "height":
 						if (isset($this->hight)){
-							$_POST[$intwalker[0]] = $this->hight;
+							$post[$intwalker[0]] = $this->hight;
 						}
 						break;
 
 					case "checksum_sha1":
 						if (isset($this->checksum_sha1)){
-							$_POST[$intwalker[0]] = $this->checksum_sha1;
+							$post[$intwalker[0]] = $this->checksum_sha1;
 						}
 						break;
 
 					case "checksum_md5":
 						if (isset($this->checksum_md5)){
-							$_POST[$intwalker[0]] = $this->checksum_md5;
+							$post[$intwalker[0]] = $this->checksum_md5;
 						}
 						break;
 
@@ -740,9 +651,9 @@ width:591px;
 				}
 
 
-				//$insertQuery .= "'".$_POST[$intwalker[0]]."', ";
+				//$insertQuery .= "'".$post[$intwalker[0]]."', ";
 				//check if file checksum match another file
-				$_POST[$intwalker[0]] = $name;
+				$post[$intwalker[0]] = $name;
 
 			}
 
@@ -808,18 +719,19 @@ width:591px;
 			}
 
 
-			if ($field != $tablename and $field != $permission and $field != $send_email and $field != $submit and isset($_POST[$intwalker[0]]) and $_POST[$intwalker[0]]){
-				//$_POST[$intwalker[0]] = mysql_real_escape_string($_POST[$intwalker[0]]);
+			if ($field != $tablename and $field != $permission and $field != $send_email and $field != $submit and isset($post[$intwalker[0]]) and $post[$intwalker[0]]){
+				//$post[$intwalker[0]] = mysql_real_escape_string($post[$intwalker[0]]);
 
 				if ($insertCount == $i+1){
 					$tableFields .=$intwalker[0];
-					$preinsertQuery .= "'".$_POST[$intwalker[0]]."'";
+					$preinsertQuery .= "'".$post[$intwalker[0]]."'";
 				}else{
 					$tableFields .= $intwalker[0].", ";
-					$preinsertQuery .= "'".$_POST[$intwalker[0]]."', ";
+					$preinsertQuery .= "'".$post[$intwalker[0]]."', ";
 				}
 
 			}
+				
 			$i++;
 
 		}
@@ -842,12 +754,12 @@ width:591px;
 
 					$get_email = $aiki->get_string_between($send_email[0], '[', ']');
 					if ($get_email){
-						$send_email[0] = $_POST["$get_email"];
+						$send_email[0] = $post["$get_email"];
 					}
 
 					$get_from = $aiki->get_string_between($send_email[1], '[', ']');
 					if ($get_from){
-						$send_email[1] = $_POST[$get_from];
+						$send_email[1] = $post[$get_from];
 					}
 
 					$to = $send_email[0];
@@ -855,7 +767,7 @@ width:591px;
 					$message = $send_email[3];
 					$count = preg_match_all( '/\[(.*)\]/U', $message, $matches );
 					foreach ($matches[1] as $parsed){
-						$message = str_replace("[$parsed]", $_POST[$parsed], $message);
+						$message = str_replace("[$parsed]", $post[$parsed], $message);
 					}
 
 					$from = $send_email[1];
