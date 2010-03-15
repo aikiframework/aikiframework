@@ -84,222 +84,6 @@ class aiki_records
 	}
 
 
-	function edit_all(){
-		global $config;
-
-		$pagekey = explode(":", $global_index);
-		if (isset($pagekey[1])){
-			$page = $pagekey[1];
-		}
-		if (!isset($_GET['pkey']) or isset($_POST['editpkey']) or $_GET['do'] == "delete"){
-
-			$layout->forms .= ("
-							<form method=\"POST\" name='abc'>
-							<table width=\"200\">
-							<tr>
-							<td>Search: </td>
-							<td><input type=\"text\" name=\"keyword\" size=\"30\"></td>
-							<td><select name=\"wheresearch\">");
-			foreach($viewArray as $field)
-			{
-				if ($field != $tablename){
-					$intwalker = explode(":", $field);
-
-					if (!$intwalker[1]){$intwalker[1] = $intwalker[0];}
-					$layout->forms .= "<option value=\"$intwalker[0]\">".$intwalker[1]."</option>";
-				}
-			}
-			$layout->forms .= ("</select></td>
-							<td><input type=\"submit\" value=\"Go\" name=\"search\"></td>
-							</tr>
-							</table>
-							</form>
-							");
-
-			if ($_POST['wheresearch'] and $_POST['keyword']){
-				$term = $_POST['wheresearch'].":".$_POST['keyword'];
-			}
-			if (!$term and $_GET['term'] and $_GET['term'] != ":"){
-				$term = $_GET['term'];
-			}
-			$layout->forms .= ("<table dir=\"$dir\" border=\"1\">");
-			if ($term){
-				$term = explode(":", $term);
-				$zxquery1 = "select $pkey from $tablename where $term[0] RLIKE '$term[1]'";
-			}else{
-				$zxquery1 = "select $pkey from $tablename";
-			}
-			$zxresult1 = mysql_query($zxquery1);
-			$num_resultsf = mysql_num_rows($zxresult1);
-			if ($num_resultsf != 30){
-				$numpages = $num_resultsf / 30;
-				$numpages = (int)($numpages+1);
-			}else{
-				$numpages = 1;
-			}
-			$fnumre = $page * 30;
-			if ($orderby){
-				$orderbykey = $orderby;
-				$orderby = "order by ".$orderby;
-
-			}else{
-				$orderbykey = $pkey;
-				$orderby = "order by ".$pkey;
-			}
-
-			if ($term){
-
-				if ($term[0] == $pkey){
-					$viewQuery = "select * from $tablename where $term[0] = '$term[1]' $orderby LIMIT $fnumre,30";
-				}else{
-					$viewQuery = "select * from $tablename where $term[0] RLIKE '$term[1]' $orderby LIMIT $fnumre,30";
-				}
-			}else{
-				$viewQuery = "select * from $tablename $orderby LIMIT $fnumre,30";
-			}
-			$viewResult = mysql_query($viewQuery);
-			$num_results = mysql_num_rows($viewResult);
-			$i = 0;
-			$layout->forms .= ("<td colspan=\"2\">Tools</td>");
-
-			foreach($viewArray as $field)
-			{
-				if ($field != $tablename){
-					$intwalker = explode(":", $field);
-
-					if (!$intwalker[1]){$intwalker[1] = $intwalker[0];}
-					$get_permission_and_man_info = explode("|", $intwalker[0]);
-					$intwalker[0] = $get_permission_and_man_info[0];
-
-					$intwalker[0] = $intwalker[0]." DESC&desc=true&port=$intwalker[1]";
-
-					if ($_GET[desc]){
-						if ($_GET[port] == $intwalker[1]){
-							$intwalker[1] = $intwalker[1]." ⇈";
-						}
-						$intwalker[0] = str_replace("DESC&desc=true", "ASC&asc=true", $intwalker[0]);
-					}elseif ($_GET[asc]){
-						if ($_GET[port] == $intwalker[1]){
-							$intwalker[1] = $intwalker[1]." ⇊";
-						}
-
-					}
-					$layout->forms .= "<td><b><a href=\"index.php?language=arabic&module=admin&operators=$operators_key|$operators|$pagefromaiki&orderby=$intwalker[0]\">".$intwalker[1]."</a></b></td>";
-				}
-				$i++;
-			}
-
-
-			for ($k=0; $k <$num_results; $k++)
-			{
-
-				$layout->forms .= ("<tr>");
-				$viewRow = mysql_fetch_array($viewResult);
-				$i = 0;
-
-				foreach($viewArray as $field)
-				{
-					if ($field == $pkey){
-						$intwalker = explode(":", $field);
-
-						$intwalker[0] = stripslashes($viewRow[$intwalker[0]]);
-						$layout->forms .= ("<td><a href=\"index.php?module=admin&operators=$_GET[operators]&op=edit&do=edit$module_link&pkey=$intwalker[0]&extras=$extras\"><img border=\"0\" src=\"images/skins/admin/b_edit.png\" /></a></td>
-							<td><a href=\"index.php?module=admin&operators=$_GET[operators]&op=del&do=del&pkey=$intwalker[0]:$tablename&extras=$extras\"><img border=\"0\" src=\"images/skins/admin/b_drop.png\" /></a></td>");
-					}
-
-
-					if ($field != $tablename){
-						$intwalker = explode(":", $field);
-
-						$get_permission_and_man_info = explode("|", $intwalker[0]);
-						$intwalker[0] = $get_permission_and_man_info[0];
-
-						$intwalker[0] = stripslashes($viewRow[$intwalker[0]]);
-						$intwalker[0] = htmlspecialchars($intwalker[0]);
-
-
-
-						if (!$intwalker[0]){
-							$intwalker[0] = " ";
-							$intsub  = " ";
-						}else{
-
-							$intsub = substr($intwalker[0], 0, 200);
-							if ($intsub != $intwalker[0]){
-								$intsub = $intsub." ......";
-							}
-
-						}
-
-						//Selection display
-						$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
-						$findselection = str_replace($toreplace, '', $arraykeys[$i]);
-						if ($findselection == "selection"){
-							$aquery = "select $intwalker[3], $intwalker[4] from $intwalker[2] where $intwalker[3] = $intsub";
-							$aresult = mysql_query($aquery);
-							if ($aresult){
-								$row = mysql_fetch_array($aresult);
-								$name = stripslashes($row["$intwalker[4]"]);
-								$id = stripslashes($row["$intwalker[3]"]);
-								$intsub = "$id > $name";
-							}
-						}
-						//////////////////////
-						//Check for displaying Images:
-						if ($intwalker[6]){
-
-							$imagepath = "$layout->forms .= \"$intwalker[6]\";";
-							$path = $config['url'];
-
-							$layout->forms .= "<td><img src='". $path. substr($intwalker[6].$intsub, 1) ."'><br />$intsub</td>";
-							//eval($imagepath);
-
-						}else{
-
-							//TODO: change this please (it's for unique images only) and custome min size
-
-							if ($intwalker[2] == "unique_filename"){
-								//$intsub = $config[url]."/".$full_path.$intwalker[0];
-								//$intsub = str_replace("//", "/", $intsub);
-								$url = $config['url'];
-								$intsub = "<img src=\""."$url"."image/150px/$intsub\"><br>$intsub";
-							}
-
-							$layout->forms .= "<td>".$intsub."</td>";
-						}
-						/////////////////
-					}
-
-					$i++;
-
-				}
-
-				$layout->forms .= "</tr>";
-			}
-			$layout->forms .= "</table>";
-		}
-
-
-		if (isset($numpages) and $numpages > 1){
-			$page2 = $page + 1;
-			$layout->forms .= "<br /><p><b>Move To Page:</b></p>";
-			for ($i=0; $i <$numpages; $i++)
-			{
-				$y = $i + 1;
-				if ($i == $page){
-					$layout->forms .= "&nbsp;$y&nbsp; ";
-				}else{
-
-					$layout->forms .= "&nbsp;<a href=\"index.php?language=arabic&module=admin&operators=$operators_key|$operators|$pagefromaiki|page:$i&orderby=$orderbykey\">$y</a>&nbsp; ";
-				}
-			}
-		}
-
-
-	}
-
-
-
 	function insert_from_form_to_db($input_data){
 		global $db, $aiki, $membership, $config;
 
@@ -430,7 +214,7 @@ class aiki_records
 					case "full_path":
 						$full_path = $post[$intwalker[0]]; //get full path dir value
 						if (!$full_path){
-							$full_path = "upload/bank/"; //TODO Custome default upload folder
+							$full_path = "upload/bank/"; //TODO Custom default upload folder
 							$post[$intwalker[0]] = $full_path;
 						}
 						break;
@@ -580,7 +364,8 @@ class aiki_records
 					}
 
 					$filename_array = explode(".",$name);
-					//TODO: DOn't allow all extinsions
+
+					//TODO: Add in config allowed extensions
 
 					$type = $filename_array[1];
 					if ($type != "svg" and $type != "SVG"){
@@ -620,17 +405,6 @@ class aiki_records
 
 
 						//TODO: keep original file name for insert into original_filename field
-						if ($type == "svg"){
-							//TODO: make option to choose converting engine
-							//$form .= "<p dir='ltr' align='left'>";
-							//$form .= $image_processing->rsvg_convert_svg_png($newfile);
-							//$form .= "</p>";
-
-							//$image_processing->rsvg_convert_svg_png($newfile);
-
-							//$name = str_replace(".svg", ".png", $name);
-
-						}
 
 					} else {
 						$output_result .=( "Sorry, but that file '$newfile' already exists.");
@@ -639,9 +413,6 @@ class aiki_records
 					return "Please choose a file to upload";
 				}
 
-
-				//$insertQuery .= "'".$post[$intwalker[0]]."', ";
-				//check if file checksum match another file
 				$post[$intwalker[0]] = $name;
 
 			}
