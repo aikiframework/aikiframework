@@ -114,7 +114,7 @@ class aiki_input
 
 	function get_handler($text){
 
-		if (!preg_match ("/\<form(.*)GET\[(.*)\](.*)\<\/form\>/Us", $text)){
+		if (!isset($_POST['add_to_form']) and !preg_match ("/\<form(.*)GET\[(.*)\](.*)\<\/form\>/Us", $text)){
 
 			$get_matchs = preg_match_all('/GET\[(.*)\]/Us', $text, $gets);
 
@@ -144,7 +144,7 @@ class aiki_input
 
 	function post_handler($text){
 
-		if (!preg_match ("/\<form(.*)POST\[(.*)\](.*)\<\/form\>/Us", $text)){
+		if (!isset($_POST['add_to_form']) and !preg_match ("/\<form(.*)POST\[(.*)\](.*)\<\/form\>/Us", $text)){
 
 			$post_matchs = preg_match_all('/POST\[(.*)\]/Us', $text, $posts);
 
