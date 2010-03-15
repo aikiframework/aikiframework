@@ -230,20 +230,7 @@ class aiki_records
 							}
 
 						}
-						//$intsub = mb_convert_encoding($intsub, "utf8", "auto");
 
-
-						//TODO not working:
-						//$intsub = iconv('UTF-8', 'UTF-8', $intsub);
-
-						//this is a special case for paintings in www.discover-syria.com:
-						//any way you may find it usefull
-						//you can use the var $savedint in path for upload
-						//you need to change the $viewArray['selection1'] thing to mach your needs
-						if ($field == $viewArray['selection1']){
-							$savedint = $intwalker[0];
-						}
-						//////////////////////
 						//Selection display
 						$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
 						$findselection = str_replace($toreplace, '', $arraykeys[$i]);
@@ -649,7 +636,7 @@ class aiki_records
 						$output_result .=( "Sorry, but that file '$newfile' already exists.");
 					}
 				}else{
-					return "Please choose a filename to upload";
+					return "Please choose a file to upload";
 				}
 
 
