@@ -123,7 +123,11 @@ class CreateLayout
 
 				if (!$custome_output and $widget->widget_type){
 					$this->widget_html .= "\n <!--start $widget->id--> \n";
-					$this->widget_html .= "<$widget->widget_type id=\"$widget->widget_name\" class=\"$widget->style_id\">\n";
+					$this->widget_html .= "<$widget->widget_type id=\"$widget->widget_name\"";
+					if ($widget->style_id){
+						$this->widget_html .= " class=\"$widget->style_id\"";
+					}
+					$this->widget_html .= ">\n";
 				}
 
 				$this->createWidgetContent($widget);
@@ -678,7 +682,7 @@ class CreateLayout
 			$processed_widget = $aiki->aiki_markup->aiki_parser($processed_widget);
 			$processed_widget = $aiki->xml->rss_parser($processed_widget);
 			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
-			
+
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);
 			$processed_widget = $aiki->php->parser($processed_widget);
