@@ -589,7 +589,7 @@ class aiki_records
 
 					$tmp_filesize = filesize($tmp_filename);
 					if ($tmp_filesize == 0){
-						die("an error occurred while uploading 0 byte file size, please go back and try again");
+						return "an error occurred while uploading 0 byte file size, please go back and try again";
 					}
 
 					$filename_array = explode(".",$name);
@@ -597,7 +597,7 @@ class aiki_records
 
 					$type = $filename_array[1];
 					if ($type != "svg" and $type != "SVG"){
-						die("Only svg uploads are allowed");
+						return "Only svg uploads are allowed";
 					}
 
 
@@ -648,6 +648,8 @@ class aiki_records
 					} else {
 						$output_result .=( "Sorry, but that file '$newfile' already exists.");
 					}
+				}else{
+					return "Please choose a filename to upload";
 				}
 
 
