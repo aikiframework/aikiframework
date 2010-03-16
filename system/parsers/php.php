@@ -17,7 +17,7 @@ class aiki_php
 	function parser($text){
 		global $aiki;
 
-		if (!preg_match ("/\<form(.*)\<php (.*) php\>(.*)\<\/form\>/Us", $text)){
+		if (!preg_match ("/\<form(.*)\<php (.*) php\>(.*)\<\/form\>/s", $text)){
 			
 			$php_matchs = preg_match_all('/\<php (.*) php\>/Us', $text, $matchs);
 			

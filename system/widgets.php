@@ -246,7 +246,25 @@ class CreateLayout
 		}
 
 
-		if (isset($config["widget_cache"]) and isset($widget_cache_timeout) and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
+		//security check to check which widget content to display
+		if ($widget->is_admin){
+
+			if ($membership->permissions and $widget->if_authorized){
+
+				$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$widget->permissions'");
+				if ($widget->permissions == $membership->permissions or $membership->group_level < $get_group_level){
+					$widget->widget = $widget->if_authorized;
+					$widget->normal_select = $widget->authorized_select;
+					$stopcaching = true;
+				}
+			}
+		}
+
+		if (!isset($stopcaching)){
+			$stopcaching = false;
+		}
+
+		if (isset($config["widget_cache"]) and isset($widget_cache_timeout) and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD" and !$stopcaching){
 
 			//Display widget from cache
 			$widget_html_output = file_get_contents($widget_file);
@@ -258,7 +276,7 @@ class CreateLayout
 			//widget can't be rendered from cache
 			//Flag the widget as cachable, and try to delete the old cache file
 			$this->create_widget_cache = true;
-			if (isset ($widget_file) and file_exists($widget_file) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD"){
+			if (isset ($widget_file) and file_exists($widget_file) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD" and !$stopcaching){
 				unlink($widget_file);
 			}
 
@@ -271,19 +289,6 @@ class CreateLayout
 
 			if ($widget->nogui_widget and isset($nogui)){
 				$widget->widget = $widget->nogui_widget;
-			}
-
-			//security check to check which widget content to display
-			if ($widget->is_admin){
-
-				if ($membership->permissions and $widget->if_authorized){
-
-					$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$widget->permissions'");
-					if ($widget->permissions == $membership->permissions or $membership->group_level < $get_group_level){
-						$widget->widget = $widget->if_authorized;
-						$widget->normal_select = $widget->authorized_select;
-					}
-				}
 			}
 
 			$widget->widget = $aiki->input->requests($widget->widget);

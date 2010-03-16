@@ -235,7 +235,7 @@ class aiki_records
 						break;
 
 					case "value":
-						$post[$intwalker[0]] = $intwalker[3];
+						$post[$intwalker[0]] = $aiki->url->apply_url_on_query($intwalker[3]);
 
 						$post[$intwalker[0]] = str_replace("insertedby_username", $membership->username, $post[$intwalker[0]]);
 

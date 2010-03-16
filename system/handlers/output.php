@@ -22,9 +22,9 @@ class aiki_output
 	
 	
 	function output_from_cache(){
-		global $config;
+		global $config, $membership;
 
-		if ($config['html_cache']){
+		if ($config['html_cache'] and !$membership->permissions){
 
 			$start = (float) array_sum(explode(' ',microtime()));
 
