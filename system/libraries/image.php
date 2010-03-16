@@ -45,6 +45,7 @@ class aiki_image
 
 
 			exec("rsvg --width $newwidth --height $newhight $file $filenamepng", $output);
+
 		}else{
 			$output = "<b>Fatal Error: </b>Can't find (rsvg)";
 		}

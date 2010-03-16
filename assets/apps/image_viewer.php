@@ -48,7 +48,7 @@ switch ($mode){
 }
 
 
-define('IN_AIKI', true);
+//define('IN_AIKI', true);
 
 require_once("../../aiki.php");
 
