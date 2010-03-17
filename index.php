@@ -8,7 +8,7 @@
  * @link		http://www.aikiframework.org
  */
 
-error_reporting(E_ALL);
+error_reporting(E_STRICT);
 
 $start_time = (float) array_sum(explode(' ',microtime()));
 

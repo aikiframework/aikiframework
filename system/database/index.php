@@ -81,7 +81,7 @@ class ezSQLcore
 		*  Basic Query	- over-ridden by specific DB class
 		*/
 
-	public function query()
+	public function query($query)
 	{
 		die(EZSQL_CORE_ERROR);
 	}
@@ -91,7 +91,7 @@ class ezSQLcore
 		*  DB class
 		*/
 
-	public function escape()
+	public function escape($str)
 	{
 		die(EZSQL_CORE_ERROR);
 	}
