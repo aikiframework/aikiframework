@@ -683,7 +683,6 @@ class CreateLayout
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
 			$processed_widget = $aiki->aiki_markup->aiki_parser($processed_widget);
-			$processed_widget = $aiki->xml->rss_parser($processed_widget);
 			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
 
 			$processed_widget = $aiki->forms->displayForms($processed_widget);

@@ -102,7 +102,6 @@ $aiki->load("security");
 $aiki->load("aiki_markup");
 $aiki->load("html");
 $aiki->load("php");
-$aiki->load("xml");
 $aiki->load("sql_markup");
 $aiki->load("wiki_markup");
 $aiki->load("languages");
