@@ -94,7 +94,7 @@ class ezSQL_mysql extends ezSQLcore
 
 				$db_encoding = $config['db_encoding'];
 
-				mysql_set_charset("$db_encoding ", $this->dbh);
+				mysql_set_charset("$db_encoding", $this->dbh);
 			}
 
 			$this->dbuser = $dbuser;
