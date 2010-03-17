@@ -30,16 +30,16 @@ if ( ! class_exists ('ezSQLcore') ) die('<b>Fatal Error:</b> ezSQL_sqlite requir
 class ezSQL_pdo extends ezSQLcore
 {
 
-	var $dsn;
-	var $user;
-	var $password;
+	public  $dsn;
+	public  $user;
+	public  $password;
 
 	/**********************************************************************
 		*  Constructor - allow the user to perform a qucik connect at the
 		*  same time as initialising the ezSQL_sqlite class
 		*/
 
-	function ezSQL_pdo($dsn='', $user='', $password='')
+	public function ezSQL_pdo($dsn='', $user='', $password='')
 	{
 		// Turn on track errors
 		ini_set('track_errors',1);
@@ -54,7 +54,7 @@ class ezSQL_pdo extends ezSQLcore
 		*  Try to connect to SQLite database server
 		*/
 
-	function connect($dsn='', $user='', $password='')
+	public function connect($dsn='', $user='', $password='')
 	{
 		global $ezsql_pdo_str; $return_val = false;
 			
@@ -86,7 +86,7 @@ class ezSQL_pdo extends ezSQLcore
 		*  but for the sake of consistency it has been included
 		*/
 
-	function quick_connect($dsn='', $user='', $password='')
+	public function quick_connect($dsn='', $user='', $password='')
 	{
 		return $this->connect($dsn, $user, $password);
 	}
@@ -96,7 +96,7 @@ class ezSQL_pdo extends ezSQLcore
 		*  once again, function included for the sake of consistency
 		*/
 
-	function select($dsn='', $user='', $password='')
+	public function select($dsn='', $user='', $password='')
 	{
 		return $this->connect($dsn, $user, $password);
 	}
@@ -106,7 +106,7 @@ class ezSQL_pdo extends ezSQLcore
 		*  (no mater if magic quotes are on or not)
 		*/
 
-	function escape($str)
+	public function escape($str)
 	{
 		switch (gettype($str))
 		{
@@ -126,7 +126,7 @@ class ezSQL_pdo extends ezSQLcore
 		*  i.e. Oracle: SYSDATE Mysql: NOW()
 		*/
 
-	function sysdate()
+	public function sysdate()
 	{
 		return "datetime('now')";
 	}
@@ -135,7 +135,7 @@ class ezSQL_pdo extends ezSQLcore
 		*  Hooks into PDO error system and reports it to user
 		*/
 
-	function catch_error()
+	public function catch_error()
 	{
 		$error_str = 'No error info';
 
@@ -164,7 +164,7 @@ class ezSQL_pdo extends ezSQLcore
 	// ==================================================================
 	//	Basic Query	- see docs for more detail
 
-	function query($query)
+	public function query($query)
 	{
 
 		// For reg expressions

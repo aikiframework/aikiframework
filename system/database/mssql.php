@@ -35,20 +35,20 @@ if ( ! class_exists ('ezSQLcore') ) die('<b>Fatal Error:</b> ezSQL_mssql require
 class ezSQL_mssql extends ezSQLcore
 {
 
-	var $dbuser = false;
-	var $dbpassword = false;
-	var $dbname = false;
-	var $dbhost = false;
+	public $dbuser = false;
+	public $dbpassword = false;
+	public $dbname = false;
+	public $dbhost = false;
 	//if we want to convert Queries in MySql syntax to MS-SQL syntax. Yes, there
 	//are some differences in query syntax.
-	var $convertMySqlToMSSqlQuery = TRUE;
+	public $convertMySqlToMSSqlQuery = TRUE;
 
 	/**********************************************************************
 		*  Constructor - allow the user to perform a qucik connect at the
 		*  same time as initialising the ezSQL_mssql class
 		*/
 
-	function ezSQL_mssql($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost', $convertMySqlToMSSqlQuery=true)
+	public function ezSQL_mssql($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost', $convertMySqlToMSSqlQuery=true)
 	{
 		$this->dbuser = $dbuser;
 		$this->dbpassword = $dbpassword;
@@ -62,7 +62,7 @@ class ezSQL_mssql extends ezSQLcore
 		*  and select a mssql database at the same time
 		*/
 
-	function quick_connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+	public function quick_connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
 	{
 		$return_val = false;
 		if ( ! $this->connect($dbuser, $dbpassword, $dbhost,true) ) ;
@@ -75,7 +75,7 @@ class ezSQL_mssql extends ezSQLcore
 		*  Try to connect to mssql database server
 		*/
 
-	function connect($dbuser='', $dbpassword='', $dbhost='localhost')
+	public function connect($dbuser='', $dbpassword='', $dbhost='localhost')
 	{
 		global $ezsql_mssql_str; $return_val = false;
 
@@ -107,7 +107,7 @@ class ezSQL_mssql extends ezSQLcore
 		*  Try to select a mssql database
 		*/
 
-	function select($dbname='')
+	public function select($dbname='')
 	{
 		global $ezsql_mssql_str; $return_val = false;
 
@@ -148,7 +148,7 @@ class ezSQL_mssql extends ezSQLcore
 		*  (no mater if magic quotes are on or not)
 		*/
 
-	function escape($str)
+	public function escape($str)
 	{
 		//not sure about this.
 		//applying following logic
@@ -163,7 +163,7 @@ class ezSQL_mssql extends ezSQLcore
 		*  i.e. Oracle: SYSDATE mssql: NOW(), MS-SQL : getDate()
 		*/
 
-	function sysdate()
+	public function sysdate()
 	{
 		return 'getDate()';
 	}
@@ -172,7 +172,7 @@ class ezSQL_mssql extends ezSQLcore
 		*  Perform mssql query and try to detirmin result value
 		*/
 
-	function query($query)
+	public function query($query)
 	{
 
 		//if flag to convert query from MySql syntax to MS-Sql syntax is true
@@ -335,7 +335,7 @@ class ezSQL_mssql extends ezSQLcore
 		There is no such restriction in MySql.
 		*/
 
-	function ConvertMySqlToMSSql($query)
+	public function ConvertMySqlToMSSql($query)
 	{
 
 

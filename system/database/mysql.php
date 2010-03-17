@@ -35,17 +35,17 @@ if ( ! class_exists ('ezSQLcore') ) die('<b>Fatal Error:</b> ezSQL_mysql require
 class ezSQL_mysql extends ezSQLcore
 {
 
-	var $dbuser = false;
-	var $dbpassword = false;
-	var $dbname = false;
-	var $dbhost = false;
+	public  $dbuser = false;
+	public  $dbpassword = false;
+	public  $dbname = false;
+	public  $dbhost = false;
 
 	/**********************************************************************
 		*  Constructor - allow the user to perform a qucik connect at the
 		*  same time as initialising the ezSQL_mysql class
 		*/
 
-	function ezSQL_mysql($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+	public function ezSQL_mysql($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
 	{
 		$this->dbuser = $dbuser;
 		$this->dbpassword = $dbpassword;
@@ -58,7 +58,7 @@ class ezSQL_mysql extends ezSQLcore
 		*  and select a mySQL database at the same time
 		*/
 
-	function quick_connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+	public function quick_connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
 	{
 		$return_val = false;
 		if ( ! $this->connect($dbuser, $dbpassword, $dbhost,true) ) ;
@@ -71,7 +71,7 @@ class ezSQL_mysql extends ezSQLcore
 		*  Try to connect to mySQL database server
 		*/
 
-	function connect($dbuser='', $dbpassword='', $dbhost='localhost')
+	public function connect($dbuser='', $dbpassword='', $dbhost='localhost')
 	{
 		global $ezsql_mysql_str, $config; $return_val = false;
 
@@ -110,7 +110,7 @@ class ezSQL_mysql extends ezSQLcore
 		*  Try to select a mySQL database
 		*/
 
-	function select($dbname='')
+	public function select($dbname='')
 	{
 		global $ezsql_mysql_str; $return_val = false;
 
@@ -154,7 +154,7 @@ class ezSQL_mysql extends ezSQLcore
 		*  (no mater if magic quotes are on or not)
 		*/
 
-	function escape($str)
+	public function escape($str)
 	{
 		return mysql_escape_string(stripslashes($str));
 	}
@@ -164,7 +164,7 @@ class ezSQL_mysql extends ezSQLcore
 		*  i.e. Oracle: SYSDATE Mysql: NOW()
 		*/
 
-	function sysdate()
+	public function sysdate()
 	{
 		return 'NOW()';
 	}
@@ -173,7 +173,7 @@ class ezSQL_mysql extends ezSQLcore
 		*  Perform mySQL query and try to detirmin result value
 		*/
 
-	function query($query)
+	public function query($query)
 	{
 
 		//echo "<p align='left'>".$query."</p><hr>";

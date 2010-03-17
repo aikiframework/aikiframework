@@ -44,7 +44,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 		*  same time as initialising the ezSQL_postgresql class
 		*/
 
-		function ezSQL_postgresql($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+		public function ezSQL_postgresql($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
 		{
 			$this->dbuser = $dbuser;
 			$this->dbpassword = $dbpassword;
@@ -58,7 +58,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 		*  but for the sake of consistency it has been included
 		*/
 
-		function quick_connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+		public function quick_connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
 		{
 			$return_val = false;
 			if ( ! $this->connect($dbuser, $dbpassword, $dbname, $dbhost,true) ) ;
@@ -71,7 +71,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 		*  Try to connect to mySQL database server
 		*/
 
-		function connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+		public function connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
 		{
 			global $ezsql_postgresql_str; $return_val = false;
 
@@ -104,7 +104,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 		*  once again, function included for the sake of consistency
 		*/
 
-		function select($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+		public function select($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
 		{  
 			$return_val = false;
 			if ( ! $this->connect($dbuser, $dbpassword, $dbname, $dbhost,true) ) ;
@@ -118,7 +118,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 		*  (no mater if magic quotes are on or not)
 		*/
 
-		function escape($str)
+		public function escape($str)
 		{
 			return pg_escape_string(stripslashes($str));
 		}
@@ -128,7 +128,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 		*  i.e. Oracle: SYSDATE Mysql: NOW()
 		*/
 
-		function sysdate()
+		public function sysdate()
 		{
 			return 'NOW()';
 		}
@@ -137,17 +137,17 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 		*  Return PostgreSQL specific values
 		*/
 
-		function showTables()
+		public function showTables()
 		{
 			return "table_name FROM information_schema.tables WHERE table_schema = 'public' and table_type='BASE TABLE'";
 		}
 
-		function descTable($tbl_name)
+		public function descTable($tbl_name)
 		{
 			return "ordinal_position, column_name, data_type, column_default, is_nullable, character_maximum_length, numeric_precision FROM information_schema.columns WHERE table_name = '$tbl_name' ORDER BY ordinal_position";
 		}
 
-		function showDatabases()
+		public function showDatabases()
 		{
 			return "datname from pg_database WHERE datname NOT IN ('template0', 'template1') ORDER BY 1";
 		}
@@ -156,7 +156,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 		*  Perform PostgreSQL query and try to detirmin result value
 		*/
 
-		function query($query)
+		public function query($query)
 		{
 
 			// Initialise return

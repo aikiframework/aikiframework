@@ -30,32 +30,32 @@ define('EZSQL_CORE_ERROR','ezSQLcore can not be used by itself (it is designed f
 class ezSQLcore
 {
 
-	var $trace            = false;  // same as $debug_all
-	var $debug_all        = false;  // same as $trace
-	var $debug_called     = false;
-	var $vardump_called   = false;
-	var $show_errors      = true;
-	var $num_queries      = 0;
-	var $last_query       = null;
-	var $last_error       = null;
-	var $col_info         = null;
-	var $captured_errors  = array();
-	var $cache_dir        = false;
-	var $cache_queries    = false;
-	var $cache_inserts    = false;
-	var $use_disk_cache   = false;
-	var $cache_timeout    = 24; // hours
+	public $trace            = false;  // same as $debug_all
+	public $debug_all        = false;  // same as $trace
+	public $debug_called     = false;
+	public $vardump_called   = false;
+	public $show_errors      = true;
+	public $num_queries      = 0;
+	public $last_query       = null;
+	public $last_error       = null;
+	public $col_info         = null;
+	public $captured_errors  = array();
+	public $cache_dir        = false;
+	public $cache_queries    = false;
+	public $cache_inserts    = false;
+	public $use_disk_cache   = false;
+	public $cache_timeout    = 24; // hours
 
 	// == TJH == default now needed for echo of debug function
 
 	//Aikicms turned this to false
-	var $debug_echo_is_on = false;
+	public $debug_echo_is_on = false;
 
 	/**********************************************************************
 		*  Constructor
 		*/
 
-	function ezSQLcore()
+	public function ezSQLcore()
 	{
 	}
 
@@ -63,7 +63,7 @@ class ezSQLcore
 		*  Connect to DB - over-ridden by specific DB class
 		*/
 
-	function connect()
+	public function connect()
 	{
 		die(EZSQL_CORE_ERROR);
 	}
@@ -72,7 +72,7 @@ class ezSQLcore
 		*  Select DB - over-ridden by specific DB class
 		*/
 
-	function select()
+	public function select()
 	{
 		die(EZSQL_CORE_ERROR);
 	}
@@ -81,7 +81,7 @@ class ezSQLcore
 		*  Basic Query	- over-ridden by specific DB class
 		*/
 
-	function query()
+	public function query()
 	{
 		die(EZSQL_CORE_ERROR);
 	}
@@ -91,7 +91,7 @@ class ezSQLcore
 		*  DB class
 		*/
 
-	function escape()
+	public function escape()
 	{
 		die(EZSQL_CORE_ERROR);
 	}
@@ -101,7 +101,7 @@ class ezSQLcore
 		*  i.e. Oracle: SYSDATE Mysql: NOW()
 		*/
 
-	function sysdate()
+	public function sysdate()
 	{
 		die(EZSQL_CORE_ERROR);
 	}
@@ -110,7 +110,7 @@ class ezSQLcore
 		*  Print SQL/DB error - over-ridden by specific DB class
 		*/
 
-	function register_error($err_str)
+	public function register_error($err_str)
 	{
 		// Keep track of last error
 		$this->last_error = $err_str;
@@ -127,12 +127,12 @@ class ezSQLcore
 		*  Turn error handling on or off..
 		*/
 
-	function show_errors()
+	public function show_errors()
 	{
 		$this->show_errors = true;
 	}
 
-	function hide_errors()
+	public function hide_errors()
 	{
 		$this->show_errors = false;
 	}
@@ -141,7 +141,7 @@ class ezSQLcore
 		*  Kill cached query results
 		*/
 
-	function flush()
+	public function flush()
 	{
 		// Get rid of these
 		$this->last_result = null;
@@ -154,7 +154,7 @@ class ezSQLcore
 		*  Get one variable from the DB - see docs for more detail
 		*/
 
-	function get_var($query=null,$x=0,$y=0)
+	public function get_var($query=null,$x=0,$y=0)
 	{
 
 		// Log how the function was called
@@ -180,7 +180,7 @@ class ezSQLcore
 		*  Get one row from the DB - see docs for more detail
 		*/
 
-	function get_row($query=null,$output=OBJECT,$y=0)
+	public function get_row($query=null,$output=OBJECT,$y=0)
 	{
 
 		// Log how the function was called
@@ -220,7 +220,7 @@ class ezSQLcore
 		*  see docs for usage and info
 		*/
 
-	function get_col($query=null,$x=0)
+	public function get_col($query=null,$x=0)
 	{
 
 		// If there is a query then perform it if not then use cached results..
@@ -243,7 +243,7 @@ class ezSQLcore
 		*  Return the the query as a result set - see docs for more details
 		*/
 
-	function get_results($query=null, $output = OBJECT)
+	public function get_results($query=null, $output = OBJECT)
 	{
 
 		// Log how the function was called
@@ -294,7 +294,7 @@ class ezSQLcore
 		* see docs for more info and usage
 		*/
 
-	function get_col_info($info_type="name",$col_offset=-1)
+	public function get_col_info($info_type="name",$col_offset=-1)
 	{
 
 		if ( $this->col_info )
@@ -322,7 +322,7 @@ class ezSQLcore
 		*  store_cache
 		*/
 
-	function store_cache($query,$is_insert)
+	public function store_cache($query,$is_insert)
 	{
 
 		// The would be cache file for this query
@@ -356,7 +356,7 @@ class ezSQLcore
 		*  get_cache
 		*/
 
-	function get_cache($query)
+	public function get_cache($query)
 	{
 
 		// The would be cache file for this query
@@ -394,7 +394,7 @@ class ezSQLcore
 		*  formatted and easy to understand way - any type: Object, Var or Array
 		*/
 
-	function vardump($mixed='')
+	public function vardump($mixed='')
 	{
 
 		// Start outup buffering
@@ -437,7 +437,7 @@ class ezSQLcore
 		*  Alias for the above function
 		*/
 
-	function dumpvar($mixed)
+	public function dumpvar($mixed)
 	{
 		$this->vardump($mixed);
 	}
@@ -448,7 +448,7 @@ class ezSQLcore
 		* (abstracted into a seperate file to save server overhead).
 		*/
 
-	function debug()
+	public function debug()
 	{
 
 		// Start outup buffering

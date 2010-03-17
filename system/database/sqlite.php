@@ -35,7 +35,7 @@ class ezSQL_sqlite extends ezSQLcore
 		*  same time as initialising the ezSQL_sqlite class
 		*/
 
-	function ezSQL_sqlite($dbpath='', $dbname='')
+	public function ezSQL_sqlite($dbpath='', $dbname='')
 	{
 		// Turn on track errors
 		ini_set('track_errors',1);
@@ -50,7 +50,7 @@ class ezSQL_sqlite extends ezSQLcore
 		*  Try to connect to SQLite database server
 		*/
 
-	function connect($dbpath='', $dbname='')
+	public function connect($dbpath='', $dbname='')
 	{
 		global $ezsql_sqlite_str; $return_val = false;
 			
@@ -78,7 +78,7 @@ class ezSQL_sqlite extends ezSQLcore
 		*  but for the sake of consistency it has been included
 		*/
 
-	function quick_connect($dbpath='', $dbname='')
+	public function quick_connect($dbpath='', $dbname='')
 	{
 		return $this->connect($dbpath, $dbname);
 	}
@@ -88,7 +88,7 @@ class ezSQL_sqlite extends ezSQLcore
 		*  once again, function included for the sake of consistency
 		*/
 
-	function select($dbpath='', $dbname='')
+	public function select($dbpath='', $dbname='')
 	{
 		return $this->connect($dbpath, $dbname);
 	}
@@ -98,7 +98,7 @@ class ezSQL_sqlite extends ezSQLcore
 		*  (no mater if magic quotes are on or not)
 		*/
 
-	function escape($str)
+	public function escape($str)
 	{
 		return sqlite_escape_string(stripslashes(preg_replace("/[\r\n]/",'',$str)));
 	}
@@ -108,7 +108,7 @@ class ezSQL_sqlite extends ezSQLcore
 		*  i.e. Oracle: SYSDATE Mysql: NOW()
 		*/
 
-	function sysdate()
+	public function sysdate()
 	{
 		return 'now';
 	}
@@ -120,7 +120,7 @@ class ezSQL_sqlite extends ezSQLcore
 	// ==================================================================
 	//	Basic Query	- see docs for more detail
 
-	function query($query)
+	public function query($query)
 	{
 
 		// For reg expressions

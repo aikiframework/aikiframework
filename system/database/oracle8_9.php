@@ -31,16 +31,16 @@ if ( ! class_exists ('ezSQLcore') ) die('<b>Fatal Error:</b> ezSQL_oracle8_9 req
 class ezSQL_oracle8_9 extends ezSQLcore
 {
 
-	var $dbuser = false;
-	var $dbpassword = false;
-	var $dbname = false;
+	public  $dbuser = false;
+	public  $dbpassword = false;
+	public  $dbname = false;
 
 	/**********************************************************************
 		*  Constructor - allow the user to perform a qucik connect at the
 		*  same time as initialising the ezSQL_oracle8_9 class
 		*/
 
-	function ezSQL_oracle8_9($dbuser='', $dbpassword='', $dbname='')
+	public function ezSQL_oracle8_9($dbuser='', $dbpassword='', $dbname='')
 	{
 
 		// Turn on track errors
@@ -56,7 +56,7 @@ class ezSQL_oracle8_9 extends ezSQLcore
 		*  Try to connect to Oracle database server
 		*/
 
-	function connect($dbuser='', $dbpassword='', $dbname='')
+	public function connect($dbuser='', $dbpassword='', $dbname='')
 	{
 		global $ezsql_oracle8_9_str; $return_val = false;
 
@@ -89,7 +89,7 @@ class ezSQL_oracle8_9 extends ezSQLcore
 		*  but for the sake of consistency it has been included
 		*/
 
-	function quick_connect($dbuser='', $dbpassword='', $dbname='')
+	public function quick_connect($dbuser='', $dbpassword='', $dbname='')
 	{
 		return $this->connect($dbuser='', $dbpassword='', $dbname='');
 	}
@@ -99,7 +99,7 @@ class ezSQL_oracle8_9 extends ezSQLcore
 		*  once again, function included for the sake of consistency
 		*/
 
-	function select($dbuser='', $dbpassword='', $dbname='')
+	public function select($dbuser='', $dbpassword='', $dbname='')
 	{
 		return $this->connect($dbuser='', $dbpassword='', $dbname='');
 	}
@@ -109,7 +109,7 @@ class ezSQL_oracle8_9 extends ezSQLcore
 		*  (no mater if magic quotes are on or not)
 		*/
 
-	function escape($str)
+	public function escape($str)
 	{
 		return str_replace("'","''",str_replace("''","'",stripslashes($str)));
 	}
@@ -119,7 +119,7 @@ class ezSQL_oracle8_9 extends ezSQLcore
 		*  i.e. Oracle: SYSDATE Mysql: NOW()
 		*/
 
-	function sysdate()
+	public function sysdate()
 	{
 		return "SYSDATE";
 	}
@@ -133,12 +133,12 @@ class ezSQL_oracle8_9 extends ezSQLcore
 		*  SELECT * FROM USERS WHERE USER = ".$db->is_equal_str($user)."
 		*/
 
-	function is_equal_str($str='')
+	public function is_equal_str($str='')
 	{
 		return ($str==''?'IS NULL':"= '".$this->escape($str)."'");
 	}
 
-	function is_equal_int($int)
+	public function is_equal_int($int)
 	{
 		return ($int==''?'IS NULL':'= '.$int);
 	}
@@ -148,7 +148,7 @@ class ezSQL_oracle8_9 extends ezSQLcore
 		*  this function returns the next ID from that sequence
 		*/
 
-	function insert_id($seq_name)
+	public function insert_id($seq_name)
 	{
 		global $ezsql_oracle8_9_str;
 
@@ -170,7 +170,7 @@ class ezSQL_oracle8_9 extends ezSQLcore
 		*  Perform Oracle query and try to determine result value
 		*/
 
-	function query($query)
+	public function query($query)
 	{
 
 		$return_value = 0;
