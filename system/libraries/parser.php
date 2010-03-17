@@ -156,7 +156,7 @@ class parser extends aiki
 			$html_photo = "";
 
 			if (!isset($photo_info_array[7])){
-				$html_photo .= "<a href='".$config['url']."/file/image|".$photo_info_array[0]."'>";
+				$html_photo .= "<a href='".$config['url']."file/image|".$photo_info_array[0]."'>";
 			}
 
 			$html_photo .= "<img ";
@@ -166,7 +166,7 @@ class parser extends aiki
 
 			//if (eregi("^[a-zA-Z0-9\-\_\.]+\.(jpg|gif|png|jpeg|JPG)$",$photo_info_array[0])){
 
-			$html_photo .= "src='aikicore->setting[url]/image/";
+			$html_photo .= "src='".$config['url']."image/";
 
 			if ($photo_info_array[5] and $photo_info_array[5] != "px" ){
 				$html_photo .= "$photo_info_array[5]/"; //add spesific size virtual folder
@@ -249,7 +249,7 @@ class parser extends aiki
 	}
 
 	public function intlinks($text){
-		global $aiki, $membership, $db;
+		global $aiki, $membership, $db, $config;
 
 
 		if (preg_match('/\(\+\((.*)\)\+\)/', $text)){
@@ -342,7 +342,7 @@ class parser extends aiki
 
 											if ($tag_output_side == $tagname){
 
-												$text = str_replace($tag->tagstart.$tag->parlset.$tag_output[0].'='.$tag_output[1].$tag->tagend, "<a href=\"aikicore->setting[url]/$tag->linkexample/$tagid\">$tag_output[0]</a>", $text);
+												$text = str_replace($tag->tagstart.$tag->parlset.$tag_output[0].'='.$tag_output[1].$tag->tagend, "<a href=\"".$config['url']."$tag->linkexample/$tagid\">$tag_output[0]</a>", $text);
 
 											}
 
@@ -351,7 +351,7 @@ class parser extends aiki
 
 											if ($tag_output == $tagname){
 
-												$text = str_replace($tag->tagstart.$tag->parlset.$tag_output.$tag->tagend, "<a href=\"aikicore->setting[url]/$tag->linkexample/$tagid\">$tag_output</a>", $text);
+												$text = str_replace($tag->tagstart.$tag->parlset.$tag_output.$tag->tagend, "<a href=\"".$config['url']."$tag->linkexample/$tagid\">$tag_output</a>", $text);
 
 											}
 
@@ -371,7 +371,7 @@ class parser extends aiki
 
 					}
 					if ($membership->permissions == "SystemGOD"){
-						$text = preg_replace( '/'.preg_quote($tag->tagstart, '/').preg_quote($tag->parlset, '/').'(.*)(\=.*)?'.preg_quote($tag->tagend, '/').'/U', "<a style='color:#FF0000' target=\"_blank\" href=\"aikicore->setting[url]/$tag->linkexample/new\"><b>\\1</b></a>", $text );
+						$text = preg_replace( '/'.preg_quote($tag->tagstart, '/').preg_quote($tag->parlset, '/').'(.*)(\=.*)?'.preg_quote($tag->tagend, '/').'/U', "<a style='color:#FF0000' target=\"_blank\" href=\"".$config['url']."$tag->linkexample/new\"><b>\\1</b></a>", $text );
 						//$text = preg_replace( '/'.preg_quote($tag->tagstart, '/').preg_quote($tag->parlset, '/').'[\x0627-\x0649](\=.*)?'.preg_quote($tag->tagend, '/').'/U', "<a style='color:#FF0000' target=\"_blank\" href=\"aikicore->setting[url]/$tag->linkexample/new\"><b>\\1</b></a>", $text );
 						//'/\(\+\(tag:(.*?)[^)]*\)\+\)/';
 						//$text = preg_replace( '/'.preg_quote($tag->tagstart, '/').preg_quote($tag->parlset, '/').'(.*)(\=[^)].*)?'.preg_quote($tag->tagend, '/').'/U', "<a style='color:#FF0000' target=\"_blank\" href=\"aikicore->setting[url]/$tag->linkexample/new\"><b>\\1</b></a>", $text );
@@ -417,7 +417,7 @@ class parser extends aiki
 
 
 				//TODO: make sure it's correct link and if not correct it, and check for email addresses
-				$processed_tag = "<a target=\"_blank\" href=\"$tag_equivalent\" style=\"background:transparent url(".$config['url']."/assets/images/external.png) no-repeat scroll left center; padding-left:13px;\">".$tag_text.'</a>';
+				$processed_tag = "<a target=\"_blank\" href=\"$tag_equivalent\" style=\"background:transparent url(".$config['url']."assets/images/external.png) no-repeat scroll left center; padding-left:13px;\">".$tag_text.'</a>';
 
 
 				$tags_output[] .= $processed_tag;
