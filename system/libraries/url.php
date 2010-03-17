@@ -11,7 +11,7 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_url
+class url
 {
 
 	public $url;
@@ -19,7 +19,7 @@ class aiki_url
 	public $url_count;
 
 
-	public function aiki_url(){
+	public function url(){
 
 
 		if (isset($_GET["pretty"])){

@@ -11,7 +11,7 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_bot
+class bot
 {
 	public  $timeout = 20;
 	public  $url;

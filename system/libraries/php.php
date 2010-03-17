@@ -11,7 +11,7 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_php
+class php
 {
 
 	public function parser($text){

@@ -11,13 +11,13 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_output
+class output
 {
 
 	public $html;
 
 	
-	public function output_from_cache(){
+	public function from_cache(){
 		global $config, $membership;
 
 		if ($config['html_cache'] and !$membership->permissions){

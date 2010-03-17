@@ -10,7 +10,7 @@
 
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
-class aiki_languages
+class languages
 {
 
 

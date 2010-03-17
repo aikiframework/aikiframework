@@ -36,9 +36,7 @@ class aiki
 
 			require($system_folder.'/system/libraries/'.$class.'.php');
 
-			$name = 'aiki_'.$class;
-
-			$objects[$class] = new $name();
+			$objects[$class] = new $class();
 
 			$this->$class = $objects[$class];
 

@@ -683,7 +683,7 @@ class CreateLayout
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
 			$processed_widget = $aiki->parser->process($processed_widget);
-			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
+			$processed_widget = $aiki->aiki_array->displayArrayEditor($processed_widget);
 
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);

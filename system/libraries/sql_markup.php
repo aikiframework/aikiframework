@@ -11,7 +11,7 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_sql_markup
+class sql_markup
 {
 
 	public function sql($text){

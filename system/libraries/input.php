@@ -11,10 +11,10 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_input
+class input
 {
 
-	public function aiki_input(){
+	public function input(){
 		global $aiki, $layout;
 
 		foreach ($_GET as $key => $req){

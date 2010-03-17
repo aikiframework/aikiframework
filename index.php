@@ -16,7 +16,7 @@ $html_output = '';
 
 require_once("aiki.php");
 
-$html_cache_file = $aiki->output->output_from_cache();
+$html_cache_file = $aiki->output->from_cache();
 
 require_once ("system/widgets.php");
 $layout = new CreateLayout();

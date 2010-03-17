@@ -11,7 +11,7 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_wiki_markup
+class wiki_markup
 {
 
 	//Original function: doHeadings from wikimedia /includes/parser/Parser.php

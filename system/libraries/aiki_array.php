@@ -29,7 +29,7 @@ class aiki_array
 
 					$arrayEditor = explode(":", $array_data);
 
-					$output = $aiki->array->editor($arrayEditor['1'], $arrayEditor['2'], $arrayEditor['3'], $arrayEditor['4'], "where ".$arrayEditor['1']."=".$arrayEditor['5']."");
+					$output = $aiki->aiki_array->editor($arrayEditor['1'], $arrayEditor['2'], $arrayEditor['3'], $arrayEditor['4'], "where ".$arrayEditor['1']."=".$arrayEditor['5']."");
 
 					$text = preg_replace("/\(\#\(array\:$array_data\)\#\)/U", $output, $text);
 

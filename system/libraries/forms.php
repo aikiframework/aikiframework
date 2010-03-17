@@ -10,7 +10,7 @@
 
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
-class aiki_forms
+class forms
 {
 
 	public $submit_button;
@@ -483,7 +483,7 @@ class aiki_forms
 
 		$viewrow = $db->get_row($sql);
 
-		$viewrow = $aiki->array->object2array($viewrow);
+		$viewrow = $aiki->aiki_array->object2array($viewrow);
 
 		if (!is_array($viewrow)){return;}
 
@@ -551,7 +551,7 @@ class aiki_forms
 
 			foreach ($db->col_info as $column){
 
-				$column = $aiki->array->object2array($column);
+				$column = $aiki->aiki_array->object2array($column);
 					
 					
 				if ($column['primary_key'] == 1){

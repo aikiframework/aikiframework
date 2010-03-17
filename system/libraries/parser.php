@@ -11,7 +11,7 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_parser extends aiki
+class parser extends aiki
 {
 
 	private $timeout = 5; // set to zero for no timeout

@@ -11,7 +11,7 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_membership
+class membership
 {
 	public $permissions;
 	public $full_name;
@@ -20,7 +20,7 @@ class aiki_membership
 	public $group_level;
 
 
-	public function aiki_membership(){
+	public function membership(){
 		global $db, $config;
 
 		if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
