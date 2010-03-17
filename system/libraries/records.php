@@ -14,20 +14,17 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_records
 {
 
-	var $stop;
-	var $file_name;
-	var $file_size;
-	var $checksum_sha1;
-	var $checksum_md5;
-	var $width;
-	var $height;
-	var $rand;
+	public $stop;
+	public $file_name;
+	public $file_size;
+	public $checksum_sha1;
+	public $checksum_md5;
+	public $width;
+	public $height;
+	public $rand;
 
-	function __construct(){
 
-	}
-
-	function record_exists($value, $tablename, $field){
+	public function record_exists($value, $tablename, $field){
 		global $db;
 
 		$get_value = $db->get_var("SELECT $field from $tablename where $field='$value'");
@@ -40,7 +37,7 @@ class aiki_records
 
 	}
 
-	function file_exists_sha1($tablename, $sha1){
+	public function file_exists_sha1($tablename, $sha1){
 		global $db;
 
 		$get_value = $db->get_var("SELECT filename from $tablename where sha1='$sha1'");
@@ -52,7 +49,7 @@ class aiki_records
 
 	}
 
-	function lockdocument($pkeyname, $pkeybalue, $tablename){
+	public function lockdocument($pkeyname, $pkeybalue, $tablename){
 		global $db, $membership;
 		if ($pkeyname and $tablename){
 
@@ -76,7 +73,7 @@ class aiki_records
 		}
 	}
 
-	function unlockdocument($pkeyname, $pkeybalue, $tablename){
+	public function unlockdocument($pkeyname, $pkeybalue, $tablename){
 		global $db, $membership;
 		if ($pkeyname and $tablename){
 			$lockdocument = $db->query("update $tablename set is_editable = null where $pkeyname='$pkeybalue'");
@@ -84,7 +81,7 @@ class aiki_records
 	}
 
 
-	function insert_from_form_to_db($input_data){
+	public function insert_from_form_to_db($input_data){
 		global $db, $aiki, $membership, $config;
 
 		$vars = explode('|||||', $input_data);
@@ -600,7 +597,7 @@ class aiki_records
 	}
 
 
-	function delete_record($tablename, $recordid, $confirm, $pkey){
+	public function delete_record($tablename, $recordid, $confirm, $pkey){
 		global $db;
 
 		if (!$recordid){
@@ -631,7 +628,7 @@ class aiki_records
 	//$dolock = $this->lockdocument($pkey, $postedpkey, $tablename);
 	//$layout->forms .= $dolock;
 
-	function edit_db_record_by_form_post($post, $form_id, $record_id){
+	public function edit_db_record_by_form_post($post, $form_id, $record_id){
 		global $db, $aiki, $membership;
 
 		$form = $db->get_row("SELECT * from aiki_forms where id='$form_id' limit 1");

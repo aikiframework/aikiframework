@@ -13,14 +13,10 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_forms
 {
 
-	var $submit_button;
+	public $submit_button;
 
 
-	function __construct(){
-
-	}
-
-	function displayForms($text ){
+	public function displayForms($text ){
 		global $db, $aiki;
 
 		$forms_count = preg_match_all("/\(\#\(form\:(.*)\)\#\)/U", $text, $forms);
@@ -102,7 +98,7 @@ class aiki_forms
 
 
 
-	function createForm ($form_array, $form_id, $record_id){
+	public function createForm ($form_array, $form_id, $record_id){
 		global $db, $membership, $aiki, $config;
 
 		$arraykeys = array_keys($form_array);
@@ -414,7 +410,7 @@ class aiki_forms
 
 	}
 
-	function create_insert_form($form_array, $form_html, $form_id){
+	public function create_insert_form($form_array, $form_html, $form_id){
 		global $db, $aiki, $membership;
 
 		$form = '';
@@ -441,7 +437,7 @@ class aiki_forms
 
 	}
 
-	function create_update_form($form_array, $form_html, $form_id, $record_id){
+	public function create_update_form($form_array, $form_html, $form_id, $record_id){
 		global $aiki;
 
 		$form = '';
@@ -482,7 +478,7 @@ class aiki_forms
 
 	}
 
-	function fill_form($html, $sql){
+	public function fill_form($html, $sql){
 		global $db, $aiki;
 
 		$viewrow = $db->get_row($sql);
@@ -529,7 +525,7 @@ class aiki_forms
 		return $html;
 	}
 
-	function auto_generate($table){
+	public function auto_generate($table){
 		global $aiki, $db;
 
 		$table = mysql_escape_string($table);

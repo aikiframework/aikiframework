@@ -13,18 +13,18 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class CreateLayout
 {
-	var $html_output;
-	var $kill_widget;
-	var $widget_html;
-	var $forms;
-	var $inherent_id;
-	var $create_widget_cache;
-	var $widgets_css;
-	var $widget_custome_output;
-	var $head_output;
+	public $html_output;
+	public $kill_widget;
+	public $widget_html;
+	public $forms;
+	public $inherent_id;
+	public $create_widget_cache;
+	public $widgets_css;
+	public $widget_custome_output;
+	public $head_output;
 
 
-	function CreateLayout(){
+	public function CreateLayout(){
 		global $db, $site, $aiki, $url, $errors, $layout;
 
 
@@ -77,7 +77,7 @@ class CreateLayout
 
 
 
-	function createWidget($widget_id, $widget_group=''){
+	private function createWidget($widget_id, $widget_group=''){
 		global $db, $aiki,$url, $language, $dir, $page, $site, $module, $custome_output;
 
 		if ($widget_group){
@@ -196,8 +196,8 @@ class CreateLayout
 	}
 
 
-	function createWidgetContent($widget, $output_to_string='', $normal_select=''){
-		global $aiki, $db, $widget_cache, $widget_cache_dir, $url, $language, $dir, $align, $membership, $nogui, $highlight, $records_libs, $image_processing, $custome_output, $config;
+	private function createWidgetContent($widget, $output_to_string='', $normal_select=''){
+		global $aiki, $db, $widget_cache, $widget_cache_dir, $url, $language, $dir, $align, $membership, $nogui, $records_libs, $image_processing, $custome_output, $config;
 
 		if (isset($_GET['page'])){
 			$page = mysql_escape_string($_GET['page']);
@@ -231,7 +231,7 @@ class CreateLayout
 
 
 
-		if (isset($config["widget_cache"]) and isset($config["widget_cache_dir"]) and $widget->widget_cache_timeout){
+		if (isset($config["widget_cache"]) and $config["widget_cache"] and isset($config["widget_cache_dir"]) and $widget->widget_cache_timeout){
 
 			//Get ready for cache
 			if ($widget->normal_select){
@@ -264,7 +264,7 @@ class CreateLayout
 			$stopcaching = false;
 		}
 
-		if (isset($config["widget_cache"]) and isset($widget_cache_timeout) and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD" and !$stopcaching){
+		if (isset($config["widget_cache"]) and $config["widget_cache"] and isset($widget_cache_timeout) and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD" and !$stopcaching){
 
 			//Display widget from cache
 			$widget_html_output = file_get_contents($widget_file);
@@ -276,8 +276,10 @@ class CreateLayout
 			//widget can't be rendered from cache
 			//Flag the widget as cachable, and try to delete the old cache file
 			$this->create_widget_cache = true;
-			if (isset ($widget_file) and file_exists($widget_file) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD" and !$stopcaching){
-				unlink($widget_file);
+			if (isset ($widget_file) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD" and !$stopcaching){
+				if (file_exists($widget_file)){
+					unlink($widget_file);
+				}
 			}
 
 
@@ -612,10 +614,6 @@ class CreateLayout
 						$widgetContents .= $pagination;
 					}
 
-					if (isset($highlight)){
-						$widgetContents = $aiki->highlight_this($widgetContents, $highlight);
-					}
-
 					//Delete empty widgets
 					if ($widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
 						$this->kill_widget = $widget->id;
@@ -695,7 +693,7 @@ class CreateLayout
 			if (isset($widgetContents) and $widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
 				$this->kill_widget = $widget->id;
 			}else{
-				if (isset($config["widget_cache"]) and $this->create_widget_cache and $config["widget_cache_dir"] and $widget_cache_timeout>0 and is_dir($config["widget_cache_dir"]) and !$membership->permissions){
+				if (isset($config["widget_cache"]) and $config["widget_cache"] and $this->create_widget_cache and $config["widget_cache_dir"] and is_dir($config["widget_cache_dir"]) and !$membership->permissions and $widget->widget_cache_timeout > 0){
 					$processed_widget_cach = $processed_widget."\n\n<!-- Served From Cache -->\n\n";
 					error_log ( $processed_widget_cach, 3, $widget_file);
 				}
@@ -717,7 +715,7 @@ class CreateLayout
 	}
 
 
-	function noaiki($text){
+	private function noaiki($text){
 		global $aiki;
 
 		$widget_no_aiki = $aiki->get_string_between($text, "<noaiki>", "</noaiki>");
@@ -739,7 +737,7 @@ class CreateLayout
 
 
 
-	function parsDBpars($text, $widget_value){
+	private function parsDBpars($text, $widget_value){
 		global $aiki;
 
 		$count = preg_match_all( '/\(\((.*)\)\)/U', $text, $matches );
@@ -799,7 +797,7 @@ class CreateLayout
 	}
 
 
-	function edit_in_place($text, $widget_value){
+	private function edit_in_place($text, $widget_value){
 		global $aiki,$db, $membership;
 
 		$edit_matchs = preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
@@ -958,7 +956,7 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 	}
 
 
-	function inline_widgets($widget){
+	private function inline_widgets($widget){
 
 		$numMatches = preg_match_all( '/\(\#\(widget\:(.*)\)\#\)/', $widget, $matches);
 		if ($numMatches > 0){
@@ -972,7 +970,7 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 	}
 
 
-	function inherent_widgets($widget){
+	private function inherent_widgets($widget){
 		global $db;
 
 		$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/', $widget, $matches);

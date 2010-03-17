@@ -14,7 +14,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_sql_markup
 {
 
-	function sql($text){
+	public function sql($text){
 		global $aiki, $db;
 
 
@@ -39,7 +39,7 @@ class aiki_sql_markup
 	}
 
 
-	function sql_query($match){
+	public function sql_query($match){
 		global $aiki, $db;
 
 		$html_output = '';
@@ -100,7 +100,7 @@ class aiki_sql_markup
 
 
 	//version 2
-	function doInnerSql($text){
+	public function doInnerSql($text){
 		global $aiki;
 
 		$finalprocessedloop = "";

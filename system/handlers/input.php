@@ -14,7 +14,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_input
 {
 
-	function aiki_input(){
+	public function aiki_input(){
 		global $aiki, $layout;
 
 		foreach ($_GET as $key => $req){
@@ -79,7 +79,7 @@ class aiki_input
 
 	}
 
-	function validate($data){
+	public function validate($data){
 
 		foreach ($data as $key => $req){
 			$req = mysql_escape_string($req);
@@ -89,7 +89,7 @@ class aiki_input
 		return $data;
 	}
 
-	function form_handler($type, $post){
+	public function form_handler($type, $post){
 		global $membership;
 
 		$post = $this->validate($post);
@@ -103,7 +103,7 @@ class aiki_input
 	}
 
 
-	function requests($text){
+	public function requests($text){
 
 		$text = $this->get_handler($text);
 		$text = $this->post_handler($text);
@@ -112,7 +112,7 @@ class aiki_input
 	}
 
 
-	function get_handler($text){
+	public function get_handler($text){
 
 		if (!isset($_POST['add_to_form']) and !preg_match ("/\<form(.*)GET\[(.*)\](.*)\<\/form\>/Us", $text)){
 
@@ -142,7 +142,7 @@ class aiki_input
 
 	}
 
-	function post_handler($text){
+	public function post_handler($text){
 
 		if (!isset($_POST['add_to_form']) and !preg_match ("/\<form(.*)POST\[(.*)\](.*)\<\/form\>/Us", $text)){
 

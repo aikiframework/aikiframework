@@ -13,15 +13,11 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class aiki_bot
 {
-	var $timeout = 20;
-	var $url;
+	public  $timeout = 20;
+	public  $url;
 
-	
-	function __construct(){
 
-	}
-	
-	function import_mockup($url, $theme, $display_url){
+	public function import_mockup($url, $theme, $display_url){
 		global $aiki, $db, $config;
 
 		$this->url = $url;
@@ -150,7 +146,7 @@ class aiki_bot
 
 	}
 
-	function import_css($head){
+	public function import_css($head){
 
 		$css_matchs = preg_match_all('/\<link href\=\"(.*)\" type\=\"text\/css\" rel=\"stylesheet\" \/\>/Us', $head, $matchs);
 
@@ -185,27 +181,27 @@ class aiki_bot
 	}
 
 
-	function import_javascript(){
+	public function import_javascript(){
 
 
 	}
 
-	function import_image(){
+	public function import_image(){
 
 
 	}
 
-	function create_mockup_from_psd(){
+	public function create_mockup_from_psd(){
 
 
 	}
 
-	function create_mockup_from_svg(){
+	public function create_mockup_from_svg(){
 
 
 	}
 
-	function rename_files_give_timestamp($path){
+	public function rename_files_give_timestamp($path){
 
 		if (!isset($path)){return;}
 
@@ -235,7 +231,7 @@ class aiki_bot
 	}
 
 
-	function create_photos_archive_meta(){
+	public function create_photos_archive_meta(){
 		global $config;
 
 		$photos = $db->get_results("SELECT * FROM apps_photo_archive where checksum_sha1 =''");

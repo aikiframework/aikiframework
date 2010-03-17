@@ -14,12 +14,12 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_url
 {
 
-	var $url;
-	var $create_widget;
-	var $url_count;
+	public $url;
+	public $create_widget;
+	public $url_count;
 
 
-	function aiki_url(){
+	public function aiki_url(){
 
 
 		if (isset($_GET["pretty"])){
@@ -41,7 +41,7 @@ class aiki_url
 	}
 
 
-	function apply_url_on_query($query){
+	public function apply_url_on_query($query){
 
 		$count = preg_match_all( '/\(\!\((.*)\)\!\)/U', $query, $matches );
 
@@ -58,7 +58,7 @@ class aiki_url
 
 
 
-	function widget_if_match_url($widget){
+	public function widget_if_match_url($widget){
 			
 		$do_not_display_widget = '';
 		$display_widget = '';

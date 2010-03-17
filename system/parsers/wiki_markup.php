@@ -16,7 +16,7 @@ class aiki_wiki_markup
 
 	//Original function: doHeadings from wikimedia /includes/parser/Parser.php
 	//Parts of the new rebuilt function are from function called formatHeadings
-	function markup_toc($text){
+	public function markup_toc($text){
 
 
 		for ( $i = 6; $i >= 1; --$i ) {
@@ -126,7 +126,7 @@ class aiki_wiki_markup
 
 	}
 
-	function markup_tables($text){
+	public function markup_tables($text){
 
 		global $aiki;
 
@@ -172,7 +172,7 @@ class aiki_wiki_markup
 	}
 
 	//From mediawiki 1.14.0 Parser
-	function markup_quotes( $text ) {
+	public function markup_quotes( $text ) {
 		$arr = preg_split( "/(''+)/", $text, -1, PREG_SPLIT_DELIM_CAPTURE );
 		if ( count( $arr ) == 1 )
 		return $text;

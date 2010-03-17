@@ -13,20 +13,16 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki
 {
 
-	var $aikiarray;
-	var $title = "";
-	var $array_fields;
-	var $array_keys;
-	var $stop_sql_loops;
-	var $output;
-	var $sql_tree_output;
+	private $aikiarray;
+	public $title = "";
+	private $array_fields;
+	private $array_keys;
+	private $stop_sql_loops;
+	public $output;
+	private $sql_tree_output;
 
 
-	function __construct(){
-
-	}
-
-	function load($class){
+	public function load($class){
 		global $system_folder;
 
 		static $objects = array();
@@ -55,7 +51,7 @@ class aiki
 	}
 
 
-	function get_config($config){
+	public function get_config($config){
 		global $db;
 
 		$settings = $db->get_results("SELECT config_data FROM aiki_config");
@@ -79,7 +75,7 @@ class aiki
 	}
 
 
-	function escape($text){
+	public function escape($text){
 
 		$text = stripcslashes($text);
 		$text = str_replace('\"', '"', $text);
@@ -91,7 +87,7 @@ class aiki
 	}
 
 
-	function get_string_between($string, $start, $end){
+	public function get_string_between($string, $start, $end){
 		$string = " ".$string;
 		$ini = strpos($string,$start);
 		if ($ini == 0) return "";
@@ -101,7 +97,7 @@ class aiki
 	}
 
 
-	function processVars($text){
+	public function processVars($text){
 		global $aiki, $page, $membership, $config;
 
 

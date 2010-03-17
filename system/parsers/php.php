@@ -14,7 +14,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_php
 {
 
-	function parser($text){
+	public function parser($text){
 		global $aiki;
 
 		if (!preg_match ("/\<form(.*)\<php (.*) php\>(.*)\<\/form\>/s", $text)){
@@ -53,7 +53,7 @@ class aiki_php
 		return $text;
 	}
 
-	function aiki_function($text){
+	public function aiki_function($text){
 		global $aiki;
 
 		//function does not have vars
@@ -87,7 +87,7 @@ class aiki_php
 		return $output;
 	}
 
-	function aiki_htmlspecialchars($text){
+	public function aiki_htmlspecialchars($text){
 		global $aiki;
 
 		$original_string = $aiki->get_string_between($text, "htmlspecialchars(", ")");
@@ -100,7 +100,7 @@ class aiki_php
 	}
 
 
-	function aiki_if_then($text){
+	public function aiki_if_then($text){
 		global $aiki;
 
 		$string = explode(" then ", $text);
@@ -129,7 +129,7 @@ class aiki_php
 		return $output;
 	}
 
-	function aiki_str_replace($text){
+	public function aiki_str_replace($text){
 		global $aiki;
 
 		$string = $aiki->get_string_between($text, "str_replace(", ");");

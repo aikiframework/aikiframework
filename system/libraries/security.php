@@ -14,11 +14,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_security
 {
 
-	function __construct(){
-
-	}
-
-	function removeAikiMarkup($text){
+	public function removeAikiMarkup($text){
 
 		$text = preg_replace("/\(\#\(form(.*)\)\#\)/Us", "", $text);
 
@@ -27,7 +23,7 @@ class aiki_security
 		return $text;
 	}
 
-	function inlinePermissions($text){
+	public function inlinePermissions($text){
 		global $membership, $db;
 			
 		$inline = preg_match_all('/\(\#\(permissions\:(.*)\)\#\)/Us', $text, $matchs);
@@ -51,7 +47,7 @@ class aiki_security
 	}
 
 
-	function RemoveXSS($val) {
+	public function RemoveXSS($val) {
 		$val = preg_replace('/([\x00-\x08][\x0b-\x0c][\x0e-\x20])/', '', $val);
 		$search = 'abcdefghijklmnopqrstuvwxyz';
 		$search .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

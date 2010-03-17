@@ -14,7 +14,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_aiki_markup extends aiki
 {
 
-	function aiki_parser($text){
+	public function aiki_parser($text){
 
 		$text = $this->markup_ajax($text);
 		$text = $this->images($text);
@@ -26,7 +26,7 @@ class aiki_aiki_markup extends aiki
 		return $text;
 	}
 
-	function tags($text, $widget_value){
+	public function tags($text, $widget_value){
 		global $db, $aiki;
 
 		$tags = $aiki->get_string_between($text, "(#(tags:", ")#)");
@@ -53,7 +53,7 @@ class aiki_aiki_markup extends aiki
 
 	}
 
-	function images($text){
+	public function images($text){
 		global $db, $aiki, $config;
 		$numMatches = preg_match_all( '/\{\+\{/', $text, $matches);
 
@@ -137,7 +137,7 @@ class aiki_aiki_markup extends aiki
 	}
 
 
-	function inline($text){
+	public function inline($text){
 
 		$inline = preg_match_all('/\(\#\(inline\:(.*)\)\#\)/U', $text, $matchs);
 
@@ -156,7 +156,7 @@ class aiki_aiki_markup extends aiki
 		return $text;
 	}
 
-	function intlinks($text){
+	public function intlinks($text){
 		global $aiki, $membership, $db;
 
 
@@ -298,7 +298,7 @@ class aiki_aiki_markup extends aiki
 	}
 
 
-	function extlinks($text){
+	public function extlinks($text){
 		global $aiki, $config;
 
 		$tags_output = array();
@@ -340,7 +340,7 @@ class aiki_aiki_markup extends aiki
 
 	}
 
-	function markup_ajax($text){
+	public function markup_ajax($text){
 		global $db;
 		/*
 		 <script type="text/javascript">
@@ -428,7 +428,7 @@ class aiki_aiki_markup extends aiki
 		return $text;
 	}
 
-	function datetime($text, $widget_value){
+	public function datetime($text, $widget_value){
 		global $aiki, $config;
 
 		$datetimes = preg_match_all('/\(\#\(datetime\:(.*)\)\#\)/Us', $text, $matchs);
@@ -451,7 +451,7 @@ class aiki_aiki_markup extends aiki
 	}
 
 
-	function aikiTemplates($widget){
+	public function aikiTemplates($widget){
 		global $db, $aiki;
 
 		$numMatches = preg_match_all( '/\{\{/', $widget, $matches);

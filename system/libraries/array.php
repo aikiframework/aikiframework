@@ -12,16 +12,11 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class aiki_array
 {
-	var $createdArray;
-	var $insertQuery;
-	var $new_array_field;
+	public $createdArray;
+	public $insertQuery;
+	public $new_array_field;
 
-	
-	function __construct(){
-
-	}
-
-	function displayArrayEditor($text){
+	public function displayArrayEditor($text){
 		global $db, $aiki;
 
 		$arrays_count = preg_match_all("/\(\#\(array\:(.*)\)\#\)/U", $text, $arrays);
@@ -58,7 +53,7 @@ class aiki_array
 
 
 	//http://www.jonasjohn.de/snippets/php/array2object.htm
-	function array2object($arrGiven){
+	public function array2object($arrGiven){
 		//create empty class
 		$objResult=new stdClass();
 
@@ -72,7 +67,7 @@ class aiki_array
 		return $objResult;
 	}
 
-	function object2array($object) {
+	public function object2array($object) {
 		if (is_object($object) || is_array($object)) {
 			foreach ($object as $key => $value) {
 				//print "$key\r\n";
@@ -86,7 +81,7 @@ class aiki_array
 
 
 
-	function editor($id, $name, $data, $table, $where){
+	public function editor($id, $name, $data, $table, $where){
 		global $db;
 
 		$pageURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];

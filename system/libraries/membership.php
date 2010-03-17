@@ -13,14 +13,14 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class aiki_membership
 {
-	var $permissions;
-	var $full_name;
-	var $username;
-	var $userid;
-	var $group_level;
+	public $permissions;
+	public $full_name;
+	public $username;
+	public $userid;
+	public $group_level;
 
 
-	function aiki_membership(){
+	public function aiki_membership(){
 		global $db, $config;
 
 		if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
@@ -72,7 +72,7 @@ class aiki_membership
 
 	}
 
-	function login ($username, $password){
+	public function login ($username, $password){
 		global $db, $layout, $config;
 
 		$password = stripslashes($password);
@@ -118,7 +118,7 @@ class aiki_membership
 
 	}
 
-	function isUserLogged ($userid){
+	public function isUserLogged ($userid){
 		global $db;
 		$user_session = $db->get_var("SELECT user_id FROM aiki_users_sessions where user_session='$_SESSION[aikiuser]'");
 		if ($user_session == $userid){
@@ -128,7 +128,7 @@ class aiki_membership
 		}
 	}
 
-	function getUserPermissions ($user){
+	public function getUserPermissions ($user){
 		global $db;
 		$user = mysql_escape_string($user);
 
@@ -158,7 +158,7 @@ class aiki_membership
 
 	//function from Membership V1.0
 	//http://AwesomePHP.com/
-	function get_ip(){
+	public function get_ip(){
 		$ipParts = explode(".", $_SERVER['REMOTE_ADDR']);
 		if ($ipParts[0] == "165" && $ipParts[1] == "21") {
 			if (getenv("HTTP_CLIENT_IP")) {
@@ -175,12 +175,12 @@ class aiki_membership
 	}
 
 	//Generate session
-	function generate_session($strlen){
+	public function generate_session($strlen){
 		return substr(md5(uniqid(rand(),true)),1,$strlen);
 	}
 
 
-	function NewPassword($key){
+	public function NewPassword($key){
 		global $db, $aiki, $config;
 
 		$is_user = $db->get_var("select userid, username from aiki_users where randkey = '$key'");
@@ -237,7 +237,7 @@ class aiki_membership
 
 	}
 
-	function ResetPassword($input){
+	public function ResetPassword($input){
 		global $db, $aiki, $config;
 
 		$vars_array = str_replace('"', '', $input);
@@ -301,7 +301,7 @@ class aiki_membership
 
 	}
 
-	function LogOut(){
+	public function LogOut(){
 		global $db;
 
 		if (isset($_SESSION['aikiuser'])){

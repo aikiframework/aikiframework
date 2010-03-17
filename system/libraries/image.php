@@ -13,12 +13,9 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class aiki_image
 {
-	
-	function __construct(){
 
-	}
 	
-	function rsvg_convert_svg_png($file, $newwidth, $newhight){
+	public function rsvg_convert_svg_png($file, $newwidth, $newhight){
 
 		$file = str_replace(" ", "\ ",  $file);
 		$file = str_replace("(", "\(",  $file);
@@ -53,7 +50,7 @@ class aiki_image
 		return $filenamepng;
 	}
 
-	function inkscape_convert_svg_png($path_to_inkscape, $svg_default_background, $images_path, $filename){
+	public function inkscape_convert_svg_png($path_to_inkscape, $svg_default_background, $images_path, $filename){
 		$filenamepng = str_replace(".svg", ".png", $filename);
 		//check if inkscape exists
 		exec("".$path_to_inkscape."inkscape -V", $checkversion);
@@ -67,7 +64,7 @@ class aiki_image
 
 
 
-	function display_watermarked_image($fimage, $watermark_file, $minValueWaterMark){
+	public function display_watermarked_image($fimage, $watermark_file, $minValueWaterMark){
 		$size = getimagesize($fimage);
 
 		if ($minValueWaterMark and $size["0"] < $minValueWaterMark and $size["1"] < $minValueWaterMark){
@@ -98,7 +95,7 @@ class aiki_image
 	}
 
 
-	function imageresize($path,$filename,$newvalue,$imageprefix)
+	public function imageresize($path,$filename,$newvalue,$imageprefix)
 	{
 		$filename2 =$path.$filename;
 		$size = getimagesize($filename2);

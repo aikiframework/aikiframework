@@ -14,11 +14,7 @@ class aiki_languages
 {
 
 
-	function __construct(){
-
-	}
-	
-	function L10n($string){
+	public function L10n($string){
 		global $db, $config;
 
 		$count = preg_match_all( '/\[\[(.*)\]\]/', $string, $matches );

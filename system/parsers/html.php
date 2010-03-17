@@ -14,9 +14,9 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_html
 {
 
-	var $title;
+	public $title;
 
-	function set_title($title){
+	public function set_title($title){
 		global $aiki;
 		$this->title = $aiki->languages->L10n($title);
 	}
@@ -85,7 +85,7 @@ class aiki_html
 		return "\n</body>\n</html>";
 	}
 
-	function displayInTable($widget, $columns){
+	public function displayInTable($widget, $columns){
 		$widgetTabled = "<table width='100%'>";
 		$widgetExploded = explode("<!-- The End of a Record -->", $widget);
 		$i = 0;

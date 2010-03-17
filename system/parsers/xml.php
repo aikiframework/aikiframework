@@ -15,7 +15,7 @@ class aiki_xml
 {
 	var $timeout = 5; // set to zero for no timeout
 
-	function rss_parser($text){
+	public function rss_parser($text){
 		global $aiki;
 
 		$rss_matchs = preg_match_all('/\<rss\>(.*)\<\/rss\>/Us', $text, $matchs);
