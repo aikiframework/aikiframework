@@ -25,7 +25,7 @@ class aiki
 	public function load($class){
 		global $system_folder;
 
-		static $objects = array();
+		$objects = array();
 
 		if (isset($objects[$class]))
 		{
@@ -38,7 +38,7 @@ class aiki
 		
 		$name = 'aiki_'.$class;
 
-		$objects[$class] =& new $name();
+		$objects[$class] = new $name();
 
 		$this->$class = $objects[$class];
 
