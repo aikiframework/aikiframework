@@ -50,19 +50,6 @@ class image
 		return $filenamepng;
 	}
 
-	public function inkscape_convert_svg_png($path_to_inkscape, $svg_default_background, $images_path, $filename){
-		$filenamepng = str_replace(".svg", ".png", $filename);
-		//check if inkscape exists
-		exec("".$path_to_inkscape."inkscape -V", $checkversion);
-		if ($checkversion[0]){
-			exec("".$path_to_inkscape."inkscape -e ".$images_path.$filenamepng." ".$images_path.$filename." --export-background=".$svg_default_background."", $output);
-		}else{
-			$output = "<b>Fatal Error: </b>Can't find (inkscape)";
-		}
-		return $output;
-	}
-
-
 
 	public function display_watermarked_image($fimage, $watermark_file, $minValueWaterMark){
 		$size = getimagesize($fimage);
