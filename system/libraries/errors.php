@@ -20,7 +20,7 @@ class errors
 
 		Header("HTTP/1.1 404 Not Found");
 
-		$aiki->html->set_title("404 Page Not Found");
+		$aiki->output->set_title("404 Page Not Found");
 
 		if (isset($config["register_errors"])){
 				

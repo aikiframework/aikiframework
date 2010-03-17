@@ -225,7 +225,7 @@ class CreateLayout
 
 			$title = $aiki->input->requests($title);
 
-			$aiki->html->set_title($title);
+			$aiki->output->set_title($title);
 		}
 
 
@@ -577,7 +577,7 @@ class CreateLayout
 						}
 					}
 					if ($widget->display_in_row_of > 0){
-						$widgetContents = $aiki->html->displayInTable($widgetContents, $widget->display_in_row_of);
+						$widgetContents = $aiki->output->displayInTable($widgetContents, $widget->display_in_row_of);
 					}
 
 					$widgetContents = $this->noaiki($widgetContents);

@@ -33,13 +33,13 @@ if ($layout->widget_custome_output){
 }
 
 if (!isset($noheaders)){
-	$html_output = $aiki->html->write_headers();
+	$html_output = $aiki->output->write_headers();
 }
 
 
 
 if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
-	$full_html_input = $aiki->html->write_headers();
+	$full_html_input = $aiki->output->write_headers();
 	//$full_html_input .= "<div id=\"container\">\n\r";
 }
 
@@ -62,7 +62,7 @@ if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
 
 
 if (!isset($noheaders)){
-	$html_output .= $aiki->html->write_footer();
+	$html_output .= $aiki->output->write_footer();
 }
 
 
@@ -96,7 +96,7 @@ if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $con
 
 if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
 
-	$full_html_input .= $aiki->html->write_footer();
+	$full_html_input .= $aiki->output->write_footer();
 }
 
 
