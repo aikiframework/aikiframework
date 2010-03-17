@@ -34,13 +34,8 @@ class aiki
 
 		if (file_exists($system_folder.'/system/libraries/'.$class.'.php')){
 			require($system_folder.'/system/libraries/'.$class.'.php');
-		}elseif(file_exists($system_folder.'/system/handlers/'.$class.'.php')){
-			require($system_folder.'/system/handlers/'.$class.'.php');
-		}elseif(file_exists($system_folder.'/system/parsers/'.$class.'.php')){
-			require($system_folder.'/system/parsers/'.$class.'.php');
 		}
-
-
+		
 		$name = 'aiki_'.$class;
 
 		$objects[$class] =& new $name();
