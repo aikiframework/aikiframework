@@ -524,8 +524,8 @@ class CreateLayout
 						}
 						$widget->widget = $newwidget;
 
-						$widget->widget = $aiki->aiki_markup->datetime($widget->widget, $widget_value);
-						$widget->widget = $aiki->aiki_markup->tags($widget->widget, $widget_value);
+						$widget->widget = $aiki->parser->datetime($widget->widget, $widget_value);
+						$widget->widget = $aiki->parser->tags($widget->widget, $widget_value);
 
 						$related = $aiki->get_string_between($widget->widget, "(#(related:", ")#)");
 						if ($related){
@@ -682,7 +682,7 @@ class CreateLayout
 
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
-			$processed_widget = $aiki->aiki_markup->aiki_parser($processed_widget);
+			$processed_widget = $aiki->parser->process($processed_widget);
 			$processed_widget = $aiki->array->displayArrayEditor($processed_widget);
 
 			$processed_widget = $aiki->forms->displayForms($processed_widget);

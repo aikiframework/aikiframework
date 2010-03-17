@@ -99,7 +99,7 @@ $aiki->load("forms");
 $aiki->load("array");
 $aiki->load("image");
 $aiki->load("security");
-$aiki->load("aiki_markup");
+$aiki->load("parser");
 $aiki->load("html");
 $aiki->load("php");
 $aiki->load("sql_markup");

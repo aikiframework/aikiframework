@@ -11,12 +11,12 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class aiki_aiki_markup extends aiki
+class aiki_parser extends aiki
 {
 
 	private $timeout = 5; // set to zero for no timeout
 
-	public function aiki_parser($text){
+	public function process($text){
 
 		$text = $this->markup_ajax($text);
 		$text = $this->images($text);
