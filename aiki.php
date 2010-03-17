@@ -97,7 +97,6 @@ $aiki->load("input");
 $aiki->load("output");
 $aiki->load("forms");
 $aiki->load("array");
-$aiki->load("email");
 $aiki->load("image");
 $aiki->load("security");
 $aiki->load("aiki_markup");
