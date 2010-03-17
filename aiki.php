@@ -100,7 +100,6 @@ $aiki->load("aiki_array");
 $aiki->load("image");
 $aiki->load("security");
 $aiki->load("parser");
-$aiki->load("html");
 $aiki->load("php");
 $aiki->load("sql_markup");
 $aiki->load("wiki_markup");
