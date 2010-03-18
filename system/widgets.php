@@ -22,6 +22,7 @@ class CreateLayout
 	public $widgets_css;
 	public $widget_custome_output;
 	public $head_output;
+	private $global_values = array();
 
 
 	public function CreateLayout(){
@@ -208,28 +209,6 @@ class CreateLayout
 		if ($page > 0){
 			$page = $page - 1;
 		}
-
-		//Set page title
-		//TODO drop the select and use parsDBpars
-		if ($widget->pagetitle){
-
-			$widget->pagetitle = $aiki->processVars($widget->pagetitle);
-
-			$widget->pagetitle = $aiki->url->apply_url_on_query($widget->pagetitle);
-
-			if (preg_match("/select (.*) from (.*)/Us", $widget->pagetitle)){
-				$title = $db->get_var("$widget->pagetitle");
-
-			}else{
-				$title = $widget->pagetitle;
-			}
-
-			$title = $aiki->input->requests($title);
-
-			$aiki->output->set_title($title);
-		}
-
-
 
 
 		if (isset($config["widget_cache"]) and $config["widget_cache"] and isset($config["widget_cache_dir"]) and $widget->widget_cache_timeout){
@@ -709,6 +688,26 @@ class CreateLayout
 			}else{
 				$this->widget_html .=  $processed_widget;
 			}
+				
+			//Set page title
+			if ($widget->pagetitle){
+
+				$widget->pagetitle = $aiki->processVars($widget->pagetitle);
+
+				$widget->pagetitle = $aiki->url->apply_url_on_query($widget->pagetitle);
+
+				if (isset($widget_value)){
+
+					$title = $this->parsDBpars($widget->pagetitle, $widget_value);
+
+				}else{
+					$title = $widget->pagetitle;
+				}
+
+				$title = $aiki->input->requests($title);
+
+				$aiki->output->set_title($title);
+			}
 
 		}
 
@@ -739,12 +738,16 @@ class CreateLayout
 
 	private function parsDBpars($text, $widget_value){
 		global $aiki;
-
+		//$global_values
 		$count = preg_match_all( '/\(\((.*)\)\)/U', $text, $matches );
 
 		foreach ($matches[1] as $parsed){
 
 			if ($parsed){
+
+				if (isset($widget_value->$parsed)){
+					$this->global_values[$parsed] = $widget_value->$parsed;
+				}
 
 				$is_array = $aiki->get_string_between($parsed, "[", "]");
 				if ($is_array){
