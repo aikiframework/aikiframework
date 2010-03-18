@@ -662,14 +662,13 @@ class CreateLayout
 
 			$processed_widget = preg_replace("/\(\#\(header\:(.*)\)\#\)/U",'', $processed_widget);
 
+			//apply cached vars on widget
+			$processed_widget = $this->parsDBpars($processed_widget, '');
 
 			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
 			$processed_widget = $aiki->parser->process($processed_widget);
 			$processed_widget = $aiki->aiki_array->displayArrayEditor($processed_widget);
 
-			//apply cached vars on widget
-			$processed_widget = $this->parsDBpars($processed_widget, '');
-				
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);
 			$processed_widget = $aiki->php->parser($processed_widget);
