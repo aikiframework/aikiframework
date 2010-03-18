@@ -22,12 +22,14 @@ class CreateLayout
 	public $widgets_css;
 	public $widget_custome_output;
 	public $head_output;
-	private $global_values = array();
+	private $global_values = null;
 
 
 	public function CreateLayout(){
 		global $db, $site, $aiki, $url, $errors, $layout;
 
+		//Convert global_values to object to cache the sql results in parsDBpars function
+		$this->global_values=new stdClass();
 
 		if (isset($_GET["widget"])){
 
@@ -683,12 +685,17 @@ class CreateLayout
 			}
 
 
+			//apply cached vars on widget
+			$processed_widget = $this->parsDBpars($processed_widget, '');
+
+
+
 			if ($output_to_string){
 				return $processed_widget;
 			}else{
 				$this->widget_html .=  $processed_widget;
 			}
-				
+
 			//Set page title
 			if ($widget->pagetitle){
 
@@ -696,13 +703,12 @@ class CreateLayout
 
 				$widget->pagetitle = $aiki->url->apply_url_on_query($widget->pagetitle);
 
-				if (isset($widget_value)){
-
-					$title = $this->parsDBpars($widget->pagetitle, $widget_value);
-
-				}else{
-					$title = $widget->pagetitle;
+				if (!isset($widget_value)){
+					$widget_value = '';
 				}
+
+				$title = $this->parsDBpars($widget->pagetitle, $widget_value);
+					
 
 				$title = $aiki->input->requests($title);
 
@@ -736,18 +742,21 @@ class CreateLayout
 
 
 
-	private function parsDBpars($text, $widget_value){
+	private function parsDBpars($text, $widget_value = ''){
 		global $aiki;
-		//$global_values
+
 		$count = preg_match_all( '/\(\((.*)\)\)/U', $text, $matches );
+
+		if (!$widget_value){
+			$widget_value = $this->global_values;
+			$cached_values = true; //so it don't cache them again
+		}else{
+			$cached_values = false;
+		}
 
 		foreach ($matches[1] as $parsed){
 
 			if ($parsed){
-
-				if (isset($widget_value->$parsed)){
-					$this->global_values[$parsed] = $widget_value->$parsed;
-				}
 
 				$is_array = $aiki->get_string_between($parsed, "[", "]");
 				if ($is_array){
@@ -790,6 +799,10 @@ class CreateLayout
 				$widget_value->$parsed = $aiki->security->removeAikiMarkup($widget_value->$parsed);
 				$widget_value->$parsed = $aiki->security->RemoveXSS($widget_value->$parsed);
 
+				//if there are results and the results are not from cache, then cache them
+				if ($widget_value->$parsed and !$cached_values){
+					$this->global_values->$parsed = $widget_value->$parsed;
+				}
 
 				$text = str_replace("(($parsed))", $widget_value->$parsed, $text);
 
