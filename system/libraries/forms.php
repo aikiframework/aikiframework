@@ -156,7 +156,7 @@ class forms
 			if (isset($get_permission_and_man_info[1])){
 				$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_permission_and_man_info[1]'");
 			}
-			
+
 			$form .= "<div class='$intwalker[0]'>";
 
 			if (!isset($get_permission_and_man_info[1]) or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level){
@@ -191,8 +191,17 @@ class forms
 						$form .= '<h2>'.$intwalker['1'].'</h2>
 							<select name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '">
 							<option value="0">Please Select</option>';
+						
+						//is there an sql where in the field
+						if (isset($intwalker[5])){
 
-						$aquery = $db->get_results("select $intwalker[3], $intwalker[4] from $intwalker[2] order by BINARY $intwalker[4]");
+							$intwalker[5] = str_replace("(", '"', $intwalker[5]);
+							$intwalker[5] = str_replace(")", '"', $intwalker[5]);
+						
+							$aquery = $db->get_results("select $intwalker[3], $intwalker[4] from $intwalker[2] $intwalker[5] order by $intwalker[3]");
+						}else{
+							$aquery = $db->get_results("select $intwalker[3], $intwalker[4] from $intwalker[2] order by $intwalker[3]");
+						}
 						if ($aquery){
 							foreach ( $aquery as $mini_selection )
 							{
