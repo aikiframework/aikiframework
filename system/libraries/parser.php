@@ -116,7 +116,7 @@ class parser extends aiki
 
 		return $text;
 	}
-	
+
 
 	public function tags($text, $widget_value){
 		global $db, $aiki;
@@ -164,8 +164,6 @@ class parser extends aiki
 			//display image by calling it's id {+{213}+}
 
 
-			//if (eregi("^[a-zA-Z0-9\-\_\.]+\.(jpg|gif|png|jpeg|JPG)$",$photo_info_array[0])){
-
 			$html_photo .= "src='".$config['url']."image/";
 
 			if ($photo_info_array[5] and $photo_info_array[5] != "px" ){
@@ -173,7 +171,7 @@ class parser extends aiki
 			}
 			$html_photo .= "$photo_info_array[0]'";
 
-			/*}elseif (ereg('([0-9])',$photo_info_array[0])) {
+			/*}elseif (preg_match('/([0-9])/',$photo_info_array[0])) {
 				$photo_file = $db->get_row("SELECT filename FROM modules_photo_archive where id='$photo_info_array[0]'");
 				if ($photo_file){
 				if ($photo_file->filename){

@@ -82,7 +82,7 @@ class input
 	public function validate($data){
 
 		foreach ($data as $key => $req){
-			$req = mysql_escape_string($req);
+			$req = mysql_real_escape_string($req);
 			$data[$key] = $req;
 		}
 

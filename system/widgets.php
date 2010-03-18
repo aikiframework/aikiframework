@@ -203,7 +203,7 @@ class CreateLayout
 		global $aiki, $db, $widget_cache, $widget_cache_dir, $url, $language, $dir, $align, $membership, $nogui, $records_libs, $image_processing, $custome_output, $config;
 
 		if (isset($_GET['page'])){
-			$page = mysql_escape_string($_GET['page']);
+			$page = mysql_real_escape_string($_GET['page']);
 		}else{
 			$page = "";
 		}

@@ -130,7 +130,7 @@ class membership
 
 	public function getUserPermissions ($user){
 		global $db;
-		$user = mysql_escape_string($user);
+		$user = mysql_real_escape_string($user);
 
 		$user = $db->get_row("SELECT userid, usergroup, full_name, username FROM aiki_users where username='$user'");
 		if ($user->userid and $this->isUserLogged($user->userid)){

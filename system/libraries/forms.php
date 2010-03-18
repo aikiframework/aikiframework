@@ -528,7 +528,7 @@ class forms
 	public function auto_generate($table){
 		global $aiki, $db;
 
-		$table = mysql_escape_string($table);
+		$table = mysql_real_escape_string($table);
 
 		$table_exists = $db->get_var("SELECT id FROM aiki_forms where form_table = '$table'");
 

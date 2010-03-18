@@ -348,9 +348,6 @@ class ezSQL_mssql extends ezSQLcore
 
 		$pattern = "/FROM_UNIXTIME\(([^/]{0,})\)/i";
 		$replacement = "getdate()";
-		//ereg($pattern, $query, $regs);
-		//we can get the Unix Time function parameter value from this string
-		//$valueInsideFromUnixTime = $regs[1];
 
 		$query = preg_replace($pattern, $replacement, $query);
 
@@ -360,7 +357,7 @@ class ezSQL_mssql extends ezSQLcore
 
 		$pattern = "/LIMIT[^\w]{1,}([0-9]{1,})([\,]{0,})([0-9]{0,})/i";
 		$replacement = "";
-		eregi($pattern, $query, $regs);
+
 		$query = preg_replace($pattern, $replacement, $query);
 
 		if($regs[2])
