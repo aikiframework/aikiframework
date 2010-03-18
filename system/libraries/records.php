@@ -665,10 +665,6 @@ class records
 		$unique_filename = $_REQUEST['unique_filename'];
 
 
-
-		if (isset($_REQUEST['orderby']))
-		$orderby = $_REQUEST['orderby'];
-
 		if (!isset($submit)){
 			$submit = '';
 		}

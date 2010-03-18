@@ -18,14 +18,14 @@ class input
 		global $aiki, $layout;
 
 		foreach ($_GET as $key => $req){
-			$req = $aiki->escape($req);
+			$req = mysql_real_escape_string($req);
 			$_GET[$key] = $req;
 		}
 
 
 		foreach ($_POST as $key => $req){
 
-			$req = $aiki->escape($req);
+			$req = mysql_real_escape_string($req);
 
 			$_POST[$key] = $req;
 

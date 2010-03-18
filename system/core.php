@@ -1,9 +1,10 @@
 <?php
 
-/*
+/**
  * Aiki framework (PHP)
  *
- * @author		http://www.aikilab.com
+ * @author		Aikilab http://www.aikilab.com
+ * @copyright  (c) 2008-2010 Aikilab
  * @license		http://www.fsf.org/licensing/licenses/agpl-3.0.html
  * @link		http://www.aikiframework.org
  */
@@ -13,15 +14,19 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki
 {
 
+	//stores the config data after getting them from config.php and db.table aiki_config
 	private $aikiarray;
-	public $title = "";
-	private $array_fields;
+
+	//stores the keys of config data after getting them from config.php and db.table aiki_config
 	private $array_keys;
-	private $stop_sql_loops;
-	public $output;
-	private $sql_tree_output;
 
 
+	/**
+	 * Load an aiki library
+	 *
+	 * @param   string   class name
+	 * @return  mixed
+	 */
 	public function load($class){
 		global $system_folder;
 
@@ -41,14 +46,20 @@ class aiki
 			$this->$class = $objects[$class];
 
 			return $objects[$class];
-			
+
 		}else{
-			
+
 			return false;
 		}
 	}
 
 
+	/**
+	 * Add db.table aiki_config data to config array
+	 *
+	 * @param  array   config array
+	 * @return  array
+	 */
 	public function get_config($config){
 		global $db;
 
@@ -73,18 +84,14 @@ class aiki
 	}
 
 
-	public function escape($text){
-
-		$text = stripcslashes($text);
-		$text = str_replace('\"', '"', $text);
-		$text = str_replace("\'", "'", $text);
-		$text = str_replace('"', '\"', $text);
-		$text = str_replace("'", "\'", $text);
-
-		return $text;
-	}
-
-
+	/**
+	 * Get String between two delimiters
+	 *
+	 * @param  string   the full string
+	 * @param  string   first delimiter
+	 * @param  string   second delimiter
+	 * @return  string
+	 */
 	public function get_string_between($string, $start, $end){
 		$string = " ".$string;
 		$ini = strpos($string,$start);
@@ -95,6 +102,14 @@ class aiki
 	}
 
 
+
+	/**
+	 * Replace aiki vars with there values
+	 * and fail to normal urls if mod_rewrite is not enabled
+	 *
+	 * @param  string   text before processing
+	 * @return  string
+	 */
 	public function processVars($text){
 		global $aiki, $page, $membership, $config;
 
@@ -118,9 +133,6 @@ class aiki
 
 		return $text;
 	}
-
-
-
 
 }
 ?>
