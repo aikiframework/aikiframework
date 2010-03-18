@@ -22,7 +22,7 @@ class aiki
 
 
 	/**
-	 * Load an aiki library
+	 * Loads an aiki library
 	 *
 	 * @param   string   class name
 	 * @return  mixed
