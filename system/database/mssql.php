@@ -346,22 +346,22 @@ class ezSQL_mssql extends ezSQLcore
 
 		//replace From UnixTime command in MS-Sql, doesn't work
 
-		$pattern = "FROM_UNIXTIME\(([^/]{0,})\)";
+		$pattern = "/FROM_UNIXTIME\(([^/]{0,})\)/i";
 		$replacement = "getdate()";
 		//ereg($pattern, $query, $regs);
 		//we can get the Unix Time function parameter value from this string
 		//$valueInsideFromUnixTime = $regs[1];
 
-		$query = eregi_replace($pattern, $replacement, $query);
+		$query = preg_replace($pattern, $replacement, $query);
 
 
 		//replace LIMIT keyword. Works only on MySql not on MS-Sql
 		//replace it with TOP keyword
 
-		$pattern = "LIMIT[^\w]{1,}([0-9]{1,})([\,]{0,})([0-9]{0,})";
+		$pattern = "/LIMIT[^\w]{1,}([0-9]{1,})([\,]{0,})([0-9]{0,})/i";
 		$replacement = "";
 		eregi($pattern, $query, $regs);
-		$query = eregi_replace($pattern, $replacement, $query);
+		$query = preg_replace($pattern, $replacement, $query);
 
 		if($regs[2])
 		$query = str_ireplace("SELECT ", "SELECT TOP ".$regs[3]." ", $query);
@@ -373,9 +373,9 @@ class ezSQL_mssql extends ezSQLcore
 
 
 		//replace unix_timestamp function. Doesn't work in MS-Sql
-		$pattern = "unix_timestamp\(([^/]{0,})\)";
+		$pattern = "/unix_timestamp\(([^/]{0,})\)/i";
 		$replacement = "\\1";
-		$query = eregi_replace($pattern, $replacement, $query);
+		$query = preg_replace($pattern, $replacement, $query);
 
 		return $query;
 

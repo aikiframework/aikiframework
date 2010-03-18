@@ -210,6 +210,7 @@ class CreateLayout
 		}
 
 		//Set page title
+		//TODO drop the select and use parsDBpars
 		if ($widget->pagetitle){
 
 			$widget->pagetitle = $aiki->processVars($widget->pagetitle);

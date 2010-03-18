@@ -62,7 +62,7 @@ class output
 
 			if (isset($layout->widgets_css) and $layout->widgets_css != ''){
 
-				$layout->widgets_css = eregi_replace('_$', '', $layout->widgets_css);
+				$layout->widgets_css = preg_replace('/_$/i', '', $layout->widgets_css);
 
 				$header .= '<link rel="stylesheet" type="text/css" href="'.$config['url'].'style.php?site='.$site."&widgets=$layout->widgets_css\" />\n";
 
