@@ -15,7 +15,11 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class errors
 {
 
-	
+	/**
+	 * sends 404 header and register the error
+	 *
+	 * @return  mixed
+	 */
 	public function page_not_found(){
 		global $db, $aiki, $config;
 
@@ -24,7 +28,7 @@ class errors
 		$aiki->output->set_title("404 Page Not Found");
 
 		if (isset($config["register_errors"])){
-				
+
 			$request = $_SERVER['REQUEST_URI'];
 			$request = urldecode($request);
 

@@ -71,7 +71,7 @@ class aiki_array
 	public function object2array($object) {
 		if (is_object($object) || is_array($object)) {
 			foreach ($object as $key => $value) {
-				//print "$key\r\n";
+
 				$array[$key] = $this->object2array($value);
 			}
 		}else {

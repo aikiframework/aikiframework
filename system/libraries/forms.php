@@ -24,7 +24,7 @@ class forms
 
 		if ($forms_count >0){
 
-			foreach ($forms[1] as $form_data){
+			foreach ($forms['1'] as $form_data){
 
 				if ($form_data){
 
@@ -38,13 +38,25 @@ class forms
 						$form_array = unserialize($form->form_array);
 					}
 
-					switch ($form_sides[0]){
+					switch ($form_sides['0']){
 
 						case "add":
+							
+							if (isset($form_sides['2']) and $form_sides['2'] == "ajax"){
+								$form_javascript = 
+'<script type="text/javascript">
+$(function () { 
+$("#new_record_form").ajaxForm();
+});
+</script>
+';
+							}else{
+								$form_javascript = '';
+							}
 
 							$serial_post = serialize($_POST);
 
-							$form_output = '<php $aiki->records->insert_from_form_to_db('.$serial_post.'|||||'.$form->id.'|||||POST[form_id]); php>';
+							$form_output = $form_javascript."\n".'<php $aiki->records->insert_from_form_to_db('.$serial_post.'|||||'.$form->id.'|||||POST[form_id]); php>';
 
 							$form_output .= $this->create_insert_form($form_array, $form->form_html, $form->id);
 

@@ -673,6 +673,8 @@ class CreateLayout
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);
 			$processed_widget = $aiki->php->parser($processed_widget);
+			
+			$processed_widget = stripslashes($processed_widget);
 
 			if (isset($widgetContents) and $widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
 				$this->kill_widget = $widget->id;
@@ -794,6 +796,7 @@ class CreateLayout
 					$widget_value->$parsed = '';
 				}
 
+				
 				$widget_value->$parsed = $aiki->security->removeAikiMarkup($widget_value->$parsed);
 				$widget_value->$parsed = $aiki->security->RemoveXSS($widget_value->$parsed);
 
