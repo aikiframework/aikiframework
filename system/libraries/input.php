@@ -26,8 +26,6 @@ class input
 
 		foreach ($_POST as $key => $req){
 
-			$req = mysql_real_escape_string($req);
-
 			$_POST[$key] = $req;
 
 			switch ($key){

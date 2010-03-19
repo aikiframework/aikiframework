@@ -22,7 +22,7 @@ if (function_exists('realpath') AND @realpath(dirname(__FILE__)) !== FALSE)
 
 }
 
-//if realpath didn't work for some reason ask user to enter it for the installation to work
+//if realpath didn't work ask user to enter it for the installation to work
 if (!isset($system_folder)){
 
 	if (!isset($full_path)){
