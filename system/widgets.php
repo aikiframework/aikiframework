@@ -429,8 +429,10 @@ class CreateLayout
 			 <p class='pagination'>Move to page:<br />";
 
 						if ($page){
+
 							$previous = str_replace("[page]", $page, $widget->link_example);
 							$pagination .= "<a style='letter-spacing:0px;' href=\"$previous\"><b>< Previous</b></a>";
+
 						}
 
 
@@ -484,9 +486,11 @@ class CreateLayout
 
 
 
-						if( $page+2 != ($numpages) ) {
+						if( $page+2 != ($numpages)) {
+
 							$next = str_replace("[page]", $page + 2, $widget->link_example);
 							$pagination .= "<a style='letter-spacing:0px;' href=\"$next\"><b>Next ></b></a>";
+
 						}
 
 						$pagination .= "<br />";
@@ -610,12 +614,24 @@ class CreateLayout
 					$widgetContents = preg_replace("/\(\#\(hits\:(.*)\)\#\)/U", '', $widgetContents);
 
 
-					if (isset($pagination)){
+					if (isset($pagination) and !preg_match('/\[no\_pagination\]/', $widgetContents)){
 
 						$widgetContents = str_replace ("[#[pagination]#]", $pagination, $widgetContents);
 
 						$widgetContents .= $pagination;
 					}
+					$widgetContents = str_replace("[no_pagination]", "", $widgetContents);
+						
+					if (!isset($next)){
+						$next = '';
+					}
+					$widgetContents = str_replace("[next]", $next, $widgetContents);
+						
+					if (!isset($previous)){
+						$previous = '';
+					}
+					$widgetContents = str_replace("[previous]", $previous, $widgetContents);
+
 
 					//Delete empty widgets
 					if ($widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
