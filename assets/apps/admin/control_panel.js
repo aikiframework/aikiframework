@@ -1,3 +1,12 @@
+/*
+ * Aiki framework
+ *
+ * @author		Aikilab http://www.aikilab.com
+ * @copyright  (c) 2008-2010 Aikilab
+ * @license		http://www.fsf.org/licensing/licenses/agpl-3.0.html
+ * @link		http://www.aikiframework.org
+ */
+
 function code_mirror_if_authorized(){
 	    
 	   var if_authorized = CodeMirror.fromTextArea('if_authorized', {
