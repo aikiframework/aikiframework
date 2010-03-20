@@ -364,7 +364,6 @@ class records
 					$filename_array = explode(".",$name);
 
 					//TODO: Add in config allowed extensions
-
 					$type = $filename_array[1];
 					if ($type != "svg" and $type != "SVG"){
 						return "Only svg uploads are allowed";

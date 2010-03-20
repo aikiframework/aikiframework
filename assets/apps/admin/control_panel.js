@@ -242,10 +242,67 @@ function database_forms_tree(){
 }
 
 
+function config_tree(){
+
+    var formoptions = { 
+        target:        '#widget-form'
+ 
+    }; 
+	
+    var refreshtree = 1;
+    var stop = 1;
+    
+
+   //create_form("#create_new_table", 3, "Table", 0);
+   //create_form("#create_new_form", 6, "Form", 0, "databaseformstree");   
+    
+    
+   $("#configtree").tree( {
+      
+      data  : {
+        type  : "xml_flat",
+        url   : "assets/apps/admin/config.php"
+      },
+      
+      rules : {
+        deletable : "all",
+        draggable : "all"      	
+      },
+      
+      callback : {
+        onselect : function(NODE,TREE_OBJ) {
+
+ if (stop == 1){
+    				$("#widget-form").load('admin_tools/array/config_id/config_type/config_data/aiki_config/'+NODE.id,  {limit: 25}, function(){
+
+    					$('#edit_form').ajaxForm(function() { 
+    						
+    						stop = 0;
+    						
+    						$("#widget-form").html("Edited config successfully");
+    						
+    						$.tree_reference('configtree').refresh();
+
+    						stop = 1;
+    						
+    		           }); 
+
+    				});	
+    	  }    		  
+  		  
+    	  
+        }
+       }
+
+    } );
+}
+
+
 function system_accordion(){
 	$("#system_accordion").accordion({
 		fillSpace: true
 	});
+	config_tree();	
 }
 
 function structur_accordion(){
@@ -294,5 +351,7 @@ $().ready(function() {
 	   $("#urls_widgets").click(function(event){
 		   urls_widgets_tree();
 	   });	   
+	   
+	   	   
 	   
 });

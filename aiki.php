@@ -87,7 +87,10 @@ if(isset($_GET['site'])){
 
 
 $site_info = $db->get_row("SELECT * from aiki_sites where site_shortcut='$site' limit 1");
-if ($site_info->is_active != 1){
+if (!$site_info){
+	die("Fatal Error: Wrong site name provided");
+}
+if ($site_info and $site_info->is_active != 1){
 	die($site_info->if_closed_output);
 }
 

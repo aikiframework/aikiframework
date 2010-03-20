@@ -111,8 +111,11 @@ class aiki_array
 				if (isset($_POST['edit_array'])){
 
 					$outp_key = $_POST[$y.$arrykeys[$i]."_type"];
-					if ($outp_key != 'tablename' and $outp_key != 'pkey' and $outp_key != 'send_email' and $outp_key != 'unique_filename' and $outp_key != 'permission' and $outp_key != 'events'){
+
+					if ($outp_key != 'tablename' and $outp_key != 'pkey' and $outp_key != 'send_email' and $outp_key != 'unique_filename' and $outp_key != 'permission' and $outp_key != 'events' and $table == "aiki_forms"){
+
 						$outp_key = $outp_key.$i;
+							
 					}
 
 					$output_array[$outp_key] = $_POST[$y.$arrykeys[$i]];
@@ -122,8 +125,8 @@ class aiki_array
 				$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
 				$display = str_replace($toreplace, "", $arrykeys[$i]);
 
-				//TODO insert new field and consider other arrays like config
-				$html_form .= '<select name="'.$y.$arrykeys[$i]."_type".'" >
+				if ($table == "aiki_forms"){
+					$html_form .= '<select name="'.$y.$arrykeys[$i]."_type".'" >
 				<option value="'.$display.'" selected="selected">'.$display.'</option>
 				<option value="selection" >selection</option>
 				<option value="upload" >upload</option>
@@ -145,12 +148,20 @@ class aiki_array
 				<option value="permission" >permission</option>
 				<option value="events" >events</option>
 				</select>';
+
+				}else{
+					$html_form .= "<input type='text' name=\"".$y.$arrykeys[$i]."_type\" value=\"".$display."\" size='25'>";
+
+				}
+
 				$html_form .= "<input type='text' name=\"".$y.$arrykeys[$i]."\" value=\"".$field."\" size='35'><br /><br />";
+
 				$i++;
 			}
 			$newfield = $setting_group->$name;
 
-			$html_form .= '<select name="left_'.$newfield.'" >
+			if ($table == "aiki_forms"){
+				$html_form .= '<select name="left_'.$newfield.'" >
 				<option value="selection" >selection</option>
 				<option value="upload" >upload</option>
 				<option value="staticselect" >staticselect</option>
@@ -170,7 +181,10 @@ class aiki_array
 				<option value="filemanager" >filemanager</option>
 				<option value="permission" >permission</option>
 				<option value="events" >events</option>
-				</select>';			
+				</select>';	
+			}else{
+				$html_form .= "<input type='text' name=\"left_$newfield\" value=\"\" size='25'></td></tr>";
+			}
 			$html_form .= "<input type='text' name=\"right_$newfield\" value=\"\" size='35'></td></tr>";
 
 			$y++;
