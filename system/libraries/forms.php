@@ -46,7 +46,9 @@ class forms
 								$form_javascript = 
 '<script type="text/javascript">
 $(function () { 
-$("#new_record_form").ajaxForm();
+$("#new_record_form").ajaxForm(function() {
+          $("#form_container").html("Added successfully");
+        });
 });
 </script>
 ';
@@ -144,7 +146,7 @@ $("#new_record_form").ajaxForm();
 		$queryString = $_SERVER['QUERY_STRING'];
 		$thisurl = "http://" . $domain . $path . "?" . $queryString;
 
-		$form = "<form action=\"$thisurl\" method=\"post\" enctype=\"multipart/form-data\" id=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\" name=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\">
+		$form = "<div id=\"form_container\"><form action=\"$thisurl\" method=\"post\" enctype=\"multipart/form-data\" id=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\" name=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\">
 		";
 
 		$i = 0;
@@ -426,7 +428,7 @@ $("#new_record_form").ajaxForm();
 		}else{
 			$form .= ("<input type=\"submit\" value=\"$this->submit_button\" name=\"add_to_form\">");
 		}
-		$form .= ("</p></form>");
+		$form .= ("</p></form></div>");
 
 		return $form;
 
