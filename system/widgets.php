@@ -14,15 +14,33 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class CreateLayout
 {
+	//the full html output of all the widgets
 	public $html_output;
+
+	//widgets that need to be killed
 	public $kill_widget;
+
+	//sotres the output of one widget at a time
 	public $widget_html;
+
 	public $forms;
+
+	//stores the id of inhereted widget
 	public $inherent_id;
+
+	//boolean: to create a cache for this widget
 	public $create_widget_cache;
+
+	//sotres the css output from the selected widgets
 	public $widgets_css;
+
+	//boolean: is the widget require custom output
 	public $widget_custome_output;
+
+	//stores the head output of a widget
 	public $head_output;
+
+	//sotres the values of sql results of the current selected widgets
 	private $global_values = null;
 
 
@@ -108,7 +126,9 @@ class CreateLayout
 
 			foreach ($widget_result as $widget){
 
-				$this->widgets_css .= $widget->id.'_';
+				if ($widget->css){
+					$this->widgets_css .= $widget->id.'_';
+				}
 
 				if ($widget->custome_output){
 					$custome_output = true;
@@ -673,7 +693,7 @@ class CreateLayout
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);
 			$processed_widget = $aiki->php->parser($processed_widget);
-			
+
 			$processed_widget = stripslashes($processed_widget);
 
 			if (isset($widgetContents) and $widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
@@ -796,7 +816,7 @@ class CreateLayout
 					$widget_value->$parsed = '';
 				}
 
-				
+
 				$widget_value->$parsed = $aiki->security->removeAikiMarkup($widget_value->$parsed);
 				$widget_value->$parsed = $aiki->security->RemoveXSS($widget_value->$parsed);
 

@@ -41,7 +41,6 @@ if (!isset($noheaders)){
 
 if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
 	$full_html_input = $aiki->output->write_headers();
-	//$full_html_input .= "<div id=\"container\">\n\r";
 }
 
 
@@ -52,15 +51,6 @@ if ($config['html_cache'] and isset($html_cache_file)){
 
 
 $html_output .= $layout->html_output;
-
-if (!isset($noheaders)){
-	//$html_output .= "</div>";
-}
-
-if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
-	//$full_html_input .= "</div>";
-}
-
 
 if (!isset($noheaders)){
 	$html_output .= $aiki->output->write_footer();
