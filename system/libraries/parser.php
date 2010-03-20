@@ -433,23 +433,6 @@ class parser extends aiki
 
 	public function markup_ajax($text){
 		global $db;
-		/*
-		 <script type="text/javascript">
-		 $(document).ready(function(){
-		 function ajaxSOMETHING(file, targetwidget){
-		 $.get('http://www.aikiframework.org/aikidev/admin_tools/edit/widgets/'+file,function(data) {
-		 $(targetwidget).html(data);
-		 });
-		 }
-
-		 $("a").click(function(event){
-		 globalajaxify($(this).attr("rel"), $(this).attr("href"));
-		 return false;
-
-		 });
-		 });
-		 </script>
-		 */
 
 		$count_links = preg_match_all('/\(ajax\_a\((.*)\)ajax\_a\)/Us', $text, $links);
 
