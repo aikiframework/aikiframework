@@ -778,11 +778,7 @@ class records
 						if (!$widget_value->$field){
 							$widget_value->$field = 'Click here to edit';
 						}else{
-							//TODO: replace this with global no aiki
-							$widget_value->$field = htmlspecialchars($widget_value->$field);
-							$html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">");
-							$html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;");
-							$widget_value->$field = str_replace($html_chars, $html_entities,$widget_value->$field);
+							$widget_value->$field = $aiki->convert_to_specialchars($widget_value->$field);
 						}
 						if ($select_menu){
 

@@ -103,6 +103,25 @@ class aiki
 
 
 
+	public function convert_to_specialchars($text){
+
+		$text = htmlspecialchars($text);
+		
+		$html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">", "_");
+		$html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;", "&#95;");
+		
+		$text = str_replace($html_chars, $html_entities,$text);
+
+		return $text;
+	}
+
+
+	public function convert_to_html($text){
+
+		return $text;
+	}
+
+
 	/**
 	 * Replace aiki vars with there values
 	 * and fail to normal urls if mod_rewrite is not enabled

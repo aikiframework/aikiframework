@@ -711,12 +711,7 @@ class CreateLayout
 
 		if ($widget_no_aiki){
 
-			$html_widget = htmlspecialchars($widget_no_aiki);
-
-			$html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">");
-			$html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;");
-
-			$html_widget = str_replace($html_chars, $html_entities, $html_widget);
+			$html_widget = $aiki->convert_to_specialchars($widget_no_aiki);
 
 			$text = str_replace("<noaiki>$widget_no_aiki</noaiki>", $html_widget, $text);
 
