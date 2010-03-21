@@ -512,45 +512,11 @@ class CreateLayout
 						$widget->widget = $aiki->parser->datetime($widget->widget, $widget_value);
 						$widget->widget = $aiki->parser->tags($widget->widget, $widget_value);
 
-						$related = $aiki->get_string_between($widget->widget, "(#(related:", ")#)");
-						if ($related){
-							$relatedsides = explode("||", $related);
-
-							$related_cloud = "
-						<ul class='relatedKeywords'>";
-
-							$related_links = explode("|", $widget_value->$relatedsides[0]);
-							$related_array = array();
-							foreach ($related_links as $related_link){
-
-								$get_sim_topics = $db->get_results("SELECT $relatedsides[2], $relatedsides[7] FROM $relatedsides[1] where ($relatedsides[3] LIKE '%|".$related_link."|%' or $relatedsides[3] LIKE '".$related_link."|%' or $relatedsides[3] LIKE '%|".$related_link."' or $relatedsides[3]='$related_link') and $relatedsides[7] != '$operators' and publish_cond=2 order by $relatedsides[5] DESC limit $relatedsides[4]");
-
-								if ($get_sim_topics){
-
-									foreach($get_sim_topics as $related_topic){
-										$related_cloud_input = '<li><a href="aikicore->setting[url]/'.$relatedsides[6].'">'.$related_topic->$relatedsides[2].'</a></li>';
-										$related_cloud_input = str_replace("_self", $related_topic->$relatedsides[7], $related_cloud_input);
-										$related_array[$related_topic->$relatedsides[7]] = $related_cloud_input;
-										$related_cloud_input = '';
-									}
-
-								}
-
-							}
-							foreach ($related_array as $related_cloud_output){
-								$related_cloud .= $related_cloud_output;
-							}
-
-							$related_cloud .= "</ul>";
-							$widget->widget = str_replace("(#(related:$related)#)", $related_cloud , $widget->widget);
-						}
-
 						$widget->widget = $this->noaiki($widget->widget);
 
 						$widget->widget = $this->parsDBpars($widget->widget, $widget_value);
 
 						$widget->widget = $this->edit_in_place($widget->widget, $widget_value);
-
 
 						$widget->widget = $aiki->text->aiki_nl2br($widget->widget);
 						$widget->widget = $aiki->text->aiki_nl2p($widget->widget);
@@ -594,7 +560,7 @@ class CreateLayout
 
 					if (isset($pagination) and !preg_match('/\[no\_pagination\]/', $widgetContents)){
 
-						$widgetContents = str_replace ("[#[pagination]#]", $pagination, $widgetContents);
+						$widgetContents = str_replace ("[pagination]", $pagination, $widgetContents);
 
 						$widgetContents .= $pagination;
 					}
