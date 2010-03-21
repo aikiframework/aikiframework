@@ -101,7 +101,7 @@ if ($id){
 					break;
 			}
 
-				
+
 
 			if ($size){
 				$size = str_replace('px', '', $size);
@@ -122,15 +122,17 @@ if ($id){
 						}else{
 
 							$svgfile = implode(file($original_filename));
-								
+
 							$header = $aiki->get_string_between($svgfile, "<svg", ">");
 
 							$or_width = $aiki->get_string_between($header, 'width="', '"');
 							$width = str_replace("px", "", $or_width );
+							$width = str_replace("pt", "", $width );
 							$width  = intval($width);
 
 							$or_height = $aiki->get_string_between($header, 'height="', '"');
 							$height  = str_replace("px", "", $or_height);
+							$height  = str_replace("pt", "", $height);
 							$height = intval($height);
 
 							$newvalue = $size;

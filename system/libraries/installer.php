@@ -382,6 +382,13 @@ CREATE TABLE IF NOT EXISTS `aiki_dictionary` (
 
 --------------------------------------------------------
 
+INSERT INTO `aiki_dictionary` (`term_id`, `app_id`, `short_term`, `lang_english`, `lang_arabic`, `lang_german`) VALUES
+(1, 0, \'encoding\', \'utf-8\', \'utf-8\', \'utf-8\'),
+(2, 0, \'added_successfully\', \'Added successfully\', \'تمت الإضافة بنجاح\', \'\'),
+(3, 0, \'error_inserting_into_database\', \'Error inserting into database\', \'حصل خطأ في الإدخال إلى قاعدة البيانات\', \'\');
+
+--------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `aiki_forms` (
   `id` int(11) NOT NULL auto_increment,
   `app_id` int(11) NOT NULL,

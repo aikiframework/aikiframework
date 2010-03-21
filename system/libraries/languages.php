@@ -18,19 +18,31 @@ class languages
 	public function L10n($string){
 		global $db, $config;
 
-		$count = preg_match_all( '/\[\[(.*)\]\]/', $string, $matches );
+		$count = preg_match_all( '/\_\_(.*)\_\_/U', $string, $matches );
 		if ($count >0){
+
+			$query = "where";
+
 			$default_language = "lang_".$config['default_language'];
 
 			foreach ($matches[1] as $parsed)
 			{
 				$parsed = trim($parsed);
-				$short_term = $db->get_row("SELECT $default_language FROM aiki_dictionary WHERE short_term = '$parsed'");
-				if ($short_term){
-					$string = str_replace("[[$parsed]]", $short_term->$default_language, $string);
-				}
 
+				$query .= ' short_term ="'.$parsed.'" or ';
 			}
+
+			$query = preg_replace('/ or $/i', '', $query);
+
+			$terms = $db->get_results("SELECT short_term, $default_language FROM aiki_dictionary $query");
+
+			if ($terms){
+				foreach ($terms as $term){
+
+					$string = str_replace("__".$term->short_term."__", $term->$default_language, $string);
+				}
+			}
+
 		}
 		return $string;
 	}

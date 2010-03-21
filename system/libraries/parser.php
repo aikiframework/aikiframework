@@ -15,7 +15,8 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class parser extends aiki
 {
 
-	private $timeout = 5; // set to zero for no timeout
+	//curl timeout. set to zero for no timeout
+	private $timeout = 5;
 
 	public function process($text){
 

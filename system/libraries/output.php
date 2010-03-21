@@ -22,15 +22,15 @@ class output
 
 	public function set_title($title){
 		global $aiki;
-		$this->title = $aiki->languages->L10n($title);
+		$this->title = $title;
 	}
 
 	public function write_title_and_metas($title){
 		global $site_info, $db, $config, $aiki;
 		$header = '
-		<meta http-equiv="Content-Type" content="text/html; charset='.$config['db_encoding'].'" />
+		<meta http-equiv="Content-Type" content="text/html; charset=__encoding__" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<title>'; if (!$title){$header .= $aiki->languages->L10n($site_info->site_name);}else{$header .= $title." - ".$aiki->languages->L10n($site_info->site_name);} $header .='</title>
+		<title>'; if (!$title){$header .= $site_info->site_name;}else{$header .= $title." - ".$site_info->site_name;} $header .='</title>
 		<meta name="generator" content="Aikiframework '.AIKI_VERSION.'" />
 		';
 

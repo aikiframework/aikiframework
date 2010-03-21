@@ -53,7 +53,13 @@ class aiki_array
 	}
 
 
-	//http://www.jonasjohn.de/snippets/php/array2object.htm
+	/**
+	 * Converts an array to object
+	 * Source: http://www.jonasjohn.de/snippets/php/array2object.htm
+	 *
+	 * @param   array
+	 * @return  object
+	 */
 	public function array2object($arrGiven){
 		//create empty class
 		$objResult=new stdClass();
@@ -68,6 +74,12 @@ class aiki_array
 		return $objResult;
 	}
 
+	/**
+	 * Converts an ojbect to array
+	 *
+	 * @param   object
+	 * @return  array
+	 */
 	public function object2array($object) {
 		if (is_object($object) || is_array($object)) {
 			foreach ($object as $key => $value) {

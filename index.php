@@ -9,6 +9,8 @@
  * @link		http://www.aikiframework.org
  */
 
+
+
 error_reporting(E_STRICT | E_ALL);
 
 $start_time = (float) array_sum(explode(' ',microtime()));
@@ -56,6 +58,7 @@ if (!isset($noheaders)){
 	$html_output .= $aiki->output->write_footer();
 }
 
+$html_output = $aiki->languages->L10n($html_output);
 
 //Tidy html using libtidy
 if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $config["html_tidy"]) {
@@ -99,6 +102,9 @@ if ($config['html_cache'] and isset($html_cache_file)){
 	}
 	else
 	{
+		
+		$full_html_input = $aiki->languages->L10n($full_html_input);
+
 		error_log ( $full_html_input, 3, $html_cache_file);
 
 	}

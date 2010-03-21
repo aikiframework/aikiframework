@@ -41,9 +41,9 @@ class forms
 					switch ($form_sides['0']){
 
 						case "add":
-							
+								
 							if (isset($form_sides['2']) and $form_sides['2'] == "ajax"){
-								$form_javascript = 
+								$form_javascript =
 '<script type="text/javascript">
 $(function () { 
 $("#new_record_form").ajaxForm(function() {
@@ -174,6 +174,14 @@ $("#new_record_form").ajaxForm(function() {
 
 			$form .= "<div class='$intwalker[0]'>";
 
+			if (isset($form_data) and isset($form_data->$intwalker[0])){
+				//To stop the L10n Function
+				//TODO: apply such function to stop other types of aiki markup check input.php line 29
+				//instead preg_matching forms
+				
+				$form_data->$intwalker[0] = str_replace("_", "&#95;", $form_data->$intwalker[0]);
+			}
+				
 			if (!isset($get_permission_and_man_info[1]) or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level){
 
 				if (!isset($_POST[$intwalker[0]])){
@@ -206,13 +214,13 @@ $("#new_record_form").ajaxForm(function() {
 						$form .= '<h2>'.$intwalker['1'].'</h2>
 							<select name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '">
 							<option value="0">Please Select</option>';
-						
+
 						//is there an sql where in the field
 						if (isset($intwalker[5])){
 
 							$intwalker[5] = str_replace("(", '"', $intwalker[5]);
 							$intwalker[5] = str_replace(")", '"', $intwalker[5]);
-						
+
 							$aquery = $db->get_results("select $intwalker[3], $intwalker[4] from $intwalker[2] $intwalker[5] order by $intwalker[3]");
 						}else{
 							$aquery = $db->get_results("select $intwalker[3], $intwalker[4] from $intwalker[2] order by $intwalker[3]");

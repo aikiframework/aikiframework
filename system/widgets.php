@@ -43,7 +43,6 @@ class CreateLayout
 	//sotres the values of sql results of the current selected widgets
 	private $global_values = null;
 
-
 	public function CreateLayout(){
 		global $db, $site, $aiki, $url, $errors, $layout;
 
@@ -190,7 +189,7 @@ class CreateLayout
 				if ($this->kill_widget){
 
 					if ($widget->if_no_results){
-						$widget->if_no_results =  $aiki->processVars ($aiki->languages->L10n ("$widget->if_no_results"));
+						$widget->if_no_results =  $aiki->processVars ($widget->if_no_results);
 
 						$dead_widget = '<'.$widget->widget_type.' id="'.$widget->style_id.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
 
@@ -612,12 +611,12 @@ class CreateLayout
 						$widgetContents .= $pagination;
 					}
 					$widgetContents = str_replace("[no_pagination]", "", $widgetContents);
-						
+
 					if (!isset($next)){
 						$next = '';
 					}
 					$widgetContents = str_replace("[next]", $next, $widgetContents);
-						
+
 					if (!isset($previous)){
 						$previous = '';
 					}
@@ -659,7 +658,7 @@ class CreateLayout
 			}
 
 
-			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ($processed_widget));
+			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
 
 
@@ -693,8 +692,9 @@ class CreateLayout
 			//apply cached vars on widget
 			$processed_widget = $this->parsDBpars($processed_widget, '');
 
-			$processed_widget =  $aiki->processVars ($aiki->languages->L10n ("$processed_widget"));
+			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->parser->process($processed_widget);
+
 			$processed_widget = $aiki->aiki_array->displayArrayEditor($processed_widget);
 
 			$processed_widget = $aiki->forms->displayForms($processed_widget);
@@ -708,6 +708,9 @@ class CreateLayout
 			}else{
 				if (isset($config["widget_cache"]) and $config["widget_cache"] and $this->create_widget_cache and $config["widget_cache_dir"] and is_dir($config["widget_cache_dir"]) and !$membership->permissions and $widget->widget_cache_timeout > 0){
 					$processed_widget_cach = $processed_widget."\n\n<!-- Served From Cache -->\n\n";
+
+					$processed_widget_cach = $aiki->languages->L10n($processed_widget_cach);
+
 					error_log ( $processed_widget_cach, 3, $widget_file);
 				}
 			}

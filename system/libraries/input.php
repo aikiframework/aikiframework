@@ -26,7 +26,8 @@ class input
 
 		foreach ($_POST as $key => $req){
 
-			$_POST[$key] = $req;
+			$_POST[$key] = str_replace("&#95;", "_", $req);
+
 
 			switch ($key){
 

@@ -503,7 +503,7 @@ class records
 
 			if ($insertResult){
 
-				$output_result .= "Added successfully<br />";
+				$output_result .= "__added_successfully__<br />";
 
 				if ($send_email){
 
@@ -545,7 +545,7 @@ class records
 					$output_result .= "<p dir='ltr'>".$name."</p>";
 				}
 			}else{
-				$output_result = "Error inserting into database";
+				$output_result = "__error_inserting_into_database__";
 			}
 
 
