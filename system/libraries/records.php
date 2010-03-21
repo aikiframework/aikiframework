@@ -704,6 +704,171 @@ class records
 	}
 
 
+	public function edit_in_place($text, $widget_value){
+		global $aiki,$db, $membership;
+
+		$edit_matchs = preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
+
+		if ($edit_matchs > 0){
+
+			foreach ($matchs[1] as $edit){
+
+				$select_menu = false;
+
+				$table = $aiki->get_string_between($edit , "<table>", "</table>");
+				$table = trim($table);
+				$form_num = $db->get_var("select id from aiki_forms where form_table = '$table'");
+
+				$field = $aiki->get_string_between($edit , "<field>", "</field>");
+				$field = trim($field);
+
+				$label = $aiki->get_string_between($edit , "<label>", "</label>");
+				if ($label){
+					$label = trim($label);
+				}
+
+				$output = $aiki->get_string_between($edit , "<output>", "</output>");
+
+				$primary = $aiki->get_string_between($edit , "<primary>", "</primary>");
+				if (!$primary){$primary = 'id';}
+				$primary = trim($primary);
+				$primary_value = $widget_value->$primary;
+
+				$type = $aiki->get_string_between($edit , "<type>", "</type>");
+
+				if (preg_match("/select\:(.*)/Us", $type)){
+					$select_menu = true;
+					$select_output = '<select>';
+					$select_elements = explode(":", $type);
+
+					$explodeStaticSelect = explode("&", $select_elements[1]);
+					foreach ($explodeStaticSelect as $option){
+						$optionsieds = explode(">", $option);
+						$select_output .= '<option value="'.$optionsieds['1'].'"';
+						$select_output .= '>'.$optionsieds['0'].'</option>';
+					}
+					$select_output .= '</select>';
+
+				}
+
+				if (!$type){$type = 'textarea';}
+				$type = trim($type);
+
+				if ($form_num){
+
+					$user = $aiki->get_string_between($edit , "<user>", "</user>");
+					if ($user){
+						$user = $widget_value->$user;
+					}else{
+						$user = '';
+					}
+
+					$permissions = $aiki->get_string_between($edit , "<permissions>", "</permissions>");
+					$permissions = trim($permissions);
+
+					if (($permissions and $permissions != $membership->permissions) and ($user and $user != $membership->username)){
+
+						if (!isset($output) or !$output){
+							$output = "(($field))";
+							$output = $this->parsDBpars($output, $widget_value);
+						}
+
+					}else{
+
+						if (!$widget_value->$field){
+							$widget_value->$field = 'Click here to edit';
+						}else{
+							//TODO: replace this with global no aiki
+							$widget_value->$field = htmlspecialchars($widget_value->$field);
+							$html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">");
+							$html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;");
+							$widget_value->$field = str_replace($html_chars, $html_entities,$widget_value->$field);
+						}
+						if ($select_menu){
+
+							$output = '
+<script type="text/javascript">
+$(function () { 
+$(".editready_'.$primary_value.$field.'").live("click", function () {
+var htmldata = $(this).html();
+$(this).html(\''.$select_output.'<br /><button id="button_'.$primary_value.$field.'">Save</button>\');
+$(this).removeClass(\'editready_'.$primary_value.$field.'\');
+$(this).addClass(\'editdone_'.$primary_value.$field.'\');
+});
+';
+
+							$output .= '
+
+$("#button_'.$primary_value.$field.'").live("click", function () {
+var htmldata = $("#'.$primary_value.$field.' select").val();
+$.post("?noheaders=true&nogui=true&widget=0",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
+$("div #'.$primary_value.$field.'").removeClass(\'editdone_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").addClass(\'editready_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").html(htmldata);
+});
+
+});
+});
+</script>
+';
+
+						}else{
+							$output = '
+<script type="text/javascript">
+$(function () { 
+$(".editready_'.$primary_value.$field.'").live("click", function () {
+var htmldata = $(this).html();
+$(this).html(\'<textarea>\' + htmldata + \'</textarea><br /><button id="button_'.$primary_value.$field.'">Save</button> <button id="cancel_'.$primary_value.$field.'">Cancel</button>\');
+$(this).removeClass(\'editready_'.$primary_value.$field.'\');
+$(this).addClass(\'editdone_'.$primary_value.$field.'\');
+});
+';
+
+							$output .= '
+$("#cancel_'.$primary_value.$field.'").live("click", function () {
+var originaldata = $("#'.$primary_value.$field.' textarea").text();
+$("div #'.$primary_value.$field.'").removeClass(\'editdone_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").addClass(\'editready_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").html(originaldata);
+});
+
+$("#button_'.$primary_value.$field.'").live("click", function () {
+var htmldata = $("#'.$primary_value.$field.' textarea").val();
+var originaldata = $("#'.$primary_value.$field.' textarea").text();
+if (htmldata != originaldata){
+$.post("?noheaders=true&nogui=true&widget=0",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
+$("div #'.$primary_value.$field.'").removeClass(\'editdone_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").addClass(\'editready_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").html(htmldata);
+});
+}
+});
+});
+</script>
+';
+						}
+
+
+						$output = str_replace("\n", '', $output);
+
+						$output .= '<div id="'.$primary_value.$field.'" class="editready_'.$primary_value.$field.'">'.$widget_value->$field.'</div>';
+
+					}
+				}else{
+					$output = 'error: wrong table name';
+				}
+
+
+				$text = str_replace("<edit>$edit</edit>", $output , $text);
+
+			}
+
+		}
+
+		return $text;
+	}
+
+
 }
 
 
