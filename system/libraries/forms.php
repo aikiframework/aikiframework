@@ -70,10 +70,6 @@ $("#new_record_form").ajaxForm(function() {
 
 							break;
 
-						case "process":
-
-							break;
-
 						case "auto_generate":
 
 							if ($form_sides['1']){
@@ -130,12 +126,6 @@ $("#new_record_form").ajaxForm(function() {
 		}else{
 			$pkey = 'id';
 		}
-
-		if (in_array("upload", $arraykeys))
-		$upload = $form_array["upload"];
-
-		if (in_array("imagefolderupload", $arraykeys))
-		$imagefolderupload = $form_array["imagefolderupload"];
 
 		if (isset ($record_id)){
 			$form_data = $db->get_row("select * from $tablename where $pkey='$record_id' limit 1");
@@ -275,41 +265,8 @@ $("#new_record_form").ajaxForm(function() {
 						$form .= '<h2>'.$intwalker[1].'</h2><textarea id="bigfont" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" style="height: 500px; width: 600px; display: block;" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea>';
 						break;
 
-
-					case "bigwikiblock":
-
-						$form .= ("<h2>$intwalker[1]</h2>
-							<div id=\"toolbar\">
-							<span class='button' onmouseover=\"mouseover(this);\"  onmouseout=\"mouseout(this);\"  onmousedown=\"mousedown(this);\"  onmouseup=\"mouseup(this);\" onclick=\"FormatSelection('\'\'\'','\'\'\'','$intwalker[0]');\"><b>Bold</b></span>
-							<span class='button' onmouseover=\"mouseover(this);\"  onmouseout=\"mouseout(this);\"  onmousedown=\"mousedown(this);\"  onmouseup=\"mouseup(this);\" onclick=\"FormatSelection('==','==','$intwalker[0]');\">سطر</span>
-							<span class='button' onmouseover=\"mouseover(this);\"  onmouseout=\"mouseout(this);\"  onmousedown=\"mousedown(this);\"  onmouseup=\"mouseup(this);\" onclick=\"FormatSelection('{+{','|0|left|v:10|h:10|300px|0}+}','$intwalker[0]');\">Image</span>				
-							</div>
-							<textarea id=\"bigfont\" dir=\"$get_permission_and_man_info[3]\" style=\"height: 500px; width: 600px; display: block;\" name=\"$intwalker[0]\">"); $form .= $_POST[$intwalker['0']]; $form .=("</textarea>");
-						break;
-
 					case "textblock":
 						$form .= '<h2>'.$intwalker['1'].'</h2><div id="'.$intwalker['0'].'_container"><textarea rows="7" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" cols="50" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea></div>';
-						break;
-
-					case "upload":
-						if (isset($form_data)){
-
-							$form .= ("<h2>$intwalker[1]</h2>");
-							$site_path = $config['url'];
-							$img = "<img src=\"";
-							$img .= substr($intwalker[6], 1);
-							$img .= $form_data->$intwalker[0]."\"/><br />";
-							$img .= $form_data->$intwalker[0];
-							$img = str_replace("//", "/", $img);
-
-							$form .=("$img");
-						}else{
-							$form .= '<h2>'.$intwalker['1'].'</h2><input type="file" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" name="'.$intwalker['0'].'">';
-						}
-						break;
-
-					case "imagefolderupload":
-						$form .= ("<h2>$intwalker[1]</h2><input type=\"text\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\">");
 						break;
 
 					case "datetime":

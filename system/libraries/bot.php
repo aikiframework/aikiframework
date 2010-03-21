@@ -232,10 +232,10 @@ class bot
 	}
 
 
-	public function create_photos_archive_meta(){
+	public function create_photos_archive_meta($tablename){
 		global $config;
 
-		$photos = $db->get_results("SELECT * FROM apps_photo_archive where checksum_sha1 =''");
+		$photos = $db->get_results("SELECT * FROM $tablename where checksum_sha1 =''");
 		foreach ( $photos as $photo )
 		{
 			$path = $photo->full_path;
@@ -249,10 +249,10 @@ class bot
 				$width = $size["0"];
 				$hight = $size["1"];
 
-				$db->query("update apps_photo_archive set checksum_sha1='$sha1', checksum_md5='$md5', upload_file_size='$filesize', width='$width', height='$hight', is_missing='0' where id='$photo->id'");
+				$db->query("update $tablename set checksum_sha1='$sha1', checksum_md5='$md5', upload_file_size='$filesize', width='$width', height='$hight', is_missing='0' where id='$photo->id'");
 
 			}else{
-				$db->query("update apps_photo_archive set is_missing='1' where id='$photo->id'");
+				$db->query("update $tablename set is_missing='1' where id='$photo->id'");
 			}
 			echo $photo->id."<br>";
 		}

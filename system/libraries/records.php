@@ -156,10 +156,6 @@ class records
 			$pkey = 'id';
 		}
 
-		if (in_array("upload", $arraykeys))
-		$upload = $form_array["upload"];
-
-
 		if (isset($post['unique_filename']))
 		$unique_filename = $_REQUEST['unique_filename'];
 
@@ -256,10 +252,6 @@ class records
 
 						break;
 
-					case "url":
-							
-						break;
-							
 
 					case "datetime":
 
@@ -414,59 +406,6 @@ class records
 
 			}
 
-
-			if (isset($insertArray['upload']) and $field == $insertArray['upload']){
-
-				////////////////////
-				if (isset($upload)){
-					$uploadexploded = explode(":", $upload);
-					$path = $config['top_folder']."/".$uploadexploded[5]."/";
-					$filename = $_FILES[$uploadexploded[0]];
-					$name = $filename['name'];
-					$tmp_filename = $filename['tmp_name'];
-					if ($tmp_filename) {
-						$filename_array = explode(".",$name);
-						$type= $filename_array[1];
-						$newfile = $path.$name;
-						if (!file_exists($newfile)) {
-							@$result = move_uploaded_file($tmp_filename,$newfile);
-							if (!$result) {
-								$form .= (_error1);
-							} else {
-							}
-
-						} else {
-							$output_result .=( "Sorry, but that file '$newfile' already exists.");
-						}
-					} else {
-						$output_result .=("Uploaded 0 files<br />");
-					}
-					if ($filename){
-						$imageresize = explode("|", $intwalker[4]);
-						foreach($imageresize as $resizeop){
-							$oldprefix = $imageprefix;
-							if (is_numeric($resizeop)){
-								$sizenum = $resizeop;
-							}else{
-								$imageprefix = $resizeop;
-							}
-							if ($imageprefix and $sizenum and $oldprefix != $imageprefix){
-								$this->imageresize($path, $filename['name'], $sizenum, $imageprefix);
-							}
-						}
-
-					}
-				}
-
-				/////////////////////////
-				if ($insertCount == $i+1){
-					$preinsertQuery .= "'".$filename['name']."'";
-				}else{
-					$preinsertQuery .= "'".$filename['name']."', ";
-				}
-				//print_r($filename);
-			}
-
 			if (!isset($send_email)){
 				$send_email = '';
 			}
@@ -477,7 +416,6 @@ class records
 
 
 			if ($field != $tablename and $field != $permission and $field != $send_email and $field != $submit and isset($post[$intwalker[0]]) and $post[$intwalker[0]]){
-				//$post[$intwalker[0]] = mysql_real_escape_string($post[$intwalker[0]]);
 
 				if ($insertCount == $i+1){
 					$tableFields .=$intwalker[0];
@@ -655,12 +593,6 @@ class records
 			$pkey = 'id';
 		}
 
-		if (in_array("upload", $arraykeys)){
-			$upload = $form_array["upload"];
-		}else{
-			$upload = '';
-		}
-
 		if (isset($post['unique_filename']))
 		$unique_filename = $_REQUEST['unique_filename'];
 
@@ -676,7 +608,7 @@ class records
 		{
 			$do_not_update = '';
 
-			if ($field != $tablename and $field != $pkey and $field != $upload and $field != $submit){
+			if ($field != $tablename and $field != $pkey and $field != $submit){
 				$intwalker = explode(":", $field);
 
 				$get_permission_and_man_info = explode("|", $intwalker[0]);
@@ -760,7 +692,7 @@ class records
 			$editResult = $db->query($editQuery);
 		}
 
-		
+
 		if (isset($editResult)){
 			$output_result = "Edited record $record_id in $tablename successfully";
 			//$this->unlockdocument($pkey, $postedpkey, $tablename);

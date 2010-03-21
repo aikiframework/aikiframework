@@ -141,7 +141,6 @@ class aiki_array
 					$html_form .= '<select name="'.$y.$arrykeys[$i]."_type".'" >
 				<option value="'.$display.'" selected="selected">'.$display.'</option>
 				<option value="selection" >selection</option>
-				<option value="upload" >upload</option>
 				<option value="staticselect" >staticselect</option>
 				<option value="unique_textinput" >unique_textinput</option>
 				<option value="password" >password</option>
@@ -175,7 +174,6 @@ class aiki_array
 			if ($table == "aiki_forms"){
 				$html_form .= '<select name="left_'.$newfield.'" >
 				<option value="selection" >selection</option>
-				<option value="upload" >upload</option>
 				<option value="staticselect" >staticselect</option>
 				<option value="unique_textinput" >unique_textinput</option>
 				<option value="password" >password</option>
