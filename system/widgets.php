@@ -219,7 +219,7 @@ class CreateLayout
 
 
 	private function createWidgetContent($widget, $output_to_string='', $normal_select=''){
-		global $aiki, $db, $url, $language, $dir, $align, $membership, $nogui, $custome_output, $config;
+		global $aiki, $db, $url, $language, $dir, $membership, $nogui, $custome_output, $config;
 
 		if (isset($_GET['page'])){
 			$page = mysql_real_escape_string($_GET['page']);
@@ -321,31 +321,23 @@ class CreateLayout
 
 				$widget->normal_select = $aiki->processVars ($aiki->languages->L10n ("$widget->normal_select"));
 
-				$widget->normal_select = preg_replace('/and(.*)RLIKE \'\'/U', '', $widget->normal_select, 999, $num_no_res);
-				$widget->normal_select = preg_replace('/RLIKE \'\'/U', '', $widget->normal_select, 999, $num_no_res_first);
 
-				if ($num_no_res > 0 or $num_no_res_first > 0){
-					$widget->normal_select = '';
-					$this->kill_widget = $widget->id;
 
-				}else{
+				//Support DISTINCT selection
+				preg_match('/select DISTINCT(.*)from/i', $widget->normal_select, $get_DISTINCT);
 
-					//Support DISTINCT selection
-					preg_match('/select DISTINCT(.*)from/i', $widget->normal_select, $get_DISTINCT);
-
-					preg_match('/select(.*)from/i', $widget->normal_select, $selectionmatch);
-					if ($selectionmatch['1']){
-						if (isset ($get_DISTINCT['1'])){
-							$mysql_count = ' count(DISTINCT('.$get_DISTINCT[1].')) ';
-						}else{
-							$mysql_count = ' count(*) ';
-						}
-						$records_num_query = str_replace($selectionmatch[1], $mysql_count, $widget->normal_select);
+				preg_match('/select(.*)from/i', $widget->normal_select, $selectionmatch);
+				if ($selectionmatch['1']){
+					if (isset ($get_DISTINCT['1'])){
+						$mysql_count = ' count(DISTINCT('.$get_DISTINCT[1].')) ';
+					}else{
+						$mysql_count = ' count(*) ';
 					}
-					$records_num_query = preg_replace('/ORDER BY(.*)DESC/i', '', $records_num_query);
-					$records_num = $db->get_var($records_num_query);
-
+					$records_num_query = str_replace($selectionmatch[1], $mysql_count, $widget->normal_select);
 				}
+				$records_num_query = preg_replace('/ORDER BY(.*)DESC/i', '', $records_num_query);
+				$records_num = $db->get_var($records_num_query);
+
 
 				if (isset($records_num)){
 					$widget->widget = str_replace("[records_num]", $records_num, $widget->widget);
@@ -397,9 +389,9 @@ class CreateLayout
 				}
 
 
-				if ($num_no_res == 0){
-					$widget_select = $db->get_results("$widget->normal_select");
-				}
+					
+				$widget_select = $db->get_results("$widget->normal_select");
+
 
 
 				$num_results = $db->num_rows;
@@ -501,10 +493,6 @@ class CreateLayout
 
 
 
-
-				$widget->widget = str_replace("[#[language]#]", $config['default_language'], $widget->widget);
-				$widget->widget = str_replace("[#[dir]#]", $dir, $widget->widget);
-				$widget->widget = str_replace("[#[align]#]", $align, $widget->widget);
 
 
 				$newwidget = $widget->widget;

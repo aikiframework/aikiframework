@@ -111,7 +111,7 @@ class aiki
 	 * @return  string
 	 */
 	public function processVars($text){
-		global $aiki, $page, $membership, $config;
+		global $aiki, $page, $membership, $config, $dir;
 
 
 		$text = str_replace("[username]", $membership->username, $text);
@@ -120,6 +120,7 @@ class aiki
 		$text = str_replace("[language]", $config['default_language'], $text);
 		$text = str_replace("[page]", $page, $text);
 		$text = str_replace('[site]', $config['site'], $text);
+		$text = str_replace("[direction]", $dir, $text);
 
 		if ($config['pretty_urls'] == 0){
 			$text = preg_replace('/href\=\"\[root\](.*)\"/U', 'href="[root]?pretty=\\1"', $text);

@@ -118,11 +118,10 @@ $url = $aiki->load("url");
 
 if(isset($_GET['language'])){
 	$language=$_GET['language'];
-	$is_real_language = $db->get_row("SELECT sys_name, dir, short_name, align from aiki_languages where sys_name='$language'");
+	$is_real_language = $db->get_row("SELECT sys_name, dir, short_name from aiki_languages where sys_name='$language'");
 	if (isset($is_real_language->sys_name)){
 		$config['default_language'] = $is_real_language->sys_name;
 		$dir = $is_real_language->dir;
-		$align = $is_real_language->align;
 		$language_short_name = $is_real_language->short_name;
 	}
 }else{
