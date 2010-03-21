@@ -100,7 +100,7 @@ class CreateLayout
 
 
 	private function createWidget($widget_id, $widget_group=''){
-		global $db, $aiki,$url, $language, $dir, $page, $site, $module, $custome_output;
+		global $db, $aiki,$url, $language, $dir, $page, $site, $custome_output;
 
 		if ($widget_group){
 
@@ -187,7 +187,6 @@ class CreateLayout
 				}
 
 
-
 				if ($this->kill_widget){
 
 					if ($widget->if_no_results){
@@ -221,7 +220,7 @@ class CreateLayout
 
 
 	private function createWidgetContent($widget, $output_to_string='', $normal_select=''){
-		global $aiki, $db, $widget_cache, $widget_cache_dir, $url, $language, $dir, $align, $membership, $nogui, $records_libs, $image_processing, $custome_output, $config;
+		global $aiki, $db, $url, $language, $dir, $align, $membership, $nogui, $custome_output, $config;
 
 		if (isset($_GET['page'])){
 			$page = mysql_real_escape_string($_GET['page']);
@@ -290,8 +289,6 @@ class CreateLayout
 				$widget->pagetitle = '';
 			}
 
-
-
 			if ($widget->nogui_widget and isset($nogui)){
 				$widget->widget = $widget->nogui_widget;
 			}
@@ -299,7 +296,6 @@ class CreateLayout
 			$widget->widget = $aiki->input->requests($widget->widget);
 
 			$widget->normal_select = $aiki->input->requests($widget->normal_select);
-
 
 			$widget->widget = htmlspecialchars_decode($widget->widget);
 
@@ -395,14 +391,9 @@ class CreateLayout
 						$numpages = 1;
 					}
 
-
 					$fnumre = $page * $widget->records_in_page;
 
-
 					$widget->normal_select = $widget->normal_select." limit $fnumre,".$widget->records_in_page;
-					//$widget->normal_select = str_replace("ASC", "DESC", $widget->normal_select);
-
-
 
 				}
 
