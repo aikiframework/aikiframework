@@ -39,7 +39,7 @@ if (!isset($system_folder)){
 		<label>Full path:<input type='textinput' name='fullpath' value=''></label>
 		<input type='submit' name='submit' value='Submit'>
 		</form><br />
-		this error will continue to happen if you entered a wrong path
+		this error will continue to occur if you entered a wrong path
 		");
 
 		}
