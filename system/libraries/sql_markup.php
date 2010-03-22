@@ -71,6 +71,7 @@ class sql_markup
 						
 						$html =  $sql_html[1];
 
+						$result = $aiki->aiki_array->object2array($result);
 						$result_key = array_flip($result);
 
 						foreach ($result as $field){
