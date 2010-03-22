@@ -47,7 +47,7 @@ foreach ($get_urls as $url){
 
 	$used_url[$url->display_urls] = $url->display_urls;
 
-	$get_widgets = $db->get_results("select id, widget_name, father_widget, is_father, display_urls from aiki_widgets where display_urls = '$url->display_urls' or display_urls LIKE '$url->display_urls|%' or display_urls LIKE '$url->display_urls/%' or display_urls = '*' order by father_widget,id");
+	$get_widgets = $db->get_results("select id, widget_name, father_widget, is_father, display_urls from aiki_widgets where display_urls = '$url->display_urls' or display_urls LIKE '$url->display_urls|%' or display_urls LIKE '$url->display_urls/%' or display_urls = '*' order by display_order,id");
 	if($get_widgets){
 		foreach ($get_widgets as $widget){
 
