@@ -15,14 +15,19 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class security
 {
 
-	public function removeAikiMarkup($text){
+	public function remove_markup($text){
 
 		$text = preg_replace("/\(\#\(form(.*)\)\#\)/Us", "", $text);
 
 		$text = preg_replace("/\<edit\>(.*)\<\/edit\>/Us", "", $text);
 
+		$text = preg_replace("/\<script(.*)\>(.*)\<\/script\>/Ui", "", $text);
+
+		$text = preg_replace("/\<iframe(.*)\>(.*)\<\/iframe\>/Ui", "", $text);
+
 		return $text;
 	}
+
 
 	public function inlinePermissions($text){
 		global $membership, $db;
@@ -47,13 +52,6 @@ class security
 
 	}
 
-
-	public function RemoveXSS($val) {
-
-		$val = htmlspecialchars($val);
-
-		return $val;
-	}
 
 }
 ?>

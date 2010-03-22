@@ -776,8 +776,7 @@ class CreateLayout
 				}
 
 
-				$widget_value->$parsed = $aiki->security->removeAikiMarkup($widget_value->$parsed);
-				$widget_value->$parsed = $aiki->security->RemoveXSS($widget_value->$parsed);
+				$widget_value->$parsed = $aiki->security->remove_markup($widget_value->$parsed);
 
 				//if there are results and the results are not from cache, then cache them
 				if ($widget_value->$parsed and !$cached_values){
