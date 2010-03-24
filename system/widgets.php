@@ -792,6 +792,7 @@ class CreateLayout
 	}
 
 
+	//TODO: replace widget with the markup
 	private function inline_widgets($widget){
 
 		$numMatches = preg_match_all( '/\(\#\(widget\:(.*)\)\#\)/', $widget, $matches);

@@ -50,7 +50,7 @@ function refreshthetree(tree){
 function create_form(selector, id, name, code, tree){
    
 	$(selector).click(function(event){
-		$('#tools_box').fadeOut(500, function() { $(this).remove(); });
+		$('#tools_box').remove();
 			$("#widget-form").load("admin_tools/new/"+id,  {limit: 25}, function(){
 				
 				var current_form = $("#new_record_form").html();
@@ -83,7 +83,7 @@ function mod_basic(){
 '<li style="display:block; float: left; padding:5px;" id="permissions_tools"><a>Permissions</a>' +
 '<li style="display:block; float: left; padding:5px;" id="advanced_mod"><a>Advanced</a>' +
 '<li style="display:block; float: left; padding:5px;" id="full_mod"><a>All</a>' +
-'</li></ul></div>').hide().appendTo('body').fadeIn(1000);
+'</li></ul></div>').appendTo('body');
 	
 	$("#style_tools").click(function(event){
 		mod_style();
@@ -239,8 +239,6 @@ function urls_widgets_tree(){
         success:       refreshthetree  
     }; 
 	
-    $('#tools_box').fadeOut(500, function() { $(this).remove(); });
-
     create_form("#create_new_widget", 1, "Widget", 1, "widgettree");   
     
    var stop = 1;
@@ -279,7 +277,7 @@ function urls_widgets_tree(){
 					
 					$("#widget-form").html("Edited widget successfully");
 
-					$('#tools_box').fadeOut(500, function() { $(this).remove(); });
+					$('#tools_box').remove();
 					
 					$.tree_reference('widgettree').refresh();
 					
@@ -317,6 +315,7 @@ function urls_widgets_tree(){
 					}else{
 						$("#widget-form").load("admin_tools/delete/20/"+NODE.id+":yes",  {limit: 25}, function(){
 							$.tree_reference('widgettree').refresh();
+						    $('#tools_box').remove();
      					});
 					}
      				
@@ -352,8 +351,6 @@ function database_forms_tree(){
     var refreshtree = 1;
     var stop = 1;
     
-    $('#tools_box').fadeOut(500, function() { $(this).remove(); });
-
    //create_form("#create_new_table", 3, "Table", 0);
    create_form("#create_new_form", 6, "Form", 0, "databaseformstree");   
     
@@ -375,6 +372,7 @@ function database_forms_tree(){
     	  if (isNaN(NODE.id)){
     	 
     	      $.get('admin_tools/auto_generate/'+NODE.id,function(data) { 
+   	    	    $('#tools_box').remove();
     	    	  $('#widget-form').html(data);
     	    	  if (refreshtree == 1){
     	    	    $.tree_reference('databaseformstree').refresh();
@@ -387,7 +385,9 @@ function database_forms_tree(){
     		  
     	  }else{
  if (stop == 1){
-    				$("#widget-form").load('admin_tools/array/id/form_name/form_array/aiki_forms/'+NODE.id,  {limit: 25}, function(){
+	    $('#tools_box').remove();
+
+	    $("#widget-form").load('admin_tools/array/id/form_name/form_array/aiki_forms/'+NODE.id,  {limit: 25}, function(){
 
     					$('#edit_form').ajaxForm(function() { 
     						
@@ -423,7 +423,7 @@ function config_tree(){
     var stop = 1;
     
 
-    $('#tools_box').fadeOut(500, function() { $(this).remove(); });
+    $('#tools_box').remove();
     
    //create_form("#create_new_table", 3, "Table", 0);
    //create_form("#create_new_form", 6, "Form", 0, "databaseformstree");   
@@ -445,6 +445,8 @@ function config_tree(){
         onselect : function(NODE,TREE_OBJ) {
 
  if (stop == 1){
+	    $('#tools_box').remove();
+
     				$("#widget-form").load('admin_tools/array/config_id/config_type/config_data/aiki_config/'+NODE.id,  {limit: 25}, function(){
 
     					$('#edit_form').ajaxForm(function() { 
