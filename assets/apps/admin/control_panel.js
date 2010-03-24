@@ -48,7 +48,9 @@ function refreshthetree(tree){
 }
 
 function create_form(selector, id, name, code, tree){
-	   $(selector).click(function(event){
+   
+	$(selector).click(function(event){
+		$('#tools_box').fadeOut(500, function() { $(this).remove(); });
 			$("#widget-form").load("admin_tools/new/"+id,  {limit: 25}, function(){
 				
 				var current_form = $("#new_record_form").html();
@@ -66,6 +68,169 @@ function create_form(selector, id, name, code, tree){
 	   });		
 }
 
+function mod_basic(){
+	
+	$('#tools_box').remove();
+	
+	hide_advanced();
+	hide_permissions();
+	
+	
+	$('<div id="tools_box" style="-moz-border-radius:5px 5px 5px 5px;background:none repeat scroll 0 0 #DDDDDD; border:1px solid #AAAAAA;height:34px;;margin-left:auto;	margin-right:auto;padding:5px;position:relative;top:47px;width:245px;z-index:10000;">' +
+'Widget editor:<ul style="cursor:pointer;">' +
+'<li style="display:block; float: left; padding:5px;" id="style_tools"><a>Style</a></li>' +
+'<li style="display:block; float: left; padding:5px;" id="widget_tools"><a>Widget</a>' +
+'<li style="display:block; float: left; padding:5px;" id="permissions_tools"><a>Permissions</a>' +
+'<li style="display:block; float: left; padding:5px;" id="advanced_mod"><a>Advanced</a>' +
+'<li style="display:block; float: left; padding:5px;" id="full_mod"><a>All</a>' +
+'</li></ul></div>').hide().appendTo('body').fadeIn(1000);
+	
+	$("#style_tools").click(function(event){
+		mod_style();
+	});	 
+	
+	$("#widget_tools").click(function(event){
+		mod_widget();
+	});
+	
+	$("#permissions_tools").click(function(event){
+		mod_permissions();
+	});
+	
+	$("#advanced_mod").click(function(event){
+		advanced_mod();
+	});
+	
+	$("#full_mod").click(function(event){
+		full_mod();
+	});	
+	
+}
+
+function full_mod(){
+	show_style();
+	show_permissions();
+	show_advanced();
+	$('.widget').show();
+}
+
+function hide_advanced(){
+	$('.widget_site').hide();
+	$('.widget_target').hide();
+	$('.widget_type').hide();
+	$('.kill_urls').hide();
+	$('.if_no_results').hide();
+	$('.nogui_widget').hide();
+	$('.link_example').hide();
+	$('.pagetitle').hide();
+	$('.remove_container').hide();
+	$('.widget_cache_timeout').hide();
+	$('.custome_output').hide();
+	$('.custome_header').hide();
+	$('.display_in_row_of').hide();
+}
+
+function show_advanced(){
+	$('.widget_site').show();
+	$('.widget_target').show();
+	$('.widget_type').show();
+	$('.kill_urls').show();
+	$('.if_no_results').show();
+	$('.nogui_widget').show();
+	$('.link_example').show();
+	$('.pagetitle').show();
+	$('.remove_container').show();
+	$('.widget_cache_timeout').show();
+	$('.custome_output').show();
+	$('.custome_header').show();
+	$('.display_in_row_of').show();
+}
+
+function advanced_mod(){
+	hide_style();
+	hide_permissions();
+	$('.widget').hide();
+
+	show_advanced();
+	
+}
+
+function hide_permissions(){
+	$('.authorized_select').hide();
+	$('.is_admin').hide();
+	$('.if_authorized').hide();
+	$('.permissions').hide();
+}
+
+function show_permissions(){
+	hide_advanced();
+	$('.authorized_select').show();
+	$('.is_admin').show();
+	$('.if_authorized').show();
+	$('.permissions').show();
+}
+
+function mod_permissions(){
+	
+	show_permissions();
+	hide_style();
+	hide_advanced();
+	
+	$('.widget').hide();
+	$('.display_order').hide();	
+	$('.is_father').hide();
+	$('.father_widget').hide();
+	$('.display_urls').hide();
+	$('.normal_select').hide();
+	$('.records_in_page').hide();
+
+}
+
+function mod_widget(){
+	
+	hide_permissions();
+	hide_style();
+	hide_advanced();
+	
+	$('.widget').show();
+	$('.display_order').hide();	
+	$('.is_father').hide();
+	$('.father_widget').hide();
+	$('.display_urls').hide();
+	$('.normal_select').hide();
+	$('.records_in_page').hide();
+
+	
+}
+
+function show_style(){
+	$('.css').show();
+	$('.style_id').show();
+}
+
+function hide_style(){
+	$('.css').hide();
+	$('.style_id').hide();
+}
+
+function mod_style(){
+	
+	show_style();
+	hide_permissions();
+	hide_advanced();
+
+	
+	$('.display_order').hide();	
+	$('.is_father').hide();
+	$('.father_widget').hide();
+	$('.display_urls').hide();
+	$('.normal_select').hide();
+	$('.widget').hide();
+	$('.records_in_page').hide();
+	
+}
+
+
 
 function urls_widgets_tree(){
 
@@ -74,7 +239,7 @@ function urls_widgets_tree(){
         success:       refreshthetree  
     }; 
 	
-	 
+    $('#tools_box').fadeOut(500, function() { $(this).remove(); });
 
     create_form("#create_new_widget", 1, "Widget", 1, "widgettree");   
     
@@ -104,6 +269,8 @@ function urls_widgets_tree(){
   if (stop == 1){
 			$("#widget-form").load('admin_tools/edit/20/'+NODE.id,  {limit: 25}, function(){
 				
+				mod_basic();
+				
 				code_mirror();
 				code_mirror_if_authorized();
 				$('#edit_form').ajaxForm(function() { 
@@ -111,9 +278,11 @@ function urls_widgets_tree(){
 					stop = 0;
 					
 					$("#widget-form").html("Edited widget successfully");
+
+					$('#tools_box').fadeOut(500, function() { $(this).remove(); });
 					
 					$.tree_reference('widgettree').refresh();
-
+					
 					stop = 1;
 					
 	           }); 
@@ -183,6 +352,7 @@ function database_forms_tree(){
     var refreshtree = 1;
     var stop = 1;
     
+    $('#tools_box').fadeOut(500, function() { $(this).remove(); });
 
    //create_form("#create_new_table", 3, "Table", 0);
    create_form("#create_new_form", 6, "Form", 0, "databaseformstree");   
@@ -253,6 +423,8 @@ function config_tree(){
     var stop = 1;
     
 
+    $('#tools_box').fadeOut(500, function() { $(this).remove(); });
+    
    //create_form("#create_new_table", 3, "Table", 0);
    //create_form("#create_new_form", 6, "Form", 0, "databaseformstree");   
     

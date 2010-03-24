@@ -7,18 +7,33 @@
  * @link		http://www.aikiframework.org
  */
 
+var stop = 0;
+
 function  globalajaxify(file, targetwidget){
-	$('<div id="loading_box">Loading please wait</div>').appendTo('body');
+
+if (stop != 1){
+	stop = 1;
+	$('<div id="loading_box"><span>Loading please wait...</span></div>').hide().appendTo(targetwidget).fadeIn(1000);
 	$.get(file,function(data) {
-		$(targetwidget).html(data);
-		$('#loading_box').remove();
+		$('#loading_box').fadeOut(500, function() { $(this).remove(); 
+		$(targetwidget).hide().fadeIn(500).html(data);
+		});
+		stop = 0;
 	});
+}
 }
 
 $(document).ready(function(){
+
 	$('a').live('click', function() {
 		if($(this).attr('rel') && $(this).attr('href') && $(this).attr('rev')) {
 			globalajaxify($(this).attr('href')+'?noheaders=true&noheaders=true&widget='+$(this).attr('rel'), $(this).attr('rev'));
+			return false;
+		}
+	});
+	$('span').live('click', function() {
+		if($(this).attr('rel') && $(this).attr('rev')) {
+			globalajaxify('?noheaders=true&noheaders=true&widget='+$(this).attr('rel'), $(this).attr('rev'));
 			return false;
 		}
 	});

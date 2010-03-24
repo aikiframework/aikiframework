@@ -327,17 +327,17 @@ class CreateLayout
 				preg_match('/select DISTINCT(.*)from/i', $widget->normal_select, $get_DISTINCT);
 
 				preg_match('/select(.*)from/i', $widget->normal_select, $selectionmatch);
-				if ($selectionmatch['1']){
+				if (isset($selectionmatch['1'])){
 					if (isset ($get_DISTINCT['1'])){
 						$mysql_count = ' count(DISTINCT('.$get_DISTINCT[1].')) ';
 					}else{
 						$mysql_count = ' count(*) ';
 					}
 					$records_num_query = str_replace($selectionmatch[1], $mysql_count, $widget->normal_select);
-				}
-				$records_num_query = preg_replace('/ORDER BY(.*)DESC/i', '', $records_num_query);
-				$records_num = $db->get_var($records_num_query);
 
+					$records_num_query = preg_replace('/ORDER BY(.*)DESC/i', '', $records_num_query);
+					$records_num = $db->get_var($records_num_query);
+				}
 
 				if (isset($records_num)){
 					$widget->widget = str_replace("[records_num]", $records_num, $widget->widget);
@@ -389,7 +389,7 @@ class CreateLayout
 				}
 
 
-					
+
 				$widget_select = $db->get_results("$widget->normal_select");
 
 
@@ -476,7 +476,7 @@ class CreateLayout
 						}
 
 						$pagination .= "<br />";
-							
+
 						if( $page ) {
 							$first_page = str_replace("[page]", '1', $widget->link_example);
 							$pagination .= "<a style='letter-spacing:0px;' href=\"$first_page\"><small><< First page</small></a>  ";
@@ -692,7 +692,7 @@ class CreateLayout
 				}
 
 				$title = $this->parsDBpars($widget->pagetitle, $widget_value);
-					
+
 
 				$title = $aiki->input->requests($title);
 

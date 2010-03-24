@@ -49,6 +49,11 @@ class parser extends aiki
 
 				$output = $aiki->get_string_between($rss , "<output>", "</output>");
 
+				$type = $aiki->get_string_between($rss , "<type>", "</type>");
+				if (!$type){
+					$type = "rss";
+				}
+
 				if(!$output){
 
 					$output = "<div class='news'>
@@ -78,7 +83,18 @@ class parser extends aiki
 
 					$html_output = '';
 					if ($xml){
-						foreach ($xml->channel->item as $item) {
+
+						switch ($type){
+							case "atom":
+								$xml_items = $xml->entry;
+								break;
+
+							case "rss":
+								$xml_items = $xml->channel->item;
+								break;
+						}
+
+						foreach ($xml_items as $item) {
 
 							$items_matchs = preg_match_all('/\[\[(.*)\]\]/Us', $output, $elements);
 
@@ -90,7 +106,27 @@ class parser extends aiki
 
 									$element = trim($element);
 
-									$processed_output = str_replace("[[".$element."]]", $item->$element, $processed_output);
+
+									if (preg_match('/\-\>/', $element)){
+
+										$element = explode("->", $element);
+										$element_sides = $item->$element[0]->$element[1];
+
+										$processed_output = str_replace("[[".$element[0]."->".$element[1]."]]", $element_sides, $processed_output);
+
+									}elseif (preg_match('/\:/', $element)){
+										
+										$element = explode(":", $element);
+										$element_sides = $item->$element[0]->attributes()->$element[1];
+										
+
+										$processed_output = str_replace("[[".$element[0].":".$element[1]."]]", $element_sides, $processed_output);
+
+									}else{
+
+										$processed_output = str_replace("[[".$element."]]", $item->$element, $processed_output);
+
+									}
 
 								}
 
