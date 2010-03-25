@@ -149,7 +149,10 @@ function mod_basic(){
 		$('.widget_editor_li').css('background','#FFFFFF');
 		$(this).css('background','#CCCCCC');
 
-		show_sql();	
+		show_sql();
+		hide_advanced();
+		hide_style();
+		hide_permissions();
 		$('.widget').hide();
 	});	
 	
