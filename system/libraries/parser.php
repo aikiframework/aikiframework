@@ -16,7 +16,8 @@ class parser extends aiki
 {
 
 	//curl timeout. set to zero for no timeout
-	private $timeout = 5;
+	//TODO add timeout here and other places to config editor
+	private $timeout = 2;
 
 	public function process($text){
 

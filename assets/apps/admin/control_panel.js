@@ -74,60 +74,119 @@ function mod_basic(){
 	
 	hide_advanced();
 	hide_permissions();
+	$('.display_urls').show();
 	
 	
-	$('<div id="tools_box" style="-moz-border-radius:5px 5px 5px 5px;background:none repeat scroll 0 0 #DDDDDD; border:1px solid #AAAAAA;height:34px;;margin-left:auto;	margin-right:auto;padding:5px;position:relative;top:47px;width:245px;z-index:10000;">' +
-'Widget editor:<ul style="cursor:pointer;">' +
-'<li style="display:block; float: left; padding:5px;" id="style_tools"><a>Style</a></li>' +
-'<li style="display:block; float: left; padding:5px;" id="widget_tools"><a>Widget</a>' +
-'<li style="display:block; float: left; padding:5px;" id="permissions_tools"><a>Permissions</a>' +
-'<li style="display:block; float: left; padding:5px;" id="advanced_mod"><a>Advanced</a>' +
-'<li style="display:block; float: left; padding:5px;" id="full_mod"><a>All</a>' +
+	$('<div id="tools_box" style="background: none repeat scroll 0pt 0pt rgb(221, 221, 221); border-width: 1px 0pt 0pt; border-style: solid none none; border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; margin-left: auto; margin-right: auto; position: relative; top: 47px; z-index: 10000; width: 269px;">' +
+'<ul style="cursor:pointer;">' +
+'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="widget_tools"><a>Widget</a>' +
+'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="sql_tools"><a>Sql</a>' +
+'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="style_tools"><a>Style</a></li>' +
+'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="permissions_tools"><a>Permissions</a>' +
+'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="advanced_mod"><a>Advanced</a>' +
+'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="full_mod"><a>All</a>' +
 '</li></ul></div>').appendTo('body');
 	
 	$("#style_tools").click(function(event){
-		mod_style();
+		
+		$('.widget_editor_li').css('background','#FFFFFF');
+		$(this).css('background','#CCCCCC');
+
+		show_style();
+		hide_sql();
+		hide_permissions();
+		hide_advanced();
+		$('.widget').hide();
 	});	 
 	
 	$("#widget_tools").click(function(event){
-		mod_widget();
+		
+		$('.widget_editor_li').css('background','#FFFFFF');
+		$(this).css('background','#CCCCCC');
+		
+		hide_permissions();
+		hide_style();
+		hide_advanced();
+		hide_sql();
+		$('.widget').show();
 	});
 	
 	$("#permissions_tools").click(function(event){
-		mod_permissions();
+		$('.widget_editor_li').css('background','#FFFFFF');
+		$(this).css('background','#CCCCCC');
+		hide_sql();
+		show_permissions();
+		hide_style();
+		hide_advanced();
+	    $('.widget').hide();
+
 	});
 	
 	$("#advanced_mod").click(function(event){
-		advanced_mod();
+		$('.widget_editor_li').css('background','#FFFFFF');
+		$(this).css('background','#CCCCCC');
+
+		hide_sql();
+		hide_style();
+		hide_permissions();
+		$('.widget').hide();
+		show_advanced();
+		
 	});
 	
 	$("#full_mod").click(function(event){
-		full_mod();
+		$('.widget_editor_li').css('background','#FFFFFF');
+		$(this).css('background','#CCCCCC');
+
+		show_style();
+		show_sql();
+		show_permissions();
+		show_advanced();
+		$('.widget').show();
+	});	
+	
+	$("#sql_tools").click(function(event){
+		$('.widget_editor_li').css('background','#FFFFFF');
+		$(this).css('background','#CCCCCC');
+
+		show_sql();	
+		$('.widget').hide();
 	});	
 	
 }
 
-function full_mod(){
-	show_style();
-	show_permissions();
-	show_advanced();
-	$('.widget').show();
+function show_sql(){
+	$('.normal_select').show();
+	$('.records_in_page').show();
+	$('.display_in_row_of').show();
+	$('.if_no_results').show();
+	$('.link_example').show();
 }
+
+function hide_sql(){
+	$('.normal_select').hide();
+	$('.records_in_page').hide();
+	$('.display_in_row_of').hide();
+	$('.if_no_results').hide();
+	$('.link_example').hide();
+}
+
 
 function hide_advanced(){
 	$('.widget_site').hide();
 	$('.widget_target').hide();
 	$('.widget_type').hide();
 	$('.kill_urls').hide();
-	$('.if_no_results').hide();
 	$('.nogui_widget').hide();
-	$('.link_example').hide();
 	$('.pagetitle').hide();
 	$('.remove_container').hide();
 	$('.widget_cache_timeout').hide();
 	$('.custome_output').hide();
 	$('.custome_header').hide();
-	$('.display_in_row_of').hide();
+	$('.is_father').hide();
+	$('.father_widget').hide();
+	$('.display_urls').hide();
+	
 }
 
 function show_advanced(){
@@ -135,25 +194,17 @@ function show_advanced(){
 	$('.widget_target').show();
 	$('.widget_type').show();
 	$('.kill_urls').show();
-	$('.if_no_results').show();
 	$('.nogui_widget').show();
-	$('.link_example').show();
 	$('.pagetitle').show();
 	$('.remove_container').show();
 	$('.widget_cache_timeout').show();
 	$('.custome_output').show();
 	$('.custome_header').show();
-	$('.display_in_row_of').show();
+	$('.is_father').show();
+	$('.father_widget').show();
+	$('.display_urls').show();
 }
 
-function advanced_mod(){
-	hide_style();
-	hide_permissions();
-	$('.widget').hide();
-
-	show_advanced();
-	
-}
 
 function hide_permissions(){
 	$('.authorized_select').hide();
@@ -163,71 +214,24 @@ function hide_permissions(){
 }
 
 function show_permissions(){
-	hide_advanced();
 	$('.authorized_select').show();
 	$('.is_admin').show();
 	$('.if_authorized').show();
 	$('.permissions').show();
 }
 
-function mod_permissions(){
-	
-	show_permissions();
-	hide_style();
-	hide_advanced();
-	
-	$('.widget').hide();
-	$('.display_order').hide();	
-	$('.is_father').hide();
-	$('.father_widget').hide();
-	$('.display_urls').hide();
-	$('.normal_select').hide();
-	$('.records_in_page').hide();
-
-}
-
-function mod_widget(){
-	
-	hide_permissions();
-	hide_style();
-	hide_advanced();
-	
-	$('.widget').show();
-	$('.display_order').hide();	
-	$('.is_father').hide();
-	$('.father_widget').hide();
-	$('.display_urls').hide();
-	$('.normal_select').hide();
-	$('.records_in_page').hide();
-
-	
-}
 
 function show_style(){
 	$('.css').show();
 	$('.style_id').show();
+	$('.display_order').show();
+
 }
 
 function hide_style(){
 	$('.css').hide();
 	$('.style_id').hide();
-}
-
-function mod_style(){
-	
-	show_style();
-	hide_permissions();
-	hide_advanced();
-
-	
-	$('.display_order').hide();	
-	$('.is_father').hide();
-	$('.father_widget').hide();
-	$('.display_urls').hide();
-	$('.normal_select').hide();
-	$('.widget').hide();
-	$('.records_in_page').hide();
-	
+	$('.display_order').hide();
 }
 
 
