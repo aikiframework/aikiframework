@@ -39,6 +39,15 @@ function code_mirror(){
         stylesheet: ["assets/javascript/codemirror/css/sparqlcolors.css"],
         path: "assets/javascript/codemirror/js/"
       });  
+   
+   var csseditor = CodeMirror.fromTextArea('css', {
+       height: "400px",
+       parserfile: ["parsecss.js"],
+       stylesheet: ["assets/javascript/codemirror/css/csscolors.css"],
+       path: "assets/javascript/codemirror/js/",
+       continuousScanning: 500,
+       lineNumbers: true
+     });    
 	
 }
 
