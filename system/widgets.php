@@ -57,6 +57,7 @@ class CreateLayout
 			}
 
 		}else{
+
 			$module_widgets = $db->get_results("SELECT id, display_urls, kill_urls FROM aiki_widgets where (display_urls = '".$url->url['0']."' or display_urls LIKE '%|".$url->url['0']."|%' or display_urls LIKE '%|".$url->url['0']."' or display_urls LIKE '".$url->url['0']."|%' or display_urls LIKE '%".$url->url['0']."/%' or display_urls = '*') and is_active=1 and father_widget=0 and widget_site='$site' order by display_order, id");
 
 			if ($module_widgets){
@@ -77,7 +78,14 @@ class CreateLayout
 
 					$url->widget_if_match_url($widget);
 
-					if ($url->create_widget or $widget->display_urls == "*"){
+					//TODO move this to widget_if_match_url
+					if (isset($_GET["pretty"]) and $widget->kill_urls != "" and $widget->kill_urls == $_GET["pretty"]){
+						$kill_this_widget = true;
+					}else{
+						$kill_this_widget = false;
+					}
+
+					if ($url->create_widget or $widget->display_urls == "*" and !$kill_this_widget){
 
 						$widget_group[] = $widget->id;
 						//$this->createWidget($widget->id);
@@ -167,7 +175,15 @@ class CreateLayout
 						{
 
 							$url->widget_if_match_url($son_widget);
-							if ($url->create_widget){
+
+							//TODO move this to widget_if_match_url
+							if (isset($_GET["pretty"]) and $son_widget->kill_urls != "" and $son_widget->kill_urls == $_GET["pretty"]){
+								$kill_this_widget = true;
+							}else{
+								$kill_this_widget = false;
+							}
+
+							if ($url->create_widget and !$kill_this_widget){
 
 								$son_widget_group[] = $son_widget->id;
 								//$this->createWidget($son_widget->id);
