@@ -383,15 +383,15 @@ $("#new_record_form").ajaxForm(function() {
 		$form .= ("<input type=\"hidden\" value=\"$form_id\" name=\"form_id\">");
 
 		if (!isset ($this->submit_button)){
-			$this->submit_button = 'Ok';
+			$this->submit_button = 'Submit';
 		}
 
 		if (isset($form_data)){
 			$record_id = $form_data->$pkey;
 			$form .= ("<input type=\"hidden\" value=\"$record_id\" name=\"record_id\">");
-			$form .= ("<input type=\"submit\" value=\"$this->submit_button\" name=\"edit_form\">");
+			$form .= ("<input type=\"submit\" class=\"edit_button\" value=\"$this->submit_button\" name=\"edit_form\">");
 		}else{
-			$form .= ("<input type=\"submit\" value=\"$this->submit_button\" name=\"add_to_form\">");
+			$form .= ("<input type=\"submit\" class=\"submit_button\" value=\"$this->submit_button\" name=\"add_to_form\">");
 		}
 		$form .= ("</p></form></div>");
 
