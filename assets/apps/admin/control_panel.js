@@ -10,13 +10,13 @@
 function code_mirror_if_authorized(){
 	    
 	   var if_authorized = CodeMirror.fromTextArea('if_authorized', {
-	        height: "350px",
+	        height: "400px",
 	        parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js",
 	                     "tokenizephp.js", "parsephp.js", "parsephphtmlmixed.js"],
 	        stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
 	        path: "assets/javascript/codemirror/js/",
 	        continuousScanning: 500,
-	        lineNumbers: true,
+	        lineNumbers: true
 	      }); 
 
 	}
@@ -30,7 +30,7 @@ function code_mirror(){
         stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
         path: "assets/javascript/codemirror/js/",
         continuousScanning: 500,
-        lineNumbers: true,
+        lineNumbers: true
       }); 
     
    var sqleditor = CodeMirror.fromTextArea('normal_select', {
