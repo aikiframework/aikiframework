@@ -12,8 +12,240 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class wiki_markup
+class wiki_parser extends aiki
 {
+
+	public function process($text){
+		
+		
+	}
+	
+	public function aikiTemplates($widget){
+		global $db, $aiki;
+
+		$numMatches = preg_match_all( '/\{\{/', $widget, $matches);
+
+
+		for ($i=0; $i<$numMatches; $i++){
+
+			$templateFullText = $aiki->get_string_between($widget, "{{", "}}");
+			$templateText = str_replace("| ", "|", $templateFullText);
+
+			$templateText = str_replace("<br>", "", $templateText); //fix for after nl2br function is used
+			$templateText = str_replace("<br />", "", $templateText);
+
+			$templateElement = explode("|", $templateText);
+			$templateName = trim($templateElement[0]);
+
+
+			if ($templateName){
+
+
+				$template_output = $db->get_var("SELECT template_output from apps_wiki_templates where template_name = '$templateName'");
+
+			}
+
+			foreach ($templateElement as $element){
+				$element = trim($element);
+				$elementSides = explode("=", $element);
+				$elementSides[0] = trim($elementSides[0]);
+				$elementSides[1] = trim($elementSides[1]);
+
+				$template_output = str_replace("($elementSides[0])", $elementSides[1], $template_output);
+
+			}
+			$widget = str_replace ("{{".$templateFullText."}}", $template_output, $widget);
+
+		}
+
+		return $widget;
+
+	}
+
+
+	public function intlinks($text){
+		global $aiki, $membership, $db, $config;
+
+
+		if (preg_match('/\(\+\((.*)\)\+\)/', $text)){
+
+			$link_tags = $db->get_results("SELECT * FROM apps_wiki_links");
+			$query = '';
+			if ($link_tags){
+
+				foreach ($link_tags as $tag)
+				{
+					$query = '';
+
+
+					$count = preg_match_all( '/'.preg_quote($tag->tagstart, '/').preg_quote($tag->parlset, '/').'(.*)'.preg_quote($tag->tagend, '/').'/U', $text, $match );
+
+					if ($count > 0){
+
+						if ($tag->linkexample){
+
+							$query = "SELECT $tag->idcolumn, $tag->namecolumn FROM $tag->dbtable WHERE ";
+							$tagidcolumn = $tag->idcolumn;
+							$tagnamecolumn = $tag->namecolumn;
+							$is_extrasql_loop = $tag->is_extrasql_loop;
+
+							$i = 1;
+
+							if ($tag->extrasql){
+								$extrasql = "$tag->extrasql";
+							}else{
+								$extrasql = "";
+							}
+
+							$tagnamecolumn = $tag->namecolumn;
+
+							foreach ($match[1] as $tag_match){
+
+								$tag_match_array = explode('=', $tag_match);
+
+								if (!isset($tag_match_array[1])){
+
+									$tag_text = $tag_match_array[0];
+									$tag_equivalent = $tag_match_array[0];
+
+								}else{
+
+									$tag_text = $tag_match_array[0];
+									$tag_equivalent = $tag_match_array[1];
+
+								}
+
+								$query .= "$tagnamecolumn LIKE '$tag_equivalent'";
+
+
+								if ($extrasql and $is_extrasql_loop){
+									$extrasql = str_replace('[tag_equivalent]', $tag_equivalent, $extrasql);
+									$query .= " $extrasql ";
+								}
+
+
+								if ($count != $i){
+									$add_or = "or";
+								}else{
+									$add_or = "";
+								}
+
+								$query .= " $add_or ";
+
+
+								$i++;
+							}
+
+							if ($extrasql and !$is_extrasql_loop){
+								$extrasql = str_replace('[tag_equivalent]', $tag_equivalent, $extrasql);
+								$query .= " $extrasql ";
+							}
+
+							$result = $db->get_results($query);
+							if ($result){
+
+								foreach($result as $replacment){
+
+									$tagname = $replacment->$tagnamecolumn;
+									$tagid = $replacment->$tagidcolumn;
+
+									foreach ($match[1] as $tag_output){
+										$tag_output = explode('=', $tag_output);
+										if ($tag_output[1]){
+
+											$tag_output_side = $tag_output[1];
+
+											if ($tag_output_side == $tagname){
+
+												$text = str_replace($tag->tagstart.$tag->parlset.$tag_output[0].'='.$tag_output[1].$tag->tagend, "<a href=\"".$config['url']."$tag->linkexample/$tagid\">$tag_output[0]</a>", $text);
+
+											}
+
+										}else{
+											$tag_output = $tag_output[0];
+
+											if ($tag_output == $tagname){
+
+												$text = str_replace($tag->tagstart.$tag->parlset.$tag_output.$tag->tagend, "<a href=\"".$config['url']."$tag->linkexample/$tagid\">$tag_output</a>", $text);
+
+											}
+
+										}
+
+
+
+									}
+
+								}
+
+
+							}
+
+						}
+
+
+					}
+					if ($membership->permissions == "SystemGOD"){
+						$text = preg_replace( '/'.preg_quote($tag->tagstart, '/').preg_quote($tag->parlset, '/').'(.*)(\=.*)?'.preg_quote($tag->tagend, '/').'/U', "<a style='color:#FF0000' target=\"_blank\" href=\"".$config['url']."$tag->linkexample/new\"><b>\\1</b></a>", $text );
+						//$text = preg_replace( '/'.preg_quote($tag->tagstart, '/').preg_quote($tag->parlset, '/').'[\x0627-\x0649](\=.*)?'.preg_quote($tag->tagend, '/').'/U', "<a style='color:#FF0000' target=\"_blank\" href=\"aikicore->setting[url]/$tag->linkexample/new\"><b>\\1</b></a>", $text );
+						//'/\(\+\(tag:(.*?)[^)]*\)\+\)/';
+						//$text = preg_replace( '/'.preg_quote($tag->tagstart, '/').preg_quote($tag->parlset, '/').'(.*)(\=[^)].*)?'.preg_quote($tag->tagend, '/').'/U', "<a style='color:#FF0000' target=\"_blank\" href=\"aikicore->setting[url]/$tag->linkexample/new\"><b>\\1</b></a>", $text );
+
+					}else{
+						$text = preg_replace( '/'.preg_quote($tag->tagstart, '/').preg_quote($tag->parlset, '/').'(.*)(\=.*)?'.preg_quote($tag->tagend, '/').'/U', '\\1', $text );
+					}
+
+				}
+			}
+
+
+		}
+		return $text;
+
+	}
+
+
+	public function extlinks($text){
+		global $aiki, $config;
+
+		$tags_output = array();
+
+		$count = preg_match_all( '/'."\(\+\(".'(.*)'."\)\+\)".'/U', $text, $match );
+
+		if ($count > 0){
+
+			foreach ($match[1] as $tag_match){
+
+				$tag_match_array = explode('=', $tag_match);
+
+				if (!isset($tag_match_array[1])){
+
+					$tag_text = $tag_match_array[0];
+					$tag_equivalent = $tag_match_array[0];
+
+				}else{
+
+					$tag_text = $tag_match_array[0];
+					$tag_equivalent = $tag_match_array[1];
+
+				}
+
+
+				//TODO: make sure it's correct link and if not correct it, and check for email addresses
+				$processed_tag = "<a target=\"_blank\" href=\"$tag_equivalent\" style=\"background:transparent url(".$config['url']."assets/images/external.png) no-repeat scroll left center; padding-left:13px;\">".$tag_text.'</a>';
+
+
+				$tags_output[] .= $processed_tag;
+
+			}
+			$text = str_replace($match[0], $tags_output, $text);
+
+		}
+
+
+		return $text;
+
+	}
 
 	//Original function: doHeadings from wikimedia /includes/parser/Parser.php
 	//Parts of the new rebuilt function are from function called formatHeadings

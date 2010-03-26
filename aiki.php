@@ -106,7 +106,7 @@ $aiki->load("security");
 $aiki->load("parser");
 $aiki->load("php");
 $aiki->load("sql_markup");
-$aiki->load("wiki_markup");
+$aiki->load("wiki_parser");
 $aiki->load("languages");
 
 $errors = $aiki->load("errors");
