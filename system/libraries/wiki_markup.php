@@ -17,7 +17,7 @@ class wiki_parser extends aiki
 
 	public function process($text){
 		
-		
+		return $text;
 	}
 	
 	public function aikiTemplates($widget){

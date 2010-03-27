@@ -67,7 +67,7 @@ class aiki
 		$i=0;
 		foreach ( $settings as $setting_group )
 		{
-			$this->aikiarray = unserialize($setting_group->config_data);
+			$this->aikiarray = @unserialize($setting_group->config_data);
 			if (is_array($this->aikiarray)){
 				$arrykeys = array_keys($this->aikiarray);
 				foreach($this->aikiarray as $field)
