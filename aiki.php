@@ -22,39 +22,6 @@ if (function_exists('realpath') AND @realpath(dirname(__FILE__)) !== FALSE)
 
 }
 
-//if realpath didn't work ask user to enter it for the installation to work
-if (!isset($system_folder)){
-
-	if (!isset($full_path)){
-
-		if (!isset($system_folder) and !isset($_POST['fullpath']) or !file_exists($_POST['fullpath']."/system/libraries/installer.php")){
-
-			echo ("<b>Aiki Fatal error: can't find the full path to your current installation</b><br /><br />
-		please insert the full path on disk to this page <br />
-		example: /var/www/aiki <br />
-		or: c:/htdocs/aiki <br /><br />
-		make sure there is no slash at the end of the full path
-		<br />
-		<form method='post'>
-		<label>Full path:<input type='textinput' name='fullpath' value=''></label>
-		<input type='submit' name='submit' value='Submit'>
-		</form><br />
-		this error will continue to occur if you entered a wrong path
-		");
-
-		}
-
-		if (!isset($system_folder) and isset($_POST['fullpath'])){
-
-			$system_folder = $_POST['fullpath'];
-
-		}
-	}else{
-		$system_folder = $full_path;
-	}
-}
-
-
 if (isset($_GET['nogui'])){ $nogui = true; }
 if (isset($_GET['noheaders'])){ $noheaders = true; }
 if (isset($_GET['custome_output'])){$custome_output = true;	$noheaders = true; }
