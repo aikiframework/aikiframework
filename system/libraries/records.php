@@ -24,6 +24,9 @@ class records
 	public $height;
 	public $rand;
 
+	//if not provided by config
+	private $allowed_extensions = "jpg|gif|png|jpeg|svg";
+
 
 	public function record_exists($value, $tablename, $field){
 		global $db;
@@ -353,16 +356,19 @@ class records
 						return "an error occurred while uploading 0 byte file size, please go back and try again";
 					}
 
-					$filename_array = explode(".",$name);
-
-					//TODO: Add in config allowed extensions
-					//echo $config['allowed_extensions'];
-					$type = $filename_array[1];
-					if ($type != "svg" and $type != "SVG"){
-						return "Only svg uploads are allowed";
+					if (!isset($config['allowed_extensions'])){
+						$config['allowed_extensions'] = $this->allowed_extensions;
 					}
 
-
+					if (!preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$name)){
+						
+						return "Not valid filename";
+						
+					}
+						
+					$filename_array = explode(".", $name);
+					$type = $filename_array[1];
+					
 					$exists_filename = $this->file_exists_sha1($tablename, $this->checksum_sha1);
 					if ($exists_filename){
 
@@ -389,7 +395,7 @@ class records
 								$output_result .= "new directory created: $path";
 								@$result = move_uploaded_file($tmp_filename,$newfile);
 							}else{
-								$output_result .= ("folder not found<br />");
+								return "can't upload file. folder not found";
 							}
 						}
 

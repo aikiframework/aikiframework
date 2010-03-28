@@ -330,7 +330,7 @@ CREATE TABLE IF NOT EXISTS `aiki_config` (
   `config_type` varchar(255) default NULL,
   `config_data` mediumtext,
   PRIMARY KEY  (`config_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --------------------------------------------------------
 
@@ -339,7 +339,8 @@ INSERT INTO `aiki_config` (`config_id`, `app_id`, `config_type`, `config_data`) 
 (2, 0, \'database_settings\', \'a:6:{s:7:"db_type";s:5:"mysql";s:10:"disk_cashe";s:1:"1";s:13:"cache_timeout";s:2:"24";s:9:"cache_dir";s:5:"cache";s:13:"cache_queries";s:1:"1";s:16:"charset_encoding";s:4:"utf8";}\'),
 (3, 0, \'paths_settings\', \'a:1:{s:10:"top_folder";s:'.$system_folder_strlen.':"'.$system_folder.'";}\'),
 (4, 0, \'images_settings\', \'a:4:{s:7:"max_res";s:3:"650";s:20:"default_photo_module";s:18:"apps_photo_archive";s:23:"store_native_extensions";s:4:"true";s:13:"new_extension";s:5:".aiki";}\'),
-(5, 0, \'admin_settings\', \'a:1:{s:17:"show_edit_widgets";s:1:"0";}\');
+(5, 0, \'admin_settings\', \'a:1:{s:17:"show_edit_widgets";s:1:"0";}\'),
+(6, 0, \'upload_settings\', \'a:1:{s:18:"allowed_extensions";s:20:"jpg|gif|png|jpeg|svg";}\');
 
 --------------------------------------------------------
 
