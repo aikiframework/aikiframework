@@ -210,8 +210,8 @@ class records
 
 					case "full_path":
 						$full_path = $post[$intwalker[0]]; //get full path dir value
-						if (!$full_path){
-							$full_path = "upload/bank/"; //TODO Custom default upload folder
+						if (!$full_path and isset($config["upload_path"])){
+							$full_path = $config["upload_path"];
 							$post[$intwalker[0]] = $full_path;
 						}
 						break;
