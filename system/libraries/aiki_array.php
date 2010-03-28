@@ -124,7 +124,7 @@ class aiki_array
 
 					$outp_key = $_POST[$y.$arrykeys[$i]."_type"];
 
-					if ($outp_key != 'tablename' and $outp_key != 'pkey' and $outp_key != 'send_email' and $outp_key != 'unique_filename' and $outp_key != 'permission' and $outp_key != 'events' and $table == "aiki_forms"){
+					if ($outp_key != 'tablename' and $outp_key != 'pkey' and $outp_key != 'send_email' and $outp_key != 'permission' and $outp_key != 'events' and $table == "aiki_forms"){
 
 						$outp_key = $outp_key.$i;
 							
@@ -154,7 +154,6 @@ class aiki_array
 				<option value="pkey" >pkey</option>
 				<option value="send_email" >send_email</option>
 				<option value="tablename" >tablename</option>
-				<option value="unique_filename" >unique_filename</option>
 				<option value="filemanager" >filemanager</option>
 				<option value="permission" >permission</option>
 				<option value="events" >events</option>
@@ -187,7 +186,6 @@ class aiki_array
 				<option value="pkey" >pkey</option>
 				<option value="send_email" >send_email</option>
 				<option value="tablename" >tablename</option>
-				<option value="unique_filename" >unique_filename</option>
 				<option value="filemanager" >filemanager</option>
 				<option value="permission" >permission</option>
 				<option value="events" >events</option>
