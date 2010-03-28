@@ -542,6 +542,13 @@ $().ready(function() {
 		   urls_widgets_tree();
 	   });	   
 	   
+	   
+	   $("#remove").live('click', function(event){
+		   
+		   $(this).parent().remove();
+		   
+		   return false;
+	   });	 	   
 	   	   
 	   
 });

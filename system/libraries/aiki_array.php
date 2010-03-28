@@ -137,6 +137,8 @@ class aiki_array
 				$toreplace = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
 				$display = str_replace($toreplace, "", $arrykeys[$i]);
 
+				$html_form .= '<div id="'.$y.$arrykeys[$i].'">';
+
 				if ($table == "aiki_forms"){
 					$html_form .= '<select name="'.$y.$arrykeys[$i]."_type".'" >
 				<option value="'.$display.'" selected="selected">'.$display.'</option>
@@ -164,7 +166,7 @@ class aiki_array
 
 				}
 
-				$html_form .= "<input type='text' name=\"".$y.$arrykeys[$i]."\" value=\"".$field."\" size='35'><br /><br />";
+				$html_form .= "<input type='text' name=\"".$y.$arrykeys[$i]."\" value=\"".$field."\" size='35'><a id=\"remove\" href=\"#\">Delete</a><br /><br /></div>";
 
 				$i++;
 			}
@@ -191,18 +193,23 @@ class aiki_array
 				<option value="events" >events</option>
 				</select>';	
 			}else{
-				$html_form .= "<input type='text' name=\"left_$newfield\" value=\"\" size='25'></td></tr>";
+				$html_form .= "<input type='text' name=\"left_$newfield\" value=\"\" size='25'>";
 			}
-			$html_form .= "<input type='text' name=\"right_$newfield\" value=\"\" size='35'></td></tr>";
+			$html_form .= "<input type='text' name=\"right_$newfield\" value=\"\" size='35'>";
 
 			$y++;
 			$i=0;
 			if (isset($_POST['edit_array'])){
 
-
 				if ($_POST['left_'.$newfield] and $_POST['right_'.$newfield]){
 					$output_array[$_POST['left_'.$newfield]] = $_POST['right_'.$newfield];
 					$this->new_array_field = true;
+				}
+
+				foreach($output_array as $key => $value) {
+					if($value == "") {
+						unset($output_array[$key]);
+					}
 				}
 
 				$output_array = serialize($output_array);
