@@ -72,8 +72,6 @@ class aiki
 				$arrykeys = array_keys($this->aikiarray);
 				foreach($this->aikiarray as $field)
 				{
-					$field = explode("|", $field);
-					$field = $field[0];
 					$config[$arrykeys[$i]] = $field;
 					$i++;
 				}
