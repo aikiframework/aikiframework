@@ -612,6 +612,7 @@ class CreateLayout
 
 			}else{
 
+				$widget->widget = $this->parsDBpars($widget->widget, '');
 				$widget->widget = $this->noaiki($widget->widget);
 				$widget->widget  = $aiki->url->apply_url_on_query($widget->widget);
 				$widget->widget = $aiki->security->inlinePermissions($widget->widget);
@@ -658,9 +659,6 @@ class CreateLayout
 			}
 
 			$processed_widget = preg_replace("/\(\#\(header\:(.*)\)\#\)/U",'', $processed_widget);
-
-			//apply cached vars on widget
-			$processed_widget = $this->parsDBpars($processed_widget, '');
 
 			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->parser->process($processed_widget);
