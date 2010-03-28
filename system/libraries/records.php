@@ -375,7 +375,8 @@ class records
 						return "Sorry the same file is already uploaded $exists_filename";
 					}
 
-					if (!file_exists($path.$name) or !$this->record_exists($name, $tablename, $intwalker[0])){ //check if filename already exists
+					//check if filename already exists
+					if (!file_exists($path.$name) and !$this->record_exists($name, $tablename, $intwalker[0])){ 
 						$newfile = $path.$name;
 
 					}else{
