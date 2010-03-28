@@ -629,6 +629,7 @@ class CreateLayout
 			}
 
 
+			$processed_widget = $this->parsDBpars($processed_widget, '');
 			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
 
