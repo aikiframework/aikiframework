@@ -211,7 +211,7 @@ class records
 					case "full_path":
 						$full_path = $post[$intwalker[0]]; //get full path dir value
 						if (!$full_path and isset($config["upload_path"])){
-							$full_path = $config["upload_path"];
+							$full_path = $aiki->processVars($config["upload_path"]);
 							$post[$intwalker[0]] = $full_path;
 						}
 						break;
@@ -321,9 +321,9 @@ class records
 			}
 
 
-			if (!isset($full_path)){
-				//TODO: fix this
-				$full_path = "people/$membership->username/";
+			if (!isset($full_path) and isset($config["upload_path"])){
+				$full_path = $aiki->processVars($config["upload_path"]);
+				//$full_path = "people/$membership->username/";
 			}
 
 			if (isset($unique_filename) and isset($intwalker[2]) and $unique_filename == $intwalker[2] and $full_path){ //unique_filename processing
@@ -367,7 +367,10 @@ class records
 					}
 						
 					$filename_array = explode(".", $name);
-					$type = $filename_array[1];
+					foreach ($filename_array as $type_value){
+						//just an empty loop to get the latest match
+					}
+					$type = $type_value;
 					
 					$exists_filename = $this->file_exists_sha1($tablename, $this->checksum_sha1);
 					if ($exists_filename){
