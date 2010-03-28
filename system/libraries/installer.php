@@ -358,8 +358,8 @@ CREATE TABLE IF NOT EXISTS `aiki_dictionary` (
 
 INSERT INTO `aiki_dictionary` (`term_id`, `app_id`, `short_term`, `lang_english`, `lang_arabic`, `lang_german`) VALUES
 (1, 0, \'encoding\', \'utf-8\', \'utf-8\', \'utf-8\'),
-(2, 0, \'added_successfully\', \'Added successfully\', \'تمت الإضافة بنجاح\', \'\'),
-(3, 0, \'error_inserting_into_database\', \'Error inserting into database\', \'حصل خطأ في الإدخال إلى قاعدة البيانات\', \'\');
+(2, 0, \'added_successfully\', \'Added successfully\', \'\', \'\'),
+(3, 0, \'error_inserting_into_database\', \'Error inserting into database\', \'\', \'\');
 
 --------------------------------------------------------
 
@@ -426,7 +426,7 @@ CREATE TABLE IF NOT EXISTS `aiki_languages` (
 --------------------------------------------------------
 
 INSERT INTO `aiki_languages` (`id`, `name`, `sys_name`, `short_name`, `dir`, `align`, `is_default`) VALUES
-(1, \'عربي\', \'arabic\', \'ar\', \'rtl\', \'right\', 0),
+(1, \'Arabic\', \'arabic\', \'ar\', \'rtl\', \'right\', 0),
 (2, \'English\', \'english\', \'en\', \'ltr\', \'left\', 1),
 (3, \'German\', \'german\', \'de\', \'ltr\', \'left\', 0);
 
