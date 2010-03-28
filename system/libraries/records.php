@@ -209,7 +209,8 @@ class records
 				switch ($intwalker['2']){
 
 					case "full_path":
-						$full_path = $post[$intwalker[0]]; //get full path dir value
+						//get full path dir value from post
+						$full_path = $post[$intwalker[0]]; 
 						if (!$full_path and isset($config["upload_path"])){
 							$full_path = $aiki->processVars($config["upload_path"]);
 							$post[$intwalker[0]] = $full_path;
@@ -323,7 +324,6 @@ class records
 
 			if (!isset($full_path) and isset($config["upload_path"])){
 				$full_path = $aiki->processVars($config["upload_path"]);
-				//$full_path = "people/$membership->username/";
 			}
 
 			if (isset($unique_filename) and isset($intwalker[2]) and $unique_filename == $intwalker[2] and $full_path){ //unique_filename processing
