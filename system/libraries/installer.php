@@ -625,7 +625,7 @@ CREATE TABLE IF NOT EXISTS `apps_photo_archive` (
   `right_term` varchar(255) NOT NULL,
   `people_in_photo` varchar(255) NOT NULL,
   `scene` varchar(255) NOT NULL,
-  `full_path` varchar(255) NOT NULL default \'upload/dsyria/\',
+  `full_path` varchar(255) NOT NULL default \'assets/uploads/\',
   `resolution` varchar(255) NOT NULL,
   `depth` varchar(255) NOT NULL,
   `color_space` varchar(255) NOT NULL,
