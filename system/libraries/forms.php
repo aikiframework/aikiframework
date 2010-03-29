@@ -16,7 +16,6 @@ class forms
 
 	public $submit_button;
 
-
 	public function displayForms($text ){
 		global $db, $aiki;
 
@@ -41,7 +40,7 @@ class forms
 					switch ($form_sides['0']){
 
 						case "add":
-								
+
 							if (isset($form_sides['2']) and $form_sides['2'] == "ajax"){
 								$form_javascript =
 '<script type="text/javascript">
@@ -168,10 +167,10 @@ $("#new_record_form").ajaxForm(function() {
 				//To stop the L10n Function
 				//TODO: apply such function to stop other types of aiki markup check input.php line 29
 				//instead preg_matching forms
-				
+
 				$form_data->$intwalker[0] = str_replace("_", "&#95;", $form_data->$intwalker[0]);
 			}
-				
+
 			if (!isset($get_permission_and_man_info[1]) or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level){
 
 				if (!isset($_POST[$intwalker[0]])){
@@ -280,6 +279,57 @@ $("#new_record_form").ajaxForm(function() {
 							case "unique_filename":
 								$form .= '<h2>'.$intwalker[1].'</h2><input type="file" name="'.$intwalker[0].'">';
 								$form .= ("<input type=\"hidden\" name=\"unique_filename\" value=\"unique_filename\">");
+								break;
+
+							case "plupload":
+								if (!isset($config["plupload"])){
+									$config["plupload"] = "html5";
+								}
+
+								$secret_key = $_SESSION['aikiuser'];
+
+								$form .= '
+<script type="text/javascript" src="'.$config['url'].'assets/javascript/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="'.$config['url'].'assets/javascript/plupload/jquery.plupload.queue.min.js"></script>
+<link rel="stylesheet" href="'.$config['url'].'assets/javascript/plupload/plupload.queue.css" type="text/css" media="screen" />
+<script type=\'text/javascript\'>								
+$(function() {
+	$("#'.$intwalker[0].'").pluploadQueue({
+		runtimes : \''.$config["plupload"].'\',
+        url : \''.$config['url'].'assets/javascript/plupload/upload.php?key='.$secret_key.'\',
+		max_file_size : \'10mb\',
+		chunk_size : \'1mb\',
+		filters : [
+			{title : "Image files", extensions : "jpg,gif,png"},
+			{title : "Zip files", extensions : "zip"}
+		]
+	});
+
+	$(\'form\').submit(function(e) {
+	    var uploader = $(\'#'.$intwalker[0].'\').pluploadQueue();
+        if (uploader.total.uploaded == 0) {
+	            // Files in queue upload them first
+	            if (uploader.files.length > 0) {
+	                // When all files are uploaded submit form
+	                uploader.bind(\'UploadProgress\', function() {
+	                    if (uploader.total.uploaded == uploader.files.length)
+	                        $(\'form\').submit();
+	                });
+	                uploader.start();
+	            } else
+	                alert(\'You must at least upload one file.\');
+	            e.preventDefault();
+	        }
+	    });	
+	    
+$(\'.plupload_start\').remove();
+	
+});							
+</script>
+';
+								$form .= '<h2>'.$intwalker[1].'</h2><div style="width: 450px; height: 330px;" id="'.$intwalker[0].'"></div>';
+								$form .= ("<input type=\"hidden\" name=\"multifiles_plupload\" value=\"plupload\">");
+
 								break;
 
 						}

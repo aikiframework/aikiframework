@@ -86,7 +86,7 @@ class records
 
 
 	public function insert_from_form_to_db($input_data){
-		global $db, $aiki, $membership, $config;
+		global $db, $aiki, $membership, $config, $system_folder;
 
 		$vars = explode('|||||', $input_data);
 		$post = $vars[0];
@@ -162,6 +162,8 @@ class records
 		if (isset($post['unique_filename']))
 		$unique_filename = $_REQUEST['unique_filename'];
 
+		if (isset($post['multifiles_plupload']))
+		$multifiles_plupload = $post['multifiles_plupload'];
 
 
 		$insertQuery = "insert into $tablename ";
@@ -210,7 +212,7 @@ class records
 
 					case "full_path":
 						//get full path dir value from post
-						$full_path = $post[$intwalker[0]]; 
+						$full_path = $post[$intwalker[0]];
 						if (!$full_path and isset($config["upload_path"])){
 							$full_path = $aiki->processVars($config["upload_path"]);
 							$post[$intwalker[0]] = $full_path;
@@ -318,6 +320,21 @@ class records
 						}
 						break;
 
+					case "plupload":
+
+						$plupload_files = array();
+
+						if (isset($post['multifiles_plupload']) and isset($post['file_count']) and $post['file_count'] > 0){
+
+							for ($i=0; $i<$post['file_count']; $i++){
+								if (isset($post[$intwalker[0]."_".$i."_status"]) and $post[$intwalker[0]."_".$i."_status"] == "done"){
+									$plupload_files[$i] = $post[$intwalker[0]."_".$i."_name"];
+								}
+							}
+							$post[$intwalker[0]] = "__FILE__";
+						}
+						break;
+
 				}
 			}
 
@@ -325,7 +342,7 @@ class records
 			if (!isset($full_path) and isset($config["upload_path"])){
 				$full_path = $aiki->processVars($config["upload_path"]);
 			}
-
+	
 			if (isset($unique_filename) and isset($intwalker[2]) and $unique_filename == $intwalker[2] and $full_path){ //unique_filename processing
 
 				$uploadexploded = explode(":", $intwalker[0]);
@@ -361,17 +378,17 @@ class records
 					}
 
 					if (!preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$name)){
-						
+
 						return "Not valid filename";
-						
+
 					}
-						
+
 					$filename_array = explode(".", $name);
 					foreach ($filename_array as $type_value){
 						//just an empty loop to get the latest match
 					}
 					$type = $type_value;
-					
+
 					$exists_filename = $this->file_exists_sha1($tablename, $this->checksum_sha1);
 					if ($exists_filename){
 
@@ -379,7 +396,7 @@ class records
 					}
 
 					//check if filename already exists
-					if (!file_exists($path.$name) and !$this->record_exists($name, $tablename, $intwalker[0])){ 
+					if (!file_exists($path.$name) and !$this->record_exists($name, $tablename, $intwalker[0])){
 						$newfile = $path.$name;
 
 					}else{
@@ -448,7 +465,16 @@ class records
 			$insertQuery = str_replace(', )', ')', $insertQuery);
 			$insertQuery = str_replace("'NOW()'", 'NOW()', $insertQuery);
 			//die("$insertQuery");
-			$insertResult = $db->query($insertQuery);
+
+			//handle multi files insert query
+			if (isset($post['multifiles_plupload']) and isset($post['file_count']) and $post['file_count'] > 0){
+				for ($i=0; $i<$post['file_count']; $i++){
+					$multi_files_query = str_replace('__FILE__', $plupload_files[$i], $insertQuery);
+					$insertResult = $db->query($multi_files_query);
+				}
+			}else{
+				$insertResult = $db->query($insertQuery);
+			}
 
 			if ($insertResult){
 
