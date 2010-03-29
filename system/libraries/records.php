@@ -324,9 +324,9 @@ class records
 
 						$plupload_files = array();
 
-						if (isset($post['multifiles_plupload']) and isset($post['file_count']) and $post['file_count'] > 0){
+						if (isset($post['multifiles_plupload']) and isset($post[$intwalker[0].'_count']) and $post[$intwalker[0].'_count'] > 0){
 
-							for ($i=0; $i<$post['file_count']; $i++){
+							for ($i=0; $i<$post[$intwalker[0].'_count']; $i++){
 								if (isset($post[$intwalker[0]."_".$i."_status"]) and $post[$intwalker[0]."_".$i."_status"] == "done"){
 									$plupload_files[$i] = $post[$intwalker[0]."_".$i."_name"];
 								}
@@ -467,8 +467,8 @@ class records
 			//die("$insertQuery");
 
 			//handle multi files insert query
-			if (isset($post['multifiles_plupload']) and isset($post['file_count']) and $post['file_count'] > 0){
-				for ($i=0; $i<$post['file_count']; $i++){
+			if (isset($post['multifiles_plupload']) and isset($post[$intwalker[0].'_count']) and $post[$intwalker[0].'_count'] > 0){
+				for ($i=0; $i<$post[$intwalker[0].'_count']; $i++){
 					$multi_files_query = str_replace('__FILE__', $plupload_files[$i], $insertQuery);
 					$insertResult = $db->query($multi_files_query);
 				}
