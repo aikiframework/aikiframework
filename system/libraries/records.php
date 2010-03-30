@@ -483,13 +483,13 @@ class records
 								$insertResult = $db->query($multi_files_query);
 								$num_of_uploaded_files++;
 							}else{
-								$not_uploaded_output .= "$plupload_files[$i] (File already exists)<br />";
+								$not_uploaded_output .= "$plupload_files[$i] <small>(File already exists)</small><br />";
 							}
 						}else{
-							$not_uploaded_output .= "$plupload_files[$i] (Not allowed file format)<br />";
+							$not_uploaded_output .= "$plupload_files[$i] <small>(Not allowed file name)</small><br />";
 						}
 					}else{
-						$not_uploaded_output .= "$plupload_files[$i] (File upload fail)<br />";
+						$not_uploaded_output .= "$plupload_files[$i] <small>(File upload fail)</small><br />";
 					}
 				}
 			}else{
@@ -500,12 +500,12 @@ class records
 
 				$output_result .= "__added_successfully__<br />";
 
-				if (isset($num_of_uploaded_files)){
+				if (isset($num_of_uploaded_files) and $num_of_uploaded_files){
 					$output_result .= "uploaded <b>$num_of_uploaded_files</b> files out of <b>$total_uploaded_files</b> selected files<br /><br />";
 					$output_result .= "<b>Uploaded files:</b><br />".$files_names_output;
 				}
 
-				if (isset($not_uploaded_output)){
+				if (isset($not_uploaded_output) and $not_uploaded_output){
 					$output_result .= "<br /><b>NOT uploaded files:</b><br />".$not_uploaded_output;
 				}
 					
@@ -551,7 +551,7 @@ class records
 			}else{
 				$output_result = "__error_inserting_into_database__<br>";
 				$output_result .= "Nothing uploaded <br />";
-				if (isset($not_uploaded_output)){
+				if (isset($not_uploaded_output) and $not_uploaded_output){
 					$output_result .= "<br /><b>NOT uploaded files:</b><br />".$not_uploaded_output;
 				}
 			}
