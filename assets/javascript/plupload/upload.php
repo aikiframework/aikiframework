@@ -27,6 +27,11 @@ if ($_GET['key'] != $_SESSION['aikiuser']){
 	die("Not authorized");
 }
 
+$username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aikiuser']."'");
+if (!$username){
+	die("Not authorized");
+}
+
 
 if (isset($config["plupload_path"])){
 	$targetDir = $system_folder."/";
