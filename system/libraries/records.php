@@ -474,8 +474,10 @@ class records
 					if (isset($post[$intwalker[0]."_".$i."_status"]) and $post[$intwalker[0]."_".$i."_status"] == "done"){
 
 						if (preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$plupload_files[$i])){
-							$insertResult = $db->query($multi_files_query);
-							$num_of_uploaded_files++;
+							if (!$this->record_exists($plupload_files[$i], $tablename, $intwalker[0])){
+								$insertResult = $db->query($multi_files_query);
+								$num_of_uploaded_files++;
+							}
 						}
 					}
 				}
@@ -483,14 +485,14 @@ class records
 				$insertResult = $db->query($insertQuery);
 			}
 
-			if ($insertResult){
+			if (isset($insertResult) and $insertResult){
 
 				$output_result .= "__added_successfully__<br />";
 
 				if (isset($num_of_uploaded_files)){
 					$output_result .= "uploaded <b>$num_of_uploaded_files</b> files";
 				}
-				
+
 				if ($send_email){
 
 					$send_email = explode("|", $send_email);
@@ -531,7 +533,8 @@ class records
 					$output_result .= "<p dir='ltr'>".$name."</p>";
 				}
 			}else{
-				$output_result = "__error_inserting_into_database__";
+				$output_result = "__error_inserting_into_database__<br>";
+				$output_result .= "No Files uploaded";
 			}
 
 
