@@ -340,7 +340,7 @@ INSERT INTO `aiki_config` (`config_id`, `app_id`, `config_type`, `config_data`) 
 (3, 0, \'paths_settings\', \'a:1:{s:10:"top_folder";s:'.$system_folder_strlen.':"'.$system_folder.'";}\'),
 (4, 0, \'images_settings\', \'a:4:{s:7:"max_res";s:3:"650";s:20:"default_photo_module";s:18:"apps_photo_archive";s:23:"store_native_extensions";s:4:"true";s:13:"new_extension";s:5:".aiki";}\'),
 (5, 0, \'admin_settings\', \'a:1:{s:17:"show_edit_widgets";s:1:"0";}\'),
-(6, 0, \'upload_settings\', \'a:4:{s:18:"allowed_extensions";s:20:"jpg|gif|png|jpeg|svg";s:11:"upload_path";s:15:"assets/uploads/";s:8:"plupload";s:5:"html5";s:13:"plupload_path";s:15:"assets/uploads/";}\');
+(6, 0, \'upload_settings\', \'a:4:{s:18:"allowed_extensions";s:20:"jpg|gif|png|jpeg|svg";s:11:"upload_path";s:15:"assets/uploads/";s:22:"plupload_max_file_size";s:4:"10mb";s:13:"plupload_path";s:15:"assets/uploads/";}\');
 
 --------------------------------------------------------
 

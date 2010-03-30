@@ -286,6 +286,12 @@ $("#new_record_form").ajaxForm(function() {
 									$config['plupload_max_file_size'] = "10mb";
 								}
 
+								if (!isset($config['allowed_extensions'])){
+									$config['allowed_extensions'] = 'jpg|gif|png|jpeg|svg';
+								}
+								
+								$extensions = str_replace('|', ',', $config['allowed_extensions']);
+
 								$secret_key = $_SESSION['aikiuser'];
 
 								$form .= '
@@ -303,8 +309,7 @@ $(function() {
 		chunk_size : \'1mb\',
 		flash_swf_url : \''.$config['url'].'assets/javascript/plupload/plupload.flash.swf\',
 		filters : [
-			{title : "Image files", extensions : "jpg,gif,png"},
-			{title : "Zip files", extensions : "zip"}
+			{title : "Image files", extensions : "'.$extensions.'"}
 		]
 	});
 
