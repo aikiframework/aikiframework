@@ -326,6 +326,8 @@ class records
 
 						if (isset($post['multifiles_plupload']) and isset($post[$intwalker[0].'_count']) and $post[$intwalker[0].'_count'] > 0){
 
+							$total_uploaded_files = $post[$intwalker[0].'_count'];
+
 							for ($i=0; $i<$post[$intwalker[0].'_count']; $i++){
 								if (isset($post[$intwalker[0]."_".$i."_status"]) and $post[$intwalker[0]."_".$i."_status"] == "done"){
 									$plupload_files[$i] = $post[$intwalker[0]."_".$i."_name"];
@@ -469,16 +471,25 @@ class records
 			//handle multi files insert query
 			if (isset($post['multifiles_plupload']) and isset($post[$intwalker[0].'_count']) and $post[$intwalker[0].'_count'] > 0){
 				$num_of_uploaded_files = 0;
+				$files_names_output = "";
+				$not_uploaded_output = "";
 				for ($i=0; $i<$post[$intwalker[0].'_count']; $i++){
 					$multi_files_query = str_replace('__FILE__', $plupload_files[$i], $insertQuery);
 					if (isset($post[$intwalker[0]."_".$i."_status"]) and $post[$intwalker[0]."_".$i."_status"] == "done"){
 
 						if (preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$plupload_files[$i])){
 							if (!$this->record_exists($plupload_files[$i], $tablename, $intwalker[0])){
+								$files_names_output .= "$plupload_files[$i] <br />";
 								$insertResult = $db->query($multi_files_query);
 								$num_of_uploaded_files++;
+							}else{
+								$not_uploaded_output .= "$plupload_files[$i] (File already exists)<br />";
 							}
+						}else{
+							$not_uploaded_output .= "$plupload_files[$i] (Not allowed file format)<br />";
 						}
+					}else{
+						$not_uploaded_output .= "$plupload_files[$i] (File upload fail)<br />";
 					}
 				}
 			}else{
@@ -490,9 +501,14 @@ class records
 				$output_result .= "__added_successfully__<br />";
 
 				if (isset($num_of_uploaded_files)){
-					$output_result .= "uploaded <b>$num_of_uploaded_files</b> files";
+					$output_result .= "uploaded <b>$num_of_uploaded_files</b> files out of <b>$total_uploaded_files</b> selected files<br /><br />";
+					$output_result .= "<b>Uploaded files:</b><br />".$files_names_output;
 				}
 
+				if (isset($not_uploaded_output)){
+					$output_result .= "<br /><b>NOT uploaded files:</b><br />".$not_uploaded_output;
+				}
+					
 				if ($send_email){
 
 					$send_email = explode("|", $send_email);
@@ -534,7 +550,7 @@ class records
 				}
 			}else{
 				$output_result = "__error_inserting_into_database__<br>";
-				$output_result .= "No Files uploaded";
+				$output_result .= "Nothing uploaded";
 			}
 
 
