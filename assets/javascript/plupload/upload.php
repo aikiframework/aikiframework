@@ -70,7 +70,7 @@ if (!preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$
 }
 
 if (file_exists($targetDir.$fileName)){
-	die ("Sorry the same file exists");
+	die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "The same file already exists."}, "id" : "id"}');
 }
 
 // Create target dir
