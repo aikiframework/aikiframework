@@ -282,23 +282,26 @@ $("#new_record_form").ajaxForm(function() {
 								break;
 
 							case "plupload":
-								if (!isset($config["plupload"])){
-									$config["plupload"] = "html5";
+								if (!isset($config['plupload_max_file_size'])){
+									$config['plupload_max_file_size'] = "10mb";
 								}
 
 								$secret_key = $_SESSION['aikiuser'];
 
 								$form .= '
+<script type="text/javascript" src="'.$config['url'].'assets/javascript/plupload/gears_init.js"></script>
+<script type="text/javascript" src="'.$config['url'].'assets/javascript/plupload/browserplus-min.js"></script>
 <script type="text/javascript" src="'.$config['url'].'assets/javascript/plupload/plupload.full.min.js"></script>
 <script type="text/javascript" src="'.$config['url'].'assets/javascript/plupload/jquery.plupload.queue.min.js"></script>
 <link rel="stylesheet" href="'.$config['url'].'assets/javascript/plupload/plupload.queue.css" type="text/css" media="screen" />
 <script type=\'text/javascript\'>								
 $(function() {
 	$("#'.$intwalker[0].'").pluploadQueue({
-		runtimes : \''.$config["plupload"].'\',
+		runtimes : \'html5,gears,flash,browserplus\',
         url : \''.$config['url'].'assets/javascript/plupload/upload.php?key='.$secret_key.'\',
-		max_file_size : \'10mb\',
+		max_file_size : \''.$config['plupload_max_file_size'].'\',
 		chunk_size : \'1mb\',
+		flash_swf_url : \''.$config['url'].'assets/javascript/plupload/plupload.flash.swf\',
 		filters : [
 			{title : "Image files", extensions : "jpg,gif,png"},
 			{title : "Zip files", extensions : "zip"}
