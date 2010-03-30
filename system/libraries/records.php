@@ -342,7 +342,7 @@ class records
 			if (!isset($full_path) and isset($config["upload_path"])){
 				$full_path = $aiki->processVars($config["upload_path"]);
 			}
-	
+
 			if (isset($unique_filename) and isset($intwalker[2]) and $unique_filename == $intwalker[2] and $full_path){ //unique_filename processing
 
 				$uploadexploded = explode(":", $intwalker[0]);
@@ -468,9 +468,16 @@ class records
 
 			//handle multi files insert query
 			if (isset($post['multifiles_plupload']) and isset($post[$intwalker[0].'_count']) and $post[$intwalker[0].'_count'] > 0){
+				$num_of_uploaded_files = 0;
 				for ($i=0; $i<$post[$intwalker[0].'_count']; $i++){
 					$multi_files_query = str_replace('__FILE__', $plupload_files[$i], $insertQuery);
-					$insertResult = $db->query($multi_files_query);
+					if (isset($post[$intwalker[0]."_".$i."_status"]) and $post[$intwalker[0]."_".$i."_status"] == "done"){
+
+						if (preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$plupload_files[$i])){
+							$insertResult = $db->query($multi_files_query);
+							$num_of_uploaded_files++;
+						}
+					}
 				}
 			}else{
 				$insertResult = $db->query($insertQuery);
@@ -480,6 +487,10 @@ class records
 
 				$output_result .= "__added_successfully__<br />";
 
+				if (isset($num_of_uploaded_files)){
+					$output_result .= "uploaded <b>$num_of_uploaded_files</b> files";
+				}
+				
 				if ($send_email){
 
 					$send_email = explode("|", $send_email);
