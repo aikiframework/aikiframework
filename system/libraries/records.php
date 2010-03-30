@@ -550,7 +550,10 @@ class records
 				}
 			}else{
 				$output_result = "__error_inserting_into_database__<br>";
-				$output_result .= "Nothing uploaded";
+				$output_result .= "Nothing uploaded <br />";
+				if (isset($not_uploaded_output)){
+					$output_result .= "<br /><b>NOT uploaded files:</b><br />".$not_uploaded_output;
+				}
 			}
 
 
