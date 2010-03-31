@@ -38,7 +38,6 @@ class records
 		}else{
 			return false;
 		}
-
 	}
 
 	public function file_exists_sha1($tablename, $sha1){
@@ -476,7 +475,6 @@ class records
 				for ($i=0; $i<$post[$intwalker[0].'_count']; $i++){
 					$multi_files_query = str_replace('__FILE__', $plupload_files[$i], $insertQuery);
 					if (isset($post[$intwalker[0]."_".$i."_status"]) and $post[$intwalker[0]."_".$i."_status"] == "done"){
-
 						if (preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$plupload_files[$i])){
 							if (!$this->record_exists($plupload_files[$i], $tablename, $intwalker[0])){
 								$files_names_output .= "$plupload_files[$i] <br />";
@@ -496,7 +494,7 @@ class records
 				$insertResult = $db->query($insertQuery);
 			}
 
-			if (isset($insertResult) and $insertResult){
+			if (isset($insertResult)){
 
 				$output_result .= "__added_successfully__<br />";
 

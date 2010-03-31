@@ -313,7 +313,7 @@ $(function() {
 		]
 	});
 
-	$(\'form\').submit(function(e) {
+	$(\'#new_record_form\').submit(function(e) {
 	    var uploader = $(\'#'.$intwalker[0].'\').pluploadQueue();
         if (uploader.total.uploaded == 0) {
 	            // Files in queue upload them first
@@ -321,7 +321,7 @@ $(function() {
 	                // When all files are uploaded submit form
 	                uploader.bind(\'UploadProgress\', function() {
 	                    if (uploader.total.uploaded == uploader.files.length)
-	                        $(\'form\').submit();
+	                        $(\'#new_record_form\').submit();
 	                });
 	                uploader.start();
 	            } else
@@ -330,7 +330,6 @@ $(function() {
 	        }
 	    });	
 	    
-$(\'.plupload_start\').remove();
 	
 });							
 </script>
