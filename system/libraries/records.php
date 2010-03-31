@@ -773,7 +773,7 @@ class records
 
 
 	public function edit_in_place($text, $widget_value){
-		global $aiki,$db, $membership;
+		global $aiki,$db, $membership, $layout;
 
 		$edit_matchs = preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
 
@@ -838,7 +838,7 @@ class records
 
 						if (!isset($output) or !$output){
 							$output = "(($field))";
-							$output = $this->parsDBpars($output, $widget_value);
+							//$output = $layout->parsDBpars($output, $widget_value);
 						}
 
 					}else{
