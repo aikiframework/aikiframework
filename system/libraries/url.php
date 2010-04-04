@@ -22,7 +22,6 @@ class url
 
 	public function url(){
 
-
 		if (isset($_GET["pretty"])){
 			$pretty = $_GET["pretty"];
 			$this->url = $pretty;
@@ -37,8 +36,6 @@ class url
 		}
 
 		$this->url_count = count($this->url);
-
-
 	}
 
 
@@ -90,19 +87,13 @@ class url
 
 				$i=0;
 
-
-
 				foreach ($comapre as $operator){
 
 					if (isset ($second_side[$i])){
 						if (!preg_match("/^$operator$/D", "$second_side[$i]")){
-
 							$do_not_display_widget = 1;
-
 						}else{
-
 							$display_widget = 1;
-
 						}
 					}
 
@@ -117,7 +108,6 @@ class url
 
 				$display_widget = '';
 				$do_not_display_widget = '';
-
 
 			}
 
