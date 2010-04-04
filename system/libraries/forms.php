@@ -578,7 +578,7 @@ $(function() {
 		//if table has records
 		$table_info = $db->get_results("SELECT * FROM $table limit 1");
 
-		//TODO: try again maybe the table is empty
+		//TODO: find a way to get the info if the table is empty
 
 		if ($table_info){
 
