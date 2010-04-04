@@ -34,9 +34,6 @@ class output
 		<meta name="generator" content="Aikiframework '.AIKI_VERSION.'" />
 		';
 
-		//a fix for the w3  Markup Validation Service
-		$header = str_replace("&", "&amp;", $header);
-
 		return $header;
 
 	}
@@ -80,6 +77,9 @@ class output
 		$header .= "</head>";
 
 		$header .= "\n<body>\n";
+
+		//a fix for the w3  Markup Validation Service
+		$header = str_replace("&", "&amp;", $header);
 
 		return $header;
 
