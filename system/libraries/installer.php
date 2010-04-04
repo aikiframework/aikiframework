@@ -352,14 +352,19 @@ CREATE TABLE IF NOT EXISTS `aiki_dictionary` (
   `lang_arabic` text NOT NULL,
   `lang_german` text NOT NULL,
   PRIMARY KEY  (`term_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --------------------------------------------------------
 
 INSERT INTO `aiki_dictionary` (`term_id`, `app_id`, `short_term`, `lang_english`, `lang_arabic`, `lang_german`) VALUES
 (1, 0, \'encoding\', \'utf-8\', \'utf-8\', \'utf-8\'),
 (2, 0, \'added_successfully\', \'Added successfully\', \'\', \'\'),
-(3, 0, \'error_inserting_into_database\', \'Error inserting into database\', \'\', \'\');
+(3, 0, \'error_inserting_into_database\', \'Error inserting into database\', \'\', \'\'),
+(4, 0, \'next\', \'Next >\', \'\', \'\'),
+(5, 0, \'previous\', \'< Previous\', \'\', \'\'),
+(6, 0, \'move_to_page\', \'Move to page:\', \'\', \'\'),
+(7, 0, \'first_page\', \'<< First page\', \'\', \'\'),
+(8, 0, \'last_page\', \'Last page >>\', \'\', \'\');
 
 --------------------------------------------------------
 

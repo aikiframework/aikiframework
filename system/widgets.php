@@ -424,12 +424,12 @@ class CreateLayout
 						$pagination = '';
 						$page2 = $page;
 						$pagination .= "<br />
-			 <p class='pagination'>Move to page:<br />";
+			 <p class='pagination'>__move_to_page__<br />";
 
 						if ($page){
 
 							$previous = str_replace("[page]", $page, $widget->link_example);
-							$pagination .= "<a style='letter-spacing:0px;' href=\"$previous\"><b>< Previous</b></a>";
+							$pagination .= "<a style='letter-spacing:0px;' href=\"$previous\"><b>__previous__</b></a>";
 
 						}
 
@@ -487,7 +487,7 @@ class CreateLayout
 						if( $page+2 != ($numpages)) {
 
 							$next = str_replace("[page]", $page + 2, $widget->link_example);
-							$pagination .= "<a style='letter-spacing:0px;' href=\"$next\"><b>Next ></b></a>";
+							$pagination .= "<a style='letter-spacing:0px;' href=\"$next\"><b>__next__</b></a>";
 
 						}
 
@@ -495,12 +495,12 @@ class CreateLayout
 
 						if( $page ) {
 							$first_page = str_replace("[page]", '1', $widget->link_example);
-							$pagination .= "<a style='letter-spacing:0px;' href=\"$first_page\"><small><< First page</small></a>  ";
+							$pagination .= "<a style='letter-spacing:0px;' href=\"$first_page\"><small>__first_page__</small></a>  ";
 						}
 
 						if( $page != ($numpages-2) ) {
 							$last_page = str_replace("[page]", $full_numb_of_pages -1, $widget->link_example);
-							$pagination .= "<a style='letter-spacing:0px;' href=\"$last_page\"><small>Last page >></small></a>";
+							$pagination .= "<a style='letter-spacing:0px;' href=\"$last_page\"><small>__last_page__</small></a>";
 						}
 
 						$pagination .= "</p>";
