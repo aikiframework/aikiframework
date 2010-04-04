@@ -152,21 +152,21 @@ legend {
 <div id="stylized" class="myform">';
 if (!isset($_POST['db_type']) or !isset($_POST['db_host']) or !isset($_POST['db_name']) or !isset($_POST['db_user'])){
 	echo '
-<p>This will guide you throw this ONE STEP installer
+<p>ONE STEP installer guide
 <br />
-before we start you need to check the following for:
-<br />
-<br />
-1- please make sure that <b>'.$system_folder.'</b> has script write permissions that is: 777 ( to create config.php and .htaccess inside otherwise you will have to create them manulay)
+before we start you need the following:
 <br />
 <br />
-2- please create an empty database, it will be great if you set the connection collation to utf8_general_ci.
+1- <b>'.$system_folder.'</b> must have script write permissions: 777 ( to create config.php and .htaccess )
 <br />
 <br />
-3- make sure you are using php 5.1 or above
+2- An empty database, with collation set to utf8_general_ci.
 <br />
 <br />
-4- please enable mod_rewrite inside your apache2 httpd.conf  
+3- PHP 5.1 or above and apache2.
+<br />
+<br />
+4- mod_rewrite must be enabled inside apache2 httpd.conf  
 </p>	
 	
 <form method="post" id="form">
