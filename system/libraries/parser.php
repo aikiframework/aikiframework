@@ -92,52 +92,54 @@ class parser extends aiki
 								break;
 						}
 
-						foreach ($xml_items as $item) {
+						if ($xml_items){
+							foreach ($xml_items as $item) {
 
-							$items_matchs = preg_match_all('/\[\[(.*)\]\]/Us', $output, $elements);
+								$items_matchs = preg_match_all('/\[\[(.*)\]\]/Us', $output, $elements);
 
-							if ($items_matchs > 0){
+								if ($items_matchs > 0){
 
-								$processed_output = $output;
+									$processed_output = $output;
 
-								foreach ($elements[1] as $element){
+									foreach ($elements[1] as $element){
 
-									$element = trim($element);
+										$element = trim($element);
 
 
-									if (preg_match('/\-\>/', $element)){
+										if (preg_match('/\-\>/', $element)){
 
-										$element = explode("->", $element);
-										$element_sides = $item->$element[0]->$element[1];
+											$element = explode("->", $element);
+											$element_sides = $item->$element[0]->$element[1];
 
-										$processed_output = str_replace("[[".$element[0]."->".$element[1]."]]", $element_sides, $processed_output);
+											$processed_output = str_replace("[[".$element[0]."->".$element[1]."]]", $element_sides, $processed_output);
 
-									}elseif (preg_match('/\:/', $element)){
-										
-										$element = explode(":", $element);
-										$element_sides = $item->$element[0]->attributes()->$element[1];
-										
+										}elseif (preg_match('/\:/', $element)){
 
-										$processed_output = str_replace("[[".$element[0].":".$element[1]."]]", $element_sides, $processed_output);
+											$element = explode(":", $element);
+											$element_sides = $item->$element[0]->attributes()->$element[1];
 
-									}else{
 
-										$processed_output = str_replace("[[".$element."]]", $item->$element, $processed_output);
+											$processed_output = str_replace("[[".$element[0].":".$element[1]."]]", $element_sides, $processed_output);
+
+										}else{
+
+											$processed_output = str_replace("[[".$element."]]", $item->$element, $processed_output);
+
+										}
 
 									}
 
+									$html_output .= $processed_output;
+									$processed_output = '';
 								}
 
-								$html_output .= $processed_output;
-								$processed_output = '';
+
+
+								if (isset($limit) and $limit == $i){
+									break;
+								}
+								$i++;
 							}
-
-
-
-							if (isset($limit) and $limit == $i){
-								break;
-							}
-							$i++;
 						}
 
 					}else{
