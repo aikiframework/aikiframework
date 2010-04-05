@@ -81,7 +81,13 @@ class php
 
 			$class = $aiki->get_string_between($text, '$aiki->', '->');
 			$function = $aiki->get_string_between($text, '$aiki->'.$class.'->', '(');
-			$vars_array = $aiki->get_string_between($text, '(', ');');
+				
+			$vars_array = preg_match('/'.$function.'\((.*)\)\;$/Us', $text, $vars_match);
+			if ($vars_match[1]){
+				$vars_array = $vars_match[1];
+			}else{
+				$vars_array = '';
+			}
 
 			if (isset($aiki->$class)){
 				$output = $aiki->$class->$function($vars_array);
