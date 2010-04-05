@@ -12,10 +12,10 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-class wiki_parser extends aiki
+class wiki extends aiki
 {
 
-	public function process($text){
+	public function parse($text){
 
 		$text = $this->aikiTemplates($text);
 		$text = $this->intlinks($text);
