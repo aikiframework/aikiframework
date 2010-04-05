@@ -378,7 +378,45 @@ class parser extends aiki
 		return $text;
 	}
 
+	public function related_records($text){
+		global $aiki, $db, $config;
 
+		$related = $aiki->get_string_between($text, "(#(related:", ")#)");
+		if ($related){
+			$relatedsides = explode("||", $related);
+
+			$related_cloud = "
+						<ul class='relatedKeywords'>";
+
+			$related_links = explode("|", $relatedsides[0]);
+			$related_array = array();
+			foreach ($related_links as $related_link){
+
+				$get_sim_topics = $db->get_results("SELECT $relatedsides[2], $relatedsides[7] FROM $relatedsides[1] where ($relatedsides[3] LIKE '%|".$related_link."|%' or $relatedsides[3] LIKE '".$related_link."|%' or $relatedsides[3] LIKE '%|".$related_link."' or $relatedsides[3]='$related_link') and $relatedsides[7] != '$relatedsides[8]' order by $relatedsides[5] DESC limit $relatedsides[4]");
+
+				if ($get_sim_topics){
+
+					foreach($get_sim_topics as $related_topic){
+						$related_cloud_input = '<li><a href="'.$config['url'].$relatedsides[6].'">'.$related_topic->$relatedsides[2].'</a></li>';
+						$related_cloud_input = str_replace("_self", $related_topic->$relatedsides[7], $related_cloud_input);
+						$related_array[$related_topic->$relatedsides[7]] = $related_cloud_input;
+						$related_cloud_input = '';
+					}
+
+				}
+
+			}
+			foreach ($related_array as $related_cloud_output){
+				$related_cloud .= $related_cloud_output;
+			}
+
+			$related_cloud .= "</ul>";
+			$text = str_replace("(#(related:$related)#)", $related_cloud , $text);
+		}
+
+		return $text;
+
+	}
 
 }
 ?>
