@@ -19,11 +19,11 @@ class php
 		global $aiki;
 
 		if (!preg_match ("/\<form(.*)\<php (.*) php\>(.*)\<\/form\>/s", $text)){
-			
+
 			$php_matchs = preg_match_all('/\<php (.*) php\>/Us', $text, $matchs);
-			
+
 		}else{
-			
+
 			$php_matchs = 0;
 		}
 
@@ -66,7 +66,14 @@ class php
 			if (isset($aiki->$class)){
 				$output = $aiki->$class->$function();
 			}else{
-				$output = '';
+				//try to load the library
+				$aiki->load($class);
+
+				if (isset($aiki->$class)){
+					$output = $aiki->$class->$function($vars_array);
+				}else{
+					$output = '';
+				}
 			}
 
 			//function has vars
@@ -75,12 +82,20 @@ class php
 			$class = $aiki->get_string_between($text, '$aiki->', '->');
 			$function = $aiki->get_string_between($text, '$aiki->'.$class.'->', '(');
 			$vars_array = $aiki->get_string_between($text, '(', ');');
-				
+
 			if (isset($aiki->$class)){
 				$output = $aiki->$class->$function($vars_array);
 
 			}else{
-				$output = '';
+				//try to load the library
+				$aiki->load($class);
+
+				if (isset($aiki->$class)){
+					$output = $aiki->$class->$function($vars_array);
+				}else{
+					$output = '';
+				}
+
 			}
 
 		}

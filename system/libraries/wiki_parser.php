@@ -16,10 +16,16 @@ class wiki_parser extends aiki
 {
 
 	public function process($text){
-		
+
+		$text = $this->aikiTemplates($text);
+		$text = $this->intlinks($text);
+		$text = $this->extlinks($text);
+		$text = $this->markup_toc($text);
+		$text = $this->markup_tables($text);
+		$text = $this->markup_quotes($text);
 		return $text;
 	}
-	
+
 	public function aikiTemplates($widget){
 		global $db, $aiki;
 
