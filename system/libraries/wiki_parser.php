@@ -356,7 +356,7 @@ class wiki_parser extends aiki
 			if ($custome_toc_place > 0 ){
 				$text = str_replace("[toc]", "<br /><div id='toc'><p align='center'><b>__content__</b></p><br /><ul>".$toc."</ul></div><br />", $text);
 			}else{
-				$text = "<br /><div id='toc'><p align='center'><b>Contents:</b></p><br /><ul>".$toc."</ul></div><br />".$text;
+				$text = "<br /><div id='toc'><p align='center'><b>__content__</b></p><br /><ul>".$toc."</ul></div><br />".$text;
 			}
 		}
 			
