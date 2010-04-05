@@ -354,7 +354,7 @@ class wiki_parser extends aiki
 
 			$custome_toc_place = preg_match_all("/\[toc\]/", $text, $tocmatches);
 			if ($custome_toc_place > 0 ){
-				$text = str_replace("[toc]", "<br /><div id='toc'><p align='center'><b>المحتويات:</b></p><br /><ul>".$toc."</ul></div><br />", $text);
+				$text = str_replace("[toc]", "<br /><div id='toc'><p align='center'><b>__content__</b></p><br /><ul>".$toc."</ul></div><br />", $text);
 			}else{
 				$text = "<br /><div id='toc'><p align='center'><b>Contents:</b></p><br /><ul>".$toc."</ul></div><br />".$text;
 			}

@@ -352,7 +352,7 @@ CREATE TABLE IF NOT EXISTS `aiki_dictionary` (
   `lang_arabic` text NOT NULL,
   `lang_german` text NOT NULL,
   PRIMARY KEY  (`term_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --------------------------------------------------------
 
@@ -364,7 +364,8 @@ INSERT INTO `aiki_dictionary` (`term_id`, `app_id`, `short_term`, `lang_english`
 (5, 0, \'previous\', \'< Previous\', \'\', \'\'),
 (6, 0, \'move_to_page\', \'Move to page:\', \'\', \'\'),
 (7, 0, \'first_page\', \'<< First page\', \'\', \'\'),
-(8, 0, \'last_page\', \'Last page >>\', \'\', \'\');
+(8, 0, \'last_page\', \'Last page >>\', \'\', \'\'),
+(9, 0, \'content\', \'Content\', \'\', \'\');
 
 --------------------------------------------------------
 
