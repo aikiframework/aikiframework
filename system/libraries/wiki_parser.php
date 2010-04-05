@@ -157,7 +157,7 @@ class wiki_parser extends aiki
 
 									foreach ($match[1] as $tag_output){
 										$tag_output = explode('=', $tag_output);
-										if ($tag_output[1]){
+										if (isset($tag_output[1])){
 
 											$tag_output_side = $tag_output[1];
 
