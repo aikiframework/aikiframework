@@ -17,7 +17,7 @@ class wiki extends aiki
 
 	public function parse($text){
 
-		$text = $this->aikiTemplates($text);
+		$text = $this->wikiTemplates($text);
 		$text = $this->intlinks($text);
 		$text = $this->extlinks($text);
 		$text = $this->markup_toc($text);
@@ -26,7 +26,7 @@ class wiki extends aiki
 		return $text;
 	}
 
-	public function aikiTemplates($widget){
+	public function wikiTemplates($widget){
 		global $db, $aiki;
 
 		$numMatches = preg_match_all( '/\{\{/', $widget, $matches);
