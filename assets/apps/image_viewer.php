@@ -53,7 +53,7 @@ switch ($mode){
 
 require_once("../../aiki.php");
 
-
+$aiki->load("image");
 
 
 $default_photo_module = $config['default_photo_module'];

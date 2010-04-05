@@ -68,7 +68,6 @@ $aiki->load("input");
 $aiki->load("output");
 $aiki->load("forms");
 $aiki->load("aiki_array");
-$aiki->load("image");
 $aiki->load("security");
 $aiki->load("parser");
 $aiki->load("php");
