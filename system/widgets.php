@@ -333,6 +333,9 @@ class CreateLayout
 
 			if ($widget->normal_select){
 
+				$normal_selects = explode("|OR|", $widget->normal_select);
+				$widget->normal_select = $normal_selects[0];
+
 				$widget->normal_select = $aiki->url->apply_url_on_query($widget->normal_select);
 
 				$widget->normal_select = $aiki->processVars ($aiki->languages->L10n ("$widget->normal_select"));
@@ -352,6 +355,7 @@ class CreateLayout
 					$records_num_query = str_replace($selectionmatch[1], $mysql_count, $widget->normal_select);
 
 					$records_num_query = preg_replace('/ORDER BY(.*)DESC/i', '', $records_num_query);
+
 					$records_num = $db->get_var($records_num_query);
 				}
 
@@ -407,7 +411,10 @@ class CreateLayout
 
 
 				$widget_select = $db->get_results("$widget->normal_select");
-
+					
+				if (!$widget_select and isset($normal_selects[1])){
+					$widget_select = $db->get_results("$normal_selects[1]");
+				}
 
 
 				$num_results = $db->num_rows;
