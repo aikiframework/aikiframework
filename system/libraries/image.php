@@ -15,7 +15,16 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class image
 {
 
-	
+
+	/**
+	 * Converts an svg file to png
+	 *
+	 * @param   string filename with fullpath
+	 * @param   int png width
+	 * @param   int png height
+	 *  
+	 * @return  string
+	 */
 	public function rsvg_convert_svg_png($file, $newwidth, $newhight){
 
 		$file = str_replace(" ", "\ ",  $file);

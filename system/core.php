@@ -100,14 +100,19 @@ class aiki
 	}
 
 
-
+	/**
+	 * htmlspecialchars + few other special chars that normaly php don't convert
+	 *
+	 * @param   string   text
+	 * @return  string
+	 */
 	public function convert_to_specialchars($text){
 
 		$text = htmlspecialchars($text);
-		
+
 		$html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">", "_");
 		$html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;", "&#95;");
-		
+
 		$text = str_replace($html_chars, $html_entities,$text);
 
 		return $text;
