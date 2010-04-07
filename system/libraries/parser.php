@@ -163,16 +163,25 @@ class parser extends aiki
 		if ($tags){
 			$tagsides = explode("||", $tags);
 
+			if (isset($tagsides[2])){
+				$separator = $tagsides[2];
+			}else{
+				$separator = ",";
+			}
 			/*$tag_cloud = "[[relatedKeywords]]:
 			 <br />
 			 <ul>";*/
-			$tags_links = explode(",", $widget_value->$tagsides[0]);
+			$tags_links = explode("$separator", $widget_value->$tagsides[0]);
 			$tag_cloud = '';
 			foreach ($tags_links as $tag_link){
 				if ($tag_link){
 					$tag_link = trim($tag_link);
-					$tag_cloud .= ' , <a href="[root]/'.$tagsides[1].'" rel="tag">'.$tag_link.'</a>';
+					if ($i > 0){
+						$tag_cloud .= ' '.$separator;
+					}
+					$tag_cloud .= ' <a href="[root]/'.$tagsides[1].'" rel="tag">'.$tag_link.'</a>';
 					$tag_cloud = str_replace("_self", $tag_link, $tag_cloud);
+					$i++;
 				}
 			}
 			//$tag_cloud .= "</ul>";
