@@ -435,14 +435,9 @@ class records
 
 			}
 
-			if (!isset($send_email)){
-				$send_email = '';
-			}
+			if (!isset($send_email)){$send_email = '';}
 
-			if (!isset($submit)){
-				$submit = '';
-			}
-
+			if (!isset($submit)){$submit = '';}
 
 			if ($field != $tablename and $field != $permission and $field != $send_email and $field != $submit and isset($post[$intwalker[0]]) and $post[$intwalker[0]]){
 
@@ -521,8 +516,6 @@ class records
 						$send_email[1] = $post[$get_from];
 					}
 
-					$to = $send_email[0];
-					$subject = $send_email[2];
 					$message = $send_email[3];
 					$count = preg_match_all( '/\[(.*)\]/U', $message, $matches );
 					foreach ($matches[1] as $parsed){
@@ -536,7 +529,7 @@ class records
 
 					$message = nl2br($message);
 
-					mail($to,$subject,$message,$headers);
+					mail($send_email[0],$send_email[2],$message,$headers);
 
 
 				}
