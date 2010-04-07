@@ -87,7 +87,7 @@ class bot
 						$styleid = 'nostyle';
 					}
 
-					$match .= "\>(.*)\<\/$div->nodeName\>/s";
+					$match .= "\>(.*)\<\/$div->nodeName\>/Us";
 
 					$item = preg_match($match, $body, $match);
 
@@ -149,7 +149,7 @@ class bot
 
 	public function import_css($head){
 
-		$css_matchs = preg_match_all('/\<link href\=\"(.*)\" type\=\"text\/css\" rel=\"stylesheet\" \/\>/s', $head, $matchs);
+		$css_matchs = preg_match_all('/\<link href\=\"(.*)\" type\=\"text\/css\" rel=\"stylesheet\" \/\>/Us', $head, $matchs);
 
 		if ($css_matchs > 0){
 			$css = '';

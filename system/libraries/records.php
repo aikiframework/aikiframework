@@ -768,7 +768,7 @@ class records
 	public function edit_in_place($text, $widget_value){
 		global $aiki,$db, $membership, $layout;
 
-		$edit_matchs = preg_match_all('/\<edit\>(.*)\<\/edit\>/s', $text, $matchs);
+		$edit_matchs = preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
 
 		if ($edit_matchs > 0){
 
@@ -797,7 +797,7 @@ class records
 
 				$type = $aiki->get_string_between($edit , "<type>", "</type>");
 
-				if (preg_match("/select\:(.*)/s", $type)){
+				if (preg_match("/select\:(.*)/Us", $type)){
 					$select_menu = true;
 					$select_output = '<select>';
 					$select_elements = explode(":", $type);

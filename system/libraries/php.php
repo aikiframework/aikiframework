@@ -18,9 +18,9 @@ class php
 	public function parser($text){
 		global $aiki;
 
-		if (!preg_match ("/\<form(.*)\<php (.*) php\>(.*)\<\/form\>/s", $text)){
+		if (!preg_match ("/\<form(.*)\<php (.*) php\>(.*)\<\/form\>/Us", $text)){
 
-			$php_matchs = preg_match_all('/\<php (.*) php\>/s', $text, $matchs);
+			$php_matchs = preg_match_all('/\<php (.*) php\>/Us', $text, $matchs);
 
 		}else{
 
@@ -31,19 +31,19 @@ class php
 
 			foreach ($matchs[1] as $php_function){
 
-				if (preg_match('/str_replace((.*));/s', $php_function)){
+				if (preg_match('/str_replace((.*));/Us', $php_function)){
 					$php_output = $this->aiki_str_replace($php_function);
 				}
 
-				if (preg_match('/if(.*) then (.*)/s', $php_function)){
+				if (preg_match('/if(.*) then (.*)/Us', $php_function)){
 					$php_output = $this->aiki_if_then($php_function);
 				}
 
-				if (preg_match('/htmlspecialchars\((.*)\)/s', $php_function)){
+				if (preg_match('/htmlspecialchars\((.*)\)/Us', $php_function)){
 					$php_output = $this->aiki_htmlspecialchars($php_function);
 				}
 
-				if (preg_match('/\$aiki\-\>(.*)\-\>(.*)\((.*)\)\;/s', $php_function)){
+				if (preg_match('/\$aiki\-\>(.*)\-\>(.*)\((.*)\)\;/Us', $php_function)){
 					$php_output = $this->aiki_function($php_function);
 				}
 
@@ -58,7 +58,7 @@ class php
 		global $aiki;
 
 		//function does not have vars
-		if (preg_match('/\$aiki\-\>(.*)\-\>(.*)\(\)\;/s', $text)){
+		if (preg_match('/\$aiki\-\>(.*)\-\>(.*)\(\)\;/Us', $text)){
 
 			$class = $aiki->get_string_between($text, '$aiki->', '->');
 			$function = $aiki->get_string_between($text, '$aiki->'.$class.'->', '();');
@@ -77,12 +77,12 @@ class php
 			}
 
 			//function has vars
-		}elseif (preg_match('/\$aiki\-\>(.*)\-\>(.*)\((.*)\)\;/s', $text)){
+		}elseif (preg_match('/\$aiki\-\>(.*)\-\>(.*)\((.*)\)\;/Us', $text)){
 
 			$class = $aiki->get_string_between($text, '$aiki->', '->');
 			$function = $aiki->get_string_between($text, '$aiki->'.$class.'->', '(');
 				
-			$vars_array = preg_match('/'.$function.'\((.*)\)\;$/s', $text, $vars_match);
+			$vars_array = preg_match('/'.$function.'\((.*)\)\;$/Us', $text, $vars_match);
 			if ($vars_match[1]){
 				$vars_array = $vars_match[1];
 			}else{
