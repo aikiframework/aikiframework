@@ -114,9 +114,9 @@ class input
 
 	public function get_handler($text){
 
-		if (!isset($_POST['add_to_form']) and !preg_match ("/\<form(.*)GET\[(.*)\](.*)\<\/form\>/Us", $text)){
+		if (!isset($_POST['add_to_form']) and !preg_match ("/\<form(.*)GET\[(.*)\](.*)\<\/form\>/s", $text)){
 
-			$get_matchs = preg_match_all('/GET\[(.*)\]/Us', $text, $gets);
+			$get_matchs = preg_match_all('/GET\[(.*)\]/s', $text, $gets);
 
 		}else{
 
@@ -134,7 +134,7 @@ class input
 
 			}
 
-			$text = preg_replace('/GET\[(.*)\]/Us', '', $text);
+			$text = preg_replace('/GET\[(.*)\]/s', '', $text);
 
 		}
 
@@ -144,9 +144,9 @@ class input
 
 	public function post_handler($text){
 
-		if (!isset($_POST['add_to_form']) and !preg_match ("/\<form(.*)POST\[(.*)\](.*)\<\/form\>/Us", $text)){
+		if (!isset($_POST['add_to_form']) and !preg_match ("/\<form(.*)POST\[(.*)\](.*)\<\/form\>/s", $text)){
 
-			$post_matchs = preg_match_all('/POST\[(.*)\]/Us', $text, $posts);
+			$post_matchs = preg_match_all('/POST\[(.*)\]/s', $text, $posts);
 
 		}else{
 			$post_matchs = 0;
@@ -163,7 +163,7 @@ class input
 
 			}
 
-			$text = preg_replace('/POST\[(.*)\]/Us', '', $text);
+			$text = preg_replace('/POST\[(.*)\]/s', '', $text);
 
 		}
 

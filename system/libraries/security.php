@@ -17,13 +17,13 @@ class security
 
 	public function remove_markup($text){
 
-		$text = preg_replace("/\(\#\(form(.*)\)\#\)/Us", "", $text);
+		$text = preg_replace("/\(\#\(form(.*)\)\#\)/s", "", $text);
 
-		$text = preg_replace("/\<edit\>(.*)\<\/edit\>/Us", "", $text);
+		$text = preg_replace("/\<edit\>(.*)\<\/edit\>/s", "", $text);
 
-		$text = preg_replace("/\<script(.*)\>(.*)\<\/script\>/Ui", "", $text);
+		$text = preg_replace("/\<script(.*)\>(.*)\<\/script\>/i", "", $text);
 
-		$text = preg_replace("/\<iframe(.*)\>(.*)\<\/iframe\>/Ui", "", $text);
+		$text = preg_replace("/\<iframe(.*)\>(.*)\<\/iframe\>/i", "", $text);
 
 		return $text;
 	}
@@ -32,7 +32,7 @@ class security
 	public function inlinePermissions($text){
 		global $membership, $db;
 			
-		$inline = preg_match_all('/\(\#\(permissions\:(.*)\)\#\)/Us', $text, $matchs);
+		$inline = preg_match_all('/\(\#\(permissions\:(.*)\)\#\)/s', $text, $matchs);
 		if ($inline > 0){
 			foreach ($matchs[1] as $inline_per){
 				$get_sides = explode(":", $inline_per);

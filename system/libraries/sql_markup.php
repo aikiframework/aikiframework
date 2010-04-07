@@ -19,7 +19,7 @@ class sql_markup
 		global $aiki, $db;
 
 
-		$count_innersql = preg_match_all('/\(sql\((.*)\)sql\)/Us', $text, $sqlmatches);
+		$count_innersql = preg_match_all('/\(sql\((.*)\)sql\)/s', $text, $sqlmatches);
 
 		if ($count_innersql > 0){
 
@@ -28,11 +28,11 @@ class sql_markup
 
 				$html_output = $this->sql_query($match);
 
-				$text = preg_replace('/\(sql\('.preg_quote($match, '/').'\)sql\)/Us', $html_output, $text);
+				$text = preg_replace('/\(sql\('.preg_quote($match, '/').'\)sql\)/s', $html_output, $text);
 			}
 
 		}
-		$text = preg_replace('/\(select(.*)\)/Us', '', $text);
+		$text = preg_replace('/\(select(.*)\)/s', '', $text);
 
 
 		return $text;
@@ -107,7 +107,7 @@ class sql_markup
 
 		$finalprocessedloop = "";
 
-		$count_innersql = preg_match_all('/\(\@\((.*)\)\@\)/Us', $text, $sqlmatches );
+		$count_innersql = preg_match_all('/\(\@\((.*)\)\@\)/s', $text, $sqlmatches );
 
 		if ($count_innersql > 0){
 			foreach ($sqlmatches[1] as $match)

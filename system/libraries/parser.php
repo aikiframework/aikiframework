@@ -33,7 +33,7 @@ class parser extends aiki
 	public function rss_parser($text){
 		global $aiki;
 
-		$rss_matchs = preg_match_all('/\<rss\>(.*)\<\/rss\>/Us', $text, $matchs);
+		$rss_matchs = preg_match_all('/\<rss\>(.*)\<\/rss\>/s', $text, $matchs);
 
 		if ($rss_matchs > 0){
 
@@ -95,7 +95,7 @@ class parser extends aiki
 						if ($xml_items){
 							foreach ($xml_items as $item) {
 
-								$items_matchs = preg_match_all('/\[\[(.*)\]\]/Us', $output, $elements);
+								$items_matchs = preg_match_all('/\[\[(.*)\]\]/s', $output, $elements);
 
 								if ($items_matchs > 0){
 
@@ -296,7 +296,7 @@ class parser extends aiki
 	public function markup_ajax($text){
 		global $db;
 
-		$count_links = preg_match_all('/\(ajax\_a\((.*)\)ajax\_a\)/Us', $text, $links);
+		$count_links = preg_match_all('/\(ajax\_a\((.*)\)ajax\_a\)/s', $text, $links);
 
 		if ($count_links > 0){
 
@@ -355,7 +355,7 @@ class parser extends aiki
 		 });
 		 </script>";
 
-				$text = preg_replace('/\(ajax\_a\('.preg_quote($set_of_requests, '/').'\)ajax\_a\)/Us', $output, $text);
+				$text = preg_replace('/\(ajax\_a\('.preg_quote($set_of_requests, '/').'\)ajax\_a\)/s', $output, $text);
 
 			}
 
@@ -367,7 +367,7 @@ class parser extends aiki
 	public function datetime($text, $widget_value){
 		global $aiki, $config;
 
-		$datetimes = preg_match_all('/\(\#\(datetime\:(.*)\)\#\)/Us', $text, $matchs);
+		$datetimes = preg_match_all('/\(\#\(datetime\:(.*)\)\#\)/s', $text, $matchs);
 		if ($datetimes > 0){
 			foreach ($matchs[1] as $datetime){
 
