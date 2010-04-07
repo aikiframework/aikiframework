@@ -780,7 +780,7 @@ class CreateLayout
 						$parsedExplode[2] = str_replace("_self", $parsedValue, $parsedExplode[2]);
 						$widget_value->$parsed = $parsedExplode[2];
 					}
-					elseif ($parsedExplode[4] and $parsedExplode[3] == "else"){
+					elseif (isset($parsedExplode[4]) and $parsedExplode[4] and $parsedExplode[3] == "else"){
 						$else_stetment = explode(":", $parsedExplode[4]);
 
 						if ($else_stetment[0] == "redirect" and $else_stetment[1]){

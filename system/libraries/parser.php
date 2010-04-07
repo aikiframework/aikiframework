@@ -171,6 +171,7 @@ class parser extends aiki
 
 			$tags_links = explode("$separator", $widget_value->$tagsides[0]);
 			$tag_cloud = '';
+			$i=0;
 			foreach ($tags_links as $tag_link){
 				if ($tag_link){
 					$tag_link = trim($tag_link);
