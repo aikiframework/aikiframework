@@ -168,9 +168,7 @@ class parser extends aiki
 			}else{
 				$separator = ",";
 			}
-			/*$tag_cloud = "[[relatedKeywords]]:
-			 <br />
-			 <ul>";*/
+
 			$tags_links = explode("$separator", $widget_value->$tagsides[0]);
 			$tag_cloud = '';
 			foreach ($tags_links as $tag_link){
@@ -184,7 +182,7 @@ class parser extends aiki
 					$i++;
 				}
 			}
-			//$tag_cloud .= "</ul>";
+
 			$text = str_replace("(#(tags:$tags)#)", $tag_cloud , $text);
 		}
 
