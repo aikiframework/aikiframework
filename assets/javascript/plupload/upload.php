@@ -61,6 +61,7 @@ $chunk = isset($_REQUEST["chunk"]) ? $_REQUEST["chunk"] : 0;
 $chunks = isset($_REQUEST["chunks"]) ? $_REQUEST["chunks"] : 0;
 $fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
 
+$fileName = str_replace(" ", "_", $fileName);
 if (!preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$fileName)){
 
 	die ("Not valid filename");

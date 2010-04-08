@@ -238,7 +238,7 @@ class records
 						$post[$intwalker[0]] = str_replace("insertedby_username", $membership->username, $post[$intwalker[0]]);
 
 						$post[$intwalker[0]] = $aiki->url->apply_url_on_query($post[$intwalker[0]]);
-						
+
 						$values_array[$intwalker[0]] = $post[$intwalker[0]];
 
 						break;
@@ -478,7 +478,16 @@ class records
 				$files_names_output = "";
 				$not_uploaded_output = "";
 				for ($i=0; $i<$post[$intwalker[0].'_count']; $i++){
+						
+					$plupload_files[$i] = str_replace(" ", "_", $plupload_files[$i]);
+					
 					$multi_files_query = str_replace('__FILE__', $plupload_files[$i], $insertQuery);
+						
+					$plupload_filename = $plupload_files[$i];
+					$plupload_filename = preg_replace('/\.svg$/Us', "", $plupload_filename);
+					$plupload_filename = str_replace("_", " ", $plupload_filename);
+					$multi_files_query = str_replace('plupload_filename', $plupload_filename, $multi_files_query);
+
 					if (isset($post[$intwalker[0]."_".$i."_status"]) and $post[$intwalker[0]."_".$i."_status"] == "done"){
 						if (preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$plupload_files[$i])){
 							if (!$this->record_exists($plupload_files[$i], $tablename, $intwalker[0])){
