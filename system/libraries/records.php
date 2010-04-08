@@ -462,29 +462,6 @@ class records
 
 		}
 
-		if (isset($secondery_queries) and is_array($secondery_queries)){
-			foreach($secondery_queries as $table => $secondery_query){
-				$secondery_insert_query = "";
-				$secondery_insert_query .= "INSERT into $table (";
-
-				foreach ($secondery_query as $field_name => $field_value){
-					$secondery_insert_query .= "$field_name, ";
-				}
-				$secondery_insert_query = preg_replace("/\, $/", "", $secondery_insert_query);
-
-				$secondery_insert_query .= ") values (";
-
-				foreach ($secondery_query as $field_name => $field_value){
-					$secondery_insert_query .= "'".$field_value."', ";
-				}
-				$secondery_insert_query = preg_replace("/\, $/", "", $secondery_insert_query);
-
-				$secondery_insert_query .= ")";
-
-				$secondery_result = $db->query($secondery_insert_query);
-			}
-		}
-
 
 		if (!$this->stop){
 
@@ -518,6 +495,32 @@ class records
 				}
 			}else{
 				$insertResult = $db->query($insertQuery);
+				$this_pkey =  mysql_insert_id();
+
+				if (isset($secondery_queries) and is_array($secondery_queries)){
+					foreach($secondery_queries as $table => $secondery_query){
+						$secondery_insert_query = "";
+						$secondery_insert_query .= "INSERT into $table (";
+
+						foreach ($secondery_query as $field_name => $field_value){
+							$secondery_insert_query .= "$field_name, ";
+						}
+						$secondery_insert_query = preg_replace("/\, $/", "", $secondery_insert_query);
+
+						$secondery_insert_query .= ") values (";
+
+						foreach ($secondery_query as $field_name => $field_value){
+							$field_value = str_replace("this_pkey", $this_pkey, $field_value);
+							$secondery_insert_query .= "'".$field_value."', ";
+						}
+						$secondery_insert_query = preg_replace("/\, $/", "", $secondery_insert_query);
+
+						$secondery_insert_query .= ")";
+
+						$secondery_result = $db->query($secondery_insert_query);
+					}
+				}
+
 			}
 
 			if (isset($insertResult)){
