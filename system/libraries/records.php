@@ -237,6 +237,8 @@ class records
 
 						$post[$intwalker[0]] = str_replace("insertedby_username", $membership->username, $post[$intwalker[0]]);
 
+						$post[$intwalker[0]] = $aiki->url->apply_url_on_query($post[$intwalker[0]]);
+						
 						$values_array[$intwalker[0]] = $post[$intwalker[0]];
 
 						break;
