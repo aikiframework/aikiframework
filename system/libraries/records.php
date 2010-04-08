@@ -183,7 +183,6 @@ class records
 
 			$intwalker[0] = $get_permission_and_man_info[0];
 
-
 			//Security Check to remove unauthorized POST data
 			if (isset($get_group_level)){
 				if (isset($get_permission_and_man_info['1']) and $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level){
@@ -439,21 +438,53 @@ class records
 
 			if (!isset($submit)){$submit = '';}
 
-			if ($field != $tablename and $field != $permission and $field != $send_email and $field != $submit and isset($post[$intwalker[0]]) and $post[$intwalker[0]]){
 
-				if ($insertCount == $i+1){
-					$tableFields .=$intwalker[0];
-					$preinsertQuery .= "'".$post[$intwalker[0]]."'";
-				}else{
-					$tableFields .= $intwalker[0].", ";
-					$preinsertQuery .= "'".$post[$intwalker[0]]."', ";
+			if (!preg_match("/\-\>/Us", $intwalker[0])){
+				if ($field != $tablename and $field != $permission and $field != $send_email and $field != $submit and isset($post[$intwalker[0]]) and $post[$intwalker[0]]){
+
+					if ($insertCount == $i+1){
+						$tableFields .=$intwalker[0];
+						$preinsertQuery .= "'".$post[$intwalker[0]]."'";
+					}else{
+						$tableFields .= $intwalker[0].", ";
+						$preinsertQuery .= "'".$post[$intwalker[0]]."', ";
+					}
+
 				}
+			}else{
 
+				$delimitered_field = explode("->", $intwalker[0]);
+
+				$secondery_queries[$delimitered_field[1]][$delimitered_field[0]] = $post[$delimitered_field[0]."->".$delimitered_field[1]];
 			}
 
 			$i++;
 
 		}
+
+		if (isset($secondery_queries) and is_array($secondery_queries)){
+			foreach($secondery_queries as $table => $secondery_query){
+				$secondery_insert_query = "";
+				$secondery_insert_query .= "INSERT into $table (";
+
+				foreach ($secondery_query as $field_name => $field_value){
+					$secondery_insert_query .= "$field_name, ";
+				}
+				$secondery_insert_query = preg_replace("/\, $/", "", $secondery_insert_query);
+
+				$secondery_insert_query .= ") values (";
+
+				foreach ($secondery_query as $field_name => $field_value){
+					$secondery_insert_query .= "'".$field_value."', ";
+				}
+				$secondery_insert_query = preg_replace("/\, $/", "", $secondery_insert_query);
+
+				$secondery_insert_query .= ")";
+
+				$secondery_result = $db->query($secondery_insert_query);
+			}
+		}
+
 
 		if (!$this->stop){
 
@@ -501,7 +532,7 @@ class records
 				if (isset($not_uploaded_output) and $not_uploaded_output){
 					$output_result .= "<br /><b>NOT uploaded files:</b><br />".$not_uploaded_output;
 				}
-					
+
 				if ($send_email){
 
 					$send_email = explode("|", $send_email);

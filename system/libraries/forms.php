@@ -16,10 +16,10 @@ class forms
 
 	public $submit_button;
 
-	public function displayForms($text ){
+	public function displayForms($text){
 		global $db, $aiki;
 
-		$forms_count = preg_match_all("/\(\#\(form\:(.*)\)\#\)/U", $text, $forms);
+		$forms_count = preg_match_all("/\(\#\(form\:(.*)\)\#\)/Us", $text, $forms);
 
 		if ($forms_count >0){
 
@@ -98,10 +98,10 @@ $("#new_record_form").ajaxForm(function() {
 				}
 
 				$text = str_replace("(#(form:$form_data)#)", $form_output, $text);
+				
 			}
 
 		}
-
 
 		return $text;
 	}
@@ -112,6 +112,7 @@ $("#new_record_form").ajaxForm(function() {
 		global $db, $membership, $aiki, $config;
 
 		$arraykeys = array_keys($form_array);
+
 
 		if (in_array("tablename", $arraykeys))
 		$tablename = $form_array["tablename"];
@@ -271,8 +272,6 @@ $("#new_record_form").ajaxForm(function() {
 						$form .= '<h2>'.$intwalker[1].'</h2><input type="text" dir="'.$get_permission_and_man_info[3].'" name="'.$intwalker[0].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
 
-
-
 					case "filemanager":
 						switch ($intwalker[2]){
 
@@ -289,7 +288,7 @@ $("#new_record_form").ajaxForm(function() {
 								if (!isset($config['allowed_extensions'])){
 									$config['allowed_extensions'] = 'jpg|gif|png|jpeg|svg';
 								}
-								
+
 								$extensions = str_replace('|', ',', $config['allowed_extensions']);
 
 								$secret_key = $_SESSION['aikiuser'];
