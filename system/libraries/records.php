@@ -478,11 +478,11 @@ class records
 				$files_names_output = "";
 				$not_uploaded_output = "";
 				for ($i=0; $i<$post[$intwalker[0].'_count']; $i++){
-						
+
 					$plupload_files[$i] = str_replace(" ", "_", $plupload_files[$i]);
-					
+
 					$multi_files_query = str_replace('__FILE__', $plupload_files[$i], $insertQuery);
-						
+
 					$plupload_filename = $plupload_files[$i];
 					$plupload_filename = preg_replace('/\.svg$/Us', "", $plupload_filename);
 					$plupload_filename = str_replace("_", " ", $plupload_filename);
@@ -675,6 +675,10 @@ class records
 	public function edit_db_record_by_form_post($post, $form_id, $record_id){
 		global $db, $aiki, $membership;
 
+		if (!isset($post['form_post_type'])){
+			$post['form_post_type'] = "save";
+		}
+
 		$form = $db->get_row("SELECT * from aiki_forms where id='$form_id' limit 1");
 
 		$form_array = unserialize($form->form_array);
@@ -707,7 +711,19 @@ class records
 			$submit = '';
 		}
 
-		$editQuery = "update $tablename set ";
+		switch ($post['form_post_type']){
+			case "save":
+				$editQuery = "update $tablename set ";
+				break;
+					
+			case "insert_new":
+				$editQuery = "INSERT into $tablename ";
+				break;
+		}
+
+		$insert_query_fields = "";
+		$insert_query_values = "";
+
 		$i = 0;
 		$viewCount = count($form_array);
 		foreach($form_array as $field)
@@ -761,15 +777,33 @@ class records
 					$_POST[$intwalker[0]] = @str_replace('&lt;', '<' , $_POST[$intwalker[0]]);
 					$_POST[$intwalker[0]] = @str_replace('&gt;', '>' , $_POST[$intwalker[0]]);
 
-					$editQuery .= ", ".$intwalker[0]."='".$_POST[$intwalker[0]]."'";
+					$insert_query_fields .= "$intwalker[0], ";
+					$insert_query_values .= "'".$_POST[$intwalker[0]]."', ";
+
+					if ($post['form_post_type'] == "save"){
+						$editQuery .= ", ".$intwalker[0]."='".$_POST[$intwalker[0]]."'";
+					}
 				}
 
 			}
 			$i++;
 		}
 
-		$editQuery .= " where ".$pkey."=".$record_id;
-		$editQuery = str_replace("set ,", "set", $editQuery);
+		$insert_query_fields = preg_replace("/\, $/", "", $insert_query_fields);
+		$insert_query_values = preg_replace("/\, $/", "", $insert_query_values);
+
+		switch ($post['form_post_type']){
+			case "save":
+				$editQuery .= " where ".$pkey."=".$record_id;
+				$editQuery = str_replace("set ,", "set", $editQuery);
+				break;
+					
+			case "insert_new":
+				$editQuery .= "($insert_query_fields) VALUES ($insert_query_values)";
+				break;
+		}
+
+
 
 		if (isset($special_permission)){
 
@@ -800,7 +834,17 @@ class records
 
 
 		if (isset($editResult)){
-			$output_result = "Edited record $record_id in $tablename successfully";
+
+			switch ($post['form_post_type']){
+				case "save":
+					$output_result = "Edited record $record_id in $tablename successfully";
+					break;
+
+				case "insert_new":
+					$output_result = "Inserted new record in $tablename successfully";
+					break;
+			}
+
 			//$this->unlockdocument($pkey, $postedpkey, $tablename);
 		}else{
 			$output_result = "Faild to edit record $record_id in $tablename";

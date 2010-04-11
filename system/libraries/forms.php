@@ -97,7 +97,7 @@ $("#new_record_form").ajaxForm(function() {
 				}
 
 				$text = str_replace("(#(form:$form_data)#)", $form_output, $text);
-				
+
 			}
 
 		}
@@ -425,6 +425,16 @@ $(function() {
 
 			$i++;
 		}
+
+		if (isset($form_data)){
+			$form .= ("
+			<br />
+			<select name=\"form_post_type\">
+			<option value=\"save\">Save</option>
+			<option value=\"insert_new\">Insert as new row</option>
+			</select>");
+		}
+
 		$form .= ('<p class="form-buttons">');
 		$form .= ("<input type=\"hidden\" value=\"$form_id\" name=\"form_id\">");
 
@@ -435,6 +445,7 @@ $(function() {
 		if (isset($form_data)){
 			$record_id = $form_data->$pkey;
 			$form .= ("<input type=\"hidden\" value=\"$record_id\" name=\"record_id\">");
+				
 			$form .= ("<input type=\"submit\" class=\"edit_button\" value=\"$this->submit_button\" name=\"edit_form\">");
 		}else{
 			$form .= ("<input type=\"submit\" class=\"submit_button\" value=\"$this->submit_button\" name=\"add_to_form\">");
