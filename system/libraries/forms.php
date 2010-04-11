@@ -15,6 +15,7 @@ class forms
 {
 
 	public $submit_button;
+	public $edit_type;
 
 	public function displayForms($text){
 		global $db, $aiki;
@@ -270,6 +271,10 @@ $("#new_record_form").ajaxForm(function() {
 					case "static_input":
 						$form .= '<h2>'.$intwalker[1].'</h2><input type="text" dir="'.$get_permission_and_man_info[3].'" name="'.$intwalker[0].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
+						
+					case "edit_type":
+						$this->edit_type = $intwalker[0];
+					break;
 
 					case "filemanager":
 						switch ($intwalker[2]){
@@ -426,7 +431,7 @@ $(function() {
 			$i++;
 		}
 
-		if (isset($form_data)){
+		if (isset($form_data) and $this->edit_type != "save"){
 			$form .= ("
 			<br />
 			<select name=\"form_post_type\">

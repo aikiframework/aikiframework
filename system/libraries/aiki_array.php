@@ -159,6 +159,7 @@ class aiki_array
 				<option value="filemanager" >filemanager</option>
 				<option value="permission" >permission</option>
 				<option value="events" >events</option>
+				<option value="edit_type" >Editing Type</option>
 				</select>';
 
 				}else{
@@ -191,6 +192,7 @@ class aiki_array
 				<option value="filemanager" >filemanager</option>
 				<option value="permission" >permission</option>
 				<option value="events" >events</option>
+				<option value="edit_type" >Editing Type</option>
 				</select>';	
 			}else{
 				$html_form .= "<input type='text' name=\"left_$newfield\" value=\"\" size='25'>";
