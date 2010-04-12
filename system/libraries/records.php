@@ -348,8 +348,13 @@ class records
 			if (isset($unique_filename) and isset($intwalker[2]) and $unique_filename == $intwalker[2] and $full_path){ //unique_filename processing
 
 				$uploadexploded = explode(":", $intwalker[0]);
+
 				$filename = $_FILES[$uploadexploded[0]];
+				$filename = str_replace(" ", "_", $filename);
+
 				$name = $filename['name'];
+				$name = str_replace(" ", "_", $name);
+
 				$this->file_name = $name;
 
 
