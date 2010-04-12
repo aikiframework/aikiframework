@@ -55,7 +55,11 @@ class wiki extends aiki
 				$element = trim($element);
 				$elementSides = explode("=", $element);
 				$elementSides[0] = trim($elementSides[0]);
-				$elementSides[1] = trim($elementSides[1]);
+				if (isset($elementSides[1])){
+					$elementSides[1] = trim($elementSides[1]);
+				}else{
+					$elementSides[1] = '';
+				}
 
 				$template_output = str_replace("($elementSides[0])", $elementSides[1], $template_output);
 
