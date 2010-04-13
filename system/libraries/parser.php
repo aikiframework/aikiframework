@@ -207,30 +207,12 @@ class parser extends aiki
 
 			$html_photo .= "<img ";
 
-			//display image by calling it's id {+{213}+}
-
-
 			$html_photo .= "src='".$config['url']."image/";
 
 			if ($photo_info_array[5] and $photo_info_array[5] != "px" ){
 				$html_photo .= "$photo_info_array[5]/"; //add spesific size virtual folder
 			}
 			$html_photo .= "$photo_info_array[0]'";
-
-			/*}elseif (preg_match('/([0-9])/',$photo_info_array[0])) {
-				$photo_file = $db->get_row("SELECT filename FROM modules_photo_archive where id='$photo_info_array[0]'");
-				if ($photo_file){
-				if ($photo_file->filename){
-				$html_photo .= "src='aikicore->setting[url]/image/";
-				if ($photo_info_array[5] and $photo_info_array[5] != "px" ){
-				$html_photo .= "$photo_info_array[5]/"; //add spesific size virtual folder
-				}
-				$html_photo .= "$photo_file->filename'";
-				}
-				}
-				}
-				*/
-
 
 			//this will overwrite the alt value from the database
 			if (isset($photo_info_array[1]) and $photo_info_array[1] != "0" ){

@@ -667,6 +667,11 @@ class CreateLayout
 			}
 
 			$processed_widget = preg_replace("/\(\#\(header\:(.*)\)\#\)/U",'', $processed_widget);
+				
+			if (isset($widget_cache_id)){
+				$widget_cache_id_hash = md5($widget_cache_id);
+				$processed_widget = str_replace("(#(cache_file_name)#)",$widget_cache_id_hash, $processed_widget);
+			}
 
 			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->parser->process($processed_widget);
