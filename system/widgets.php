@@ -798,6 +798,10 @@ class CreateLayout
 
 				}
 
+				if (!isset($widget_value->$parsed) and isset($this->global_values->$parsed)){
+					$widget_value->$parsed = $this->global_values->$parsed;
+				}
+
 				if (!isset($widget_value->$parsed)){
 					$widget_value->$parsed = '';
 				}
@@ -836,10 +840,10 @@ class CreateLayout
 
 	private function inherent_widgets($widget){
 		global $db;
-		
+
 		//Fix a typo that was in the first version inherit was called inherent
 		$widget = str_replace("(#(inherit", "(#(inherent", $widget);
-		
+
 		$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/', $widget, $matches);
 		if ($numMatches > 0){
 			foreach ($matches[1] as $widget_info){
