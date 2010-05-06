@@ -780,6 +780,7 @@ class CreateLayout
 
 				$parsedExplode = explode("||", $parsed);
 				if (isset($parsedExplode[1]) and $parsedExplode[0] == "if"){
+					$cached_values = true;
 					$parsedValue = $widget_value->$parsedExplode[1];
 
 					if ($parsedValue){
