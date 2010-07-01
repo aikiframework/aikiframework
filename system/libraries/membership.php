@@ -104,7 +104,7 @@ class membership
 				$register_user = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '$get_user->userid', '$get_user->username' , '$time_now', '$time_now' ,'$_SESSION[aikiuser]', '1', '', '')");
 			}
 
-			if (!isset($config["allow_multiple_sessions"])){
+			if ($config["allow_multiple_sessions"] == false){
 				$delete_previous_open_sessions =$db->query("DELETE FROM `aiki_users_sessions` WHERE `user_session`!='$_SESSION[aikiuser]' and `user_name` = '$get_user->username' and `user_id`='$get_user->userid'");
 			}
 

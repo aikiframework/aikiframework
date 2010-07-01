@@ -117,4 +117,5 @@ if (isset($config["debug"]) and $config["debug"]){
 	echo "\n <!-- Time: ".$end_time." seconds -->";
 }
 
+
 ?>
