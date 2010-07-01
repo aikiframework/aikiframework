@@ -387,7 +387,7 @@ $(function() {
 										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_username\">");
 										break;
 
-									case "insertedby_id":
+									case "insertedby_userid":
 										if (isset ($form_data)){
 											$insertedby_userid = $form_data->$intwalker['0'];
 										}else{
@@ -396,6 +396,16 @@ $(function() {
 
 										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_userid\">");
 										break;
+										
+									case "insertedby_id":
+										if (isset ($form_data)){
+											$insertedby_userid = $form_data->$intwalker['0'];
+										}else{
+											$insertedby_userid = $membership->userid;
+										}
+
+										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_userid\">");
+										break;										
 
 									case "hitscounter":
 										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"0\">");
