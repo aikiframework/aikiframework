@@ -312,7 +312,9 @@ class CreateLayout
 
 			$widget->normal_select = $aiki->input->requests($widget->normal_select);
 			$widget->normal_select =  $this->parsDBpars($widget->normal_select);
-
+			$widget->normal_select = str_replace("[guest_session]", $membership->guest_session, $widget->normal_select);
+			$widget->normal_select = str_replace("[user_session]", $membership->user_session, $widget->normal_select);			
+			
 			$widget->widget = htmlspecialchars_decode($widget->widget);
 
 			$widget->widget = $aiki->processVars($widget->widget);

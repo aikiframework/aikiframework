@@ -19,6 +19,8 @@ class membership
 	public $username;
 	public $userid;
 	public $group_level;
+	public $guest_session = '';
+	public $user_session = '';
 
 
 	public function membership(){
@@ -70,6 +72,13 @@ class membership
 		$last_hour = time()."-$timeout";
 		$make_offline = $db->query("DELETE FROM `aiki_users_sessions` WHERE last_hit < $last_hour");
 
+		if (isset($_SESSION['aikiuser'])){
+			$this->user_session = $_SESSION['aikiuser'];
+		}
+
+		if (isset($_SESSION['guest'])){
+			$this->guest_session = $_SESSION['guest'];
+		}
 
 	}
 
