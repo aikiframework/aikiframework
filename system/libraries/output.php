@@ -123,7 +123,7 @@ class output
 	public function from_cache(){
 		global $config, $membership;
 
-		if ($config['html_cache'] and !$membership->permissions){
+		if ($config['html_cache'] != false and !$membership->permissions){
 
 			$start = (float) array_sum(explode(' ',microtime()));
 
