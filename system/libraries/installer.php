@@ -270,6 +270,8 @@ $config["session_timeout"] = 3600; //ms
 $config["allow_multiple_sessions"] = false;
 $config["allow_guest_sessions"] = true;
 
+$config["save_revision_history"] = false;
+
 $config["register_errors"] = false;
 
 $config["error_404"] = "<h1>404 Page Not Found</h1>
@@ -472,6 +474,18 @@ CREATE TABLE IF NOT EXISTS `apps_wiki_templates` (
   PRIMARY KEY  (`id`),
   KEY `template_name` (`template_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `aiki_revisions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `table_name` varchar(255) NOT NULL,
+  `record_number` int(11) NOT NULL,
+  `data` text NOT NULL,
+  `date` varchar(255) NOT NULL,
+  `revision` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --------------------------------------------------------
 

@@ -679,7 +679,7 @@ class records
 	//$layout->forms .= $dolock;
 
 	public function edit_db_record_by_form_post($post, $form_id, $record_id){
-		global $db, $aiki, $membership;
+		global $db, $aiki, $membership, $config;
 
 		if (!isset($post['form_post_type'])){
 			$post['form_post_type'] = "save";
@@ -838,6 +838,26 @@ class records
 			$editResult = $db->query($editQuery);
 		}
 
+
+		if (isset($config["save_revision_history"]) and $config["save_revision_history"] != false){
+
+			$original_revision = $db->get_row("select data, revision from aiki_revisions where table_name = '$tablename' and record_number = '$record_id' order by revision DESC limit 1");
+
+			$revision_number = $original_revision->revision + 1;
+
+			$revision_data = "($insert_query_fields) VALUES ($insert_query_values)";
+
+			if ($original_revision->data != $revision_data){
+
+				$revision_data = addslashes($revision_data);
+
+				$revision_query = $db->query("INSERT into aiki_revisions
+			    (`id` ,`table_name` ,`record_number` ,`data` ,`date` ,`revision`) 
+			    VALUES
+			    ('', '$tablename', '$record_id', '$revision_data', NOW(), '$revision_number')");
+
+			}
+		}
 
 		if (isset($editResult)){
 
