@@ -483,6 +483,7 @@ CREATE TABLE IF NOT EXISTS `aiki_revisions` (
   `record_number` int(11) NOT NULL,
   `data` text NOT NULL,
   `date` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
   `revision` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

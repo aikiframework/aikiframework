@@ -852,9 +852,9 @@ class records
 				$revision_data = addslashes($revision_data);
 
 				$revision_query = $db->query("INSERT into aiki_revisions
-			    (`id` ,`table_name` ,`record_number` ,`data` ,`date` ,`revision`) 
+			    (`id` ,`table_name` ,`record_number` ,`data` ,`date` , `username` ,`revision`) 
 			    VALUES
-			    ('', '$tablename', '$record_id', '$revision_data', NOW(), '$revision_number')");
+			    ('', '$tablename', '$record_id', '$revision_data', NOW(), '$membership->username' ,'$revision_number')");
 
 			}
 		}
