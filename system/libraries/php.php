@@ -70,7 +70,7 @@ class php
 				$aiki->load($class);
 
 				if (isset($aiki->$class)){
-					$output = $aiki->$class->$function($vars_array);
+					$output = $aiki->$class->$function();
 				}else{
 					$output = '';
 				}
