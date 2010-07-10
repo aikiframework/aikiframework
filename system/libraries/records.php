@@ -636,6 +636,20 @@ class records
 
 							break;
 
+						case "on_submit":
+
+							switch ($event[1]){
+
+								case "redirect":
+									if (isset ($event[2])){
+										header("Location: $event[2]");
+									}
+									break;
+
+							}
+
+							break;
+
 					}
 
 				}
