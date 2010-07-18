@@ -192,7 +192,7 @@ class records
 			}
 
 			if (isset($get_permission_and_man_info[2]) and $get_permission_and_man_info[2] == "true" and !$post[$intwalker[0]]){
-				$output_result .= "<b>Warning:</b> Please fill $intwalker[1]<br />";
+				$output_result .= "__warning__ Please fill $intwalker[1]<br />";
 				$this->stop = true;
 			}
 
