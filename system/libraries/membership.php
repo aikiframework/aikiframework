@@ -26,7 +26,7 @@ class membership
 	public function membership(){
 		global $db, $config;
 
-		if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
+		if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"] != false){
 			session_start();
 		}elseif (@$_COOKIE["PHPSESSID"]){
 			session_start();
