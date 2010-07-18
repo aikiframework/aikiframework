@@ -64,8 +64,7 @@ class records
 				//TODO Date output control:
 				$datetime = date('m/d/y g:ia', $currentdatetime);
 
-				$is_editable = "<font color=\"#FF0000\"><b>تحذير: </b></font>يقوم المستخدم <b>$membership->full_name</b> بالعمل على هذا السجل في هذه الأثناء وقد باشر العمل في: $datetime";
-
+				$is_editable = "__warning__ <b>$membership->full_name</b>__started_editing__: $datetime";
 
 				$lockdocument = $db->query("update $tablename set is_editable = '$is_editable' where $pkeyname='$pkeybalue'");
 			}else{
