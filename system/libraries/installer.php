@@ -316,11 +316,6 @@ RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteRule ^(.*)$ index.php?pretty=$1 [L,QSA]';
 
-	$htaccess_file_name = ".htaccess";
-	$FileHandle = fopen($htaccess_file_name, 'w') or die("Sorry, no permissions to create .htaccess file");
-	fwrite($FileHandle, $htaccess_file);
-	fclose($FileHandle);
-
 	$admin_password = substr(md5(uniqid(rand(),true)),1,8);
 	$admin_password_md5_md5 = md5(md5($admin_password));
 
@@ -706,7 +701,7 @@ CREATE TABLE IF NOT EXISTS `apps_wiki_text` (
 	echo 'Password: '.$admin_password;
 
 	if ($email){
-		
+
 		$headers  = "MIME-Version: 1.0\r\n";
 		$headers .= "Content-type: text/html; charset=utf-8\r\n";
 		$headers .= "From: noreply@aikiframework.org\r\n";
@@ -720,6 +715,11 @@ Password: $admin_password
 		mail($email,'Your new aiki installation',$message,$headers);
 	}
 
+	$htaccess_file_name = ".htaccess";
+	$htaccess_file_html = nl2br($htaccess_file);
+	$FileHandle = fopen($htaccess_file_name, 'w') or die("<br />Sorry, no permissions to create .htaccess file<br /> please add the following to .htaccess to enable pretty urls:<br /><br /><small>".$htaccess_file_html."</small>");
+	fwrite($FileHandle, $htaccess_file);
+	fclose($FileHandle);
 
 }
 echo '</div>
