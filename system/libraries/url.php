@@ -57,6 +57,7 @@ class url
 
 	public function fix_url($text){
 
+		$text = trim($text);
 		$text = str_replace(" ", "_", $text);
 		$text = str_replace("'", "", $text);
 		$text = str_replace('"', "", $text);
