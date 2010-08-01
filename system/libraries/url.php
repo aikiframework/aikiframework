@@ -55,6 +55,14 @@ class url
 	}
 
 
+	public function fix_url($text){
+
+		$text = str_replace(" ", "_", $text);
+		$text = str_replace("'", "", $text);
+		$text = str_replace('"', "", $text);
+
+		return $text;
+	}
 
 	public function widget_if_match_url($widget){
 			
