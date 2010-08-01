@@ -60,6 +60,7 @@ class url
 		$text = str_replace(" ", "_", $text);
 		$text = str_replace("'", "", $text);
 		$text = str_replace('"', "", $text);
+		$text = strtolower($text);
 
 		return $text;
 	}
