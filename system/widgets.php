@@ -364,6 +364,8 @@ class CreateLayout
 
 				if (isset($records_num)){
 					$widget->widget = str_replace("[records_num]", $records_num, $widget->widget);
+				}else{
+					$records_num = '';
 				}
 
 
