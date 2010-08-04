@@ -43,6 +43,8 @@ class sql_markup
 	public function sql_query($match){
 		global $aiki, $db;
 
+		$match = $aiki->url->apply_url_on_query($match);
+		
 		$html_output = '';
 
 		$count_sql = preg_match_all('/\((.*)\)/s', $match, $matches);
