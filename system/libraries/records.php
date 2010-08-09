@@ -527,6 +527,12 @@ class records
 
 						foreach ($secondery_query as $field_name => $field_value){
 							$field_value = str_replace("this_pkey", $this_pkey, $field_value);
+								
+							$field_value_var = $aiki->get_string_between($field_value, '[', ']');
+							if ($field_value_var){
+								$field_value = str_replace('['.$field_value_var.']', $post["$field_value_var"], $field_value);
+							}
+								
 							$secondery_insert_query .= "'".$field_value."', ";
 						}
 						$secondery_insert_query = preg_replace("/\, $/", "", $secondery_insert_query);
