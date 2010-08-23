@@ -44,7 +44,7 @@ class sql_markup
 		global $aiki, $db;
 
 		$match = $aiki->url->apply_url_on_query($match);
-		
+
 		$html_output = '';
 
 		$count_sql = preg_match_all('/\((.*)\)/s', $match, $matches);
@@ -65,12 +65,15 @@ class sql_markup
 
 			if ($sql_query){
 
+				$sql_query = str_replace("\'", "'", $sql_query);
+				$sql_query = str_replace('\"', '"', $sql_query);
+
 				$results = $db->get_results($sql_query);
 
 				if ($results){
 
 					foreach ($results as $result) {
-						
+
 						$html =  $sql_html[1];
 
 						$result = $aiki->aiki_array->object2array($result);
