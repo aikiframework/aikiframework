@@ -291,9 +291,12 @@ function urls_widgets_tree(){
 					
 					stop = 0;
 					
-					$("#widget-form").html("Edited widget successfully");
+					$('<div id="note_container" style="background:none repeat scroll 0 0 #FDA501; color:#FFFFFF; font-weight:bold; padding:6px; position:fixed; right:0; text-align:center; top:0; width:100%; z-index:10000;"><span>Changes Saved</span></div>').appendTo("#widget-form").hide().fadeIn(1000).fadeOut(2000,
+							function() {
+					        	$('#note_container').remove();	
+					        }
+					);
 
-					$('#tools_box').remove();
 					
 					$.tree_reference('widgettree').refresh();
 					
