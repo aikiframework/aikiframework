@@ -31,10 +31,16 @@ if (!isset($_GET['widget'])){
 	}
 
 }else{
+	
+	if (isset($_GET['saved'])){
+		$event = "<b>changed</b>";
+	}else{
+		$event = "<b>is editing</b>";
+	}
 
 	$widget_name = $db->get_var("select widget_name from aiki_widgets where id = ".$_GET['widget']."");
 
-	$add_event = $db->query("insert into aiki_events(id, event, username, widgetid) VALUES (NULL, '".$aiki->membership->username." is editing widget ".$_GET['widget']." - ".$widget_name."', '".$aiki->membership->username."', '".$_GET['widget']."')");
+	$add_event = $db->query("insert into aiki_events(id, event, username, widgetid) VALUES (NULL, '".$aiki->membership->username." ".$event." widget ".$_GET['widget']." - ".$widget_name."', '".$aiki->membership->username."', '".$_GET['widget']."')");
 
 	$latest_action = $db->get_var("select id from aiki_events where username = '".$aiki->membership->username."' order by id DESC limit 1");
 

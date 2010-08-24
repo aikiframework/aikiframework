@@ -298,6 +298,9 @@ function urls_widgets_tree(){
 					$('<div id="note_container" style="background:none repeat scroll 0 0 #FDA501; color:#FFFFFF; font-weight:bold; padding:6px; position:fixed; right:0; text-align:center; top:0; width:100%; z-index:10000;"><span>Changes Saved</span></div>').appendTo("#widget-form").hide().fadeIn(1000).fadeOut(2000,
 							function() {
 					        	$('#note_container').remove();	
+								$("<div id='events_listener'></div>").appendTo("#widget-form");
+								$("#events_listener").load("assets/apps/admin/events.php?saved=true&widget="+NODE.id);
+								$("#events_listener").remove();					        	
 					        }
 					);
 
