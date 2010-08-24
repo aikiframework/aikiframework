@@ -283,6 +283,10 @@ function urls_widgets_tree(){
   if (stop == 1){
 			$("#widget-form").load('admin_tools/edit/20/'+NODE.id,  {limit: 25}, function(){
 				
+				$("<div id='events_listener'></div>").appendTo("#widget-form");
+				$("#events_listener").load("assets/apps/admin/events.php?widget="+NODE.id);
+				$("#events_listener").remove();
+				
 				mod_basic();
 				
 				code_mirror();
@@ -553,5 +557,20 @@ $().ready(function() {
 		   return false;
 	   });	 	   
 	   	   
+	   
+	    $("<li><a href='#' id='open_events_listener'>Events Listener</a></li>").appendTo("#main-navigation");
+		$("<div id='events_output' title='Events Listener'></div>").appendTo("#header");
+		$("#events_output").load("assets/apps/admin/events.php");
+		$("#events_output").dialog({width: 420});
+		
+		$("#open_events_listener").click(function(){
+			$("#events_output").dialog('open');
+		});
+        
+		var refreshId = setInterval(function(){
+			if ($("#events_output").dialog( "isOpen" )){
+		        $("#events_output").load("assets/apps/admin/events.php");
+			}
+		 }, 3000);
 	   
 });

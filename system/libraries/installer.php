@@ -382,6 +382,17 @@ CREATE TABLE IF NOT EXISTS `aiki_forms` (
 
 --------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS `aiki_events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `event` text NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `widgetid` int(11) NOT NULL,
+  `timestarted` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--------------------------------------------------------
+
 INSERT INTO `aiki_forms` (`id`, `app_id`, `form_method`, `form_action`, `form_dir`, `form_table`, `form_name`, `form_array`, `form_html`, `form_query`) VALUES
 (1, 0, \'\', \'\', \'\', \'aiki_widgets\', \'widgets_simple_editor\', \'a:16:{s:9:"tablename";s:12:"aiki_widgets";s:4:"pkey";s:2:"id";s:10:"textinput2";s:26:"widget_name|SystemGOD:Name";s:7:"hidden3";s:47:"widget_site|SystemGOD:widget site:value:default";s:13:"staticselect4";s:62:"widget_target|SystemGOD:Target:custome:body>body&header>header";s:7:"hidden5";s:43:"widget_type|SystemGOD:widget type:value:div";s:13:"staticselect6";s:48:"is_father|SystemGOD:Is Father:custome:No>0&Yes>1";s:10:"selection7";s:123:"father_widget|SystemGOD:Father Widget:aiki_widgets:id:widget_name:where display_urls NOT RLIKE (admin) and is_father != (0)";s:10:"textinput8";s:36:"display_order|SystemGOD:Render Order";s:10:"textblock9";s:36:"display_urls|SystemGOD:Address (url)";s:11:"textblock10";s:36:"normal_select|SystemGOD:Select Query";s:11:"textblock11";s:24:"widget|SystemGOD:Content";s:11:"textblock12";s:17:"css|SystemGOD:CSS";s:11:"textinput13";s:42:"records_in_page|SystemGOD:Records per page";s:14:"staticselect14";s:45:"is_active|SystemGOD:Active:custome:Yes>1&No>0";s:6:"submit";s:3:"Add";}\', \'\', \'\'),
 (4, 0, \'\', \'\', \'\', \'aiki_dictionary\', \'aiki_dictionary\', \'a:7:{s:9:"tablename";s:15:"aiki_dictionary";s:4:"pkey";s:7:"term_id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:31:"short_term|SystemGOD:short term";s:10:"textblock3";s:35:"lang_english|SystemGOD:lang english";s:10:"textblock4";s:33:"lang_arabic|SystemGOD:lang arabic";s:10:"textblock5";s:33:"lang_german|SystemGOD:lang german";}\', \'\', \'\'),
