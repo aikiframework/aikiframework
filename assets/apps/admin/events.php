@@ -31,9 +31,11 @@ if (!isset($_GET['widget'])){
 	}
 
 }else{
-	
+
 	if (isset($_GET['saved'])){
-		$event = "<b>changed</b>";
+		if ($_GET['saved'] == TRUE){
+			$event = "<b>changed</b>";
+		}
 	}else{
 		$event = "<b>is editing</b>";
 	}

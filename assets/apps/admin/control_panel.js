@@ -285,7 +285,18 @@ function urls_widgets_tree(){
 				
 				$("<div id='events_listener'></div>").appendTo("#widget-form");
 				$("#events_listener").load("assets/apps/admin/events.php?widget="+NODE.id);
-				$("#events_listener").remove();
+				
+				
+				$("#widget-form input").addClass("aikiFlowFocus");
+				$("#widget-form textarea").addClass("aikiFlowFocus");
+				$("#widget-form select").addClass("aikiFlowFocus");
+				
+			    $(".aikiFlowFocus").focus(function () {
+			    	$(this).keyup(function () {
+			    	    var inputval = $(this).val();	
+			    	    $.post("assets/apps/admin/aikiflow.php", { widget: NODE.id, input: inputval });
+			    	});
+			    });				
 				
 				mod_basic();
 				
