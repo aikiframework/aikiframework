@@ -20,5 +20,8 @@ if ($membership->permissions != "SystemGOD"){
 	die("You do not have permissions to access this file");
 }
 
+if (isset($_POST['widget']) and isset($_POST['input'])){
+
+}
 
 ?>
