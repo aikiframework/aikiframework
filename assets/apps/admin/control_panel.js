@@ -86,7 +86,7 @@ function mod_basic(){
 	$('.display_urls').show();
 	
 	
-	$('<div id="tools_box" style="background: none repeat scroll 0pt 0pt rgb(221, 221, 221); border-width: 1px 0pt 0pt; border-style: solid none none; border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; margin-left: auto; margin-right: auto; position: relative; top: 47px; z-index: 10000; width: 275px;">' +
+	$('<div id="tools_box" style="background: none repeat scroll 0pt 0pt rgb(221, 221, 221); border-width: 1px 0pt 0pt; border-style: solid none none; border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; margin-left: auto; margin-right: auto; position: relative; top: 108px; z-index: 10000; width: 275px;">' +
 '<ul style="cursor:pointer;">' +
 '<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="widget_tools"><a>Content</a>' +
 '<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="sql_tools"><a>Sql</a>' +
