@@ -17,6 +17,7 @@ if (stop != 1){
 	$.get(file,function(data) {
 		$('#loading_box').fadeOut(500, function() { $(this).remove(); 
 		$(targetwidget).hide().fadeIn(500).html(data);
+		$('#edit_form').ajaxForm(function() { $("#edit_form").html("Edited successfully"); });
 		});
 		stop = 0;
 	});
