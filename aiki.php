@@ -11,7 +11,7 @@
 
 
 // AikiFramework Version
-define('AIKI_VERSION',	'0.3.6');
+define('AIKI_VERSION',	'0.4');
 
 define('IN_AIKI', true);
 
