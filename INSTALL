@@ -1,0 +1,18 @@
+Aikiframework 0.4 php Install
+=====================================
+
+1- extract the tar to your server document root and make sure the folder
+has script write permissions: 777 ( to create config.php and .htaccess )
+
+2- create an empty database, with collation set to utf8_general_ci.
+
+3- you need PHP 5.1 or above and apache2.
+
+4- mod_rewrite must be enabled inside apache2 httpd.conf
+
+5- visit the document root folder from your browser
+
+6- follow the wizard
+
+7- change the permissions of the folder back to 775
+
