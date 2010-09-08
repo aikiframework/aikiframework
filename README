@@ -1,0 +1,25 @@
+README for Aikiframework 0.4
+------------------------------------
+
+
+Aiki Framework is a flexible open-source web 2.0 platform
+that allows programmers to easily create and work with
+content management systems. Aiki Framework saves all the
+controllers and output templates in a database or any other
+storage system. making it easy to use and easy to customize.
+
+Aiki Framework also allows developers and website admins to
+control an unlimited number of sites in one place with an advanced
+(yet very easy to use) permissions system.
+
+Aiki also gives access to the normal programming interfaces as well,
+allowing developers to write their code in a less-framework-oriented
+way than comparable offerings.
+
+Aiki Framework is built on PHP and is pluggable to many SQL-based
+database engines (MYSQL, PSQL, SQLite, etc).
+
+we are also working on Python and Ruby on Rails versions,
+but they still in pre-alpha. you will be able to convert any website
+built on the current PHP version to the Python or the Ruby alternative
+(once they are completed) in one click!! 
