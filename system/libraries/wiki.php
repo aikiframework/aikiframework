@@ -15,6 +15,12 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class wiki extends aiki
 {
 
+	/**
+	 * Parse wiki markup inside text
+	 *
+	 * @param   string
+	 * @return  string
+	 */
 	public function parse($text){
 
 		$text = $this->wikiTemplates($text);
