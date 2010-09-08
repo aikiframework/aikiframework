@@ -248,7 +248,7 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "verify_password":
-						//$form .= ("<h2>لا تظهر تأكيد كلمة المرور</h2>");
+
 						break;
 
 
