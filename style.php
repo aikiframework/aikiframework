@@ -36,7 +36,7 @@ if (isset($widgets) and $widgets != ''){
 	if ($get_widgets_css){
 		foreach ( $get_widgets_css as $widget_css )
 		{
-			echo $widget_css->css;
+			echo $aiki->languages->L10n($widget_css->css);
 		}
 	}
 }
