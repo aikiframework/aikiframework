@@ -62,7 +62,13 @@ class output
 
 				$layout->widgets_css = preg_replace('/_$/i', '', $layout->widgets_css);
 
-				$header .= '<link rel="stylesheet" type="text/css" href="'.$config['url'].'style.php?site='.$site."&widgets=$layout->widgets_css\" />\n";
+				if(isset($_GET['language'])){
+					$language=$_GET['language'];
+				}else{
+					$language = $config['default_language'];
+				}
+
+				$header .= '<link rel="stylesheet" type="text/css" href="'.$config['url'].'style.php?site='.$site."&widgets=$layout->widgets_css&language=$language\" />\n";
 
 			}
 
