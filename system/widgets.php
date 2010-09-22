@@ -338,7 +338,7 @@ class CreateLayout
 			}else{
 				$widget->normal_select = trim($widget->normal_select);
 			}
-				
+
 			$widget->normal_select = str_replace("\'", "'", $widget->normal_select);
 			$widget->normal_select = str_replace('\"', '"', $widget->normal_select);
 
@@ -793,12 +793,16 @@ class CreateLayout
 				$parsedExplode = explode("||", $parsed);
 				if (isset($parsedExplode[1]) and $parsedExplode[0] == "if"){
 					$cached_values = true;
-					$parsedValue = $widget_value->$parsedExplode[1];
+					
+					if (isset($widget_value->$parsedExplode[1])){
+						$parsedValue = $widget_value->$parsedExplode[1];
+					}
 
-					if ($parsedValue){
+					if (isset($parsedValue)){
 						$parsedExplode[2] = str_replace("_self", $parsedValue, $parsedExplode[2]);
 						$widget_value->$parsed = $parsedExplode[2];
 					}
+					
 					elseif (isset($parsedExplode[4]) and $parsedExplode[4] and $parsedExplode[3] == "else"){
 						$else_stetment = explode(":", $parsedExplode[4]);
 
