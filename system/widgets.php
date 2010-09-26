@@ -421,8 +421,6 @@ class CreateLayout
 
 				}
 
-
-
 				$widget_select = $db->get_results("$widget->normal_select");
 					
 				if (!$widget_select and isset($normal_selects[1])){
@@ -443,16 +441,12 @@ class CreateLayout
 						$full_numb_of_pages = $numpages;
 						$pagination = '';
 						$page2 = $page;
-						$pagination .= "<br />
-			 <p class='pagination'>__move_to_page__<br />";
+						$pagination .= "<div class='pagination'>__move_to_page__<br />";
 
 						if ($page){
-
 							$previous = str_replace("[page]", $page, $widget->link_example);
-							$pagination .= "<a style='letter-spacing:0px;' href=\"$previous\"><b>__previous__</b></a>";
-
+							$pagination .= "<span class='pagination_previous'><a href=\"$previous\">__previous__</a></span>";
 						}
-
 
 						if ($group_pages){
 
@@ -470,20 +464,16 @@ class CreateLayout
 								$numpages = $full_numb_of_pages;
 							}
 
-
 							for ($i=$pages_to_display +1 ; $i <$numpages; $i++)
 							{
-
 
 								if ($i == $page + 1 ){
 									$pagination .= "<span class='pagination_notactive'> $i </span>";
 								}else{
 									$next_link = str_replace("[page]", $i, $widget->link_example);
-									$pagination .= "<b> <a href=\"$next_link\">$i</a> </b>";
+									$pagination .= "<span class='pagination_active'><a href=\"$next_link\">$i</a></span>";
 								}
 							}
-
-
 
 						}else{
 
@@ -491,45 +481,32 @@ class CreateLayout
 							{
 
 								if ($i == $page + 1){
-									$pagination .= "<b> $i </b>";
+									$pagination .= "<span class='pagination_notactive'> $i </span>";
 								}else{
 									$next_link = str_replace("[page]", $i, $widget->link_example);
-									$pagination .= "<b> <a href=\"$next_link\">$i</a> </b>";
+									$pagination .= "<span class='pagination_active'><a href=\"$next_link\">$i</a></span>";
 								}
 							}
-
-
-
 						}
-
-
 
 						if( $page+2 != ($numpages)) {
-
 							$next = str_replace("[page]", $page + 2, $widget->link_example);
-							$pagination .= "<a style='letter-spacing:0px;' href=\"$next\"><b>__next__</b></a>";
-
+							$pagination .= "<span class='pagination_next'><a href=\"$next\">__next__</a></span>";
 						}
-
-						$pagination .= "<br />";
 
 						if( $page ) {
 							$first_page = str_replace("[page]", '1', $widget->link_example);
-							$pagination .= "<a style='letter-spacing:0px;' href=\"$first_page\"><small>__first_page__</small></a>  ";
+							$pagination .= "<span class='pagination_first'> <a href=\"$first_page\">__first_page__</a></span>";
 						}
 
 						if( $page != ($numpages-2) ) {
 							$last_page = str_replace("[page]", $full_numb_of_pages -1, $widget->link_example);
-							$pagination .= "<a style='letter-spacing:0px;' href=\"$last_page\"><small>__last_page__</small></a>";
+							$pagination .= "<span class='pagination_last'><a href=\"$last_page\">__last_page__</a></span>";
 						}
 
-						$pagination .= "</p>";
+						$pagination .= "</div>";
 					}
 				}
-
-
-
-
 
 				$newwidget = $widget->widget;
 
@@ -793,7 +770,7 @@ class CreateLayout
 				$parsedExplode = explode("||", $parsed);
 				if (isset($parsedExplode[1]) and $parsedExplode[0] == "if"){
 					$cached_values = true;
-					
+
 					if (isset($widget_value->$parsedExplode[1])){
 						$parsedValue = $widget_value->$parsedExplode[1];
 					}
@@ -802,7 +779,7 @@ class CreateLayout
 						$parsedExplode[2] = str_replace("_self", $parsedValue, $parsedExplode[2]);
 						$widget_value->$parsed = $parsedExplode[2];
 					}
-					
+
 					elseif (isset($parsedExplode[4]) and $parsedExplode[4] and $parsedExplode[3] == "else"){
 						$else_stetment = explode(":", $parsedExplode[4]);
 
