@@ -266,12 +266,7 @@ class wiki extends aiki
 
 		for ( $i = 6; $i >= 1; --$i ) {
 			$h = str_repeat( '=', $i );
-			//$text = preg_replace( "/^{$h}(.+){$h}\\s*$/m",
-			//"<a name='\\1'><h{$i}>\\1</h{$i}></a>\\2", $text );
-
 			$text = preg_replace( "/^$h(.+)$h\\s*/m", "<a name='\\1'><h{$i}>\\1</h{$i}></a>\\2", $text);
-
-			//$text = preg_replace( "/^$h(.+)$h\\s*$/m", "<h$i>\\1</h$i>", $text );
 		}
 
 
