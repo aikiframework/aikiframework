@@ -268,7 +268,7 @@ $config["cache_timeout"] = "86400"; //ms
 
 $config["session_timeout"] = 7200; //ms
 $config["allow_multiple_sessions"] = false;
-$config["allow_guest_sessions"] = true;
+$config["allow_guest_sessions"] = false;
 
 $config["save_revision_history"] = false;
 
