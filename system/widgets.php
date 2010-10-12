@@ -279,6 +279,11 @@ class CreateLayout
 			}
 		}
 
+		//kill the query if it is not select
+		if (preg_match("/TRUNCATE|UPDATE|DELETE(.*)from|table/i", $widget->normal_select)){
+			$widget->normal_select = "";
+		}
+		
 		if (isset($widget->normal_select)){
 			$widget->normal_select = str_replace("\n", " ", $widget->normal_select);
 			$widget->normal_select = str_replace("\r", " ", $widget->normal_select);
@@ -352,8 +357,6 @@ class CreateLayout
 				$widget->normal_select = $aiki->url->apply_url_on_query($widget->normal_select);
 
 				$widget->normal_select = $aiki->processVars ($aiki->languages->L10n ("$widget->normal_select"));
-
-
 
 				//Support DISTINCT selection
 				preg_match('/select DISTINCT(.*)from/i', $widget->normal_select, $get_DISTINCT);
