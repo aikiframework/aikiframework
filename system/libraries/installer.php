@@ -266,7 +266,7 @@ $config["css_cache_file"] = "";
 $config["html_cache"] = false; //full path to full html cache directory
 $config["cache_timeout"] = "86400"; //ms
 
-$config["session_timeout"] = 3600; //ms
+$config["session_timeout"] = 7200; //ms
 $config["allow_multiple_sessions"] = false;
 $config["allow_guest_sessions"] = true;
 

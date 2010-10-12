@@ -66,7 +66,7 @@ class membership
 		if (isset($config["session_timeout"])){
 			$timeout = $config["session_timeout"];
 		}else{
-			$timeout = 2000;
+			$timeout = 7200;
 		}
 
 		$last_hour = time()."-$timeout";

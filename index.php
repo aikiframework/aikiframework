@@ -82,12 +82,10 @@ if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $con
 
 	print $html_output;
 
-
 }
 
 
 if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
-
 	$full_html_input .= $aiki->output->write_footer();
 }
 
