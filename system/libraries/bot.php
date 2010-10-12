@@ -265,7 +265,6 @@ class bot
 	//dump app
 	//dump aiki installtion with all apps and no data
 	//dump user data or not
-
 	function mysql_dump($database) {
 
 		$query = '';
