@@ -80,15 +80,17 @@ class CreateLayout
 
 					//TODO move this to widget_if_match_url
 					if (isset($_GET["pretty"]) and $widget->kill_urls != "" and $widget->kill_urls == $_GET["pretty"]){
+
 						$kill_this_widget = true;
+
 					}else{
+
 						$kill_this_widget = false;
-					}
 
-					if ($url->create_widget or $widget->display_urls == "*" and !$kill_this_widget){
-
-						$widget_group[] = $widget->id;
-						//$this->createWidget($widget->id);
+						if ($url->create_widget or $widget->display_urls == "*"){
+							$widget_group[] = $widget->id;
+							//$this->createWidget($widget->id);
+						}
 
 					}
 				}
