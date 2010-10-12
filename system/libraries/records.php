@@ -237,6 +237,15 @@ class records
 						$post[$intwalker[0]] = str_replace("insertedby_username", $membership->username, $post[$intwalker[0]]);
 						$post[$intwalker[0]] = str_replace("insertedby_userid", $membership->userid, $post[$intwalker[0]]);
 
+						$current_month = date("n");
+						$post[$intwalker[0]] = str_replace("current_month", $current_month, $post[$intwalker[0]]);
+						
+						$current_year = date("Y");
+						$post[$intwalker[0]] = str_replace("current_year", $current_year, $post[$intwalker[0]]);
+						
+						$current_day = date("j");
+						$post[$intwalker[0]] = str_replace("current_day", $current_day, $post[$intwalker[0]]);
+
 						$post[$intwalker[0]] = $aiki->url->apply_url_on_query($post[$intwalker[0]]);
 
 						$values_array[$intwalker[0]] = $post[$intwalker[0]];
@@ -527,12 +536,12 @@ class records
 
 						foreach ($secondery_query as $field_name => $field_value){
 							$field_value = str_replace("this_pkey", $this_pkey, $field_value);
-								
+
 							$field_value_var = $aiki->get_string_between($field_value, '[', ']');
 							if ($field_value_var){
 								$field_value = str_replace('['.$field_value_var.']', $post["$field_value_var"], $field_value);
 							}
-								
+
 							$secondery_insert_query .= "'".$field_value."', ";
 						}
 						$secondery_insert_query = preg_replace("/\, $/", "", $secondery_insert_query);
