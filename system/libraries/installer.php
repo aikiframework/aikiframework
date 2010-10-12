@@ -157,16 +157,13 @@ if (!isset($_POST['db_type']) or !isset($_POST['db_host']) or !isset($_POST['db_
 before we start you need the following:
 <br />
 <br />
-1- <b>'.$system_folder.'</b> must have script write permissions: 777 ( to create config.php and .htaccess )
+1- An empty database, with collation set to utf8_general_ci.
 <br />
 <br />
-2- An empty database, with collation set to utf8_general_ci.
+2- PHP 5.1 or above and apache2.
 <br />
 <br />
-3- PHP 5.1 or above and apache2.
-<br />
-<br />
-4- mod_rewrite must be enabled inside apache2 httpd.conf  
+3- mod_rewrite must be enabled inside apache2 httpd.conf  
 </p>	
 	
 <form method="post" id="form">
@@ -283,6 +280,8 @@ $config["debug"] = false;
 
 ?>';	
 
+	$config_file_html = htmlspecialchars($config_file);
+	$config_file_html = nl2br($config_file_html);
 
 	$conn = @mysql_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass']) or die ('Error connecting to mysql');
 	$select_db = @mysql_select_db($_POST['db_name']);
@@ -299,11 +298,6 @@ $config["debug"] = false;
 		}
 	}
 
-	$config_file_name = "config.php";
-	$FileHandle = fopen($config_file_name, 'w') or die("Sorry, no permissions to create config.php");
-	fwrite($FileHandle, $config_file);
-	fclose($FileHandle);
-
 	$htaccess_file = 'Options +FollowSymLinks
 RewriteEngine on
 RewriteBase '.$_SERVER["REQUEST_URI"].'
@@ -315,6 +309,13 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteRule ^(.*)$ index.php?pretty=$1 [L,QSA]';
+
+	$htaccess_file_html = nl2br($htaccess_file);
+
+	$config_file_name = "config.php";
+	$FileHandle = fopen($config_file_name, 'w') or die("<br />Sorry, no permissions to create config.php, please create it in <b>$system_folder</b> with the following: <br /><br />$config_file_html<hr /><br />also please add the following to .htaccess to enable pretty urls:<br /><br /><small>".$htaccess_file_html."</small>");
+	fwrite($FileHandle, $config_file);
+	fclose($FileHandle);
 
 	$admin_password = substr(md5(uniqid(rand(),true)),1,8);
 	$admin_password_md5_md5 = md5(md5($admin_password));
@@ -739,7 +740,6 @@ Password: $admin_password
 	}
 
 	$htaccess_file_name = ".htaccess";
-	$htaccess_file_html = nl2br($htaccess_file);
 	$FileHandle = fopen($htaccess_file_name, 'w') or die("<br />Sorry, no permissions to create .htaccess file<br /> please add the following to .htaccess to enable pretty urls:<br /><br /><small>".$htaccess_file_html."</small>");
 	fwrite($FileHandle, $htaccess_file);
 	fclose($FileHandle);
