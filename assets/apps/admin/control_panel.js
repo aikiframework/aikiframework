@@ -585,7 +585,7 @@ $().ready(function() {
 	    $("<li><a href='#' id='open_events_listener'>Events Listener</a></li>").appendTo("#main-navigation");
 		$("<div id='events_output' title='Events Listener'></div>").appendTo("#header");
 		$("#events_output").load("assets/apps/admin/events.php");
-		$("#events_output").dialog({width: 420});
+		$("#events_output").dialog({width: 420, autoOpen: false});
 		
 		$("#open_events_listener").click(function(){
 			$("#events_output").dialog('open');
