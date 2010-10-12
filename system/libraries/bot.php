@@ -260,6 +260,73 @@ class bot
 	}
 
 
+
+	//dump all
+	//dump app
+	//dump aiki installtion with all apps and no data
+	//dump user data or not
+
+	function mysql_dump($database) {
+
+		$query = '';
+
+		$tables = @mysql_list_tables($database);
+		while ($row = @mysql_fetch_row($tables)) {
+			$table_list[] = $row[0];
+		}
+
+		for ($i = 0; $i < @count($table_list); $i++) {
+
+			$results = mysql_query('DESCRIBE ' . $database . '.' . $table_list[$i]);
+
+			$query .='CREATE TABLE `' . $table_list[$i] . '` (' . "\r";
+
+			$tmp = '';
+
+			while ($row = @mysql_fetch_assoc($results)) {
+
+				$query .= '`' . $row['Field'] . '` ' . $row['Type'];
+
+				if ($row['Null'] != 'YES') { $query .= ' NOT NULL'; }
+				if ($row['Default'] != '') { $query .= ' DEFAULT \'' . $row['Default'] . '\''; }
+				if ($row['Extra']) { $query .= ' ' . strtoupper($row['Extra']); }
+				if ($row['Key'] == 'PRI') { $tmp = 'primary key(' . $row['Field'] . ')'; }
+
+				$query .= ','. "\r";
+
+			}
+
+			$query .= $tmp . "\r" . ');' . str_repeat("\r", 1);
+
+			$query .= '--------------------------------------------------------'."\r";
+
+			$results = mysql_query('SELECT * FROM ' . $database . '.' . $table_list[$i]);
+
+			while ($row = @mysql_fetch_assoc($results)) {
+
+				$query .= 'INSERT INTO `' . $table_list[$i] .'` (';
+
+				$data = Array();
+
+				while (list($key, $value) = @each($row)) {
+					$data['keys'][] = $key; $data['values'][] = addslashes($value);
+				}
+
+				$query .= join($data['keys'], ', ') . ')' . "\r" . 'VALUES (\'' . join($data['values'], '\', \'') . '\');' . "\r";
+					
+				$query .= '--------------------------------------------------------'."\r";
+
+			}
+
+		}
+
+		$query = str_replace("'CURRENT_TIMESTAMP'", 'CURRENT_TIMESTAMP', $query );
+
+		return $query;
+
+	}
+
+
 }
 
 ?>
