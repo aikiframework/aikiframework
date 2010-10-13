@@ -45,10 +45,13 @@ class membership
 		$time_now = time();
 
 		if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
+ 
 			if (!isset($_SESSION['aikiuser']) and !isset($_SESSION['guest'])){
 
+				$user_ip = $this->get_ip();
+				
 				$_SESSION['guest'] = $this->generate_session(100);
-				$insert_session = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '', 'guest' , '$time_now', '$time_now' ,".$_SESSION['guest'].", '1', '', '')");
+				$insert_session = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '', 'guest' , '$time_now', '$time_now' , '".$_SESSION['guest']."', '1', '$user_ip', '$user_ip')");
 
 			}else{
 
@@ -118,7 +121,6 @@ class membership
 			$this->getUserPermissions($get_user->username);
 
 			$update_acces = $db->query("UPDATE `aiki_users` SET `last_login`= NOW(),`last_ip`='$user_ip', `logins_number`=`logins_number`+1 WHERE `userid`='".$get_user->userid."' LIMIT 1");
-
 
 		} else{
 			echo '<center><b>Sorry wrong username or password</b></center>';
