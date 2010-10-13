@@ -108,18 +108,18 @@ class membership
 			}
 
 			if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
-				$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='$get_user->userid', `user_name` = '$get_user->username' WHERE `user_session`='".$_SESSION['aikiuser']."' LIMIT 1");
+				$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='".$get_user->userid."', `user_name` = '".$get_user->username."' WHERE `user_session`='".$_SESSION['aikiuser']."' LIMIT 1");
 			}else{
-				$register_user = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '$get_user->userid', '$get_user->username' , '$time_now', '$time_now' ,'".$_SESSION['aikiuser']."', '1', '', '')");
+				$register_user = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '".$get_user->userid."', '".$get_user->username."' , '$time_now', '$time_now' ,'".$_SESSION['aikiuser']."', '1', '', '')");
 			}
 
 			if ($config["allow_multiple_sessions"] == false){
-				$delete_previous_open_sessions =$db->query("DELETE FROM `aiki_users_sessions` WHERE `user_session`!='".$_SESSION['aikiuser']."' and `user_name` = '$get_user->username' and `user_id`='$get_user->userid'");
+				$delete_previous_open_sessions =$db->query("DELETE FROM `aiki_users_sessions` WHERE `user_session`!='".$_SESSION['aikiuser']."' and `user_name` = '".$get_user->username."' and `user_id`='".$get_user->userid."'");
 			}
 
 			$this->getUserPermissions($get_user->username);
 
-			$update_acces = $db->query("UPDATE `aiki_users` SET `last_login`= NOW(),`last_ip`='$user_ip', `logins_number`=`logins_number`+1 WHERE `userid`='$get_user->userid' LIMIT 1");
+			$update_acces = $db->query("UPDATE `aiki_users` SET `last_login`= NOW(),`last_ip`='$user_ip', `logins_number`=`logins_number`+1 WHERE `userid`='".$get_user->userid."' LIMIT 1");
 
 
 		} else{
@@ -144,7 +144,7 @@ class membership
 
 		$user = $db->get_row("SELECT userid, usergroup, full_name, username FROM aiki_users where username='$user'");
 		if ($user->userid and $this->isUserLogged($user->userid)){
-			$group_permissions = $db->get_row("SELECT group_permissions, group_level FROM aiki_users_groups where id='$user->usergroup'");
+			$group_permissions = $db->get_row("SELECT group_permissions, group_level FROM aiki_users_groups where id='".$user->usergroup."'");
 
 			$this->full_name = $user->full_name;
 			$this->username = $user->username;
