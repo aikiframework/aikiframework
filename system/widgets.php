@@ -283,7 +283,7 @@ class CreateLayout
 		if (preg_match("/TRUNCATE|UPDATE|DELETE(.*)from|table/i", $widget->normal_select)){
 			$widget->normal_select = "";
 		}
-		
+
 		if (isset($widget->normal_select)){
 			$widget->normal_select = str_replace("\n", " ", $widget->normal_select);
 			$widget->normal_select = str_replace("\r", " ", $widget->normal_select);
@@ -647,15 +647,15 @@ class CreateLayout
 
 					if (isset($header_parts['0']) and isset($header_parts['1']) and isset($header_parts[2])){
 
-						header($header_parts['0'], $header_parts['1'], $header_parts['2']);
+						header("$header_parts[0]", $header_parts['1'], $header_parts['2']);
 
 					}elseif (isset($header_parts['0']) and isset($header_parts['1'])){
 
-						header($header_parts['0'], $header_parts['1']);
+						header("$header_parts[0]", $header_parts['1']);
 
 					}elseif (isset($header_parts['0'])){
 
-						header($header_parts['0']);
+						header("$header_parts[0]");
 
 					}
 				}
