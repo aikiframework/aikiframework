@@ -76,10 +76,7 @@ $aiki->load("languages");
 
 $errors = $aiki->load("errors");
 
-
 $url = $aiki->load("url");
-
-
 
 if(isset($_GET['language'])){
 	$language=$_GET['language'];
@@ -94,6 +91,5 @@ if(isset($_GET['language'])){
 	$dir = $config['site_dir'];
 	$language_short_name =$config['language_short_name'];
 }
-
 
 ?>
