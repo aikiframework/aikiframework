@@ -45,11 +45,11 @@ class membership
 		$time_now = time();
 
 		if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
- 
+
 			if (!isset($_SESSION['aikiuser']) and !isset($_SESSION['guest'])){
 
 				$user_ip = $this->get_ip();
-				
+
 				$_SESSION['guest'] = $this->generate_session(100);
 				$insert_session = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '', 'guest' , '$time_now', '$time_now' , '".$_SESSION['guest']."', '1', '$user_ip', '$user_ip')");
 
@@ -91,10 +91,8 @@ class membership
 
 		$time_now = time();
 
-		if (!isset ($config["allow_guest_sessions"]) and !isset($_SESSION['aikiuser'])){
-			session_start();
-		}
-
+		session_start();
+			
 		$get_user = $db->get_row("SELECT * FROM aiki_users where username='$username' and password='$password' limit 1");
 
 		if($get_user and $get_user->username == $username and $get_user->password == $password){

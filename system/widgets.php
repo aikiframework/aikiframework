@@ -267,9 +267,7 @@ class CreateLayout
 
 		//security check to check which widget content to display
 		if ($widget->is_admin){
-
 			if ($membership->permissions and $widget->if_authorized){
-
 				$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$widget->permissions'");
 				if ($widget->permissions == $membership->permissions or $membership->group_level < $get_group_level){
 					$widget->widget = $widget->if_authorized;
