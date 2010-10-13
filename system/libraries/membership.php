@@ -157,8 +157,8 @@ class membership
 			$this->permissions = "";
 		}
 
-		//some one deleted the session record from aiki_users_sessions
-		//hack attack red alert
+		//unset the browser session if the session 
+		//record was deleted from aiki_users_sessions
 		if (!isset($group_permissions) or !$group_permissions){
 			unset($_SESSION['guest']);
 			unset($_SESSION['aikiuser']);
@@ -254,11 +254,11 @@ class membership
 		$vars_array = str_replace("'", '', $vars_array);
 		$vars_array = explode(',', $vars_array);
 
-		$username = trim($vars_array[0]);
-		$email = trim($vars_array[1]);
-		$emailfrom = trim($vars_array[2]);
-		$subject = trim($vars_array[3]);
-		$message = trim($vars_array[4]);
+		$username = trim($vars_array['0']);
+		$email = trim($vars_array['1']);
+		$emailfrom = trim($vars_array['2']);
+		$subject = trim($vars_array['3']);
+		$message = trim($vars_array['4']);
 
 		if (!$username and !$email){
 			return '';
