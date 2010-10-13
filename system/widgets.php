@@ -364,11 +364,11 @@ class CreateLayout
 				preg_match('/select(.*)from/i', $widget->normal_select, $selectionmatch);
 				if (isset($selectionmatch['1'])){
 					if (isset ($get_DISTINCT['1'])){
-						$mysql_count = ' count(DISTINCT('.$get_DISTINCT[1].')) ';
+						$mysql_count = ' count(DISTINCT('.$get_DISTINCT['1'].')) ';
 					}else{
 						$mysql_count = ' count(*) ';
 					}
-					$records_num_query = str_replace($selectionmatch[1], $mysql_count, $widget->normal_select);
+					$records_num_query = str_replace($selectionmatch['1'], $mysql_count, $widget->normal_select);
 
 					$records_num_query = preg_replace('/ORDER BY(.*)DESC/i', '', $records_num_query);
 
@@ -393,11 +393,11 @@ class CreateLayout
 				//custom pages links setting from link_example
 				if (isset($widget->link_example)){
 					$link_config = preg_match('/config\[(.*)\]/U', $widget->link_example, $link_config_data);
-					if ($link_config and isset($link_config_data[1])){
+					if ($link_config and isset($link_config_data['1'])){
 
-						if (preg_match('/group\_by\:/', $link_config_data[1])){
+						if (preg_match('/group\_by\:/', $link_config_data['1'])){
 							$group_pages = true;
-							$pagesgroup = str_replace('group_by:', '', $link_config_data[1]);
+							$pagesgroup = str_replace('group_by:', '', $link_config_data['1']);
 						}
 
 						$widget->link_example = preg_replace('/config\[(.*)\]/U', '', $widget->link_example);
@@ -428,8 +428,8 @@ class CreateLayout
 
 				$widget_select = $db->get_results("$widget->normal_select");
 					
-				if (!$widget_select and isset($normal_selects[1])){
-					$widget_select = $db->get_results("$normal_selects[1]");
+				if (!$widget_select and isset($normal_selects['1'])){
+					$widget_select = $db->get_results($normal_selects['1']);
 				}
 
 
@@ -570,8 +570,8 @@ class CreateLayout
 					$hits_counter = preg_match("/\(\#\(hits\:(.*)\)\#\)/U",$widgetContents, $hits_counter_match);
 					if ($hits_counter > 0){
 
-						$aiki_hits_counter = explode("|", $hits_counter_match[1]);
-						$update_hits_counter = $db->query("UPDATE $aiki_hits_counter[0] set $aiki_hits_counter[2]=$aiki_hits_counter[2]+1 where $aiki_hits_counter[1]");
+						$aiki_hits_counter = explode("|", $hits_counter_match['1']);
+						$update_hits_counter = $db->query("UPDATE $aiki_hits_counter[0] set $aiki_hits_counter[2]=$aiki_hits_counter[2]+1 where $aiki_hits_counter['1']");
 					}
 					$widgetContents = preg_replace("/\(\#\(hits\:(.*)\)\#\)/U", '', $widgetContents);
 
@@ -639,23 +639,23 @@ class CreateLayout
 			//apply new headers
 			$new_header = preg_match_all("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);
 
-			if ($new_header > 0 and $new_header_match[1]){
+			if ($new_header > 0 and $new_header_match['1']){
 
-				foreach ($new_header_match[1] as $header_match){
+				foreach ($new_header_match['1'] as $header_match){
 
 					$header_parts = explode("|", $header_match);
 
-					if (isset($header_parts[0]) and isset($header_parts[1]) and isset($header_parts[2])){
+					if (isset($header_parts['0']) and isset($header_parts['1']) and isset($header_parts[2])){
 
-						header("$header_parts[0]", $header_parts[1], $header_parts[2]);
+						header($header_parts['0'], $header_parts['1'], $header_parts['2']);
 
-					}elseif (isset($header_parts[0]) and isset($header_parts[1])){
+					}elseif (isset($header_parts['0']) and isset($header_parts['1'])){
 
-						header("$header_parts[0]", $header_parts[1]);
+						header($header_parts['0'], $header_parts['1']);
 
-					}elseif (isset($header_parts[0])){
+					}elseif (isset($header_parts['0'])){
 
-						header("$header_parts[0]");
+						header($header_parts['0']);
 
 					}
 				}

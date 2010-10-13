@@ -37,7 +37,7 @@ foreach ($get_urls as $url){
 	}
 	$multi_url = explode("|", $url->display_urls);
 
-	if (isset($multi_url[1])){
+	if (isset($multi_url['1'])){
 		$url->display_urls = $multi_url[0];
 	}
 
