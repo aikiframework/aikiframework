@@ -571,7 +571,7 @@ class CreateLayout
 					if ($hits_counter > 0){
 
 						$aiki_hits_counter = explode("|", $hits_counter_match['1']);
-						$update_hits_counter = $db->query("UPDATE $aiki_hits_counter[0] set $aiki_hits_counter[2]=$aiki_hits_counter[2]+1 where $aiki_hits_counter['1']");
+						$update_hits_counter = $db->query("UPDATE ".$aiki_hits_counter['0']." set ".$aiki_hits_counter['2']."=".$aiki_hits_counter['2']."+1 where ".$aiki_hits_counter['1']."");
 					}
 					$widgetContents = preg_replace("/\(\#\(hits\:(.*)\)\#\)/U", '', $widgetContents);
 
@@ -755,7 +755,7 @@ class CreateLayout
 			$cached_values = false;
 		}
 
-		foreach ($matches[1] as $parsed){
+		foreach ($matches['1'] as $parsed){
 
 			if ($parsed){
 
@@ -773,11 +773,11 @@ class CreateLayout
 				//((if||writers||writer: _self))
 
 				$parsedExplode = explode("||", $parsed);
-				if (isset($parsedExplode[1]) and $parsedExplode[0] == "if"){
+				if (isset($parsedExplode['1']) and $parsedExplode[0] == "if"){
 					$cached_values = true;
 
-					if (isset($widget_value->$parsedExplode[1])){
-						$parsedValue = $widget_value->$parsedExplode[1];
+					if (isset($widget_value->$parsedExplode['1'])){
+						$parsedValue = $widget_value->$parsedExplode['1'];
 					}
 
 					if (isset($parsedValue)){
@@ -788,8 +788,8 @@ class CreateLayout
 					elseif (isset($parsedExplode[4]) and $parsedExplode[4] and $parsedExplode[3] == "else"){
 						$else_stetment = explode(":", $parsedExplode[4]);
 
-						if ($else_stetment[0] == "redirect" and $else_stetment[1]){
-							$text_values .="<meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=$else_stetment[1]\">";
+						if ($else_stetment[0] == "redirect" and $else_stetment['1']){
+							$text_values .="<meta HTTP-EQUIV=\"REFRESH\" content=\"0; url=".$else_stetment['1']."\">";
 							if (!$widget_value->$parsed){
 								$widget_value->$parsed = $text_values;
 							}
@@ -828,7 +828,7 @@ class CreateLayout
 
 		$numMatches = preg_match_all( '/\(\#\(widget\:(.*)\)\#\)/', $widget, $matches);
 		if ($numMatches > 0){
-			foreach ($matches[1] as $widget_id){
+			foreach ($matches['1'] as $widget_id){
 				$this->createWidget($widget_id);
 			}
 
@@ -846,7 +846,7 @@ class CreateLayout
 
 		$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/', $widget, $matches);
 		if ($numMatches > 0){
-			foreach ($matches[1] as $widget_info){
+			foreach ($matches['1'] as $widget_info){
 
 				$widget_id = explode("|", $widget_info);
 
