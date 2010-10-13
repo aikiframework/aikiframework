@@ -44,8 +44,6 @@ class membership
 
 		$time_now = time();
 
-		//$user_ip = $this->get_ip();
-
 		if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
 			if (!isset($_SESSION['aikiuser']) and !isset($_SESSION['guest'])){
 
@@ -108,9 +106,9 @@ class membership
 			}
 
 			if (isset ($config["allow_guest_sessions"]) and $config["allow_guest_sessions"]){
-				$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='".$get_user->userid."', `user_name` = '".$get_user->username."' WHERE `user_session`='".$_SESSION['aikiuser']."' LIMIT 1");
+				$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='".$get_user->userid."', `user_name` = '".$get_user->username."', `user_ip`='$user_ip' WHERE `user_session`='".$_SESSION['aikiuser']."' LIMIT 1");
 			}else{
-				$register_user = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '".$get_user->userid."', '".$get_user->username."' , '$time_now', '$time_now' ,'".$_SESSION['aikiuser']."', '1', '', '')");
+				$register_user = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '".$get_user->userid."', '".$get_user->username."' , '$time_now', '$time_now' ,'".$_SESSION['aikiuser']."', '1', '$user_ip', '$user_ip')");
 			}
 
 			if ($config["allow_multiple_sessions"] == false){
@@ -157,7 +155,7 @@ class membership
 			$this->permissions = "";
 		}
 
-		//unset the browser session if the session 
+		//unset the browser session if the session
 		//record was deleted from aiki_users_sessions
 		if (!isset($group_permissions) or !$group_permissions){
 			unset($_SESSION['guest']);
@@ -166,22 +164,14 @@ class membership
 
 	}
 
-	//function from Membership V1.0
-	//http://AwesomePHP.com/
 	public function get_ip(){
-		$ipParts = explode(".", $_SERVER['REMOTE_ADDR']);
-		if ($ipParts[0] == "165" && $ipParts[1] == "21") {
-			if (getenv("HTTP_CLIENT_IP")) {
-				$ip = getenv("HTTP_CLIENT_IP");
-			} elseif (getenv("HTTP_X_FORWARDED_FOR")) {
-				$ip = getenv("HTTP_X_FORWARDED_FOR");
-			} elseif (getenv("REMOTE_ADDR")) {
-				$ip = getenv("REMOTE_ADDR");
-			}
-		} else {
-			return $_SERVER['REMOTE_ADDR'];
+		if ( isset($_SERVER["REMOTE_ADDR"]) )    {
+			return $_SERVER["REMOTE_ADDR"];
+		} else if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )    {
+			return $_SERVER["HTTP_X_FORWARDED_FOR"];
+		} else if ( isset($_SERVER["HTTP_CLIENT_IP"]) )    {
+			return $_SERVER["HTTP_CLIENT_IP"];
 		}
-		return $ip;
 	}
 
 	//Generate session
