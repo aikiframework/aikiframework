@@ -91,7 +91,7 @@ class membership
 
 		$time_now = time();
 
-		if (!isset($_SESSION['aikiuser']) and !isset($_SESSION['guest'])){
+		if (!isset($_SESSION['aikiuser']) and !isset($_SESSION['guest']) and !isset($_COOKIE["PHPSESSID"])){
 			session_start();
 		}
 			
