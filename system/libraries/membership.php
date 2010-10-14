@@ -91,7 +91,9 @@ class membership
 
 		$time_now = time();
 
-		session_start();
+		if (!isset($_SESSION['aikiuser']) and !isset($_SESSION['guest'])){
+			session_start();
+		}
 			
 		$get_user = $db->get_row("SELECT * FROM aiki_users where username='$username' and password='$password' limit 1");
 
