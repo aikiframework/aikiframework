@@ -1,18 +1,32 @@
 <?php
 
 /**
- * Aiki framework (PHP)
+ * Aiki Framework (PHP)
  *
- * @author		Aikilab http://www.aikilab.com
- * @copyright  (c) 2008-2010 Aikilab
- * @license		http://www.fsf.org/licensing/licenses/agpl-3.0.html
- * @link		http://www.aikiframework.org
+ * LICENSE
+ *
+ * This source file is subject to the AGPL-3.0 license that is bundled
+ * with this package in the file LICENSE.
+ *
+ * @author      Aikilab http://www.aikilab.com
+ * @copyright   (c) 2008-2010 Aikilab
+ * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
+ * @link        http://www.aikiframework.org
+ * @category    Aiki
+ * @package     Aiki
+ * @version     0.4.5
+ * @filesource
  */
 
 
-// AikiFramework Version
+/**
+ * Aiki Framework Version
+ */
 define('AIKI_VERSION',	'0.4.5');
 
+/**
+ * Used to test for script access
+ */
 define('IN_AIKI', true);
 
 //try to determine the full-server path
@@ -28,14 +42,26 @@ if (isset($_GET['custome_output'])){$custome_output = true;	$noheaders = true; }
 
 
 if (file_exists("$system_folder/config.php")){
+	/**
+	 * @see config.php
+	 */
 	require_once("$system_folder/config.php");
 }else{
-	require ("$system_folder/system/libraries/installer.php");
+	/**
+	 * @see installer.php
+	 */
+	require("$system_folder/system/libraries/installer.php");
 	die();
 }
 
+/**
+ * @see index.php
+ */
 require_once("$system_folder/system/database/index.php");
 
+/**
+ * @see core.php
+ */
 require_once ("$system_folder/system/core.php");
 
 

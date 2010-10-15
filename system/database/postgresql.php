@@ -3,12 +3,15 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-/*
+/**
  * ezSQL
  *
  * @author		Justin Vincent (justin@visunet.ie)
  * @license		http://www.gnu.org/licenses/gpl.html
  * @link		http://php.justinvincent.com
+ * @category    Aiki
+ * @package     Database
+ * @filesource
  */
 
 	/**********************************************************************
@@ -30,7 +33,13 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 	if ( ! function_exists ('pg_connect') ) die('<b>Fatal Error:</b> ezSQL_postgresql requires PostgreSQL Lib to be compiled and or linked in to the PHP engine');
 	if ( ! class_exists ('ezSQLcore') ) die('<b>Fatal Error:</b> ezSQL_postgresql requires ezSQLcore (ez_sql_core.php) to be included/loaded before it can be used');
-
+	
+	/**
+	 * BriefDescription
+	 *
+	 * @category    Aiki
+	 * @package     Database
+	 */
 	class ezSQL_postgresql extends ezSQLcore
 	{
 

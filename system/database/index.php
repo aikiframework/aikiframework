@@ -3,22 +3,40 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-/*
+/**
  * ezSQL
  *
  * @author		Justin Vincent (justin@visunet.ie)
  * @license		http://www.gnu.org/licenses/gpl.html
  * @link		http://php.justinvincent.com
+ * @category    Aiki
+ * @package     Database
+ * @filesource
  */
 
 /**********************************************************************
  *  ezSQL Constants
  */
 
+/**
+ * ezSQL Version
+ */
 define('EZSQL_VERSION','2.03');
+/**
+ * BriefDescription
+ */
 define('OBJECT','OBJECT',true);
+/**
+ * BriefDescription
+ */
 define('ARRAY_A','ARRAY_A',true);
+/**
+ * BriefDescription
+ */
 define('ARRAY_N','ARRAY_N',true);
+/**
+ * Error Description
+ */
 define('EZSQL_CORE_ERROR','ezSQLcore can not be used by itself (it is designed for use by database specific modules).');
 
 
@@ -27,6 +45,12 @@ define('EZSQL_CORE_ERROR','ezSQLcore can not be used by itself (it is designed f
  *  sets once returned
  */
 
+/**
+ * BriefDescription
+ *
+ * @category    Aiki
+ * @package     Database
+ */
 class ezSQLcore
 {
 
@@ -553,31 +577,49 @@ class ezSQLcore
 
 switch ($config['db_type']){
 	case "mssql":
+		/**
+		 * @see mssql.php
+		 */
 		require_once("mssql.php");
 		$db = new ezSQL_mssql($config['db_user'] , $config['db_pass'] , $config['db_name'] , $config['db_host']);
 		break;
 
 	case "mysql":
+		/**
+		 * @see mysql.php
+		 */
 		require_once("mysql.php");
 		$db = new ezSQL_mysql( $config['db_user'] , $config['db_pass'] , $config['db_name'] , $config['db_host'] );
 		break;
 
 	case "oracle":
+		/**
+		 * @see oracle8_9.php
+		 */
 		require_once("oracle8_9.php");
 		$db = new ezSQL_oracle8_9( $config['db_user'] , $config['db_pass'] , $config['db_name'] );
 		break;
 
 	case "pdo":
+		/**
+		 * @see pdo.php
+		 */
 		require_once("pdo.php");
 		$db = new ezSQL_pdo( $db_dsn , $config['db_user'] , $config['db_pass'] );
 		break;
 
 	case "postgresql":
+		/**
+		 * @see postgresql.php
+		 */
 		require_once("postgresql.php");
 		$db = new ezSQL_postgresql( $config['db_user'] , $config['db_pass'] , $config['db_name'] , $config['db_host'] );
 		break;
 
 	case "sqlite":
+		/**
+		 * @see sqlite.php
+		 */
 		require_once("sqlite.php");
 		$db = new ezSQL_sqlite( $config['db_path'] , $config['db_name'] );
 		break;

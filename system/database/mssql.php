@@ -4,12 +4,15 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
 
-/*
+/**
  * ezSQL
  *
  * @author		Justin Vincent (justin@visunet.ie)
  * @license		http://www.gnu.org/licenses/gpl.html
  * @link		http://php.justinvincent.com
+ * @category    Aiki
+ * @package     Database
+ * @filesource
  */
 
 /**********************************************************************
@@ -32,6 +35,12 @@ $ezsql_mssql_str = array
 if ( ! function_exists ('mssql_connect') ) die('<b>Fatal Error:</b> ezSQL_mssql requires ntwdblib.dll to be present in your winowds\system32 folder. Also enable MS-SQL extenstion in PHP.ini file ');
 if ( ! class_exists ('ezSQLcore') ) die('<b>Fatal Error:</b> ezSQL_mssql requires ezSQLcore (ez_sql_core.php) to be included/loaded before it can be used');
 
+/**
+ * BriefDescription
+ *
+ * @category    Aiki
+ * @package     Database
+ */
 class ezSQL_mssql extends ezSQLcore
 {
 
