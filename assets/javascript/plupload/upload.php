@@ -1,21 +1,31 @@
 <?php
 /**
  * Modifed version of upload.php
- *
- * Copyright 2009, Moxiecode Systems AB
+ * 
  * Released under GPL License.
- *
- * License: http://www.plupload.com/license
  * Contributing: http://www.plupload.com/contributing
  *
+ * @author		The Developers of TinyMCE
+ * @copyright   Copyright 2009, Moxiecode Systems AB
+ * @license		http://www.plupload.com/license
+ * @link		http://www.plupload.com
+ * @category    Aiki
+ * @package     Plupload
+ * @filesource
  */
 
 if (!isset($_GET['key'])){
 	die("No key");
 }
 
+/**
+ * Used to test for script access
+ */
 define('IN_AIKI', true);
 
+/**
+ * @see aiki.php
+ */
 require_once("../../../aiki.php");
 
 //TODO store authorization key in db and check it

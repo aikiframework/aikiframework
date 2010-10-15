@@ -3,12 +3,15 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-/*
+/**
  * ezSQL
  *
  * @author		Justin Vincent (justin@visunet.ie)
  * @license		http://www.gnu.org/licenses/gpl.html
  * @link		http://php.justinvincent.com
+ * @category    Aiki
+ * @package     Database
+ * @filesource
  */
 
 /**********************************************************************
@@ -28,6 +31,12 @@ $ezsql_oracle8_9_str = array
 if ( ! function_exists ('OCILogon') ) die('<b>Fatal Error:</b> ezSQL_oracle8_9 requires Oracle OCI Lib to be compiled and/or linked in to the PHP engine');
 if ( ! class_exists ('ezSQLcore') ) die('<b>Fatal Error:</b> ezSQL_oracle8_9 requires ezSQLcore (ez_sql_core.php) to be included/loaded before it can be used');
 
+/**
+ * BriefDescription
+ *
+ * @category    Aiki
+ * @package     Database
+ */
 class ezSQL_oracle8_9 extends ezSQLcore
 {
 
