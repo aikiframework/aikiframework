@@ -60,6 +60,8 @@ var CodeMirror = (function(){
           scroller = document.createElement("DIV");
       container.style.position = "relative";
       nums.style.position = "absolute";
+      container.style.marginLeft = "33px";
+      nums.style.left = "-33px";
       nums.style.height = "100%";
       if (nums.style.setExpression) {
         try {nums.style.setExpression("height", "this.previousSibling.offsetHeight + 'px'");}
