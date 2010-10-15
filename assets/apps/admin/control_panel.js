@@ -257,8 +257,8 @@ function urls_widgets_tree(){
 
     var formoptions = { 
         target:        '#widget-form',
-        success:       refreshthetree  
-    }; 
+        success:       refreshthetree,
+    };  
 	
     create_form("#create_new_widget", 1, "Widget", 1, "widgettree");   
     
@@ -330,6 +330,34 @@ function urls_widgets_tree(){
 					stop = 1;
 					
 	           }); 
+				
+				$('<input type="hidden" name="edit_form" value="Save">').appendTo("#edit_form");
+				$(window).keypress(function(event) {
+				    if (!(event.which == 115 && event.ctrlKey)) return true;
+				    $("#edit_form").ajaxSubmit(
+				    		function() { 
+								stop = 0;
+								$('<div id="note_container" style="background:none repeat scroll 0 0 #FDA501; color:#FFFFFF; font-weight:bold; padding:6px; position:fixed; right:0; text-align:center; top:0; width:100%; z-index:10000;"><span>Changes Saved</span></div>').appendTo("#widget-form").hide().fadeIn(1000).fadeOut(2000,
+										function() {
+									
+									aiki_log('Widget: You changed widget '+NODE.id);
+									
+								        	$('#note_container').remove();	
+											$("<div id='events_listener'></div>").appendTo("#widget-form");
+											$("#events_listener").load("assets/apps/admin/events.php?saved=true&widget="+NODE.id);
+											$("#events_listener").remove();					        	
+								        }
+								);
+
+								
+								$.tree_reference('widgettree').refresh();
+								
+								stop = 1;
+				    		}); 
+				    event.preventDefault();
+				    return false;
+				});
+				
 
 			});	
   }
