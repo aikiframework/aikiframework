@@ -332,6 +332,7 @@ function urls_widgets_tree(){
 	           }); 
 				
 				$('<input type="hidden" name="edit_form" value="Save">').appendTo("#edit_form");
+				
 				$(window).keypress(function(event) {
 				    if (event.which == 115 && event.ctrlKey){
 				    	 event.preventDefault();
