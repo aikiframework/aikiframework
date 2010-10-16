@@ -54,6 +54,13 @@ class output
 
 	public function write_doctype(){
 		global $header, $dir, $language_short_name;
+
+		//don't change the direction if the page is the admin panel on /admin
+		if (isset($_GET["pretty"]) and $_GET["pretty"] == 'admin'){
+			$language_short_name = "en";
+			$dir = "ltr";
+		}
+
 		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="'.$language_short_name.'" xml:lang="'.$language_short_name.'"
 	dir="'.$dir.'">
