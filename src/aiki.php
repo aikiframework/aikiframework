@@ -40,18 +40,38 @@ if (isset($_GET['nogui'])){ $nogui = true; }
 if (isset($_GET['noheaders'])){ $noheaders = true; }
 if (isset($_GET['custome_output'])){$custome_output = true;	$noheaders = true; }
 
-
-if (file_exists("$system_folder/config.php")){
+/**
+ * @see aiki-defs.php
+ */
+if (file_exists("$system_folder/configs/aiki-defs.php")){
 	/**
 	 * @see config.php
 	 */
-	require_once("$system_folder/config.php");
-}else{
-	/**
-	 * @see installer.php
-	 */
-	require("$system_folder/system/libraries/installer.php");
-	die();
+	require_once("$system_folder/configs/config.php");
+}
+
+/*
+ * ENABLE_RUNTIME_INSTALLER is defined by aiki-defs.php and should be
+ * used to test for an Automake installed config and database versus
+ * a config and database which is created at run-time via a web page.
+ * Basically, config is install-time or run-time generated.
+ * When ENABLE_RUNTIME_INSTALLER is NOT defined or TRUE, we
+ * use the run-time installer logic. Otherwise, we use the install-time logic.
+ */
+if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE){
+	/* use run-time installer logic */
+	if (file_exists("$system_folder/config.php")){
+		/**
+		 * @see config.php
+		 */
+		require_once("$system_folder/config.php");
+	}else{
+		/**
+		 * @see installer.php
+		 */
+		require("$system_folder/system/libraries/installer.php");
+		die();
+	}
 }
 
 /**
