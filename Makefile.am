@@ -1,0 +1,229 @@
+
+## Process this file with automake to produce Makefile.in
+
+# The doc files
+aiki_doc_files = \
+	AUTHORS \
+	ChangeLog \
+	INSTALL \
+	LICENSE \
+	README \
+	VERSION
+
+# Subdirectories to be built
+SUBDIRS = \
+	src \
+	configs
+
+# Sub directories to pass to the dist build
+DIST_SUBDIRS = \
+	src \
+	configs
+
+# Configure flags to pass to the distcheck build
+DISTCHECK_CONFIGURE_FLAGS =
+
+# Configure flags to pass to the RPM build
+RPM_CONFIG =
+
+# Additional files to distribute
+EXTRA_DIST = \
+	$(aiki_doc_files) \
+	.bzr/branch/last-revision
+
+# The directory to put the files
+aiki_docdir = \
+	$(docdir)-$(VERSION)
+
+# The source data
+aiki_doc_DATA = \
+	$(aiki_doc_files)
+
+# Additional files to remove on dist-clean
+DISTCLEANFILES = \
+	$$($(FIND) . -name $(distdir).\*)
+
+# Additional files and directories to remove on clean
+clean-local :
+	@$(RM) -rf \
+	$(abs_top_srcdir)/build/$(PACKAGE) \
+	$(abs_top_srcdir)/build/$(distdir) \
+	$$($(FIND) . -name $(distdir).\*) \
+	$$($(FIND) . -name $(PACKAGE)-rev-\*)
+	
+# Additional files and directories to remove on distclean
+distclean-local :
+	@$(RM) -rf \
+	$(distdir)/build \
+	$(abs_top_srcdir)/build/*
+
+# Additional things to do on dist
+dist-hook:
+	$(MKDIR) -vp $(distdir)/build
+
+# Additional things to do on install
+install-mysql-database:
+	@$(ECHO) "***********************************"
+	@$(ECHO) "Attempting installation of database"
+	@$(ECHO) "***********************************"
+	@$(MYSQL) -v -u $(DB_USER) -p$(DB_PASS) \
+	-e "CREATE DATABASE IF NOT EXISTS $(DB_NAME) \
+	DEFAULT CHARACTER SET $(DB_ENCODE) COLLATE utf8_general_ci;" \
+	&& $(MYSQL) -B -u $(DB_USER) -p$(DB_PASS) $(DB_NAME) \
+	< $(abs_top_builddir)/configs/CreateTables.sql
+
+# Additional things to do on install
+install-mysql-user:
+	@$(ECHO) "****************************************"
+	@$(ECHO) "Attempting installation of database user"
+	@$(ECHO) "****************************************"
+	@if $(TEST) "$$($(MYSQL) -u $(DB_SUPER_USER) -p$(DB_SUPER_USER_PASS) \
+	-e "SELECT IF(user.user='$(DB_USER)','TRUE','') AS USER_EXISTS \
+	FROM mysql.user WHERE user.user='$(DB_USER)'\\G" \
+	| $(GREP) USER_EXISTS | $(AWK) '{print $$2}')" == "TRUE"; then \
+	$(ECHO) "Failed to create database user name $(DB_USER). The user name already exists."; \
+	else $(ECHO) "Creating database user name $(DB_USER)." \
+	&& $(MYSQL) -v -u $(DB_SUPER_USER) -p$(DB_SUPER_USER_PASS) \
+	-e "CREATE USER '$(DB_USER)'@'$(DB_HOST)' IDENTIFIED BY '$(DB_PASS)'; \
+	GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER \
+	ON $(DB_NAME).* TO '$(DB_USER)'@'$(DB_HOST)'; \
+	SHOW GRANTS FOR '$(DB_USER)'@'$(DB_HOST)';"; \
+	fi
+
+# Additional things to do on uninstall
+uninstall-mysql-user:
+	@$(MYSQL) -v -u $(DB_SUPER_USER) -p$(DB_SUPER_USER_PASS) \
+	-e "DROP USER '$(DB_USER)'@'$(DB_HOST)';"
+
+# Additional things to do on uninstall
+uninstall-mysql-database:
+	@$(MYSQL) -v -u $(DB_SUPER_USER) -p$(DB_SUPER_USER_PASS) \
+	-e "DROP DATABASE IF EXISTS $(DB_NAME);"
+
+# Additional things to do on install
+install-data-hook :
+	@for d in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type d); do $(CHMOD) 0755 $$d; done
+	@for f in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
+	@for d in $$($(FIND) $(DESTDIR)$(pkgdatadir) -type d); do $(CHMOD) 0755 $$d; done
+	@for f in $$($(FIND) $(DESTDIR)$(pkgdatadir) -type f); do $(CHMOD) 0644 $$f; done
+	@for d in $$($(FIND) $(DESTDIR)$(docdir) -type d); do $(CHMOD) 0755 $$d; done
+	@for f in $$($(FIND) $(DESTDIR)$(docdir) -type f); do $(CHMOD) 0644 $$f; done
+	@$(MKDIR) -p $(DESTDIR)$(pkgdatadir)/configs
+	@$(LN_S) -f $(DESTDIR)$(sysconfdir)/$(PACKAGE)/aiki-defs.php \
+	$(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
+	@$(LN_S) -f $(DESTDIR)$(sysconfdir)/$(PACKAGE)/config.php \
+	$(DESTDIR)$(pkgdatadir)/configs/config.php
+	@$(MAKE) install-mysql-user
+	@$(MAKE) install-mysql-database
+
+# Additional things to do on uninstall
+uninstall-hook :
+	@$(RM) $(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
+	@$(RM) $(DESTDIR)$(pkgdatadir)/configs/config.php
+	@if $(TEST) -z $$($(FIND) $(DESTDIR)$(pkgdatadir) -type f); then \
+	$(RM) -rf $(DESTDIR)$(pkgdatadir); fi
+	@if $(TEST) -z $$($(FIND) $(DESTDIR)$(docdir) -type f); then \
+	$(RM) -rf $(DESTDIR)$(docdir); fi
+	@if $(TEST) -z $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f); then \
+	$(RM) -rf $(DESTDIR)$(sysconfdir)/$(PACKAGE); fi
+
+#SUBDIRS += 
+#    src
+#DIST_SUBDIRS += 
+#  src
+
+# Added the following line to work around tar uid_t range error
+am__tar = ${AMTAR} chf - "$$tardir"
+# previously was defined in aclocal.m4: am__tar = ${AMTAR} chof - "$$tardir"
+
+# get source revision number
+REVISION = $$( \
+  if $(TEST) -e $(abs_top_srcdir)/.bzr/branch/last-revision; then \
+       $(AWK) '{print $$1; exit}' $(abs_top_srcdir)/.bzr/branch/last-revision; \
+  else $(AWK) '{print $$1; exit}' $(abs_top_srcdir)/../../.bzr/branch/last-revision; fi)
+
+# generate source revision packages
+all : distsum rev
+rev :
+	@$(TAR) -xpzf $(distdir).tar.gz \
+	--exclude="*.ac" \
+	--exclude="*.am" \
+	--exclude="*.in" \
+	--exclude="*.m4" \
+	--exclude="$(distdir)/.bzr" \
+	--exclude="$(distdir)/build" \
+	--exclude="$(distdir)/build-aux" \
+	--exclude="$(distdir)/configs" \
+	--exclude="configure"
+	@$(MV) $(distdir)/src/* $(distdir)/ && $(RM) -rf $(distdir)/src
+	@$(RM) -rf $(abs_top_srcdir)/build/$(PACKAGE)
+	@$(MV) $(distdir) $(PACKAGE)
+	@for d in $$($(FIND) $(PACKAGE) -type d); do $(CHMOD) 0755 $$d; done
+	@for f in $$($(FIND) $(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
+	@$(ZIP) -rq $(PACKAGE)-$@-$(REVISION).zip $(PACKAGE)
+	@$(TAR) -cpzf $(PACKAGE)-$@-$(REVISION).tar.gz $(PACKAGE)
+	@$(TAR) -cpjf $(PACKAGE)-$@-$(REVISION).tar.bz2 $(PACKAGE)
+	@$(MV) $(PACKAGE) $(distdir)
+# generate sum for source revision packages
+	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).zip > $(PACKAGE)-$@-$(REVISION).zip.shasum-$(ALGORITHM).txt
+	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).tar.gz > $(PACKAGE)-$@-$(REVISION).tar.gz.shasum-$(ALGORITHM).txt
+	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).tar.bz2 > $(PACKAGE)-$@-$(REVISION).tar.bz2.shasum-$(ALGORITHM).txt
+	@for f in $$($(FIND) . -name $(PACKAGE)-$@-$(REVISION).\*); do $(CHMOD) 0644 $$f; done
+	@$(ECHO) "*****************************************************************"
+	@$(ECHO) "$(PACKAGE) revision $(REVISION) archives ready for distribution:"
+	@$(LS) -1 $(PACKAGE)-$@-$(REVISION).*
+	@$(ECHO) "*****************************************************************"
+
+# to check: shasum -a 256 -c aiki-rev-429.tar.gz.shasum-256.txt
+
+# generate sum for distribution packages
+distsum : dist summod
+distchecksum : distcheck summod
+summod :
+	@$(SHASUM) -a $(ALGORITHM) $(distdir).zip > $(distdir).zip.shasum-$(ALGORITHM).txt
+	@$(SHASUM) -a $(ALGORITHM) $(distdir).tar.gz > $(distdir).tar.gz.shasum-$(ALGORITHM).txt
+	@$(SHASUM) -a $(ALGORITHM) $(distdir).tar.bz2 > $(distdir).tar.bz2.shasum-$(ALGORITHM).txt
+	@for f in $$($(FIND) . -name $(distdir).\*); do $(CHMOD) 0644 $$f; done
+
+# declare phony targets
+.PHONY : bone-clean rev summod distsum distchecksum
+
+# Remove ALL Autotools generated files
+# WARNING: Use this with CAUTION
+# Only for build system MAINTAINERS
+bone-clean : maintainer-clean
+	@$(RM) -rvf \
+	$$($(FIND) $(srcdir)/ -name \*.o) \
+	$$($(FIND) $(srcdir)/ -name \*.a) \
+	$$($(FIND) $(srcdir)/ -name \*.so) \
+	$$($(FIND) $(srcdir)/ -name \*.la) \
+	$$($(FIND) $(srcdir)/ -name \*.lo) \
+	$$($(FIND) $(srcdir)/ -name \*~) \
+	$$($(FIND) $(srcdir)/ -name COPYING) \
+	$$($(FIND) $(srcdir)/ -name ABOUT-NLS) \
+	$$($(FIND) $(srcdir)/ -name autoscan.log) \
+	$$($(FIND) $(srcdir)/ -name configure.scan) \
+	$$($(FIND) $(srcdir)/ -name Makefile) \
+	$$($(FIND) $(srcdir)/ -name Makefile.in) \
+	$$($(FIND) $(srcdir)/ -name aclocal.m4) \
+	$$($(FIND) $(srcdir)/ -name acinclude.m4) \
+	$$($(FIND) $(srcdir)/ -name configure) \
+	$$($(FIND) $(srcdir)/ -name depcomp) \
+	$$($(FIND) $(srcdir)/ -name install-sh) \
+	$$($(FIND) $(srcdir)/ -name missing) \
+	$$($(FIND) $(srcdir)/ -name ltmain.sh) \
+	$$($(FIND) $(srcdir)/ -name config.h) \
+	$$($(FIND) $(srcdir)/ -name config.h.in) \
+	$$($(FIND) $(srcdir)/ -name config.h.in~) \
+	$$($(FIND) $(srcdir)/ -name config.sub) \
+	$$($(FIND) $(srcdir)/ -name config.log) \
+	$$($(FIND) $(srcdir)/ -name config.guess) \
+	$$($(FIND) $(srcdir)/ -name config.status) \
+	$$($(FIND) $(srcdir)/ -name stamp-h1) \
+	$$($(FIND) $(srcdir)/ -name mkinstalldirs) \
+	$$($(FIND) $(srcdir)/ -type d | $(GREP) stage) \
+	$$($(FIND) $(srcdir)/ -type d | $(GREP) \.libs) \
+	$$($(FIND) $(srcdir)/ -type d | $(GREP) \.deps) \
+	$$($(FIND) $(srcdir)/ -type d | $(GREP) autom4te.cache) \
+	$(abs_top_srcdir)/build/*
+

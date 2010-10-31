@@ -1,0 +1,22 @@
+# @PACKAGE@ - web framework written in php
+
+Alias /@PACKAGE@ @AIKI_DATA_DIR@
+
+# The following directories require access over HTTP
+<Directory @AIKI_DATA_DIR@/>
+    Order Allow,Deny
+    Allow from All
+    Deny from None
+    AllowOverride All
+    Options +FollowSymLinks
+    RewriteEngine on
+    RewriteBase /@PACKAGE@/
+    RewriteRule ^image/(.*)px/(.*)/(.*) assets/apps/image_viewer.php?id=$3&size=$1&mode=$2
+    RewriteRule ^image/(.*)px/(.*) assets/apps/image_viewer.php?id=$2&size=$1
+    RewriteRule ^image/(.*) assets/apps/image_viewer.php?id=$1
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{SCRIPT_FILENAME} !-d
+    RewriteCond %{SCRIPT_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php?pretty=$1 [L,QSA]
+</Directory>
