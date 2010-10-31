@@ -19,11 +19,11 @@ AC_PROG_INSTALL
 # Check for gawk, mawk, nawk, and awk, in that order, and set output variable AWK
 AC_PROG_AWK
 # Set output variable SED to a Sed implementation that conforms to Posix
-AC_PROG_SED
+#AC_PROG_SED
 # Look for the best available grep
-AC_PROG_GREP
+#AC_PROG_GREP
 # Set output variable MKDIR_P
-AC_PROG_MKDIR_P
+#AC_PROG_MKDIR_P
 # Set the output variable LN_S to ln -s
 AC_PROG_LN_S
 # Set the output variable MAKE to make
@@ -44,12 +44,12 @@ variablelist=
 # Example: PROG_LIST_ADD DATE $DATE
 PROG_LIST_ADD()
 {
-  programlist="$programlist $1=$($ECHO $2 | $SED s/" "//g)"
-  fcheckslist="$fcheckslist $($ECHO $2 | $SED s/" "//g)"
+  programlist="$programlist $1=$(echo $2 | sed s/" "//g)"
+  fcheckslist="$fcheckslist $(echo $2 | sed s/" "//g)"
 }
 VAR_LIST_ADD()
 {
-  variablelist="$variablelist $1=$($ECHO $2 | $SED s/" "//g)"
+  variablelist="$variablelist $1=$(echo $2 | sed s/" "//g)"
 }
 #### END PROG_LIST_ADD()
 
@@ -165,27 +165,32 @@ AM_INIT_AUTOMAKE([1.9 -Wall -Werror foreign dist-bzip2 dist-zip])
 #############################
 AC_ARG_VAR(ALGORITHM,[Set the shasum algorithm where valid values are: 256, 224, 384 and 512. [default: ALGORITHM=256]])
 AM_CONDITIONAL(ALGORITHM_NOT_SET, [$TEST -z $ALGORITHM])
-AM_COND_IF([ALGORITHM_NOT_SET],[AC_SUBST(ALGORITHM,[256])])
+if $TEST -z $ALGORITHM; then AC_SUBST(ALGORITHM,[256])
+fi
 VAR_LIST_ADD ALGORITHM $ALGORITHM
 
 AC_ARG_VAR(DB_TYPE,[Set the database type [default: DB_TYPE=mysql]])
 AM_CONDITIONAL(DB_TYPE_NOT_SET, [$TEST -z $DB_TYPE])
-AM_COND_IF([DB_TYPE_NOT_SET],[AC_SUBST(DB_TYPE,[mysql])])
+if $TEST -z $DB_TYPE; then AC_SUBST(DB_TYPE,[mysql])
+fi
 VAR_LIST_ADD DB_TYPE $DB_TYPE
 
 AC_ARG_VAR(DB_HOST,[Set the database host name [default: DB_HOST=localhost]])
 AM_CONDITIONAL(DB_HOST_NOT_SET, [$TEST -z $DB_HOST])
-AM_COND_IF([DB_HOST_NOT_SET],[AC_SUBST(DB_HOST,[localhost])])
+if $TEST -z $DB_HOST; then AC_SUBST(DB_HOST,[localhost])
+fi
 VAR_LIST_ADD DB_HOST $DB_HOST
 
 AC_ARG_VAR(DB_NAME,[Set the database name [default: DB_NAME=aiki]])
 AM_CONDITIONAL(DB_NAME_NOT_SET, [$TEST -z $DB_NAME])
-AM_COND_IF([DB_NAME_NOT_SET],[AC_SUBST(DB_NAME,[aiki])])
+if $TEST -z $DB_NAME; then AC_SUBST(DB_NAME,[aiki])
+fi
 VAR_LIST_ADD DB_NAME $DB_NAME
 
 AC_ARG_VAR(DB_USER,[Set the database user [default: DB_USER=aiki]])
 AM_CONDITIONAL(DB_USER_NOT_SET, [$TEST -z $DB_USER])
-AM_COND_IF([DB_USER_NOT_SET],[AC_SUBST(DB_USER,[aiki])])
+if $TEST -z $DB_USER; then AC_SUBST(DB_USER,[aiki])
+fi
 VAR_LIST_ADD DB_USER $DB_USER
 
 DEFAULT_DB_PASS=
@@ -196,32 +201,38 @@ else
 fi
 AC_ARG_VAR(DB_PASS,[Set the database password [default: DB_PASS=/dev/urandom]])
 AM_CONDITIONAL(DB_PASS_NOT_SET, [$TEST -z $DB_PASS])
-AM_COND_IF([DB_PASS_NOT_SET],[AC_SUBST(DB_PASS,[$DEFAULT_DB_PASS])])
+if $TEST -z $DB_PASS; then AC_SUBST(DB_PASS,[$DEFAULT_DB_PASS])
+fi
 VAR_LIST_ADD DB_PASS $DB_PASS
 
 AC_ARG_VAR(DB_ENCODE,[Set the database encoding [default: DB_ENCODE=utf8]])
 AM_CONDITIONAL(DB_ENCODE_NOT_SET, [$TEST -z $DB_ENCODE])
-AM_COND_IF([DB_ENCODE_NOT_SET],[AC_SUBST(DB_ENCODE,[utf8])])
+if $TEST -z $DB_ENCODE; then AC_SUBST(DB_ENCODE,[utf8])
+fi
 VAR_LIST_ADD DB_ENCODE $DB_ENCODE
 
 AC_ARG_VAR(DB_SUPER_USER,[Set the database super user [default: DB_SUPER_USER=root]])
 AM_CONDITIONAL(DB_SUPER_USER_NOT_SET, [$TEST -z $DB_SUPER_USER])
-AM_COND_IF([DB_SUPER_USER_NOT_SET],[AC_SUBST(DB_SUPER_USER,[root])])
+if $TEST -z $DB_SUPER_USER; then AC_SUBST(DB_SUPER_USER,[root])
+fi
 VAR_LIST_ADD DB_SUPER_USER $DB_SUPER_USER
 
 AC_ARG_VAR(DB_SUPER_USER_PASS,[Set the database super user password [default: DB_SUPER_USER_PASS=]])
 AM_CONDITIONAL(DB_SUPER_USER_PASS_NOT_SET, [$TEST -z $DB_SUPER_USER_PASS])
-AM_COND_IF([DB_SUPER_USER_PASS_NOT_SET],[AC_SUBST(DB_SUPER_USER_PASS,[''])])
+if $TEST -z $DB_SUPER_USER_PASS; then AC_SUBST(DB_SUPER_USER_PASS,[''])
+fi
 VAR_LIST_ADD DB_SUPER_USER_PASS $DB_SUPER_USER_PASS
 
 AC_ARG_VAR(DOMAIN,[Set the domain name where aiki will be installed [default: DOMAIN=localhost]])
 AM_CONDITIONAL(DOMAIN_NOT_SET, [$TEST -z $DOMAIN])
-AM_COND_IF([DOMAIN_NOT_SET],[AC_SUBST(DOMAIN,[localhost])])
+if $TEST -z $DOMAIN; then AC_SUBST(DOMAIN,[localhost])
+fi
 VAR_LIST_ADD DOMAIN $DOMAIN
 
 AC_ARG_VAR(HTTPD_CONF_DIR,[Set the HTTPD configuration directory [default: HTTPD_CONF_DIR=$sysconfdir/httpd/conf.d]])
 AM_CONDITIONAL(HTTPD_CONF_DIR_NOT_SET, [$TEST -z $HTTPD_CONF_DIR])
-AM_COND_IF([HTTPD_CONF_DIR_NOT_SET],[AC_SUBST(HTTPD_CONF_DIR,[$sysconfdir/httpd/conf.d])])
+if $TEST -z $HTTPD_CONF_DIR; then AC_SUBST(HTTPD_CONF_DIR,[$sysconfdir/httpd/conf.d])
+fi
 VAR_LIST_ADD HTTPD_CONF_DIR $HTTPD_CONF_DIR
 
 VAR_LIST_ADD prefix $prefix
