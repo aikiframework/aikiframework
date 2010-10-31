@@ -11,12 +11,17 @@ without warranty of any kind.
 
 Basic Installation
 ==================
+   
+   If this 'INSTALL' file is from an archive that is named similar to
+aiki-rev-###.tar.*, you have a Source Revision Package. That does not 
+contain configure scripts or makefiles. Skip to see the section titled
+'Source Revision Installation' which should be near the bottom of this
+file. Otherwise, continue reading the following sections.
 
-   Briefly, the shell commands 
+   Briefly, the following shell commands 
 `cd build && ../configure --prefix=/usr --sysconfdir=/etc && sudo make install'
-should configure, build, and install this package.  The following
-more-detailed instructions are generic. If the configure script is missing,
-then execute `./autogen.sh'.
+should configure, build, and install this package. If the configure script is
+missing, then execute `./autogen.sh'.
 
    The simplest way to build this package is:
 
@@ -53,7 +58,10 @@ then execute `./autogen.sh'.
      `make uninstall-mysql-database' to uninstall the MySQL database
      and user for this package.
 
-  5. Optionally, type `make' to build the source revision package.
+  5. Optionally, type `make' to build the Source Revision Package.
+     Consequently, this will also build the Distribution Package. The
+     Source Revision Package is extracted from the Distribution Package
+     excluding the configure scripts, makefiles and others.
 
   6. Optionally, type `make check' to run any self-tests that come with
      the package, generally using the just-built uninstalled binaries.
