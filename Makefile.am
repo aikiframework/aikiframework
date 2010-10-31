@@ -113,8 +113,6 @@ install-data-hook :
 	$(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
 	@$(LN_S) -f $(DESTDIR)$(sysconfdir)/$(PACKAGE)/config.php \
 	$(DESTDIR)$(pkgdatadir)/configs/config.php
-	@$(MAKE) install-mysql-user
-	@$(MAKE) install-mysql-database
 
 # Additional things to do on uninstall
 uninstall-hook :
@@ -137,10 +135,8 @@ am__tar = ${AMTAR} chf - "$$tardir"
 # previously was defined in aclocal.m4: am__tar = ${AMTAR} chof - "$$tardir"
 
 # get source revision number
-REVISION = $$( \
-  if $(TEST) -e $(abs_top_srcdir)/.bzr/branch/last-revision; then \
-       $(AWK) '{print $$1; exit}' $(abs_top_srcdir)/.bzr/branch/last-revision; \
-  else $(AWK) '{print $$1; exit}' $(abs_top_srcdir)/../../.bzr/branch/last-revision; fi)
+REVNFILE = $$($(FIND) $(srcdir) -name last-revision)
+REVISION = $$($(AWK) '{print $$1; exit}' $(REVNFILE))
 
 # generate source revision packages
 all : distsum rev

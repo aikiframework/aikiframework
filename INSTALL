@@ -33,6 +33,11 @@ then execute `./autogen.sh'.
      user, and only the `make install' phase executed with root
      privileges.
      
+  3. Type `make install-mysql-user' and `make install-mysql-database'.
+     You will be prompted for the MySQL super user password which is
+     needed to create a new MySQL database user. The new user will be
+     used to create the new database for this package.
+     
      Once installed point your web browser to the Aiki Site URL
      (example: http://localhost/aiki). You can sign in using the
      default user name 'admin'. Leave the password field blank and
@@ -40,23 +45,27 @@ then execute `./autogen.sh'.
      on the 'admin' link in upper-right corner of the page next to
      the '@' character and the 'Logout' link.
 
-  3. You can also type `sudo make uninstall' to remove the installed
+  4. You can also type `sudo make uninstall' to remove the installed
      files again. This package has tested that uninstallation works
      correctly, as it is required by the GNU Coding Standards.
+     
+     Optionally, type `make uninstall-mysql-user' and 
+     `make uninstall-mysql-database' to uninstall the MySQL database
+     and user for this package.
 
-  4. Optionally, type `make' to build the source revision package.
+  5. Optionally, type `make' to build the source revision package.
 
-  5. Optionally, type `make check' to run any self-tests that come with
+  6. Optionally, type `make check' to run any self-tests that come with
      the package, generally using the just-built uninstalled binaries.
 
-  6. Optionally, type `make installcheck' to repeat any self-tests, but
+  7. Optionally, type `make installcheck' to repeat any self-tests, but
      this time using the binaries in their final installed location.
      This target does not install anything.  Running this target as a
      regular user, particularly if the prior `make install' required
      root privileges, verifies that the installation completed
      correctly.
 
-  7. You can remove the program binaries and object files from the
+  8. You can remove the program binaries and object files from the
      source code directory by typing `make clean'.  To also remove the
      files that `configure' created (so you can compile the package for
      a different kind of computer), type `make distclean'.  There is
@@ -65,7 +74,7 @@ then execute `./autogen.sh'.
      all sorts of other programs in order to regenerate files that came
      with the distribution.
 
-  8. Some packages, particularly those that use Automake, provide `make
+  9. Some packages, particularly those that use Automake, provide `make
      distcheck', which can by used by developers to test that all other
      targets like `make install' and `make uninstall' work correctly.
      This target is generally not run by end users.
