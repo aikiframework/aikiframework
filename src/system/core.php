@@ -20,8 +20,8 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 /**
- * BriefDescription
- *
+ * Stores config data and contains additional functions to process text,
+ * output HTML, and generate clean URLs.
  * @category    Aiki
  * @package     System
  */
@@ -36,7 +36,7 @@ class aiki
 
 
 	/**
-	 * Loads an aiki library
+	 * Loads an aiki library.
 	 *
 	 * @param   string class name
 	 * @return  mixed
@@ -97,7 +97,7 @@ class aiki
 
 
 	/**
-	 * Get String between two delimiters
+	 * Get a String that is between two delimiters.
 	 *
 	 * @param  string   the full string
 	 * @param  string   first delimiter
@@ -115,7 +115,7 @@ class aiki
 
 
 	/**
-	 * htmlspecialchars + few other special chars that normaly php don't convert
+	 *  Works with HTML special chars. and few other special chars that PHP does not normally convert.
 	 *
 	 * @param   string   text
 	 * @return  string
@@ -140,8 +140,8 @@ class aiki
 
 
 	/**
-	 * Replace aiki vars with there values
-	 * and fail to normal urls if mod_rewrite is not enabled
+	 * Replace Aiki vars with their assigned values.
+	 * Use normal urls if mod_rewrite is not enabled.
 	 *
 	 * @param  string   text before processing
 	 * @return  string

@@ -21,46 +21,46 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
 /**
- * BriefDescription
+ * Creates the Aiki page layout.
  *
  * @category    Aiki
  * @package     System
  */
 class CreateLayout
 {
-	//the full html output of all the widgets
+	// The full HTML output of all the widgets.
 	public $html_output;
 
-	//widgets that need to be killed
+	// Widgets that need to be killed.
 	public $kill_widget;
 
-	//sotres the output of one widget at a time
+	// Stores the output of one widget at a time.
 	public $widget_html;
 
 	public $forms;
 
-	//stores the id of inhereted widget
+	// Stores the ID of inhereted widget.
 	public $inherent_id;
 
-	//boolean: to create a cache for this widget
+	// Boolean: to create a cache for this widget.
 	public $create_widget_cache;
 
-	//sotres the css output from the selected widgets
+	// Stores the css output from the selected widgets.
 	public $widgets_css;
 
-	//boolean: is the widget require custom output
+	// Boolean: is the widget require custom output.
 	public $widget_custome_output;
 
-	//stores the head output of a widget
+	// Stores the head output of a widget.
 	public $head_output;
 
-	//sotres the values of sql results of the current selected widgets
+	// Stores the values of SQL results of the current selected widgets.
 	private $global_values = null;
 
 	public function CreateLayout(){
 		global $db, $site, $aiki, $url, $errors, $layout;
 
-		//Convert global_values to object to cache the sql results in parsDBpars function
+		// Convert global_values to an object to cache the SOL results in parsDBpars function.
 		$this->global_values=new stdClass();
 
 		if (isset($_GET["widget"])){
@@ -266,7 +266,7 @@ class CreateLayout
 
 		if (isset($config["widget_cache"]) and $config["widget_cache"] and isset($config["widget_cache_dir"]) and $widget->widget_cache_timeout){
 
-			//Get ready for cache
+			// Get widget ready for cache.
 			if ($widget->normal_select){
 				$widget_cache_id = $widget->id."_".$_SERVER['QUERY_STRING'];
 			}else{
@@ -279,7 +279,7 @@ class CreateLayout
 		}
 
 
-		//security check to check which widget content to display
+		// Security check to determine which widget content to display.
 		if ($widget->is_admin){
 			if ($membership->permissions and $widget->if_authorized){
 				$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$widget->permissions'");
@@ -291,7 +291,7 @@ class CreateLayout
 			}
 		}
 
-		//kill the query if it is not select
+		// Kill the query if it is not select.
 		if (preg_match("/TRUNCATE|UPDATE|DELETE(.*)from|table/i", $widget->normal_select)){
 			$widget->normal_select = "";
 		}
@@ -307,15 +307,15 @@ class CreateLayout
 
 		if (isset($config["widget_cache"]) and $config["widget_cache"] and isset($widget_cache_timeout) and $widget_cache_timeout > 0 and file_exists($widget_file) and ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD" and !$stopcaching){
 
-			//Display widget from cache
+			// Display widget from cache.
 			$widget_html_output = file_get_contents($widget_file);
 			$this->widget_html .= $widget_html_output;
 			$this->create_widget_cache = false;
 
 		}else{
 
-			//widget can't be rendered from cache
-			//Flag the widget as cachable, and try to delete the old cache file
+			// Widget can't be rendered from cache.
+			// Flag the widget as cachable, and try to delete the old cache file.
 			$this->create_widget_cache = true;
 			if (isset ($widget_file) and $membership->permissions != "SystemGOD" and $membership->permissions != "ModulesGOD" and !$stopcaching){
 				if (file_exists($widget_file)){
@@ -394,7 +394,7 @@ class CreateLayout
 				}
 
 
-				//default pages links settings
+				// Default pages links settings.
 				$pagesgroup = 10;
 				$group_pages = false;
 
@@ -402,7 +402,7 @@ class CreateLayout
 					$widget->link_example = "?page=[page]";
 				}
 
-				//custom pages links setting from link_example
+				// Custom pages links setting from link_example.
 				if (isset($widget->link_example)){
 					$link_config = preg_match('/config\[(.*)\]/U', $widget->link_example, $link_config_data);
 					if ($link_config and isset($link_config_data['1'])){
@@ -648,7 +648,7 @@ class CreateLayout
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
 
 
-			//apply new headers
+			// Apply new headers.
 			$new_header = preg_match_all("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);
 
 			if ($new_header > 0 and $new_header_match['1']){
@@ -714,7 +714,7 @@ class CreateLayout
 				$this->widget_html .=  $processed_widget;
 			}
 
-			//Set page title
+			// Set page title.
 			if ($widget->pagetitle){
 
 				$widget->pagetitle = $aiki->processVars($widget->pagetitle);
@@ -782,7 +782,7 @@ class CreateLayout
 					}
 				}
 
-				//((if||writers||writer: _self))
+				// ((if||writers||writer: _self))
 
 				$parsedExplode = explode("||", $parsed);
 				if (isset($parsedExplode['1']) and $parsedExplode[0] == "if"){
@@ -821,7 +821,7 @@ class CreateLayout
 
 				$widget_value->$parsed = $aiki->security->remove_markup($widget_value->$parsed);
 
-				//if there are results and the results are not from cache, then cache them
+				// If there are results and the results are not from cache then cache them.
 				if ($widget_value->$parsed and !$cached_values){
 					$this->global_values->$parsed = $widget_value->$parsed;
 				}
@@ -853,7 +853,7 @@ class CreateLayout
 	private function inherent_widgets($widget){
 		global $db;
 
-		//Fix a typo that was in the first version inherit was called inherent
+		// Fix a typo that was in the first version inherit was called inherent.
 		$widget = str_replace("(#(inherit", "(#(inherent", $widget);
 
 		$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/', $widget, $matches);
