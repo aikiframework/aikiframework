@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="256"
+   height="256"
+   id="svg3435"
+   sodipodi:version="0.32"
+   inkscape:version="0.47 r22583"
+   version="1.0"
+   sodipodi:docname="aiki.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <title
+     id="title3597">Aiki Turtle Icon</title>
+  <defs
+     id="defs3437">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3443" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="66.087523"
+     inkscape:cy="128"
+     inkscape:document-units="px"
+     inkscape:current-layer="g4437"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="780"
+     inkscape:window-x="-4"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3440">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Aiki Turtle Icon</dc:title>
+        <cc:license
+           rdf:resource="http://www.fsf.org/licensing/licenses/agpl-3.0.html" />
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>http://aikiframework.org/</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>http://aikiframework.org/</dc:identifier>
+        <dc:source>http://aikiframework.org/</dc:source>
+        <dc:relation>http://aikiframework.org/</dc:relation>
+        <dc:language>en-US</dc:language>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>Aiki</rdf:li>
+            <rdf:li>Aiki Framework</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:coverage>Aiki Turtle Icon</dc:coverage>
+        <dc:description>Aiki Turtle Icon</dc:description>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>AGPL-3.0</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>AikiLab</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>2010-02-14</dc:date>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>Steven Garcia</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-229.46394,-317.37857)">
+    <g
+       id="g4437"
+       transform="matrix(1.5104863,0,0,1.5104863,-196.25293,208.22562)">
+      <path
+         id="path10449"
+         d="m 359.20353,239.85114 c 1.74527,-5.09302 5.42409,-11.15031 4.09444,-17.39156 0.19692,-7.52017 -9.80649,-4.77152 -13.92086,-9.29599 -3.65467,-2.14094 -6.6508,-9.69498 -8.72375,-2.15706 -1.9998,4.46642 -7.73363,3.2568 -11.83329,2.11169 -3.34425,-0.76858 -5.78188,-1.98401 -9.16656,-3.33323 -6.5256,-3.32539 -6.24807,-13.02055 -2.36161,-18.27684 2.11172,-6.77992 8.49589,-0.006 9.97228,-0.84047 -2.56511,-17.59763 -1.1338,-35.79987 4.79799,-52.59225 0.78853,-3.80446 3.35552,-7.14019 4.20668,-11.31041 -5.40735,0.82347 -11.71017,-1.54772 -13.6981,-7.12835 -2.62797,-4.51716 0.77171,-9.45093 3.73142,-11.95075 2.58363,-1.58976 5.73677,-3.20891 9.37699,-3.39335 3.82285,1.75038 1.92546,8.57713 3.99167,12.37211 0.55009,5.10852 3.07723,2.79092 5.55409,0.0419 3.34949,-4.73742 13.4289,-4.85063 11.72761,-12.02336 -3.76399,-7.076921 -3.99807,-16.236806 0.33121,-23.048 2.35433,-3.826311 6.5492,-9.640335 11.76512,-8.990645 7.10071,3.966091 12.19611,12.071397 11.22214,20.482087 0.56824,5.758123 -4.81697,9.497718 -5.41776,14.282618 0.90072,4.81409 8.52359,4.30315 11.53825,8.02302 3.25039,2.66967 8.10185,8.13662 8.85028,0.31174 1.51429,-5.18132 0.61663,-14.38079 9.00291,-10.62517 6.26483,2.67114 10.80964,11.45292 6.02139,17.2744 -2.21899,5.1206 -11.62088,3.42761 -12.40061,6.25367 8.28987,18.20791 10.9419,38.86034 7.7958,58.64378 -3.35459,10.06288 6.69646,-4.92132 9.70553,3.37196 3.52761,4.68237 5.221,13.88312 -0.26655,17.4152 -5.65332,3.55836 -12.98106,7.50883 -19.77838,5.3377 -4.69443,-0.57132 -3.95336,-10.90773 -8.1454,-3.94498 -4.7399,4.56327 -10.68841,6.97788 -16.99311,8.53414 0.49413,7.80864 -1.24558,16.43073 -7.29263,21.8459 -2.18716,1.64184 -4.08038,2.48533 -3.68709,6.2e-4 l -10e-5,-1.3e-4 z"
+         style="fill:#000000"
+         sodipodi:nodetypes="cccccccccccccccccccccccccccccccccc" />
+      <path
+         style="font-size:40px;font-style:normal;font-weight:normal;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+         d="m 377.26511,189.37482 c -1.36431,2.24701 -3.75174,4.09272 -7.16228,5.53722 -3.37052,1.40436 -6.90151,2.10656 -10.59294,2.10656 -6.94161,0 -12.39858,-1.72538 -16.37092,-5.1761 -3.97238,-3.49085 -5.95855,-8.4262 -5.95855,-14.80606 0,-7.46316 2.78867,-13.30132 8.36604,-17.51445 5.61744,-4.21309 13.5822,-6.31962 23.89429,-6.31965 1.76547,3e-5 3.85195,0.30106 6.25947,0.90281 -3e-5,-7.58357 -4.79495,-11.37534 -14.38475,-11.3754 -5.65759,6e-5 -10.39232,0.943 -14.20416,2.8288 l -3.25011,-11.6763 c 5.17607,-2.4877 11.33523,-3.73155 18.47748,-3.73161 9.83053,6e-5 17.03291,2.24706 21.60717,6.74096 4.57419,4.45391 6.86131,12.92022 6.86137,25.399 l 0,13.78284 c -6e-5,8.58672 1.72529,13.9835 5.17608,16.19037 -1.24392,2.16673 -2.62823,3.49085 -4.1529,3.97234 -1.5248,0.52163 -3.27024,0.78245 -5.23629,0.78245 -2.16679,0 -4.11283,-0.8025 -5.83815,-2.40748 -1.72541,-1.60501 -2.88905,-3.35042 -3.49085,-5.2363 m -1.44449,-23.89431 c -2.56805,-0.5216 -4.49404,-0.78239 -5.77798,-0.78242 -11.87698,3e-5 -17.81543,3.89213 -17.8154,11.67631 -3e-5,5.77797 3.35039,8.66695 10.05123,8.66695 9.02806,0 13.54209,-4.51403 13.54215,-13.54211 l 0,-6.01873"
+         id="text2383" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+
+[Desktop Entry]
+Type=Application
+Name=@PACKAGE@
+Icon=@PACKAGE@
+Exec=@PACKAGE@
+GenericName=@SUMMARY@
+Comment=@DESCRIPTION@
+Categories=Network;

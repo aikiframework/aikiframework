@@ -1,0 +1,42 @@
+#!/bin/sh
+
+#       File: aiki
+#    Summary: Run Aiki via a web browser
+# Created on: Nov 01, 2010
+#     Author: Steven Garcia http://webwhammy.com
+#      Usage: aiki [URL]
+#       Note: Starts the Web Application Aiki using
+#             the first browser found in the $PATH
+
+# Add browsers to the list starting from top to
+# bottom. The top-most take precedence if found.
+BROWSERS="
+firefox
+google-chrome
+opera
+amaya
+midori
+xdg-open
+gnome-open
+kde-open
+exo-open
+rox
+konqueror
+epiphany
+galeon"
+
+result=1
+
+url="$1"
+if test -z $url; then url="@AIKI_LOGIN_URL@"; fi
+
+for b in $BROWSERS; do
+  b=$(which $b 2>/dev/null)
+  if test -x "$b"; then
+    result=0
+    $b $url
+    break
+  fi
+done
+
+exit $result

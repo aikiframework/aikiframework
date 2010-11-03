@@ -13,12 +13,14 @@ aiki_doc_files = \
 # Subdirectories to be built
 SUBDIRS = \
 	src \
-	configs
+	configs \
+	scripts
 
 # Sub directories to pass to the dist build
 DIST_SUBDIRS = \
 	src \
-	configs
+	configs \
+	scripts
 
 # Configure flags to pass to the distcheck build
 DISTCHECK_CONFIGURE_FLAGS =
@@ -100,8 +102,26 @@ uninstall-mysql-database:
 	@$(MYSQL) -v -u $(DB_SUPER_USER) -p$(DB_SUPER_USER_PASS) \
 	-e "DROP DATABASE IF EXISTS $(DB_NAME);"
 
+if ENABLE_DESKTOP
+SUBDIRS += \
+	desktop
+DIST_SUBDIRS += \
+	desktop
+
 # Additional things to do on install
-install-data-hook :
+install-desktop:
+	$(UPDATE_DESKTOP_DATABASE) -q $(DESTDIR)$(AIKI_ENTRY_DIR)
+else
+DISTCHECK_CONFIGURE_FLAGS += \
+	--disable-desktop
+
+#RPM_CONFIG += 
+#	--disable desktop
+install-desktop:
+endif
+
+# Additional things to do on install
+install-data-hook : install-desktop
 	@for d in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
 	@for d in $$($(FIND) $(DESTDIR)$(pkgdatadir) -type d); do $(CHMOD) 0755 $$d; done
@@ -125,11 +145,6 @@ uninstall-hook :
 	@if $(TEST) -z $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f); then \
 	$(RM) -rf $(DESTDIR)$(sysconfdir)/$(PACKAGE); fi
 
-#SUBDIRS += 
-#    src
-#DIST_SUBDIRS += 
-#  src
-
 # Added the following line to work around tar uid_t range error
 am__tar = ${AMTAR} chf - "$$tardir"
 # previously was defined in aclocal.m4: am__tar = ${AMTAR} chof - "$$tardir"
@@ -150,6 +165,8 @@ rev :
 	--exclude="$(distdir)/build" \
 	--exclude="$(distdir)/build-aux" \
 	--exclude="$(distdir)/configs" \
+	--exclude="$(distdir)/desktop" \
+	--exclude="$(distdir)/scripts" \
 	--exclude="configure"
 	@$(MV) $(distdir)/src/* $(distdir)/ && $(RM) -rf $(distdir)/src
 	@$(RM) -rf $(abs_top_srcdir)/build/$(PACKAGE)
@@ -182,7 +199,7 @@ summod :
 	@for f in $$($(FIND) . -name $(distdir).\*); do $(CHMOD) 0644 $$f; done
 
 # declare phony targets
-.PHONY : bone-clean rev summod distsum distchecksum
+.PHONY : bone-clean rev summod distsum distchecksum install-desktop
 
 # Remove ALL Autotools generated files
 # WARNING: Use this with CAUTION

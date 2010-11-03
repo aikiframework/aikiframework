@@ -150,6 +150,33 @@ else
 fi
 AM_CONDITIONAL(ENABLE_RUNTIME_INSTALLER, $TEST x$enable_runtime_installer = xyes)
 featurelist="$featurelist ENABLE_RUNTIME_INSTALLER=$enable_runtime_installer"
+
+AC_ARG_ENABLE([desktop],
+  [AS_HELP_STRING([--enable-desktop],
+    [Enable desktop entry in application launch menu [default=yes]])],
+  [enable_desktop=$enableval],
+  [enable_desktop=yes])
+if $TEST "x$enable_desktop" == "xyes" ; then
+  AC_CONFIG_FILES([ \
+    desktop/aiki.desktop:desktop/desktop.in \
+    desktop/Makefile \
+  ])
+  AC_ARG_VAR(AIKI_ENTRY_DIR,[Set the desktop entry directory [default: AIKI_ENTRY_DIR=$datadir/applications]])
+  if $TEST -z $AIKI_ENTRY_DIR; then AC_SUBST(AIKI_ENTRY_DIR,[$datadir/applications])
+  fi
+  VAR_LIST_ADD AIKI_ENTRY_DIR $AIKI_ENTRY_DIR
+
+  AC_ARG_VAR(AIKI_ICON_DIR,[Set the icon directory [default: AIKI_ICON_DIR=$datadir/icons/hicolor/scalable/apps]])
+  if $TEST -z $AIKI_ICON_DIR; then AC_SUBST(AIKI_ICON_DIR,[$datadir/icons/hicolor/scalable/apps])
+  fi
+  VAR_LIST_ADD AIKI_ICON_DIR $AIKI_ICON_DIR
+
+  AC_ARG_VAR(UPDATE_DESKTOP_DATABASE,[Set the update desktop database program [default: UPDATE_DESKTOP_DATABASE=update-desktop-database]])
+  AC_CHECK_PROG(UPDATE_DESKTOP_DATABASE,update-desktop-database,update-desktop-database,MISSING)
+  PROG_LIST_ADD UPDATE_DESKTOP_DATABASE $UPDATE_DESKTOP_DATABASE
+fi
+AM_CONDITIONAL(ENABLE_DESKTOP, $TEST x$enable_desktop = xyes)
+featurelist="$featurelist ENABLE_DESKTOP=$enable_desktop"
 #### END OPTIONAL FEATURES
 
 #############################
@@ -164,31 +191,26 @@ AM_INIT_AUTOMAKE([1.9 -Wall -Werror foreign dist-bzip2 dist-zip])
 # Define useful substitutions
 #############################
 AC_ARG_VAR(ALGORITHM,[Set the shasum algorithm where valid values are: 256, 224, 384 and 512. [default: ALGORITHM=256]])
-AM_CONDITIONAL(ALGORITHM_NOT_SET, [$TEST -z $ALGORITHM])
 if $TEST -z $ALGORITHM; then AC_SUBST(ALGORITHM,[256])
 fi
 VAR_LIST_ADD ALGORITHM $ALGORITHM
 
 AC_ARG_VAR(DB_TYPE,[Set the database type [default: DB_TYPE=mysql]])
-AM_CONDITIONAL(DB_TYPE_NOT_SET, [$TEST -z $DB_TYPE])
 if $TEST -z $DB_TYPE; then AC_SUBST(DB_TYPE,[mysql])
 fi
 VAR_LIST_ADD DB_TYPE $DB_TYPE
 
 AC_ARG_VAR(DB_HOST,[Set the database host name [default: DB_HOST=localhost]])
-AM_CONDITIONAL(DB_HOST_NOT_SET, [$TEST -z $DB_HOST])
 if $TEST -z $DB_HOST; then AC_SUBST(DB_HOST,[localhost])
 fi
 VAR_LIST_ADD DB_HOST $DB_HOST
 
 AC_ARG_VAR(DB_NAME,[Set the database name [default: DB_NAME=aiki]])
-AM_CONDITIONAL(DB_NAME_NOT_SET, [$TEST -z $DB_NAME])
 if $TEST -z $DB_NAME; then AC_SUBST(DB_NAME,[aiki])
 fi
 VAR_LIST_ADD DB_NAME $DB_NAME
 
 AC_ARG_VAR(DB_USER,[Set the database user [default: DB_USER=aiki]])
-AM_CONDITIONAL(DB_USER_NOT_SET, [$TEST -z $DB_USER])
 if $TEST -z $DB_USER; then AC_SUBST(DB_USER,[aiki])
 fi
 VAR_LIST_ADD DB_USER $DB_USER
@@ -200,45 +222,39 @@ else
   DEFAULT_DB_PASS=$($DATE +%s%N | $SHASUM -a $ALGORITHM | $HEAD -c8)
 fi
 AC_ARG_VAR(DB_PASS,[Set the database password [default: DB_PASS=/dev/urandom]])
-AM_CONDITIONAL(DB_PASS_NOT_SET, [$TEST -z $DB_PASS])
 if $TEST -z $DB_PASS; then AC_SUBST(DB_PASS,[$DEFAULT_DB_PASS])
 fi
 VAR_LIST_ADD DB_PASS $DB_PASS
 
 AC_ARG_VAR(DB_ENCODE,[Set the database encoding [default: DB_ENCODE=utf8]])
-AM_CONDITIONAL(DB_ENCODE_NOT_SET, [$TEST -z $DB_ENCODE])
 if $TEST -z $DB_ENCODE; then AC_SUBST(DB_ENCODE,[utf8])
 fi
 VAR_LIST_ADD DB_ENCODE $DB_ENCODE
 
 AC_ARG_VAR(DB_SUPER_USER,[Set the database super user [default: DB_SUPER_USER=root]])
-AM_CONDITIONAL(DB_SUPER_USER_NOT_SET, [$TEST -z $DB_SUPER_USER])
 if $TEST -z $DB_SUPER_USER; then AC_SUBST(DB_SUPER_USER,[root])
 fi
 VAR_LIST_ADD DB_SUPER_USER $DB_SUPER_USER
 
 AC_ARG_VAR(DB_SUPER_USER_PASS,[Set the database super user password [default: DB_SUPER_USER_PASS=]])
-AM_CONDITIONAL(DB_SUPER_USER_PASS_NOT_SET, [$TEST -z $DB_SUPER_USER_PASS])
 if $TEST -z $DB_SUPER_USER_PASS; then AC_SUBST(DB_SUPER_USER_PASS,[''])
 fi
 VAR_LIST_ADD DB_SUPER_USER_PASS $DB_SUPER_USER_PASS
 
 AC_ARG_VAR(DOMAIN,[Set the domain name where aiki will be installed [default: DOMAIN=localhost]])
-AM_CONDITIONAL(DOMAIN_NOT_SET, [$TEST -z $DOMAIN])
 if $TEST -z $DOMAIN; then AC_SUBST(DOMAIN,[localhost])
 fi
 VAR_LIST_ADD DOMAIN $DOMAIN
 
 AC_ARG_VAR(HTTPD_CONF_DIR,[Set the HTTPD configuration directory [default: HTTPD_CONF_DIR=$sysconfdir/httpd/conf.d]])
-AM_CONDITIONAL(HTTPD_CONF_DIR_NOT_SET, [$TEST -z $HTTPD_CONF_DIR])
 if $TEST -z $HTTPD_CONF_DIR; then AC_SUBST(HTTPD_CONF_DIR,[$sysconfdir/httpd/conf.d])
 fi
 VAR_LIST_ADD HTTPD_CONF_DIR $HTTPD_CONF_DIR
 
-VAR_LIST_ADD prefix $prefix
-VAR_LIST_ADD docdir $docdir
-VAR_LIST_ADD datarootdir $datarootdir
-VAR_LIST_ADD sysconfdir $sysconfdir
+AC_ARG_VAR(AIKI_LOGIN_URL,[Set the login URL [default: AIKI_LOGIN_URL=http://$DOMAIN/$PACKAGE/login]])
+if $TEST -z $AIKI_LOGIN_URL; then AC_SUBST(AIKI_LOGIN_URL,[http://$DOMAIN/$PACKAGE/login])
+fi
+VAR_LIST_ADD AIKI_LOGIN_URL $AIKI_LOGIN_URL
 
 # use eval to force variable substitution/expansion
 AIKI_DATA_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/$PACKAGE)
@@ -254,6 +270,26 @@ VAR_LIST_ADD AIKI_SITE_URL $AIKI_SITE_URL
 
 AIKI_SITE_URL_LEN=$($ECHO "$AIKI_SITE_URL" | $AWK '{print length}')
 AC_SUBST(AIKI_SITE_URL_LEN,$AIKI_SITE_URL_LEN)
+
+# for rpm spec, desktop and others
+SUMMARY=[A\ CMS\ Creator\ Web\ Application]
+AC_SUBST(SUMMARY)
+DESCRIPTION=[A\ content\ management\ system\ creator\ web\ application]
+AC_SUBST(DESCRIPTION)
+RELEASE=[1]
+AC_SUBST(RELEASE)
+LICENSE=[AGPLv3]
+AC_SUBST(LICENSE)
+GROUP=[Applications/Internet]
+AC_SUBST(GROUP)
+URL=[http://aikiframework.org/]
+AC_SUBST(URL)
+
+# list standard directories
+VAR_LIST_ADD prefix $prefix
+VAR_LIST_ADD docdir $docdir
+VAR_LIST_ADD datarootdir $datarootdir
+VAR_LIST_ADD sysconfdir $sysconfdir
 
 PRINT_CONFIG_SUMMARY()
 {
@@ -330,7 +366,9 @@ AC_CONFIG_FILES([ \
   configs/aiki-defs.php:configs/aiki-defs.inc \
   configs/z-aiki.conf:configs/z-aiki.in \
   configs/CreateTables.sql:configs/CreateTables.in \
+  scripts/aiki:scripts/aiki.in \
   configs/Makefile \
+  scripts/Makefile \
 ])
 
 # Generate config.status and launch it

@@ -10,11 +10,11 @@ aiki_conf_files = \
 httpd_conf_files = \
 	z-$(PACKAGE).conf
 
-# Subdirectories to be built
-SUBDIRS =
-
-# Subdirectories to distribute
-DIST_SUBDIRS =
+# Additional files to remove on dist-clean
+DISTCLEANFILES = \
+	z-$(PACKAGE).conf \
+	CreateTables.sql \
+	$(PACKAGE)-defs.php
 
 # Additional files to distribute
 EXTRA_DIST = \
