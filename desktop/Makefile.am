@@ -20,11 +20,11 @@ DISTCLEANFILES = \
 
 # The directory to put the files
 aiki_entrydir = \
-	$(AIKI_ENTRY_DIR)
+	$(PKG_ENTRY_DIR)
 
 # The directory to put the files
 aiki_icondir = \
-	$(AIKI_ICON_DIR)
+	$(PKG_ICON_DIR)
 
 # The desktop entry data
 aiki_entry_DATA = \

@@ -102,21 +102,34 @@ uninstall-mysql-database:
 	@$(MYSQL) -v -u $(DB_SUPER_USER) -p$(DB_SUPER_USER_PASS) \
 	-e "DROP DATABASE IF EXISTS $(DB_NAME);"
 
+if ENABLE_RPM
+SUBDIRS += \
+	rpm
+DIST_SUBDIRS += \
+	rpm
+DISTCHECK_CONFIGURE_FLAGS += \
+	--enable-rpm
+RPM_CONFIG += \
+	--enable rpm
+srpm :
+	@$(MAKE) -C rpm srpm
+rpm :
+	@$(MAKE) -C rpm rpm
+endif
+
 if ENABLE_DESKTOP
 SUBDIRS += \
 	desktop
 DIST_SUBDIRS += \
 	desktop
-
 # Additional things to do on install
 install-desktop:
-	$(UPDATE_DESKTOP_DATABASE) -q $(DESTDIR)$(AIKI_ENTRY_DIR)
+	$(UPDATE_DESKTOP_DATABASE) -q $(DESTDIR)$(PKG_ENTRY_DIR)
 else
 DISTCHECK_CONFIGURE_FLAGS += \
 	--disable-desktop
-
-#RPM_CONFIG += 
-#	--disable desktop
+RPM_CONFIG += \
+	--disable desktop
 install-desktop:
 endif
 
@@ -129,20 +142,20 @@ install-data-hook : install-desktop
 	@for d in $$($(FIND) $(DESTDIR)$(docdir) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(DESTDIR)$(docdir) -type f); do $(CHMOD) 0644 $$f; done
 	@$(MKDIR) -p $(DESTDIR)$(pkgdatadir)/configs
-	@$(LN_S) -f $(DESTDIR)$(sysconfdir)/$(PACKAGE)/aiki-defs.php \
+	@$(LN_S) -f $(sysconfdir)/$(PACKAGE)/aiki-defs.php \
 	$(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
-	@$(LN_S) -f $(DESTDIR)$(sysconfdir)/$(PACKAGE)/config.php \
+	@$(LN_S) -f $(sysconfdir)/$(PACKAGE)/config.php \
 	$(DESTDIR)$(pkgdatadir)/configs/config.php
 
 # Additional things to do on uninstall
 uninstall-hook :
 	@$(RM) $(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
 	@$(RM) $(DESTDIR)$(pkgdatadir)/configs/config.php
-	@if $(TEST) -z $$($(FIND) $(DESTDIR)$(pkgdatadir) -type f); then \
+	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(pkgdatadir) -type f)"; then \
 	$(RM) -rf $(DESTDIR)$(pkgdatadir); fi
-	@if $(TEST) -z $$($(FIND) $(DESTDIR)$(docdir) -type f); then \
+	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(docdir) -type f)"; then \
 	$(RM) -rf $(DESTDIR)$(docdir); fi
-	@if $(TEST) -z $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f); then \
+	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f)"; then \
 	$(RM) -rf $(DESTDIR)$(sysconfdir)/$(PACKAGE); fi
 
 # Added the following line to work around tar uid_t range error
@@ -199,7 +212,7 @@ summod :
 	@for f in $$($(FIND) . -name $(distdir).\*); do $(CHMOD) 0644 $$f; done
 
 # declare phony targets
-.PHONY : bone-clean rev summod distsum distchecksum install-desktop
+.PHONY : bone-clean rev summod distsum distchecksum install-desktop rpm
 
 # Remove ALL Autotools generated files
 # WARNING: Use this with CAUTION

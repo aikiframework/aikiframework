@@ -7,6 +7,7 @@ AC_PREREQ(2.59)
 # Initialize autoconf, set the name of this package and version
 AC_INIT(aiki, 0.4.5, [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
 PACKAGE=aiki
+VERSION=0.4.5
 
 # Search for auxiliary scripts in the build-aux directory
 AC_CONFIG_AUX_DIR(build-aux)
@@ -161,15 +162,23 @@ if $TEST "x$enable_desktop" == "xyes" ; then
     desktop/aiki.desktop:desktop/desktop.in \
     desktop/Makefile \
   ])
-  AC_ARG_VAR(AIKI_ENTRY_DIR,[Set the desktop entry directory [default: AIKI_ENTRY_DIR=$datadir/applications]])
-  if $TEST -z $AIKI_ENTRY_DIR; then AC_SUBST(AIKI_ENTRY_DIR,[$datadir/applications])
+  AC_ARG_VAR(PKG_ENTRY_DIR,[Set the desktop entry directory [default: PKG_ENTRY_DIR=$datadir/applications]])
+  if $TEST -z $PKG_ENTRY_DIR; then
+    PKG_ENTRY_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/applications)
+    AC_SUBST(PKG_ENTRY_DIR,[$PKG_ENTRY_DIR])
   fi
-  VAR_LIST_ADD AIKI_ENTRY_DIR $AIKI_ENTRY_DIR
+  VAR_LIST_ADD PKG_ENTRY_DIR $PKG_ENTRY_DIR
 
-  AC_ARG_VAR(AIKI_ICON_DIR,[Set the icon directory [default: AIKI_ICON_DIR=$datadir/icons/hicolor/scalable/apps]])
-  if $TEST -z $AIKI_ICON_DIR; then AC_SUBST(AIKI_ICON_DIR,[$datadir/icons/hicolor/scalable/apps])
+  AC_ARG_VAR(PKG_ICON_DIR,[Set the icon directory [default: PKG_ICON_DIR=$datadir/icons/hicolor/scalable/apps]])
+  if $TEST -z $PKG_ICON_DIR; then
+    PKG_ICON_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/icons/hicolor/scalable/apps)
+    AC_SUBST(PKG_ICON_DIR,[$PKG_ICON_DIR])
   fi
-  VAR_LIST_ADD AIKI_ICON_DIR $AIKI_ICON_DIR
+  VAR_LIST_ADD PKG_ICON_DIR $PKG_ICON_DIR
+
+  AC_ARG_VAR(DESKTOP_FILE_INSTALL,[Set the desktop file installation program [default: DESKTOP_FILE_INSTALL=desktop-file-install]])
+  AC_CHECK_PROG(DESKTOP_FILE_INSTALL,desktop-file-install,desktop-file-install,MISSING)
+  PROG_LIST_ADD DESKTOP_FILE_INSTALL $DESKTOP_FILE_INSTALL
 
   AC_ARG_VAR(UPDATE_DESKTOP_DATABASE,[Set the update desktop database program [default: UPDATE_DESKTOP_DATABASE=update-desktop-database]])
   AC_CHECK_PROG(UPDATE_DESKTOP_DATABASE,update-desktop-database,update-desktop-database,MISSING)
@@ -177,6 +186,32 @@ if $TEST "x$enable_desktop" == "xyes" ; then
 fi
 AM_CONDITIONAL(ENABLE_DESKTOP, $TEST x$enable_desktop = xyes)
 featurelist="$featurelist ENABLE_DESKTOP=$enable_desktop"
+
+AC_ARG_ENABLE([rpm],
+  [AS_HELP_STRING([--enable-rpm],
+    [Enable building of RPM packages [default=no]])],
+  [enable_rpm=$enableval],
+  [enable_rpm=no])
+if $TEST "x$enable_rpm" == "xyes" ; then
+  AC_CONFIG_FILES([ \
+    rpm/SPECS/aiki.spec:rpm/spec.in \
+    rpm/Makefile \
+  ])
+  AC_ARG_VAR(PKG_DIST,[Set the distribution package for RPM building [default: PKG_DIST=$PACKAGE-$VERSION.tar.gz]])
+  if $TEST -z $PKG_DIST; then AC_SUBST(PKG_DIST,[$PACKAGE-$VERSION.tar.gz])
+  fi
+  VAR_LIST_ADD PKG_DIST $PKG_DIST
+
+  AC_ARG_VAR(RPMBUILD,[Set the RPM builder program [default: RPMBUILD=rpmbuild]])
+  AC_CHECK_PROG(RPMBUILD,rpmbuild,rpmbuild,MISSING)
+  PROG_LIST_ADD RPMBUILD $RPMBUILD
+
+  AC_ARG_VAR(RPMLINT,[Set the RPM lint program [default: RPMLINT=rpmlint]])
+  AC_CHECK_PROG(RPMLINT,rpmlint,rpmlint,MISSING)
+  PROG_LIST_ADD RPMLINT $RPMLINT
+fi
+AM_CONDITIONAL(ENABLE_RPM, $TEST x$enable_rpm = xyes)
+featurelist="$featurelist ENABLE_RPM=$enable_rpm"
 #### END OPTIONAL FEATURES
 
 #############################
@@ -247,7 +282,9 @@ fi
 VAR_LIST_ADD DOMAIN $DOMAIN
 
 AC_ARG_VAR(HTTPD_CONF_DIR,[Set the HTTPD configuration directory [default: HTTPD_CONF_DIR=$sysconfdir/httpd/conf.d]])
-if $TEST -z $HTTPD_CONF_DIR; then AC_SUBST(HTTPD_CONF_DIR,[$sysconfdir/httpd/conf.d])
+if $TEST -z $HTTPD_CONF_DIR; then
+  HTTPD_CONF_DIR=$($EVAL $EVAL $EVAL $ECHO $sysconfdir/httpd/conf.d)
+  AC_SUBST(HTTPD_CONF_DIR,[$HTTPD_CONF_DIR])
 fi
 VAR_LIST_ADD HTTPD_CONF_DIR $HTTPD_CONF_DIR
 
@@ -257,12 +294,12 @@ fi
 VAR_LIST_ADD AIKI_LOGIN_URL $AIKI_LOGIN_URL
 
 # use eval to force variable substitution/expansion
-AIKI_DATA_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/$PACKAGE)
-AC_SUBST(AIKI_DATA_DIR,$AIKI_DATA_DIR)
-VAR_LIST_ADD AIKI_DATA_DIR $AIKI_DATA_DIR
+PKG_DATA_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/$PACKAGE)
+AC_SUBST(PKG_DATA_DIR,$PKG_DATA_DIR)
+VAR_LIST_ADD PKG_DATA_DIR $PKG_DATA_DIR
 
-AIKI_DATA_DIR_LEN=$($ECHO $AIKI_DATA_DIR | $AWK '{print length}')
-AC_SUBST(AIKI_DATA_DIR_LEN,$AIKI_DATA_DIR_LEN)
+PKG_DATA_DIR_LEN=$($ECHO $PKG_DATA_DIR | $AWK '{print length}')
+AC_SUBST(PKG_DATA_DIR_LEN,$PKG_DATA_DIR_LEN)
 
 AIKI_SITE_URL=$($ECHO "http://$DOMAIN/$PACKAGE/")
 AC_SUBST(AIKI_SITE_URL,$AIKI_SITE_URL)
@@ -288,6 +325,7 @@ AC_SUBST(URL)
 # list standard directories
 VAR_LIST_ADD prefix $prefix
 VAR_LIST_ADD docdir $docdir
+VAR_LIST_ADD datadir $datadir
 VAR_LIST_ADD datarootdir $datarootdir
 VAR_LIST_ADD sysconfdir $sysconfdir
 

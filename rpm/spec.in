@@ -1,0 +1,134 @@
+
+# RPM Spec file for @PACKAGE@
+
+#=====================
+# Variable definitions
+#=====================
+%define url            @URL@
+%define name           @PACKAGE@
+%define group          @GROUP@
+%define version        @VERSION@
+%define summary        @SUMMARY@
+%define release        @RELEASE@
+%define license        @LICENSE@
+%define pkgdist        @PKG_DIST@
+%define descrip        @DESCRIPTION@
+%define pkgicondir     @PKG_ICON_DIR@
+%define pkgentrydir    @PKG_ENTRY_DIR@
+%define httpdconfdir   @HTTPD_CONF_DIR@
+%define updatedesktop  @UPDATE_DESKTOP_DATABASE@
+%define desktopinstall @DESKTOP_FILE_INSTALL@
+
+#====================
+# Package definitions
+#====================
+Name:      %{name}
+Version:   %{version}
+Release:   %{release}%{?dist}
+Summary:   %{summary}
+License:   %{license}
+Group:     %{group}
+URL:       %{url}
+Source0:   %{url}/files/%{pkgdist}
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch: noarch
+
+#=============
+# Requirements
+#=============
+BuildRequires: desktop-file-utils
+BuildRequires: mysql
+BuildRequires: perl-Digest-SHA
+BuildRequires: rpmlint
+BuildRequires: zip
+Requires: httpd >= 2.0.0
+Requires: mysql >= 5.1.0
+Requires: php >= 5.2.0
+Requires: php-common >= 5.2.0
+Requires: php-mysql >= 5.2.0
+Requires: php-gd >= 5.2.0
+Requires: php-xml >= 5.2.0
+Requires: php-tidy >= 5.2.0
+Requires: php-pdo >= 5.2.0
+Requires: pcre >= 7.8
+Requires: libxml2 >= 2.7
+Requires: libtidy >= 0.99
+Requires: curl >= 7.20.1
+Requires: libcurl >= 7.20.1
+Requires: openssl >= 1.0
+Requires: zlib >= 1.2.3
+Requires: libssh2 >= 1.2.4
+Requires: freetype >= 2.3.11
+Requires: t1lib >= 5.1.2
+Requires: giflib >= 4.1.6
+Requires: libjpeg >= 6
+Requires: libpng >= 1.2.44
+Requires: libXpm >= 3.5.8
+
+# The description should expand upon the summary.
+%description
+%{descrip}
+
+#====================
+# Preparation process
+#====================
+%prep
+%setup -q
+
+#==============
+# Build process
+#==============
+%build
+%{configure} \
+     --prefix=%{_prefix} \
+ --sysconfdir=%{_sysconfdir}
+
+#=====================
+# Installation process
+#=====================
+%install
+%{__rm} -rf %{buildroot}
+%{__make} %{?_smp_mflags} DESTDIR=%{buildroot} INSTALL="%{__install} -p" install
+%{__rm} -fv %{buildroot}/%{pkgentrydir}/mimeinfo.cache
+%{desktopinstall} \
+  --dir %{buildroot}%{pkgentrydir} \
+  %{buildroot}%{pkgentrydir}/%{name}.desktop
+
+#=================
+# Cleaning process
+#=================
+%clean
+%{__rm} -rf %{buildroot}
+
+#=============
+# Post process
+#=============
+%post
+%{updatedesktop} %{pkgentrydir} &> /dev/null || :
+%postun
+%{updatedesktop} %{pkgentrydir} &> /dev/null || :
+
+#==========================
+# Files included in package
+#==========================
+%files
+%defattr(-,root,root,-)
+%{_bindir}/%{name}
+%doc ChangeLog README LICENSE AUTHORS INSTALL VERSION
+%dir %{pkgentrydir}/
+%{pkgentrydir}/%{name}.desktop
+%dir %{pkgicondir}/
+%{pkgicondir}/%{name}.svg
+%{_datadir}/%{name}/
+%dir %{_sysconfdir}/%{name}/
+%config(noreplace) %{_sysconfdir}/%{name}/config.php
+%config(noreplace) %{_sysconfdir}/%{name}/%{name}-defs.php
+%dir %{httpdconfdir}/
+%config(noreplace) %{httpdconfdir}/z-%{name}.conf
+
+#============================
+# Changes made to the package
+#============================
+%changelog
+* Wed Nov 03 2010 Steven Garcia <webwhammy@gmail.com> 0.4.5-1
+- Initial Spec file creation
