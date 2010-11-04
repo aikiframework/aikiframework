@@ -6,13 +6,9 @@
 #=====================
 %define url            @URL@
 %define name           @PACKAGE@
-%define group          @GROUP@
 %define version        @VERSION@
-%define summary        @SUMMARY@
 %define release        @RELEASE@
-%define license        @LICENSE@
 %define pkgdist        @PKG_DIST@
-%define descrip        @DESCRIPTION@
 %define pkgicondir     @PKG_ICON_DIR@
 %define pkgentrydir    @PKG_ENTRY_DIR@
 %define httpdconfdir   @HTTPD_CONF_DIR@
@@ -25,9 +21,9 @@
 Name:      %{name}
 Version:   %{version}
 Release:   %{release}%{?dist}
-Summary:   %{summary}
-License:   %{license}
-Group:     %{group}
+Summary:   @SUMMARY@
+License:   @LICENSE@
+Group:     @GROUP@
 URL:       %{url}
 Source0:   %{url}/files/%{pkgdist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -67,7 +63,7 @@ Requires: libXpm >= 3.5.8
 
 # The description should expand upon the summary.
 %description
-%{descrip}
+@DESCRIPTION@
 
 #====================
 # Preparation process
@@ -80,8 +76,22 @@ Requires: libXpm >= 3.5.8
 #==============
 %build
 %{configure} \
-     --prefix=%{_prefix} \
- --sysconfdir=%{_sysconfdir}
+          --prefix=%{_prefix} \
+      --sysconfdir=%{_sysconfdir} \
+     PKG_ENTRY_DIR=@PKG_ENTRY_DIR@ \
+      PKG_ICON_DIR=@PKG_ICON_DIR@ \
+         ALGORITHM=@ALGORITHM@ \
+           DB_TYPE=@DB_TYPE@ \
+           DB_HOST=@DB_HOST@ \
+           DB_NAME=@DB_NAME@ \
+           DB_USER=@DB_USER@ \
+           DB_PASS=@DB_PASS@ \
+         DB_ENCODE=@DB_ENCODE@ \
+     DB_SUPER_USER=@DB_SUPER_USER@ \
+DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
+            DOMAIN=@DOMAIN@ \
+    HTTPD_CONF_DIR=@HTTPD_CONF_DIR@ \
+    AIKI_LOGIN_URL=@AIKI_LOGIN_URL@
 
 #=====================
 # Installation process
@@ -105,8 +115,10 @@ Requires: libXpm >= 3.5.8
 #=============
 %post
 %{updatedesktop} %{pkgentrydir} &> /dev/null || :
+/sbin/service httpd restart &> /dev/null || :
 %postun
 %{updatedesktop} %{pkgentrydir} &> /dev/null || :
+/sbin/service httpd restart &> /dev/null || :
 
 #==========================
 # Files included in package
