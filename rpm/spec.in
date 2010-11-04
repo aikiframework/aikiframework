@@ -4,16 +4,16 @@
 #=====================
 # Variable definitions
 #=====================
-%define url            @URL@
-%define name           @PACKAGE@
-%define version        @VERSION@
-%define release        @RELEASE@
-%define pkgdist        @PKG_DIST@
-%define pkgicondir     @PKG_ICON_DIR@
-%define pkgentrydir    @PKG_ENTRY_DIR@
-%define httpdconfdir   @HTTPD_CONF_DIR@
-%define updatedesktop  @UPDATE_DESKTOP_DATABASE@
-%define desktopinstall @DESKTOP_FILE_INSTALL@
+%global url            @URL@
+%global name           @PACKAGE@
+%global version        @VERSION@
+%global release        @RELEASE@
+%global pkgdist        @PKG_DIST@
+%global pkgicondir     @PKG_ICON_DIR@
+%global pkgentrydir    @PKG_ENTRY_DIR@
+%global httpdconfdir   @HTTPD_CONF_DIR@
+%global updatedesktop  @UPDATE_DESKTOP_DATABASE@
+%global desktopinstall @DESKTOP_FILE_INSTALL@
 
 #====================
 # Package definitions
@@ -115,10 +115,10 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 #=============
 %post
 %{updatedesktop} %{pkgentrydir} &> /dev/null || :
-/sbin/service httpd restart &> /dev/null || :
+/sbin/service httpd condrestart &> /dev/null || :
 %postun
 %{updatedesktop} %{pkgentrydir} &> /dev/null || :
-/sbin/service httpd restart &> /dev/null || :
+/sbin/service httpd condrestart &> /dev/null || :
 
 #==========================
 # Files included in package
