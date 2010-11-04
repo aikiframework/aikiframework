@@ -1,12 +1,11 @@
 #!/bin/sh
 
-#       File: aiki
-#    Summary: Run Aiki via a web browser
+#       File: @PACKAGE@
+#    Summary: Launch the Web Application @PACKAGE@
 # Created on: Nov 01, 2010
 #     Author: Steven Garcia http://webwhammy.com
-#      Usage: aiki [URL]
-#       Note: Starts the Web Application Aiki using
-#             the first browser found in the $PATH
+#      Usage: @PACKAGE@ [OPTIONS]
+#       Note: Uses the first browser found in the $PATH
 
 # Add browsers to the list starting from top to
 # bottom. The top-most take precedence if found.
@@ -25,16 +24,75 @@ konqueror
 epiphany
 galeon"
 
+# Set default result to 1 meaning abnormal and 0 is normal
 result=1
+url=
 
-url="$1"
+printhelp()
+{
+  echo
+  echo "Usage: $0 [OPTIONS]"
+  echo
+  echo "Launch the web application @PACKAGE@"
+  echo
+  echo "Options:"
+  echo "  -h, --help             Print this help message"
+  echo "  -V, --version          Print the version of the web application @PACKAGE@"
+  echo "  -u [URL], --url=[URL]  Optionally, set the URL to the web application @PACKAGE@"
+  echo "                         The default URL is set to @AIKI_LOGIN_URL@"
+  echo
+  echo "Examples:"
+  echo "  $0 -u @AIKI_LOGIN_URL@"
+  echo
+  echo "Report bugs to: @PACKAGE_BUGREPORT@"
+  echo "Project home page: @PACKAGE_URL@"
+  echo
+}
+
+parseargs()
+{
+  args="$1"
+  for option in ${args}; do
+    case ${option} in
+      --help | -h)
+      {
+        printhelp
+        exit $result
+      };;
+      --version | -V)
+      {
+        echo "@PACKAGE@ version @VERSION@"
+        exit $result
+      };;
+      -u)
+      {
+        url="$(echo "${args}" | sed s/".*-u "// | awk '{print $1}')"
+        break
+      };;
+      --url=*)
+      {
+        url="$(echo "${args}" | sed s/".*--url="// | awk '{print $1}')"
+        break
+      };;
+      *)
+      {
+      	echo "Invalid option"
+        printhelp
+        exit $result
+      };;
+    esac
+  done
+}
+
+parseargs "${*}"
+
 if test -z $url; then url="@AIKI_LOGIN_URL@"; fi
 
-for b in $BROWSERS; do
-  b=$(which $b 2>/dev/null)
-  if test -x "$b"; then
+for browser in $BROWSERS; do
+  launch=$(which $browser 2>/dev/null)
+  if test -x "$launch"; then
     result=0
-    $b $url
+    $launch $url
     break
   fi
 done
