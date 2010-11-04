@@ -287,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `aiki_widgets` (
   `custome_header` text NOT NULL,
   `is_active` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
 
 -- ------------------------------------------------------
 
