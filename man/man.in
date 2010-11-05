@@ -1,0 +1,105 @@
+.TH "@PACKAGE@" "1" "@PACKAGE@-@VERSION@" "aikiframework.org" "@GROUP@"
+
+.SH "NAME"
+.LP 
+@PACKAGE@ \- Launch the web application @PACKAGE@
+
+.SH "SYNOPSIS"
+.LP 
+\fB@PACKAGE@\fR [\fIOPTIONS\fR]
+
+.SH "DESCRIPTION"
+.LP 
+Launch the web application @PACKAGE@. Aiki Framework is a flexible
+.br
+free and open source web 2.0 platform that allows programmers to
+.br
+easily create and work with content management systems. Aiki
+.br
+Framework saves all the controllers and output templates in a
+.br
+database or any other storage system. This makes Aiki easy to use
+.br
+and easy to customize. Aiki Framework enables developers and
+.br
+website administrators to control an unlimited number of sites in
+.br
+one place with an advanced (yet very easy to use) permissions
+.br
+system. Aiki provides access to the normal programming interfaces
+.br
+as well, allowing developers to write their code in a less
+.br
+framework oriented way than comparable offerings. Aiki Framework
+.br
+is built on PHP and is pluggable to many SQL-based database engines
+.br
+(MYSQL, PSQL, SQLite, etc). We are also working on Python and Ruby
+.br
+on Rails versions, but they are still in pre-alpha stage. You will
+.br
+be able to convert any website built on the current PHP version to the
+.br
+Python or the Ruby alternative (once they are completed) in one click!
+
+.SH "OPTIONS"
+.TP 
+\fB\-h, \-\-help\fR
+Print this help message and exit.
+.TP 
+\fB\-V, \-\-version\fR
+Print the version of the web application @PACKAGE@ and exit.
+.TP 
+\fB\-u\fR [\fIURL\fR]\fB, \-\-url=\fR[\fIURL\fR]
+Optionally, set the URL to the web application @PACKAGE@.
+.br
+The default URL is set to @AIKI_LOGIN_URL@.
+
+.SH "FILES"
+.RS 0
+.nf
+/etc/@PACKAGE@/@PACKAGE@\-defs.php  Configuration definitions
+/etc/@PACKAGE@/config.php     Configuration file
+
+.SH "EXAMPLES"
+.TP 
+The easiest way to run the application is to type:
+.br
+\fB@PACKAGE@\fR
+.TP 
+To optionally set the URL to the web application, type:
+.br 
+\fB@PACKAGE@ -u @AIKI_LOGIN_URL@\fR
+
+.SH "AUTHORS"
+.RS 0
+.nf
+Bassel Safadi               Lead Developer/Programmer
+Jon Phillips                Project Manager
+Michi Krnac                 Developer
+Ronaldo Barbachano          Developer
+Vera Lobatcheva             Graphic Design
+Brad Phillips               Developer/Graphic Design
+Steven Garcia               Developer/Programmer
+Fabricatorz, LLC            Developers/Graphic Design
+AikiLab Singapore, PTE LTD  Developers/Graphic Design
+
+.SH "REPORTING BUGS"
+Report bugs to: @PACKAGE_BUGREPORT@
+.br
+Project home page: @PACKAGE_URL@
+
+.SH "COPYRIGHT"
+Copyright © 2010 AikiFramework.Org.
+.br
+License AGPLv3: GNU Affero General Public License version 3
+.br http://www.fsf.org/licensing/licenses/agpl-3.0.html
+.br
+This is free software: you are free to change and redistribute it.
+.br
+There is NO WARRANTY, to the extent permitted by law.
+
+.SH "SEE ALSO"
+For more information, please see the online documentation at
+.br
+@PACKAGE_URL@/wiki/ or @PACKAGE_URL@/doc/

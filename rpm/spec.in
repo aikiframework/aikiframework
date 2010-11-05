@@ -132,6 +132,7 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %dir %{pkgicondir}/
 %{pkgicondir}/%{name}.svg
 %{_datadir}/%{name}/
+%{_mandir}/man1/%{name}*
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/config.php
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}-defs.php

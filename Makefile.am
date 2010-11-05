@@ -14,13 +14,19 @@ aiki_doc_files = \
 SUBDIRS = \
 	src \
 	configs \
-	scripts
+	scripts \
+	man \
+	desktop \
+	rpm
 
 # Sub directories to pass to the dist build
 DIST_SUBDIRS = \
 	src \
 	configs \
-	scripts
+	scripts \
+	man \
+	desktop \
+	rpm
 
 # Configure flags to pass to the distcheck build
 DISTCHECK_CONFIGURE_FLAGS =
@@ -103,10 +109,6 @@ uninstall-mysql-database:
 	-e "DROP DATABASE IF EXISTS $(DB_NAME);"
 
 if ENABLE_RPM
-SUBDIRS += \
-	rpm
-DIST_SUBDIRS += \
-	rpm
 DISTCHECK_CONFIGURE_FLAGS += \
 	--enable-rpm
 RPM_CONFIG += \
@@ -118,10 +120,6 @@ rpm :
 endif
 
 if ENABLE_DESKTOP
-SUBDIRS += \
-	desktop
-DIST_SUBDIRS += \
-	desktop
 # Additional things to do on install
 install-desktop:
 	$(UPDATE_DESKTOP_DATABASE) -q $(DESTDIR)$(PKG_ENTRY_DIR)
@@ -149,8 +147,8 @@ install-data-hook : install-desktop
 
 # Additional things to do on uninstall
 uninstall-hook :
-	@$(RM) $(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
-	@$(RM) $(DESTDIR)$(pkgdatadir)/configs/config.php
+	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
+	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/config.php
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(pkgdatadir) -type f)"; then \
 	$(RM) -rf $(DESTDIR)$(pkgdatadir); fi
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(docdir) -type f)"; then \

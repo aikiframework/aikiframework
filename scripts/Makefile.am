@@ -12,8 +12,8 @@ dist_bin_SCRIPTS = \
 
 # Additional files to distribute
 EXTRA_DIST = \
-	aiki.in
+	$(PACKAGE).in
 
 # Additional files to remove on dist-clean
 DISTCLEANFILES = \
-	aiki
+	$(PACKAGE)

@@ -158,10 +158,6 @@ AC_ARG_ENABLE([desktop],
   [enable_desktop=$enableval],
   [enable_desktop=yes])
 if $TEST "x$enable_desktop" == "xyes" ; then
-  AC_CONFIG_FILES([ \
-    desktop/aiki.desktop:desktop/desktop.in \
-    desktop/Makefile \
-  ])
   AC_ARG_VAR(PKG_ENTRY_DIR,[Set the desktop entry directory [default: PKG_ENTRY_DIR=$datadir/applications]])
   if $TEST -z $PKG_ENTRY_DIR; then
     PKG_ENTRY_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/applications)
@@ -193,10 +189,6 @@ AC_ARG_ENABLE([rpm],
   [enable_rpm=$enableval],
   [enable_rpm=no])
 if $TEST "x$enable_rpm" == "xyes" ; then
-  AC_CONFIG_FILES([ \
-    rpm/SPECS/aiki.spec:rpm/spec.in \
-    rpm/Makefile \
-  ])
   AC_ARG_VAR(PKG_DIST,[Set the distribution package for RPM building [default: PKG_DIST=$PACKAGE-$VERSION.tar.gz]])
   if $TEST -z $PKG_DIST; then AC_SUBST(PKG_DIST,[$PACKAGE-$VERSION.tar.gz])
   fi
@@ -311,7 +303,7 @@ AC_SUBST(AIKI_SITE_URL_LEN,$AIKI_SITE_URL_LEN)
 # for rpm spec, desktop and others
 SUMMARY=[A\ CMS\ Creator\ Web\ Application]
 AC_SUBST(SUMMARY)
-DESCRIPTION=[A\ content\ management\ system\ creator\ web\ application]
+DESCRIPTION=[A\ web\ application\ to\ create\ content\ management\ systems]
 AC_SUBST(DESCRIPTION)
 RELEASE=[1]
 AC_SUBST(RELEASE)
@@ -405,8 +397,14 @@ AC_CONFIG_FILES([ \
   configs/z-aiki.conf:configs/z-aiki.in \
   configs/CreateTables.sql:configs/CreateTables.in \
   scripts/aiki:scripts/aiki.in \
+  man/aiki.1:man/man.in \
+  man/Makefile \
+  desktop/aiki.desktop:desktop/desktop.in \
+  desktop/Makefile \
   configs/Makefile \
   scripts/Makefile \
+  rpm/SPECS/aiki.spec:rpm/spec.in \
+  rpm/Makefile \
 ])
 
 # Generate config.status and launch it
