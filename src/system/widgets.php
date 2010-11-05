@@ -792,7 +792,7 @@ class CreateLayout
 						$parsedValue = $widget_value->$parsedExplode['1'];
 					}
 
-					if (isset($parsedValue)){
+					if (isset($parsedValue) and $parsedValue){
 						$parsedExplode[2] = str_replace("_self", $parsedValue, $parsedExplode[2]);
 						$widget_value->$parsed = $parsedExplode[2];
 					}
