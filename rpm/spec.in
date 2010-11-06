@@ -10,8 +10,10 @@
 %global release        @RELEASE@
 %global pkgdist        @PKG_DIST@
 %global pkgicondir     @PKG_ICON_DIR@
+%global pkgmenudir     @PKG_MENU_DIR@
 %global pkgentrydir    @PKG_ENTRY_DIR@
 %global httpdconfdir   @HTTPD_CONF_DIR@
+%global pkgdesktopdir  @PKG_DESKTOP_DIR@
 %global updatedesktop  @UPDATE_DESKTOP_DATABASE@
 %global desktopinstall @DESKTOP_FILE_INSTALL@
 
@@ -79,7 +81,9 @@ Requires: libXpm >= 3.5.8
           --prefix=%{_prefix} \
       --sysconfdir=%{_sysconfdir} \
      PKG_ENTRY_DIR=@PKG_ENTRY_DIR@ \
+   PKG_DESKTOP_DIR=@PKG_DESKTOP_DIR@ \
       PKG_ICON_DIR=@PKG_ICON_DIR@ \
+      PKG_MENU_DIR=@PKG_MENU_DIR@ \
          ALGORITHM=@ALGORITHM@ \
            DB_TYPE=@DB_TYPE@ \
            DB_HOST=@DB_HOST@ \
@@ -103,6 +107,18 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %{desktopinstall} \
   --dir %{buildroot}%{pkgentrydir} \
   %{buildroot}%{pkgentrydir}/%{name}.desktop
+%{desktopinstall} \
+  --dir %{buildroot}%{pkgentrydir} \
+  %{buildroot}%{pkgentrydir}/%{name}-create-db.desktop
+%{desktopinstall} \
+  --dir %{buildroot}%{pkgentrydir} \
+  %{buildroot}%{pkgentrydir}/%{name}-create-usr.desktop
+%{desktopinstall} \
+  --dir %{buildroot}%{pkgentrydir} \
+  %{buildroot}%{pkgentrydir}/%{name}-drop-db.desktop
+%{desktopinstall} \
+  --dir %{buildroot}%{pkgentrydir} \
+  %{buildroot}%{pkgentrydir}/%{name}-drop-usr.desktop
 
 #=================
 # Cleaning process
@@ -127,8 +143,12 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 %doc ChangeLog README LICENSE AUTHORS INSTALL VERSION
+%dir %{pkgmenudir}/
+%{pkgmenudir}/%{name}.menu
+%dir %{pkgdesktopdir}/
+%{pkgdesktopdir}/%{name}.directory
 %dir %{pkgentrydir}/
-%{pkgentrydir}/%{name}.desktop
+%{pkgentrydir}/%{name}*.desktop
 %dir %{pkgicondir}/
 %{pkgicondir}/%{name}.svg
 %{_datadir}/%{name}/

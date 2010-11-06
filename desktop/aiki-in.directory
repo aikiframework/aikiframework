@@ -1,9 +1,7 @@
 
 [Desktop Entry]
-Type=Application
-Name=@PACKAGE@
+Type=Directory
+Name=@SUMMARY@
 Icon=@PACKAGE@
-Exec=@PACKAGE@
 GenericName=@SUMMARY@
 Comment=@DESCRIPTION@
-Categories=Network;

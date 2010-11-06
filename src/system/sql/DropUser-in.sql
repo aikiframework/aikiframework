@@ -1,0 +1,3 @@
+
+GRANT USAGE ON *.* TO '@DB_USER@'@'@DB_HOST@';
+DROP USER '@DB_USER@'@'@DB_HOST@';

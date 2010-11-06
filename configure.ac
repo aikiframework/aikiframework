@@ -158,6 +158,21 @@ AC_ARG_ENABLE([desktop],
   [enable_desktop=$enableval],
   [enable_desktop=yes])
 if $TEST "x$enable_desktop" == "xyes" ; then
+
+  AC_ARG_VAR(PKG_MENU_DIR,[Set the desktop menu directory [default: PKG_MENU_DIR=$sysconfdir/xdg/menus/applications-merged]])
+  if $TEST -z $PKG_MENU_DIR; then
+    PKG_MENU_DIR=$($EVAL $EVAL $EVAL $ECHO $sysconfdir/xdg/menus/applications-merged)
+    AC_SUBST(PKG_MENU_DIR,[$PKG_MENU_DIR])
+  fi
+  VAR_LIST_ADD PKG_MENU_DIR $PKG_MENU_DIR
+
+  AC_ARG_VAR(PKG_DESKTOP_DIR,[Set the desktop desktop directory [default: PKG_DESKTOP_DIR=$datadir/desktop-directories]])
+  if $TEST -z $PKG_DESKTOP_DIR; then
+    PKG_DESKTOP_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/desktop-directories)
+    AC_SUBST(PKG_DESKTOP_DIR,[$PKG_DESKTOP_DIR])
+  fi
+  VAR_LIST_ADD PKG_DESKTOP_DIR $PKG_DESKTOP_DIR
+
   AC_ARG_VAR(PKG_ENTRY_DIR,[Set the desktop entry directory [default: PKG_ENTRY_DIR=$datadir/applications]])
   if $TEST -z $PKG_ENTRY_DIR; then
     PKG_ENTRY_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/applications)
@@ -393,13 +408,25 @@ AC_CONFIG_FILES([ \
   src/system/Makefile \
   src/system/database/Makefile \
   src/system/libraries/Makefile \
+  src/system/sql/Makefile \
+  src/system/sql/UserExists.sql:src/system/sql/UserExists-in.sql \
+  src/system/sql/CreateUser.sql:src/system/sql/CreateUser-in.sql \
+  src/system/sql/CreateDatabase.sql:src/system/sql/CreateDatabase-in.sql \
+  src/system/sql/InsertVariable.sql:src/system/sql/InsertVariable-in.sql \
+  src/system/sql/DropUser.sql:src/system/sql/DropUser-in.sql \
+  src/system/sql/DropDatabase.sql:src/system/sql/DropDatabase-in.sql \
   configs/aiki-defs.php:configs/aiki-defs.inc \
   configs/z-aiki.conf:configs/z-aiki.in \
-  configs/CreateTables.sql:configs/CreateTables.in \
   scripts/aiki:scripts/aiki.in \
   man/aiki.1:man/man.in \
   man/Makefile \
-  desktop/aiki.desktop:desktop/desktop.in \
+  desktop/aiki.desktop:desktop/aiki-in.desktop \
+  desktop/aiki-create-db.desktop:desktop/aiki-create-db-in.desktop \
+  desktop/aiki-create-usr.desktop:desktop/aiki-create-usr-in.desktop \
+  desktop/aiki-drop-db.desktop:desktop/aiki-drop-db-in.desktop \
+  desktop/aiki-drop-usr.desktop:desktop/aiki-drop-usr-in.desktop \
+  desktop/aiki.directory:desktop/aiki-in.directory \
+  desktop/aiki.menu:desktop/aiki-in.menu \
   desktop/Makefile \
   configs/Makefile \
   scripts/Makefile \

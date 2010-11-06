@@ -13,15 +13,13 @@ httpd_conf_files = \
 # Additional files to remove on dist-clean
 DISTCLEANFILES = \
 	z-$(PACKAGE).conf \
-	CreateTables.sql \
 	$(PACKAGE)-defs.php
 
 # Additional files to distribute
 EXTRA_DIST = \
 	$(PACKAGE)-defs.inc \
 	config.php \
-	z-$(PACKAGE).in \
-	CreateTables.in
+	z-$(PACKAGE).in
 
 # The directory to put the files
 aiki_confdir = \

@@ -9,12 +9,14 @@ aiki_src_files = \
 # Subdirectories to be built
 SUBDIRS = \
 	database \
-	libraries
+	libraries \
+	sql
 
 # Subdirectories to distribute
 DIST_SUBDIRS = \
 	database \
-	libraries
+	libraries \
+	sql
 
 # Additional files to distribute
 EXTRA_DIST = \

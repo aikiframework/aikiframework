@@ -36,12 +36,18 @@ printhelp()
   echo "Launch the web application @PACKAGE@"
   echo
   echo "Options:"
-  echo "  -h, --help             Print this help message"
-  echo "  -V, --version          Print the version of the web application @PACKAGE@"
+  echo "  -h, --help             Print the help message and exit"
+  echo "  -V, --version          Print the version of the web application @PACKAGE@ and exit"
+  echo "  -c, --create-usr       Create mysql @PACKAGE@ user and exit"
+  echo "  -C, --create-db        Create mysql @PACKAGE@ database and exit"
+  echo "  -d, --drop-usr         Remove mysql @PACKAGE@ user and exit"
+  echo "  -D, --drop-db          Remove mysql @PACKAGE@ database and exit"
   echo "  -u [URL], --url=[URL]  Optionally, set the URL to the web application @PACKAGE@"
   echo "                         The default URL is set to @AIKI_LOGIN_URL@"
   echo
   echo "Examples:"
+  echo "  $0 -c"
+  echo "  $0 -C"
   echo "  $0 -u @AIKI_LOGIN_URL@"
   echo
   echo "Report bugs to: @PACKAGE_BUGREPORT@"
@@ -63,6 +69,53 @@ parseargs()
       {
         echo "@PACKAGE@ version @VERSION@"
         exit $result
+      };;
+      --create-usr | -c)
+      {
+      	echo "********************************"
+      	echo "Checking existing database users"
+      	echo "********************************"
+        if test "$(mysql -B -u @DB_SUPER_USER@ -p \
+          < @PKG_DATA_DIR@/system/sql/UserExists.sql \
+          | grep USER_EXISTS | awk '{print $2}')" == "TRUE"; then
+          echo "Failed, the user @DB_USER@ already exists."
+        else
+      	  echo "************************************"
+      	  echo "Attempting creation of database user"
+      	  echo "************************************"
+          mysql -v -u @DB_SUPER_USER@ -p < @PKG_DATA_DIR@/system/sql/CreateUser.sql
+        fi
+        exit $?
+      };;
+      --drop-usr | -d)
+      {
+      	echo "************************************"
+      	echo "Attempting deletion of database user"
+      	echo "************************************"
+        mysql -B -v -u @DB_SUPER_USER@ -p < @PKG_DATA_DIR@/system/sql/DropUser.sql
+        exit $?
+      };;
+      --create-db | -C)
+      {
+      	echo "*******************************"
+      	echo "Attempting creation of database"
+      	echo "*******************************"
+      	mysql -B -u @DB_USER@ -p@DB_PASS@ \
+      	  < @PKG_DATA_DIR@/system/sql/CreateDatabase.sql \
+      	  && cat @PKG_DATA_DIR@/system/sql/CreateTables.sql \
+      	  @PKG_DATA_DIR@/system/sql/InsertDefaults.sql \
+      	  @PKG_DATA_DIR@/system/sql/InsertVariable.sql \
+      	  | mysql -B -u @DB_USER@ -p@DB_PASS@ @DB_NAME@ \
+      	  && echo "Success"
+        exit $?
+      };;
+      --drop-db | -D)
+      {
+      	echo "*******************************"
+      	echo "Attempting deletion of database"
+      	echo "*******************************"
+        mysql -B -v -u @DB_SUPER_USER@ -p < @PKG_DATA_DIR@/system/sql/DropDatabase.sql
+        exit $?
       };;
       -u)
       {

@@ -1,0 +1,8 @@
+
+[Desktop Entry]
+Type=Application
+Name=5. Remove mysql @PACKAGE@ user
+Icon=@PACKAGE@
+Exec=@PACKAGE@ -d
+Terminal=true
+Categories=X-@PACKAGE@;

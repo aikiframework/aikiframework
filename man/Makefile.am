@@ -15,7 +15,7 @@ DISTCLEANFILES = \
 
 # Additional things to do on install
 install-data-hook :
-	gzip $(DESTDIR)$(mandir)/man1/$(PACKAGE).1
+	gzip -f $(DESTDIR)$(mandir)/man1/$(PACKAGE).1
 
 # Additional things to do on uninstall
 uninstall-hook :

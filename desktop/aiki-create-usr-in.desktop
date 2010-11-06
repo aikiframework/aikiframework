@@ -1,0 +1,8 @@
+
+[Desktop Entry]
+Type=Application
+Name=1. Create mysql @PACKAGE@ user
+Icon=@PACKAGE@
+Exec=@PACKAGE@ -c
+Terminal=true
+Categories=X-@PACKAGE@;

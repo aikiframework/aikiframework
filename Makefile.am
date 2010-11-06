@@ -137,13 +137,14 @@ install-data-hook : install-desktop
 	@for f in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
 	@for d in $$($(FIND) $(DESTDIR)$(pkgdatadir) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(DESTDIR)$(pkgdatadir) -type f); do $(CHMOD) 0644 $$f; done
-	@for d in $$($(FIND) $(DESTDIR)$(docdir) -type d); do $(CHMOD) 0755 $$d; done
-	@for f in $$($(FIND) $(DESTDIR)$(docdir) -type f); do $(CHMOD) 0644 $$f; done
+	@for d in $$($(FIND) $(DESTDIR)$(docdir)-$(VERSION) -type d); do $(CHMOD) 0755 $$d; done
+	@for f in $$($(FIND) $(DESTDIR)$(docdir)-$(VERSION) -type f); do $(CHMOD) 0644 $$f; done
 	@$(MKDIR) -p $(DESTDIR)$(pkgdatadir)/configs
 	@$(LN_S) -f $(sysconfdir)/$(PACKAGE)/aiki-defs.php \
 	$(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
 	@$(LN_S) -f $(sysconfdir)/$(PACKAGE)/config.php \
 	$(DESTDIR)$(pkgdatadir)/configs/config.php
+	@/sbin/service httpd condrestart &> /dev/null || :
 
 # Additional things to do on uninstall
 uninstall-hook :
@@ -155,6 +156,7 @@ uninstall-hook :
 	$(RM) -rf $(DESTDIR)$(docdir); fi
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f)"; then \
 	$(RM) -rf $(DESTDIR)$(sysconfdir)/$(PACKAGE); fi
+	@/sbin/service httpd condrestart &> /dev/null || :
 
 # Added the following line to work around tar uid_t range error
 am__tar = ${AMTAR} chf - "$$tardir"
@@ -178,6 +180,8 @@ rev :
 	--exclude="$(distdir)/configs" \
 	--exclude="$(distdir)/desktop" \
 	--exclude="$(distdir)/scripts" \
+	--exclude="$(distdir)/rpm" \
+	--exclude="$(distdir)/man" \
 	--exclude="configure"
 	@$(MV) $(distdir)/src/* $(distdir)/ && $(RM) -rf $(distdir)/src
 	@$(RM) -rf $(abs_top_srcdir)/build/$(PACKAGE)
@@ -210,7 +214,7 @@ summod :
 	@for f in $$($(FIND) . -name $(distdir).\*); do $(CHMOD) 0644 $$f; done
 
 # declare phony targets
-.PHONY : bone-clean rev summod distsum distchecksum install-desktop rpm
+.PHONY : bone-clean rev summod distsum distchecksum install-desktop rpm srpm
 
 # Remove ALL Autotools generated files
 # WARNING: Use this with CAUTION

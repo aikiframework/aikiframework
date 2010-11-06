@@ -50,6 +50,18 @@ Print this help message and exit.
 \fB\-V, \-\-version\fR
 Print the version of the web application @PACKAGE@ and exit.
 .TP 
+\fB\-c, \-\-create\-usr\fR
+Create mysql @PACKAGE@ user and exit.
+.TP 
+\fB\-C, \-\-create\-db\fR
+Create mysql @PACKAGE@ database and exit.
+.TP 
+\fB\-d, \-\-drop\-usr\fR
+Remove mysql @PACKAGE@ user and exit.
+.TP 
+\fB\-D, \-\-drop\-db\fR
+Remove mysql @PACKAGE@ database and exit.
+.TP 
 \fB\-u\fR [\fIURL\fR]\fB, \-\-url=\fR[\fIURL\fR]
 Optionally, set the URL to the web application @PACKAGE@.
 .br
