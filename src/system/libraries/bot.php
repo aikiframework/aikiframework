@@ -50,16 +50,11 @@ class bot
 		if ($content !== false) {
 
 			if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string')) {
-
 				$tidy = new tidy();
 				$tidy->parseString($content, $config["html_tidy_config"], 'utf8');
 				$tidy->cleanRepair();
-
 				$content = tidy_get_output($tidy);
-
 			}
-
-
 
 			$head = $aiki->get_string_between($content , "<head>", "</head>");
 
@@ -70,7 +65,6 @@ class bot
 			}else{
 				$css = '';
 			}
-
 
 			$body = $aiki->get_string_between($content , "<body>", "</body>");
 
@@ -112,9 +106,7 @@ class bot
 
 						$do = $db->query("INSERT INTO aiki_widgets (`id` ,`widget_name` ,`widget_site` ,`widget_target` ,`widget_type` ,`display_order` ,`style_id` ,`is_father` ,`father_widget` ,`display_urls` ,`widget` ,`is_active`) VALUES (NULL, '$widgetname', 'default', 'body', 'div', '$i', '$styleid', '0', '', '$display_url', '$match[1]', '1')");
 
-
 					}else{
-
 
 						$father_dev = $aiki->get_string_between($match[0] , "<div", ">");
 						$father_name = $aiki->get_string_between($father_dev, "id='", "'");
@@ -127,7 +119,7 @@ class bot
 
 				}
 
-				//set fathers:
+				//set fathers
 				$widgets = $db->get_results("select id, is_father from aiki_widgets where display_urls='$display_url' order by display_order");
 				if ($widgets){
 
