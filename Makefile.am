@@ -52,7 +52,8 @@ aiki_doc_DATA = \
 
 # Additional files to remove on dist-clean
 DISTCLEANFILES = \
-	$$($(FIND) . -name $(distdir).\*)
+	$$($(FIND) . -name $(distdir).\*) \
+	$$($(FIND) . -name $(distdir)-\*)
 
 # Additional files and directories to remove on clean
 clean-local :
@@ -60,6 +61,7 @@ clean-local :
 	$(abs_top_srcdir)/build/$(PACKAGE) \
 	$(abs_top_srcdir)/build/$(distdir) \
 	$$($(FIND) . -name $(distdir).\*) \
+	$$($(FIND) . -name $(distdir)-\*) \
 	$$($(FIND) . -name $(PACKAGE)-rev-\*)
 	
 # Additional files and directories to remove on distclean

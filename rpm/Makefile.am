@@ -44,13 +44,30 @@ src : dirs dist
 	$(CP) -v $(PKG_DIST) SOURCES/; \
 	fi
 
-lint :
-	@$(ECHO) "********" \
+# Generate sum
+sum :
+	@$(CD) SPECS \
+	&& $(SHASUM) -a $(ALGORITHM) $(PACKAGE).spec \
+	> $(PACKAGE).spec.shasum-$(ALGORITHM).txt
+	@if $(TEST) -e "$$($(FIND) SRPMS -name \*.src.rpm)"; then \
+	  $(CD) SRPMS && $(SHASUM) -a $(ALGORITHM) $$($(LS) *.src.rpm) \
+	  > $$($(LS) *.src.rpm).shasum-$(ALGORITHM).txt; \
+	fi
+	@if $(TEST) -e "$$($(FIND) RPMS -name \*.rpm)"; then \
+	  $(CD) RPMS/noarch \
+	  && $(SHASUM) -a $(ALGORITHM) $$($(LS) *.rpm) \
+	  > $$($(LS) *.rpm).shasum-$(ALGORITHM).txt; \
+	fi
+
+# Run rpmlint
+lint : sum
+	@$(ECHO) "********************************" \
 	&& $(CD) .. \
-	&& $(FIND) rpm -name \*.rpm \
+	&& $(FIND) rpm -name \*.rpm* \
+	&& $(FIND) rpm -name $(PACKAGE).spec* \
 	&& $(RPMLINT) rpm/SPECS/$(PACKAGE).spec \
 	$$($(FIND) rpm -name \*.rpm) $$($(FIND) rpm -name \*.src.rpm) \
-	&& $(ECHO) "********"
+	&& $(ECHO) "********************************"
 
 # Build RPM target
 rpm : src
@@ -69,4 +86,4 @@ srpm : src
 	&& $(MAKE) lint
 
 # declare phony targets
-.PHONY : srpm rpm dirs src dist lint
+.PHONY : srpm rpm dirs src dist lint sum
