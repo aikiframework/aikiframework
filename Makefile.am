@@ -8,6 +8,7 @@ aiki_doc_files = \
 	INSTALL \
 	LICENSE \
 	README \
+	README.fedora \
 	VERSION
 
 # Subdirectories to be built
@@ -37,7 +38,8 @@ RPM_CONFIG =
 # Additional files to distribute
 EXTRA_DIST = \
 	$(aiki_doc_files) \
-	.bzr/branch/last-revision
+	.bzr/branch/last-revision \
+	PACKAGE-LICENSING.in
 
 # The directory to put the files
 aiki_docdir = \
@@ -45,7 +47,8 @@ aiki_docdir = \
 
 # The source data
 aiki_doc_DATA = \
-	$(aiki_doc_files)
+	$(aiki_doc_files) \
+	PACKAGE-LICENSING
 
 # Additional files to remove on dist-clean
 DISTCLEANFILES = \
@@ -152,8 +155,8 @@ uninstall-hook :
 	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/config.php
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(pkgdatadir) -type f)"; then \
 	$(RM) -rf $(DESTDIR)$(pkgdatadir); fi
-	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(docdir) -type f)"; then \
-	$(RM) -rf $(DESTDIR)$(docdir); fi
+	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(docdir)-$(VERSION) -type f)"; then \
+	$(RM) -rf $(DESTDIR)$(docdir)-$(VERSION); fi
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f)"; then \
 	$(RM) -rf $(DESTDIR)$(sysconfdir)/$(PACKAGE); fi
 	@/sbin/service httpd condrestart &> /dev/null || :
@@ -174,6 +177,7 @@ rev :
 	--exclude="*.am" \
 	--exclude="*.in" \
 	--exclude="*.m4" \
+	--exclude="README.fedora" \
 	--exclude="$(distdir)/.bzr" \
 	--exclude="$(distdir)/build" \
 	--exclude="$(distdir)/build-aux" \

@@ -383,6 +383,7 @@ PRINT_CONFIG_SUMMARY()
 # Usually, makefiles are created
 AC_CONFIG_FILES([ \
   Makefile \
+  PACKAGE-LICENSING \
   src/Makefile \
   src/assets/Makefile \
   src/assets/apps/Makefile \

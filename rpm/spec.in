@@ -24,7 +24,9 @@ Name:      %{name}
 Version:   %{version}
 Release:   %{release}%{?dist}
 Summary:   @SUMMARY@
-License:   @LICENSE@
+# The entire @PACKAGE@ source code is AGPLv3 except:
+# jQuery GPLv2, Plupload GPLv2, ezSQL LGPLv2+, CodeMirror zlib, ParsePHP BSD
+License:   @LICENSE@ and GPLv2 and LGPLv2+ and zlib and BSD
 Group:     @GROUP@
 URL:       %{url}
 Source0:   %{url}/files/%{pkgdist}
@@ -142,7 +144,29 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %files
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
-%doc ChangeLog README LICENSE AUTHORS INSTALL VERSION
+# For a breakdown of the licensing, see PACKAGE-LICENSING
+%doc ChangeLog README README.fedora LICENSE AUTHORS INSTALL VERSION PACKAGE-LICENSING
+# LGPLv2+
+%{_datadir}/%{name}/system/database/
+# GPLv2
+%{_datadir}/%{name}/assets/javascript/jquery/
+# GPLv2
+%{_datadir}/%{name}/assets/javascript/plupload/
+# BSD and zlib
+%{_datadir}/%{name}/assets/javascript/codemirror/
+# AGPLv3
+%{_datadir}/%{name}/%{name}.php
+%{_datadir}/%{name}/index.php
+%{_datadir}/%{name}/style.php
+%{_datadir}/%{name}/system/core.php
+%{_datadir}/%{name}/system/widgets.php
+%{_datadir}/%{name}/system/sql/
+%{_datadir}/%{name}/system/libraries/
+%{_datadir}/%{name}/assets/apps/
+%{_datadir}/%{name}/assets/images/
+%{_datadir}/%{name}/assets/javascript/%{name}.js
+%{_datadir}/%{name}/assets/uploads/
+%{_datadir}/%{name}/configs/
 %dir %{pkgmenudir}/
 %{pkgmenudir}/%{name}.menu
 %dir %{pkgdesktopdir}/
@@ -151,7 +175,6 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %{pkgentrydir}/%{name}*.desktop
 %dir %{pkgicondir}/
 %{pkgicondir}/%{name}.svg
-%{_datadir}/%{name}/
 %{_mandir}/man1/%{name}*
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/config.php
