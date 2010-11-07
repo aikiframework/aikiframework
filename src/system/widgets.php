@@ -458,7 +458,7 @@ class CreateLayout
 						$full_numb_of_pages = $numpages;
 						$pagination = '';
 						$page2 = $page;
-						$pagination .= "<div class='pagination'>__move_to_page__<br />";
+						$pagination .= "<div class='pagination'><span class='pagination_move_to_page'>__move_to_page__</span><br />";
 
 						if ($page){
 							$previous = str_replace("[page]", $page, $widget->link_example);
