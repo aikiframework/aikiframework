@@ -5,6 +5,9 @@
 	<Name>Applications</Name>
 	<Menu>
 		<Name>Internet</Name>
+		<Exclude>
+			<Category>X-@PACKAGE@</Category>
+		</Exclude>
 		<Menu>
 			<Name>@SUMMARY@</Name>
 			<Directory>@PACKAGE@.directory</Directory>

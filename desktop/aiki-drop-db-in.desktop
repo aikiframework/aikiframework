@@ -5,4 +5,4 @@ Name=4. Remove mysql @PACKAGE@ database
 Icon=@PACKAGE@
 Exec=@PACKAGE@ -D
 Terminal=true
-Categories=X-@PACKAGE@;
+Categories=Network;X-@PACKAGE@;

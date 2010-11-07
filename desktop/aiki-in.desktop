@@ -7,4 +7,4 @@ Exec=@PACKAGE@
 GenericName=3. Launch @PACKAGE@
 Comment=@DESCRIPTION@
 Terminal=false
-Categories=X-@PACKAGE@;
+Categories=Network;X-@PACKAGE@;
