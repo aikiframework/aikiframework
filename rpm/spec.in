@@ -41,29 +41,12 @@ BuildRequires: mysql
 BuildRequires: perl-Digest-SHA
 BuildRequires: rpmlint
 BuildRequires: zip
-Requires: httpd >= 2.0.0
-Requires: mysql >= 5.1.0
-Requires: php >= 5.2.0
-Requires: php-common >= 5.2.0
-Requires: php-mysql >= 5.2.0
-Requires: php-gd >= 5.2.0
-Requires: php-xml >= 5.2.0
-Requires: php-tidy >= 5.2.0
-Requires: php-pdo >= 5.2.0
-Requires: pcre >= 7.8
-Requires: libxml2 >= 2.7
-Requires: libtidy >= 0.99
-Requires: curl >= 7.20.1
-Requires: libcurl >= 7.20.1
-Requires: openssl >= 1.0
-Requires: zlib >= 1.2.3
-Requires: libssh2 >= 1.2.4
-Requires: freetype >= 2.3.11
-Requires: t1lib >= 5.1.2
-Requires: giflib >= 4.1.6
-Requires: libjpeg >= 6
-Requires: libpng >= 1.2.44
-Requires: libXpm >= 3.5.8
+Requires: httpd
+Requires: php >= 5.1.0
+Requires: php-mysql
+Requires: php-gd
+Requires: php-xml
+Requires: php-tidy
 
 # The description should expand upon the summary.
 %description
@@ -82,10 +65,11 @@ Requires: libXpm >= 3.5.8
 %{configure} \
           --prefix=%{_prefix} \
       --sysconfdir=%{_sysconfdir} \
-     PKG_ENTRY_DIR=@PKG_ENTRY_DIR@ \
-   PKG_DESKTOP_DIR=@PKG_DESKTOP_DIR@ \
-      PKG_ICON_DIR=@PKG_ICON_DIR@ \
-      PKG_MENU_DIR=@PKG_MENU_DIR@ \
+     PKG_ENTRY_DIR=%{pkgentrydir} \
+   PKG_DESKTOP_DIR=%{pkgdesktopdir} \
+    HTTPD_CONF_DIR=%{httpdconfdir} \
+      PKG_ICON_DIR=%{pkgicondir} \
+      PKG_MENU_DIR=%{pkgmenudir} \
          ALGORITHM=@ALGORITHM@ \
            DB_TYPE=@DB_TYPE@ \
            DB_HOST=@DB_HOST@ \
@@ -96,7 +80,6 @@ Requires: libXpm >= 3.5.8
      DB_SUPER_USER=@DB_SUPER_USER@ \
 DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
             DOMAIN=@DOMAIN@ \
-    HTTPD_CONF_DIR=@HTTPD_CONF_DIR@ \
     AIKI_LOGIN_URL=@AIKI_LOGIN_URL@
 
 #=====================
