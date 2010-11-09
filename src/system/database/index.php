@@ -7,8 +7,8 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * ezSQL
  *
  * @author		Justin Vincent (justin@visunet.ie)
- * @license		http://www.gnu.org/licenses/gpl.html
- * @link		http://php.justinvincent.com
+ * @license		LGPL http://www.gnu.org/licenses/lgpl.html
+ * @link		http://justinvincent.com/ezsql
  * @category    Aiki
  * @package     Database
  * @filesource
@@ -46,7 +46,7 @@ define('EZSQL_CORE_ERROR','ezSQLcore can not be used by itself (it is designed f
  */
 
 /**
- * BriefDescription
+ * Class to make it very easy to deal with database connections.
  *
  * @category    Aiki
  * @package     Database
