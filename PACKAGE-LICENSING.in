@@ -5,8 +5,30 @@ While all the Aiki package files are licensed under
 the AGPLv3 (See LICENSE), there are other files
 under different licenses as follows.
 
-jQuery - GPLv2
-==============
+ezSQL
+=====
+Brief:   Class to make it very easy to deal with database connections.
+Version: 2.03
+Author:  Justin Vincent jv@jvmultimedia.com
+License: LGPL http://www.gnu.org/licenses/lgpl.html
+Link:    http://justinvincent.com/ezsql
+Files:
+@PKG_DATA_DIR@/system/database/index.php
+@PKG_DATA_DIR@/system/database/mssql.php
+@PKG_DATA_DIR@/system/database/mysql.php
+@PKG_DATA_DIR@/system/database/oracle8_9.php
+@PKG_DATA_DIR@/system/database/pdo.php
+@PKG_DATA_DIR@/system/database/postgresql.php
+@PKG_DATA_DIR@/system/database/sqlite.php
+
+jQuery
+======
+Brief:   JavaScript Library for rapid web development.
+Version: 1.4.2
+Author:  jQuery Team http://jquery.org/team
+License: Dual MIT or GPLv2 http://jquery.org/license
+Link:    http://jquery.com/
+Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.layout.min.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.form.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa.js
@@ -54,36 +76,24 @@ jQuery - GPLv2
 @PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/jquery-ui-1.7.1.custom.css
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-ui-1.7.2.custom.min.js
 
-Plupload - GPLv2
-================
-@PKG_DATA_DIR@/assets/javascript/plupload/jquery.plupload.queue.min.js
-@PKG_DATA_DIR@/assets/javascript/plupload/gears_init.js
-@PKG_DATA_DIR@/assets/javascript/plupload/browserplus-min.js
-@PKG_DATA_DIR@/assets/javascript/plupload/plupload.flash.swf
-@PKG_DATA_DIR@/assets/javascript/plupload/img/delete.gif
-@PKG_DATA_DIR@/assets/javascript/plupload/img/throbber.gif
-@PKG_DATA_DIR@/assets/javascript/plupload/img/done.gif
-@PKG_DATA_DIR@/assets/javascript/plupload/img/backgrounds.gif
-@PKG_DATA_DIR@/assets/javascript/plupload/img/buttons-disabled.png
-@PKG_DATA_DIR@/assets/javascript/plupload/img/error.gif
-@PKG_DATA_DIR@/assets/javascript/plupload/img/buttons.png
-@PKG_DATA_DIR@/assets/javascript/plupload/img/transp50.png
-@PKG_DATA_DIR@/assets/javascript/plupload/plupload.full.min.js
-@PKG_DATA_DIR@/assets/javascript/plupload/plupload.queue.css
-@PKG_DATA_DIR@/assets/javascript/plupload/upload.php
+Sizzle
+======
+Brief:   JavaScript CSS selector engine.
+Version: 1.0
+Author:  The Dojo Foundation http://www.dojofoundation.org/
+License: MIT, BSD, and GPL https://github.com/jeresig/sizzle/blob/master/LICENSE
+Link:    http://sizzlejs.com/
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
 
-ezSQL - LGPLv2+
-===============
-@PKG_DATA_DIR@/system/database/index.php
-@PKG_DATA_DIR@/system/database/mssql.php
-@PKG_DATA_DIR@/system/database/mysql.php
-@PKG_DATA_DIR@/system/database/oracle8_9.php
-@PKG_DATA_DIR@/system/database/pdo.php
-@PKG_DATA_DIR@/system/database/postgresql.php
-@PKG_DATA_DIR@/system/database/sqlite.php
-
-CodeMirror - zlib
-=================
+CodeMirror
+==========
+Brief:   In-browser code editing.
+Version: 0.63
+Author:  Marijn Haverbeke marijnh@gmail.com
+License: zlib http://codemirror.net/LICENSE
+Link:    http://codemirror.net/
+Files:
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/csscolors.css
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/docs.css
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/jscolors.css
@@ -107,9 +117,39 @@ CodeMirror - zlib
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/undo.js
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/util.js
 
-ParsePHP - BSD
-==============
+ParsePHP
+========
+Brief:   Parse function for PHP in-browser code editing.
+Version: 0.1
+Author:  Dan Vlad Dascalescu dandv@yahoo-inc.com
+License: BSD (revised) open source license
+Link:    
+Files:
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/phpcolors.css
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephp.js
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephphtmlmixed.js
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/tokenizephp.js
+
+Plupload
+========
+Brief:   Upload via HTML5 Gears, Silverlight, Flash, BrowserPlus or normal forms.
+Version: 1.2.4
+Author:  Developers of TinyMCE http://tinymce.moxiecode.com/
+License: GPLv2 http://www.plupload.com/license.php
+Link:    http://www.plupload.com/
+Files:
+@PKG_DATA_DIR@/assets/javascript/plupload/jquery.plupload.queue.min.js
+@PKG_DATA_DIR@/assets/javascript/plupload/gears_init.js
+@PKG_DATA_DIR@/assets/javascript/plupload/browserplus-min.js
+@PKG_DATA_DIR@/assets/javascript/plupload/plupload.flash.swf
+@PKG_DATA_DIR@/assets/javascript/plupload/img/delete.gif
+@PKG_DATA_DIR@/assets/javascript/plupload/img/throbber.gif
+@PKG_DATA_DIR@/assets/javascript/plupload/img/done.gif
+@PKG_DATA_DIR@/assets/javascript/plupload/img/backgrounds.gif
+@PKG_DATA_DIR@/assets/javascript/plupload/img/buttons-disabled.png
+@PKG_DATA_DIR@/assets/javascript/plupload/img/error.gif
+@PKG_DATA_DIR@/assets/javascript/plupload/img/buttons.png
+@PKG_DATA_DIR@/assets/javascript/plupload/img/transp50.png
+@PKG_DATA_DIR@/assets/javascript/plupload/plupload.full.min.js
+@PKG_DATA_DIR@/assets/javascript/plupload/plupload.queue.css
+@PKG_DATA_DIR@/assets/javascript/plupload/upload.php
