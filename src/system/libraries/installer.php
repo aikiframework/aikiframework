@@ -242,13 +242,22 @@ $config["db_host"] = "'.$_POST['db_host'].'";
 $config["db_encoding"] = "'.$_POST['db_encoding'].'";
 $config["db_use_mysql_set_charset"] = false;
 
-$config["db_path"] = ""; //SQLite and sqlite PDO
-$config["db_dsn"] = ""; //sqlite PDO
+//set the full path for SQLite and sqlite PDO
+$config["db_path"] = "";
 
+//sqlite PDO only
+$config["db_dsn"] = "";
+
+//set time out for deleteing db cached querires - in hours
 $config["db_cache_timeout"] = 24;
-$config["cache_dir"] = "";//db cacheing
+
+//db cacheing
+$config["cache_dir"] = "";
+
+//if set to true will cache the results of sql querires to files
 $config["enable_query_cache"] = false;
 
+//use html tidy php extinsion to format the html output
 $config["html_tidy"] = false;
 $config["tidy_compress"] = false;
 $config["html_tidy_config"] = array(
@@ -257,28 +266,47 @@ $config["html_tidy_config"] = array(
  \'wrap\' =>    \'0\',
 );
 
+//remove empty spaces and lines and have the whole html on one line
 $config["compress_output"] = false;
 
-//widget cache
+//cache each widget individually in its own file
 $config["widget_cache"] = false;
-$config["widget_cache_dir"] = ""; //full path to widgets cache directory
+
+//full path to widgets cache directory in case $config["widget_cache"] was true 
+$config["widget_cache_dir"] = "";
 
 $config["css_cache"] = true;
 $config["css_cache_timeout"] = 24;
 $config["css_cache_file"] = "";
 
 //full html cache
-$config["html_cache"] = false; //full path to full html cache directory
-$config["cache_timeout"] = "86400"; //ms
+//full path to html cache directory
+//this will store each page in its own file
+$config["html_cache"] = false; 
 
-$config["session_timeout"] = 7200; //ms
+//time out for pages cache - in millisecond
+$config["cache_timeout"] = "86400";
+
+//session life time before auto log out 
+//if no activites from the logged in user - in millisecond
+$config["session_timeout"] = 7200;
+
+//if true will allow same username and password to login from two different IPs
 $config["allow_multiple_sessions"] = false;
+
+//register guests sessions
+//for tracking how many users are currently visiting the site
 $config["allow_guest_sessions"] = false;
 
+//enable version control system
+//this will store each change for any sql UPDATE command in aiki_revisions
 $config["save_revision_history"] = false;
 
+//store information about not found pages in aiki_redirects
+//so admin can later add redirects
 $config["register_errors"] = false;
 
+//custom 404 error page
 $config["error_404"] = "<h1>404 Page Not Found</h1>
 
 <p>This page is not found</p>
