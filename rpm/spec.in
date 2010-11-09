@@ -9,11 +9,11 @@
 %global version        @VERSION@
 %global release        @RELEASE@
 %global pkgdist        @PKG_DIST@
-%global pkgicondir     @PKG_ICON_DIR@
-%global pkgmenudir     @PKG_MENU_DIR@
-%global pkgentrydir    @PKG_ENTRY_DIR@
-%global httpdconfdir   @HTTPD_CONF_DIR@
-%global pkgdesktopdir  @PKG_DESKTOP_DIR@
+%global pkgicondir     %{_datadir}/icons/hicolor/scalable/apps
+%global pkgmenudir     %{_sysconfdir}/xdg/menus/applications-merged
+%global pkgentrydir    %{_datadir}/applications
+%global httpdconfdir   %{_sysconfdir}/httpd/conf.d
+%global pkgdesktopdir  %{_datadir}/desktop-directories
 %global updatedesktop  @UPDATE_DESKTOP_DATABASE@
 %global desktopinstall @DESKTOP_FILE_INSTALL@
 
@@ -88,7 +88,7 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %install
 %{__rm} -rf %{buildroot}
 %{__make} %{?_smp_mflags} DESTDIR=%{buildroot} INSTALL="%{__install} -p" install
-%{__rm} -fv %{buildroot}/%{pkgentrydir}/mimeinfo.cache
+%{__rm} -fv %{buildroot}%{pkgentrydir}/mimeinfo.cache
 %{desktopinstall} \
   --dir %{buildroot}%{pkgentrydir} \
   %{buildroot}%{pkgentrydir}/%{name}.desktop
@@ -150,24 +150,26 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %{_datadir}/%{name}/assets/javascript/%{name}.js
 %{_datadir}/%{name}/assets/uploads/
 %{_datadir}/%{name}/configs/
-%dir %{pkgmenudir}/
-%{pkgmenudir}/%{name}.menu
-%dir %{pkgdesktopdir}/
 %{pkgdesktopdir}/%{name}.directory
-%dir %{pkgentrydir}/
 %{pkgentrydir}/%{name}*.desktop
-%dir %{pkgicondir}/
 %{pkgicondir}/%{name}.svg
 %{_mandir}/man1/%{name}*
 %dir %{_sysconfdir}/%{name}/
+%config(noreplace) %{pkgmenudir}/%{name}.menu
 %config(noreplace) %{_sysconfdir}/%{name}/config.php
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}-defs.php
-%dir %{httpdconfdir}/
 %config(noreplace) %{httpdconfdir}/z-%{name}.conf
 
 #============================
 # Changes made to the package
 #============================
 %changelog
+
+* Mon Nov 08 2010 Steven Garcia <webwhammy@gmail.com> 0.4.5-2
+- Marked menu file as config
+- Removed redundant dir macros from files section
+- Changed some global definitions to use macros
+- Added period to description
+
 * Wed Nov 03 2010 Steven Garcia <webwhammy@gmail.com> 0.4.5-1
 - Initial Spec file creation

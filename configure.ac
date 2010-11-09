@@ -318,15 +318,15 @@ AC_SUBST(AIKI_SITE_URL_LEN,$AIKI_SITE_URL_LEN)
 # for rpm spec, desktop and others
 SUMMARY=[A\ CMS\ Creator\ Web\ Application]
 AC_SUBST(SUMMARY)
-DESCRIPTION=[A\ web\ application\ to\ create\ content\ management\ systems]
+DESCRIPTION=[A\ web\ application\ to\ create\ content\ management\ systems.]
 AC_SUBST(DESCRIPTION)
-RELEASE=[1]
+RELEASE=[2]
 AC_SUBST(RELEASE)
 LICENSE=[AGPLv3]
 AC_SUBST(LICENSE)
 GROUP=[Applications/Internet]
 AC_SUBST(GROUP)
-URL=[http://aikiframework.org/]
+URL=[http://aikiframework.org]
 AC_SUBST(URL)
 
 # list standard directories
