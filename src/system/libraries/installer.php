@@ -538,6 +538,7 @@ CREATE TABLE IF NOT EXISTS `aiki_revisions` (
   `table_name` varchar(255) NOT NULL,
   `record_number` int(11) NOT NULL,
   `data` text NOT NULL,
+  `changes` text NOT NULL,
   `date` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `revision` int(11) NOT NULL,
