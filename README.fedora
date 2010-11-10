@@ -10,4 +10,6 @@ menu, click on the following:
   Applications->Internet->A CMS Creator->2. Create mysql aiki database
   Applications->Internet->A CMS Creator->3. Launch aiki
 
-When prompted, type in the mysql super user password.
+When prompted, type in the mysql super user password. Once aiki is
+launched you can sign in using the default user name 'admin'. Leave
+the password field blank and press enter.

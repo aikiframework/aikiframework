@@ -4,10 +4,11 @@
 # Autoconf minimum version required
 AC_PREREQ(2.59)
 
+m4_define([pkgversion], [m4_esyscmd(echo -n $(sed s/.\\+\\s// VERSION))])
+
 # Initialize autoconf, set the name of this package and version
-AC_INIT(aiki, 0.4.5, [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
+AC_INIT(aiki, pkgversion, [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
 PACKAGE=aiki
-VERSION=0.4.5
 
 # Search for auxiliary scripts in the build-aux directory
 AC_CONFIG_AUX_DIR(build-aux)
@@ -19,12 +20,6 @@ AC_CONFIG_AUX_DIR(build-aux)
 AC_PROG_INSTALL
 # Check for gawk, mawk, nawk, and awk, in that order, and set output variable AWK
 AC_PROG_AWK
-# Set output variable SED to a Sed implementation that conforms to Posix
-#AC_PROG_SED
-# Look for the best available grep
-#AC_PROG_GREP
-# Set output variable MKDIR_P
-#AC_PROG_MKDIR_P
 # Set the output variable LN_S to ln -s
 AC_PROG_LN_S
 # Set the output variable MAKE to make
@@ -204,8 +199,8 @@ AC_ARG_ENABLE([rpm],
   [enable_rpm=$enableval],
   [enable_rpm=no])
 if $TEST "x$enable_rpm" == "xyes" ; then
-  AC_ARG_VAR(PKG_DIST,[Set the distribution package for RPM building [default: PKG_DIST=$PACKAGE-$VERSION.tar.gz]])
-  if $TEST -z $PKG_DIST; then AC_SUBST(PKG_DIST,[$PACKAGE-$VERSION.tar.gz])
+  AC_ARG_VAR(PKG_DIST,[Set the distribution package for RPM building [default: PKG_DIST=$PACKAGE-pkgversion.tar.gz]])
+  if $TEST -z $PKG_DIST; then AC_SUBST(PKG_DIST,[$PACKAGE-pkgversion.tar.gz])
   fi
   VAR_LIST_ADD PKG_DIST $PKG_DIST
 
@@ -320,7 +315,7 @@ SUMMARY=[A\ CMS\ Creator\ Web\ Application]
 AC_SUBST(SUMMARY)
 DESCRIPTION=[A\ web\ application\ to\ create\ content\ management\ systems.]
 AC_SUBST(DESCRIPTION)
-RELEASE=[2]
+RELEASE=[1]
 AC_SUBST(RELEASE)
 LICENSE=[AGPLv3]
 AC_SUBST(LICENSE)

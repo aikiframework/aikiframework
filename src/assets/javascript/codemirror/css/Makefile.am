@@ -7,7 +7,6 @@ aiki_src_files = \
 	docs.css \
 	jscolors.css \
 	phpcolors.css \
-	pythoncolors.css \
 	sparqlcolors.css \
 	xmlcolors.css
 

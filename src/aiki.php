@@ -14,15 +14,9 @@
  * @link        http://www.aikiframework.org
  * @category    Aiki
  * @package     Aiki
- * @version     0.4.5
+ * @version     0.6.0
  * @filesource
  */
-
-
-/**
- * Aiki Framework Version
- */
-define('AIKI_VERSION',	'0.4.5');
 
 /**
  * Used to test for script access
@@ -48,6 +42,11 @@ if (file_exists("$system_folder/configs/aiki-defs.php")){
 	 * @see config.php
 	 */
 	require_once("$system_folder/configs/config.php");
+}else{
+	/**
+	 * Aiki Framework Version
+	 */
+	define('AIKI_VERSION',	'0.6.0');
 }
 
 /*

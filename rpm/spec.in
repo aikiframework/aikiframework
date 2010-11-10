@@ -25,8 +25,8 @@ Version:   %{version}
 Release:   %{release}%{?dist}
 Summary:   @SUMMARY@
 # The entire @PACKAGE@ source code is AGPLv3 except:
-# jQuery GPLv2, Plupload GPLv2, ezSQL LGPLv2+, CodeMirror zlib, ParsePHP BSD
-License:   @LICENSE@ and GPLv2 and LGPLv2+ and zlib and BSD
+# Plupload GPLv2, ezSQL LGPL, CodeMirror zlib, ParsePHP BSD, jQuery MIT GPLv2, Sizzle MIT BSD GPL
+License:   @LICENSE@ and GPLv2 and LGPLv2+ and zlib and BSD and (MIT or GPLv2) and (MIT or BSD or GPLv2+)
 Group:     @GROUP@
 URL:       %{url}
 Source0:   %{url}/files/pkgs/%{version}/%{pkgdist}
@@ -131,7 +131,7 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %doc ChangeLog README README.fedora LICENSE AUTHORS INSTALL VERSION PACKAGE-LICENSING
 # LGPLv2+
 %{_datadir}/%{name}/system/database/
-# GPLv2
+# (MIT or GPLv2) and (MIT or BSD or GPL)
 %{_datadir}/%{name}/assets/javascript/jquery/
 # GPLv2
 %{_datadir}/%{name}/assets/javascript/plupload/
@@ -164,6 +164,10 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 # Changes made to the package
 #============================
 %changelog
+
+* Tue Nov 09 2010 Steven Garcia <webwhammy@gmail.com> 0.6.0-1
+- Upstream released 0.6.0
+- Made corrections to license field for multiple dual licenses
 
 * Mon Nov 08 2010 Steven Garcia <webwhammy@gmail.com> 0.4.5-2
 - Marked menu file as config
