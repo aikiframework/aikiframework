@@ -7,6 +7,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * ezSQL
  *
  * @author		Justin Vincent (justin@visunet.ie)
+ * @copyright   Copyright (C) 2010 Justin Vincent
  * @license		LGPL http://www.gnu.org/licenses/lgpl.html
  * @link		http://justinvincent.com/ezsql
  * @category    Aiki

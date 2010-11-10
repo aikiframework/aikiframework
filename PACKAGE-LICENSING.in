@@ -7,11 +7,12 @@ under different licenses as follows.
 
 ezSQL
 =====
-Brief:   Class to make it very easy to deal with database connections.
-Version: 2.03
-Author:  Justin Vincent jv@jvmultimedia.com
-License: LGPL http://www.gnu.org/licenses/lgpl.html
-Link:    http://justinvincent.com/ezsql
+Brief:     Class to make it very easy to deal with database connections.
+Version:   2.03
+Author:    Justin Vincent jv@jvmultimedia.com
+Copyright: Copyright (C) 2010 Justin Vincent
+License:   LGPL http://www.gnu.org/licenses/lgpl.html
+Link:      http://justinvincent.com/ezsql
 Files:
 @PKG_DATA_DIR@/system/database/index.php
 @PKG_DATA_DIR@/system/database/mssql.php
@@ -21,83 +22,43 @@ Files:
 @PKG_DATA_DIR@/system/database/postgresql.php
 @PKG_DATA_DIR@/system/database/sqlite.php
 
-jQuery
-======
-Brief:   JavaScript Library for rapid web development.
-Version: 1.4.2
-Author:  jQuery Team http://jquery.org/team
-License: Dual MIT or GPLv2 http://jquery.org/license
-Link:    http://jquery.com/
-Files:
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.layout.min.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.form.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/_lib.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.min.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa_ieemu_xpath.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/nested.xsl
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/flat.xsl
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/remove.png
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/marker.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/plus.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/context.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/lastli.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/dot.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/f.png
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fminus_rtl.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/throbber.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/remove.png
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/li.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fminus.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fplus.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fplus_rtl.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/rename.png
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/style.css
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/lastli_rtl.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/create.png
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.css
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/css.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.xslt.js
-@PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_222222_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_65_ffffff_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_cd0a0a_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_888888_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_2e83ff_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_75_ffffff_40x100.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_95_fef1ec_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_454545_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_0_aaaaaa_40x100.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_dadada_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/jquery-ui-1.7.1.custom.css
-@PKG_DATA_DIR@/assets/javascript/jquery/jquery-ui-1.7.2.custom.min.js
-
 Sizzle
 ======
-Brief:   JavaScript CSS selector engine.
-Version: 1.0
-Author:  The Dojo Foundation http://www.dojofoundation.org/
-License: MIT, BSD, and GPL https://github.com/jeresig/sizzle/blob/master/LICENSE
-Link:    http://sizzlejs.com/
+Brief:     JavaScript CSS selector engine.
+Version:   1.0
+Author:    The Dojo Foundation http://www.dojofoundation.org/
+Copyright: Copyright 2010, The Dojo Foundation
+License:   MIT, BSD, and GPL https://github.com/jeresig/sizzle/blob/master/LICENSE
+Link:      http://sizzlejs.com/
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
+
+ParsePHP
+========
+Brief:     Parse function for PHP in-browser code editing.
+Version:   0.63
+Author:    Dan Vlad Dascalescu dandv@yahoo-inc.com
+Copyright: Copyright (c) 2008-2009 Yahoo! Inc. All rights reserved.
+License:   BSD (revised) open source license https://github.com/marijnh/CodeMirror/blob/master/contrib/php/LICENSE
+Link:      https://github.com/marijnh/CodeMirror/tree/master/contrib/php/
+Files:
+@PKG_DATA_DIR@/assets/javascript/codemirror/css/phpcolors.css
+@PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephp.js
+@PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephphtmlmixed.js
+@PKG_DATA_DIR@/assets/javascript/codemirror/js/tokenizephp.js
 
 CodeMirror
 ==========
-Brief:   In-browser code editing.
-Version: 0.63
-Author:  Marijn Haverbeke marijnh@gmail.com
-License: zlib http://codemirror.net/LICENSE
-Link:    http://codemirror.net/
+Brief:     In-browser code editing.
+Version:   0.63
+Author:    Marijn Haverbeke marijnh@gmail.com
+Copyright: Copyright (c) 2007-2010 Marijn Haverbeke
+License:   zlib http://codemirror.net/LICENSE
+Link:      http://codemirror.net/
 Files:
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/csscolors.css
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/docs.css
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/jscolors.css
-@PKG_DATA_DIR@/assets/javascript/codemirror/css/pythoncolors.css
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/sparqlcolors.css
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/xmlcolors.css
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/codemirror.js
@@ -117,30 +78,77 @@ Files:
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/undo.js
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/util.js
 
-ParsePHP
-========
-Brief:   Parse function for PHP in-browser code editing.
-Version: 0.1
-Author:  Dan Vlad Dascalescu dandv@yahoo-inc.com
-License: BSD (revised) open source license
-Link:    
+jQuery
+======
+Brief:     JavaScript Library for rapid web development.
+Version:   1.4.2
+Author:    jQuery Team http://jquery.org/team
+Copyright: Copyright 2010, John Resig
+License:   Dual MIT or GPLv2 http://jquery.org/license
+Link:      http://jquery.com/
 Files:
-@PKG_DATA_DIR@/assets/javascript/codemirror/css/phpcolors.css
-@PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephp.js
-@PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephphtmlmixed.js
-@PKG_DATA_DIR@/assets/javascript/codemirror/js/tokenizephp.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.layout.min.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.form.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/_lib.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.min.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa_ieemu_xpath.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/nested.xsl
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/flat.xsl
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.css
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/css.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.xslt.js
+@PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/jquery-ui-1.7.1.custom.css
+@PKG_DATA_DIR@/assets/javascript/jquery/jquery-ui-1.7.2.custom.min.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/remove.png
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/marker.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/plus.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/context.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/lastli.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/dot.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/f.png
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fminus_rtl.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/throbber.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/remove.png
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/li.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fminus.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fplus.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fplus_rtl.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/rename.png
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/style.css
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/lastli_rtl.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/create.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_222222_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_65_ffffff_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_cd0a0a_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_888888_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_2e83ff_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_75_ffffff_40x100.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_95_fef1ec_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_454545_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_0_aaaaaa_40x100.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_dadada_1x400.png
 
 Plupload
 ========
-Brief:   Upload via HTML5 Gears, Silverlight, Flash, BrowserPlus or normal forms.
-Version: 1.2.4
-Author:  Developers of TinyMCE http://tinymce.moxiecode.com/
-License: GPLv2 http://www.plupload.com/license.php
-Link:    http://www.plupload.com/
+Brief:     Upload via HTML5 Gears, Silverlight, Flash, BrowserPlus or normal forms.
+Version:   1.2.4
+Author:    Developers of TinyMCE http://tinymce.moxiecode.com/
+Copyright: Copyright 2009, Moxiecode Systems AB
+License:   GPLv2 http://www.plupload.com/license.php
+Link:      http://www.plupload.com/
 Files:
 @PKG_DATA_DIR@/assets/javascript/plupload/jquery.plupload.queue.min.js
 @PKG_DATA_DIR@/assets/javascript/plupload/gears_init.js
 @PKG_DATA_DIR@/assets/javascript/plupload/browserplus-min.js
+@PKG_DATA_DIR@/assets/javascript/plupload/plupload.full.min.js
+@PKG_DATA_DIR@/assets/javascript/plupload/plupload.queue.css
+@PKG_DATA_DIR@/assets/javascript/plupload/upload.php
 @PKG_DATA_DIR@/assets/javascript/plupload/plupload.flash.swf
 @PKG_DATA_DIR@/assets/javascript/plupload/img/delete.gif
 @PKG_DATA_DIR@/assets/javascript/plupload/img/throbber.gif
@@ -150,6 +158,3 @@ Files:
 @PKG_DATA_DIR@/assets/javascript/plupload/img/error.gif
 @PKG_DATA_DIR@/assets/javascript/plupload/img/buttons.png
 @PKG_DATA_DIR@/assets/javascript/plupload/img/transp50.png
-@PKG_DATA_DIR@/assets/javascript/plupload/plupload.full.min.js
-@PKG_DATA_DIR@/assets/javascript/plupload/plupload.queue.css
-@PKG_DATA_DIR@/assets/javascript/plupload/upload.php
