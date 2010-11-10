@@ -78,6 +78,18 @@ Files:
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/undo.js
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/util.js
 
+jQuery UI
+=========
+Brief:     JavaScript Library for user interfaces.
+Version:   1.7.2
+Author:    jQuery Team http://jquery.org/team
+Copyright: Copyright (c) 2009 AUTHORS.txt (http://jqueryui.com/about)
+License:   Dual MIT or GPL http://jquery.org/license
+Link:      http://jquery.com/
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/jquery-ui-1.7.2.custom.min.js
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/jquery-ui-1.7.1.custom.css
+
 jQuery
 ======
 Brief:     JavaScript Library for rapid web development.
@@ -100,8 +112,6 @@ Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/css.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.xslt.js
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/jquery-ui-1.7.1.custom.css
-@PKG_DATA_DIR@/assets/javascript/jquery/jquery-ui-1.7.2.custom.min.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/remove.png
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/marker.gif
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/plus.gif

@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `aiki_config` (
   `config_type` varchar(255) default NULL,
   `config_data` mediumtext,
   PRIMARY KEY  (`config_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 -- ------------------------------------------------------
 
@@ -124,6 +124,7 @@ CREATE TABLE IF NOT EXISTS `aiki_revisions` (
   `table_name` varchar(255) NOT NULL,
   `record_number` int(11) NOT NULL,
   `data` text NOT NULL,
+  `changes` text NOT NULL,
   `date` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `revision` int(11) NOT NULL,
