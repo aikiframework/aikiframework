@@ -89,6 +89,19 @@ Link:      http://jqueryui.com/
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-ui-1.7.2.custom.min.js
 @PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/jquery-ui-1.7.1.custom.css
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_222222_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_65_ffffff_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_cd0a0a_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_888888_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_2e83ff_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_75_ffffff_40x100.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_95_fef1ec_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_454545_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_0_aaaaaa_40x100.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_dadada_1x400.png
 
 jQuery xslTransform
 ===================
@@ -148,6 +161,7 @@ Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.min.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/_lib.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/css.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/nested.xsl
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/flat.xsl
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/remove.png
@@ -178,21 +192,7 @@ Copyright: Copyright 2010, John Resig
 License:   Dual MIT or GPLv2 http://jquery.org/license
 Link:      http://jquery.com/
 Files:
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/css.js
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_222222_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_65_ffffff_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_cd0a0a_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_888888_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_2e83ff_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_75_ffffff_40x100.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_95_fef1ec_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_454545_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_0_aaaaaa_40x100.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_dadada_1x400.png
 
 Plupload
 ========
