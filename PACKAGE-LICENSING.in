@@ -85,33 +85,71 @@ Version:   1.7.2
 Author:    jQuery Team http://jquery.org/team
 Copyright: Copyright (c) 2009 AUTHORS.txt (http://jqueryui.com/about)
 License:   Dual MIT or GPL http://jquery.org/license
-Link:      http://jquery.com/
+Link:      http://jqueryui.com/
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-ui-1.7.2.custom.min.js
 @PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/jquery-ui-1.7.1.custom.css
 
-jQuery
-======
-Brief:     JavaScript Library for rapid web development.
-Version:   1.4.2
-Author:    jQuery Team http://jquery.org/team
-Copyright: Copyright 2010, John Resig
-License:   Dual MIT or GPLv2 http://jquery.org/license
-Link:      http://jquery.com/
+jQuery xslTransform
+===================
+Brief:     Perform browser-based XSL transformations.
+Version:   20071203
+Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com>
+Copyright: Copyright (c) 2006 Glyphix Studio, Inc. http://www.glyphix.com
+License:   MIT http://www.opensource.org/licenses/mit-license.php
+Link:      http://jquery.glyphix.com/
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.xslt.js
+
+jQuery Layout
+=============
+Brief:     User interface page layout manager.
+Version:   1.2.0
+Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com>
+Copyright: Copyright (c) 2008 Fabrizio Balliano (http://www.fabrizioballiano.net) Kevin Dalman (http://allpro.net)
+License:   Dual MIT or GPL
+Link:      http://layout.jquery-dev.net/
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.layout.min.js
+
+jQuery Form
+===========
+Brief:     Upgrade HTML forms to use AJAX.
+Version:   2.47
+Author:    John Resig,Mike Alsup,Mark Constable, Klaus Hartl, Matt Grimm, Yehuda Katz, Jorn Zaefferer, Sam Collett, Gilles van den Hoven, Kevin Glowacz, Alex Andrienko
+Copyright: Copyright 2010, John Resig
+License:   Dual MIT or GPL
+Link:      http://malsup.com/jquery/form/
+Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.form.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/_lib.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.min.js
+
+Sarissa
+=======
+Brief:     Cross-browser wrapper for native XML APIs.
+Version:   0.9.9.4
+Author:    Manos Batsis
+Copyright: Copyright: Manos Batsis, http://dev.abiss.gr
+License:   Dual ASL 2.0 or GPLv2+ or LGPLv2+ http://dev.abiss.gr/sarissa/licenses/asl.txt
+Link:      http://dev.abiss.gr/sarissa
+Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa_ieemu_xpath.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa.js
+
+jsTree
+======
+Brief:     JavaScript based, user interface tree component.
+Version:   0.9.8
+Author:    Ivan Bozhanov
+Copyright: Copyright (c) 2009 Ivan Bozhanov (vakata.com)
+License:   Dual MIT or GPL
+Link:      http://jstree.com/
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.css
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.min.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/_lib.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/nested.xsl
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/flat.xsl
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.css
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/css.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.xslt.js
-@PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/remove.png
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/marker.gif
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/plus.gif
@@ -130,6 +168,18 @@ Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/style.css
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/lastli_rtl.gif
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/create.png
+
+jQuery
+======
+Brief:     JavaScript Library for rapid web development.
+Version:   1.4.2
+Author:    jQuery Team http://jquery.org/team
+Copyright: Copyright 2010, John Resig
+License:   Dual MIT or GPLv2 http://jquery.org/license
+Link:      http://jquery.com/
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/css.js
+@PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
 @PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_222222_256x240.png
 @PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png
 @PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_65_ffffff_1x400.png
