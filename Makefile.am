@@ -180,6 +180,7 @@ rev :
 	--exclude="*.in" \
 	--exclude="*.m4" \
 	--exclude="README.fedora" \
+	--exclude="$(PACKAGE)-in.php" \
 	--exclude="$(distdir)/.bzr" \
 	--exclude="$(distdir)/build" \
 	--exclude="$(distdir)/build-aux" \
@@ -192,6 +193,8 @@ rev :
 	@$(MV) $(distdir)/src/* $(distdir)/ && $(RM) -rf $(distdir)/src
 	@$(RM) -rf $(abs_top_srcdir)/build/$(PACKAGE)
 	@$(MV) $(distdir) $(PACKAGE)
+	@$(RM) -fv $(PACKAGE)/$(PACKAGE)-in.php
+	@$(CP) -v src/$(PACKAGE).php $(PACKAGE)/
 	@for d in $$($(FIND) $(PACKAGE) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
 	@$(ZIP) -rq $(PACKAGE)-$@-$(REVISION).zip $(PACKAGE)

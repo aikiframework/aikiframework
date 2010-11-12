@@ -17,9 +17,15 @@ DIST_SUBDIRS = \
 	assets \
 	system
 
+# Additional files to remove on dist-clean
+DISTCLEANFILES = \
+	aiki.php
+
 # Additional files to distribute
 EXTRA_DIST = \
-	$(aiki_src_files)
+	aiki-in.php \
+	index.php \
+	style.php
 
 # The directory to put the files
 aiki_srcdir = \

@@ -311,7 +311,7 @@ AIKI_SITE_URL_LEN=$($ECHO "$AIKI_SITE_URL" | $AWK '{print length}')
 AC_SUBST(AIKI_SITE_URL_LEN,$AIKI_SITE_URL_LEN)
 
 # for rpm spec, desktop and others
-SUMMARY=[A\ CMS\ Creator\ Web\ Application]
+SUMMARY=[A\ CMF\ Web\ Application]
 AC_SUBST(SUMMARY)
 DESCRIPTION=[A\ web\ application\ to\ create\ content\ management\ systems.]
 AC_SUBST(DESCRIPTION)
@@ -380,6 +380,7 @@ AC_CONFIG_FILES([ \
   Makefile \
   PACKAGE-LICENSING \
   src/Makefile \
+  src/aiki.php:src/aiki-in.php \
   src/assets/Makefile \
   src/assets/apps/Makefile \
   src/assets/apps/admin/Makefile \

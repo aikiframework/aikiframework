@@ -151,9 +151,13 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %{_datadir}/%{name}/assets/uploads/
 %{_datadir}/%{name}/configs/
 %{pkgdesktopdir}/%{name}.directory
-%{pkgentrydir}/%{name}*.desktop
+%{pkgentrydir}/%{name}.desktop
+%{pkgentrydir}/%{name}-create-usr.desktop
+%{pkgentrydir}/%{name}-create-db.desktop
+%{pkgentrydir}/%{name}-drop-db.desktop
+%{pkgentrydir}/%{name}-drop-usr.desktop
 %{pkgicondir}/%{name}.svg
-%{_mandir}/man1/%{name}*
+%{_mandir}/man1/%{name}.1.gz
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{pkgmenudir}/%{name}.menu
 %config(noreplace) %{_sysconfdir}/%{name}/config.php
@@ -164,6 +168,11 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 # Changes made to the package
 #============================
 %changelog
+
+* Tue Nov 12 2010 Steven Garcia <webwhammy@gmail.com> 0.6.3-1
+- Upstream released 0.6.3
+- Changed summary field
+- Replaced wildcards from files section
 
 * Tue Nov 09 2010 Steven Garcia <webwhammy@gmail.com> 0.6.0-1
 - Upstream released 0.6.0
