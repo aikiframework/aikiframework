@@ -330,6 +330,10 @@ class bot
 		return $query;
 
 	}
+	
+	function auto_update_to_latest_aiki(){
+		
+	}
 
 
 }
