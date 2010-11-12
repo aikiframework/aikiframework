@@ -26,10 +26,13 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * @category    Aiki
  * @package     Library
  */
-
-class openid
+class aiki_curl
 {
 
+
+  function __construct($key, $secret, $callback_url=NULL) {
+
+  }
 
 
 }

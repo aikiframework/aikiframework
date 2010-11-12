@@ -27,9 +27,17 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * @package     Library
  */
 
-class oauth
+class aiki_oauth
 {
 
+public $key;
+public $secret;
+
+  function __construct($key, $secret, $callback_url=NULL) {
+    $this->key = $key;
+    $this->secret = $secret;
+    $this->callback_url = $callback_url;
+  }
 
 
 }
