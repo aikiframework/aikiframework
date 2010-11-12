@@ -292,7 +292,7 @@ class CreateLayout
 		}
 
 		// Kill the query if it is not select.
-		if (preg_match("/TRUNCATE|UPDATE|DELETE(.*)from|table/i", $widget->normal_select)){
+		if (preg_match("/TRUNCATE|UPDATE|DELETE(.*)from/i", $widget->normal_select)){
 			$widget->normal_select = "";
 		}
 
