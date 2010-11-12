@@ -29,9 +29,17 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_curl
 {
 
+private $timeout = 3;
+private $ch;
+public $url;
+private $properties = array();
 
   function __construct() {
-
+  
+				$this->ch = curl_init();				
+				curl_setopt ($this->ch, CURLOPT_URL, $this->url);
+				curl_setopt ($this->ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
+				
   }
 
 
