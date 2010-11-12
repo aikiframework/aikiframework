@@ -27,7 +27,7 @@ define("AIKI_VERSION", "@VERSION@");
  * At run-time, write config and database or use an install-time config and database
  * Do NOT put the following value (TRUE or FALSE) in quotes.
  */
-define("ENABLE_RUNTIME_INSTALLER", @ENABLE_RUNTIME_INSTALLER@);
+define("ENABLE_RUNTIME_INSTALLER", "@ENABLE_RUNTIME_INSTALLER@");
 /**
  * Aiki Database Type
  */
