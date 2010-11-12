@@ -330,9 +330,71 @@ class bot
 		return $query;
 
 	}
-	
+
+	function DataGrid($form_id){
+		global $db;
+
+		$table_info = $db->get_row("select form_table, form_array from aiki_forms where form_table not rlike 'aiki_' and id = '$form_id'");
+		$tablename = $table_info->form_table;
+		$form_array = $table_info->form_array;
+		$form_array = unserialize($form_array);
+		$pkey = $form_array['pkey'];
+
+		$output = ("<form method=\"POST\">
+							Search: 
+							<input type=\"text\" name=\"keyword\" size=\"30\">
+							<select name=\"wheresearch\">");
+		foreach($form_array as $field)
+		{
+			if ($field != $tablename){
+				$intwalker = explode(":", $field);
+
+				if (!$intwalker[1]){$intwalker[1] = $intwalker[0];}
+				$output .= "<option value=\"$intwalker[0]\">".$intwalker[1]."</option>";
+			}
+		}
+		$output .= ("</select><input type=\"submit\" value=\"Go\" name=\"search\">
+							</form>");
+
+
+		if ($orderby){
+			$orderbykey = $orderby;
+			$orderby = "order by ".$orderby;
+
+		}else{
+			$orderbykey = $pkey;
+			$orderby = "order by ".$pkey;
+		}
+
+		$data = $db->get_results("select * from $tablename $orderby");
+
+		$form_fields = mysql_query('SHOW COLUMNS FROM '.$tablename) or die('cannot show columns from '.$tablename);
+		if(mysql_num_rows($form_fields)) {
+			$output .= "<div class='dashboard_grid_container'><ul>";
+			while($fields_names = mysql_fetch_row($form_fields)) {
+				$output .= "<li>";
+				$output .= "<span class='dashboard_manage_text'><b><a href=\"\">".$fields_names['0']."</a></b></span><ul>";
+				$i = 0;
+				foreach ($data as $field_data){
+					if ( ($i % 2) == 0 ) {
+						$li_class="dashboard_li_even";
+					} else {
+						$li_class = "dashboard_li_odd";
+					}
+					$output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
+					$i++;
+				}
+				$output .= "</ul></li>";
+
+			}
+			$output .="</ul></div>";
+		}
+
+		return $output;
+	}
+
 	function auto_update_to_latest_aiki(){
-		
+
 	}
 
 
