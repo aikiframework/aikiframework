@@ -2,15 +2,15 @@
 /**
  * Modifed version of upload.php
  * 
- * Released under GPL License.
+ * Released under GPLv2 License.
  * Contributing: http://www.plupload.com/contributing
  *
  * @author		The Developers of TinyMCE
  * @copyright   Copyright 2009, Moxiecode Systems AB
- * @license		http://www.plupload.com/license
+ * @license		http://www.plupload.com/license GPLv2
  * @link		http://www.plupload.com
- * @category    Aiki
  * @package     Plupload
+ * @category    Aiki
  * @filesource
  */
 

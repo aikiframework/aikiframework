@@ -39,7 +39,7 @@ Brief:     Parse function for PHP in-browser code editing.
 Version:   0.63
 Author:    Dan Vlad Dascalescu dandv@yahoo-inc.com
 Copyright: Copyright (c) 2008-2009 Yahoo! Inc. All rights reserved.
-License:   BSD (revised) open source license https://github.com/marijnh/CodeMirror/blob/master/contrib/php/LICENSE
+License:   BSD 3-clause no advertising https://github.com/marijnh/CodeMirror/blob/master/contrib/php/LICENSE
 Link:      https://github.com/marijnh/CodeMirror/tree/master/contrib/php/
 Files:
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/phpcolors.css
@@ -120,7 +120,7 @@ Brief:     User interface page layout manager.
 Version:   1.2.0
 Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com>
 Copyright: Copyright (c) 2008 Fabrizio Balliano (http://www.fabrizioballiano.net) Kevin Dalman (http://allpro.net)
-License:   Dual MIT or GPL
+License:   Dual MIT or GPL http://jquery.org/license
 Link:      http://layout.jquery-dev.net/
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.layout.min.js
@@ -129,9 +129,9 @@ jQuery Form
 ===========
 Brief:     Upgrade HTML forms to use AJAX.
 Version:   2.47
-Author:    John Resig,Mike Alsup,Mark Constable, Klaus Hartl, Matt Grimm, Yehuda Katz, Jorn Zaefferer, Sam Collett, Gilles van den Hoven, Kevin Glowacz, Alex Andrienko
-Copyright: Copyright 2010, John Resig
-License:   Dual MIT or GPL
+Author:    Mike Alsup
+Copyright: Copyright 2010, Mike Alsup
+License:   Dual MIT or GPL http://jquery.org/license
 Link:      http://malsup.com/jquery/form/
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.form.js
@@ -154,7 +154,7 @@ Brief:     JavaScript based, user interface tree component.
 Version:   0.9.8
 Author:    Ivan Bozhanov
 Copyright: Copyright (c) 2009 Ivan Bozhanov (vakata.com)
-License:   Dual MIT or GPL
+License:   Dual MIT or GPL http://jquery.org/license
 Link:      http://jstree.com/
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.css
@@ -194,9 +194,33 @@ Link:      http://jquery.com/
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
 
+Google Gears Init
+=================
+Brief:     The only supported way to access Google Gears.
+Version:   1.2.4
+Author:    Google Inc.
+Copyright: Copyright 2007, Google Inc.
+License:   BSD 3-clause no advertising https://fedoraproject.org/wiki/Licensing/BSD#3ClauseBSD
+Link:      http://code.google.com/apis/gears/gears_init.js
+Files:
+@PKG_DATA_DIR@/assets/javascript/plupload/gears_init.js
+
+BrowserPlus Gateway
+===================
+Brief:     Gateway between user JavaScript and the BrowserPlus platform.
+Version:   2.4.21
+Author:    Yahoo! Inc.
+Copyright: Copyright (c) 2009 Yahoo! Inc.
+License:   MPLv1.1 http://www.mozilla.org/MPL/MPL-1.1.html
+Link:      http://bp.yahooapis.com/2.4.21/browserplus-min.js
+Link:      http://bp.yahooapis.com/2.4.21/browserplus.js
+Link:      https://github.com/browserplus/platform/blob/master/src/javascript/src/browserplus.js.erb
+Files:
+@PKG_DATA_DIR@/assets/javascript/plupload/browserplus-min.js
+
 Plupload
 ========
-Brief:     Upload via HTML5 Gears, Silverlight, Flash, BrowserPlus or normal forms.
+Brief:     Upload via HTML5, Gears, Silverlight, Flash, BrowserPlus or normal forms.
 Version:   1.2.4
 Author:    Developers of TinyMCE http://tinymce.moxiecode.com/
 Copyright: Copyright 2009, Moxiecode Systems AB
@@ -204,8 +228,6 @@ License:   GPLv2 http://www.plupload.com/license.php
 Link:      http://www.plupload.com/
 Files:
 @PKG_DATA_DIR@/assets/javascript/plupload/jquery.plupload.queue.min.js
-@PKG_DATA_DIR@/assets/javascript/plupload/gears_init.js
-@PKG_DATA_DIR@/assets/javascript/plupload/browserplus-min.js
 @PKG_DATA_DIR@/assets/javascript/plupload/plupload.full.min.js
 @PKG_DATA_DIR@/assets/javascript/plupload/plupload.queue.css
 @PKG_DATA_DIR@/assets/javascript/plupload/upload.php
