@@ -4,6 +4,9 @@
 # The source files
 aiki_src_files = \
 	aiki_array.php \
+	aiki_curl.php \
+	aiki_oauth.php \
+	aiki_openid.php \
 	bot.php \
 	errors.php \
 	forms.php \
