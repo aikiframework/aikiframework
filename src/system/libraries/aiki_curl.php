@@ -30,7 +30,7 @@ class aiki_curl
 {
 
 
-  function __construct($key, $secret, $callback_url=NULL) {
+  function __construct() {
 
   }
 
