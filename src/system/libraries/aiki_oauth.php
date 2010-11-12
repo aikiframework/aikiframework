@@ -30,14 +30,14 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki_oauth
 {
 
-public $key;
-public $secret;
+	public $key;
+	public $secret;
 
-  function __construct($key, $secret, $callback_url=NULL) {
-    $this->key = $key;
-    $this->secret = $secret;
-    $this->callback_url = $callback_url;
-  }
+	function __construct($key, $secret, $callback_url=NULL) {
+		$this->key = $key;
+		$this->secret = $secret;
+		$this->callback_url = $callback_url;
+	}
 
 
 }
