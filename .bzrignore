@@ -1,5 +1,6 @@
 .project
 *~
+kojiscratch.sh
 build/*
 build/**/*
 build-aux/*
