@@ -22,6 +22,17 @@ Files:
 @PKG_DATA_DIR@/system/database/postgresql.php
 @PKG_DATA_DIR@/system/database/sqlite.php
 
+jQuery
+======
+Brief:     JavaScript Library for rapid web development.
+Version:   1.4.2
+Author:    jQuery Team http://jquery.org/team
+Copyright: Copyright 2010, John Resig
+License:   Dual MIT or GPLv2 http://jquery.org/license
+Link:      http://jquery.com/
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
+
 Sizzle
 ======
 Brief:     JavaScript CSS selector engine.
@@ -33,19 +44,157 @@ Link:      http://sizzlejs.com/
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
 
-ParsePHP
-========
-Brief:     Parse function for PHP in-browser code editing.
-Version:   0.63
-Author:    Dan Vlad Dascalescu dandv@yahoo-inc.com
-Copyright: Copyright (c) 2008-2009 Yahoo! Inc. All rights reserved.
-License:   BSD 3-clause no advertising https://github.com/marijnh/CodeMirror/blob/master/contrib/php/LICENSE
-Link:      https://github.com/marijnh/CodeMirror/tree/master/contrib/php/
+jQuery xslTransform
+===================
+Brief:     Perform browser-based XSL transformations.
+Version:   20071203
+Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com>
+Copyright: Copyright (c) 2006 Glyphix Studio, Inc. http://www.glyphix.com
+License:   MIT http://www.opensource.org/licenses/mit-license.php
+Link:      http://jquery.glyphix.com/
 Files:
-@PKG_DATA_DIR@/assets/javascript/codemirror/css/phpcolors.css
-@PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephp.js
-@PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephphtmlmixed.js
-@PKG_DATA_DIR@/assets/javascript/codemirror/js/tokenizephp.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.xslt.js
+
+jQuery Layout
+=============
+Brief:     User interface page layout manager.
+Version:   1.2.0
+Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com>
+Copyright: Copyright (c) 2008 Fabrizio Balliano (http://www.fabrizioballiano.net) Kevin Dalman (http://allpro.net)
+License:   Dual MIT or GPL http://jquery.org/license
+Link:      http://layout.jquery-dev.net/
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.layout.min.js
+
+jQuery Form
+===========
+Brief:     Upgrade HTML forms to use AJAX.
+Version:   2.47
+Author:    Mike Alsup
+Copyright: Copyright (c) 2010, Mike Alsup
+License:   Dual MIT or GPL http://jquery.org/license
+Link:      http://malsup.com/jquery/form/
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.form.js
+
+jQuery UI
+=========
+Brief:     JavaScript Library for user interfaces.
+Version:   1.7.2
+Author:    jQuery Team http://jquery.org/team
+Copyright: Copyright (c) 2009 AUTHORS.txt (http://jqueryui.com/about)
+License:   Dual MIT or GPL http://jquery.org/license
+Link:      http://jqueryui.com/
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/jquery-ui-1.7.2.custom.min.js
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/jquery-ui-1.7.1.custom.css
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_222222_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_65_ffffff_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_cd0a0a_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_888888_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_2e83ff_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_75_ffffff_40x100.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_95_fef1ec_1x400.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_454545_256x240.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_0_aaaaaa_40x100.png
+@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_dadada_1x400.png
+
+jsTree
+======
+Brief:     JavaScript based, user interface tree component.
+Version:   0.9.8
+Author:    Ivan Bozhanov
+Copyright: Copyright (c) 2009 Ivan Bozhanov (vakata.com)
+License:   Dual MIT or GPL http://jquery.org/license
+Link:      http://jstree.com/
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/css.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.css
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.min.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/_lib.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/nested.xsl
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/flat.xsl
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/style.css
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/remove.png
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/marker.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/plus.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/context.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/lastli.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/dot.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/f.png
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fminus_rtl.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/throbber.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/remove.png
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/li.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fminus.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fplus.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fplus_rtl.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/rename.png
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/lastli_rtl.gif
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/create.png
+
+Sarissa
+=======
+Brief:     Cross-browser wrapper for native XML APIs.
+Version:   0.9.9.4
+Author:    Manos Batsis
+Copyright: Copyright: Manos Batsis, http://dev.abiss.gr
+License:   Dual ASL 2.0 or GPLv2+ or LGPLv2+ http://dev.abiss.gr/sarissa/licenses/asl.txt
+Link:      http://dev.abiss.gr/sarissa
+Files:
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa_ieemu_xpath.js
+@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa.js
+
+Plupload
+========
+Brief:     Upload via HTML5, Gears, Silverlight, Flash, BrowserPlus or normal forms.
+Version:   1.2.4
+Author:    Developers of TinyMCE http://tinymce.moxiecode.com/
+Copyright: Copyright 2009, Moxiecode Systems AB
+License:   GPLv2 http://www.plupload.com/license.php
+Link:      http://www.plupload.com/
+Files:
+@PKG_DATA_DIR@/assets/javascript/plupload/jquery.plupload.queue.min.js
+@PKG_DATA_DIR@/assets/javascript/plupload/plupload.full.min.js
+@PKG_DATA_DIR@/assets/javascript/plupload/plupload.queue.css
+@PKG_DATA_DIR@/assets/javascript/plupload/upload.php
+@PKG_DATA_DIR@/assets/javascript/plupload/plupload.flash.swf
+@PKG_DATA_DIR@/assets/javascript/plupload/img/delete.gif
+@PKG_DATA_DIR@/assets/javascript/plupload/img/throbber.gif
+@PKG_DATA_DIR@/assets/javascript/plupload/img/done.gif
+@PKG_DATA_DIR@/assets/javascript/plupload/img/backgrounds.gif
+@PKG_DATA_DIR@/assets/javascript/plupload/img/buttons-disabled.png
+@PKG_DATA_DIR@/assets/javascript/plupload/img/error.gif
+@PKG_DATA_DIR@/assets/javascript/plupload/img/buttons.png
+@PKG_DATA_DIR@/assets/javascript/plupload/img/transp50.png
+
+Google Gears Init
+=================
+Brief:     The only supported way to access Google Gears.
+Version:   1.2.4
+Author:    Google Inc.
+Copyright: Copyright 2007, Google Inc.
+License:   BSD 3-clause no advertising https://fedoraproject.org/wiki/Licensing/BSD#3ClauseBSD
+Link:      http://code.google.com/apis/gears/gears_init.js
+Files:
+@PKG_DATA_DIR@/assets/javascript/plupload/gears_init.js
+
+BrowserPlus Gateway
+===================
+Brief:     Gateway between user JavaScript and the BrowserPlus platform.
+Version:   2.4.21
+Author:    Yahoo! Inc.
+Copyright: Copyright (c) 2009 Yahoo! Inc.
+License:   MPLv1.1 http://www.mozilla.org/MPL/MPL-1.1.html
+Link:      http://bp.yahooapis.com/2.4.21/browserplus-min.js
+Link:      http://bp.yahooapis.com/2.4.21/browserplus.js
+Link:      https://github.com/browserplus/platform/blob/master/src/javascript/src/browserplus.js.erb
+Files:
+@PKG_DATA_DIR@/assets/javascript/plupload/browserplus-min.js
 
 CodeMirror
 ==========
@@ -78,165 +227,16 @@ Files:
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/undo.js
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/util.js
 
-jQuery UI
-=========
-Brief:     JavaScript Library for user interfaces.
-Version:   1.7.2
-Author:    jQuery Team http://jquery.org/team
-Copyright: Copyright (c) 2009 AUTHORS.txt (http://jqueryui.com/about)
-License:   Dual MIT or GPL http://jquery.org/license
-Link:      http://jqueryui.com/
-Files:
-@PKG_DATA_DIR@/assets/javascript/jquery/jquery-ui-1.7.2.custom.min.js
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/jquery-ui-1.7.1.custom.css
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_222222_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_65_ffffff_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_cd0a0a_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_888888_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_2e83ff_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_75_ffffff_40x100.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_95_fef1ec_1x400.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-icons_454545_256x240.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_flat_0_aaaaaa_40x100.png
-@PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/images/ui-bg_glass_75_dadada_1x400.png
-
-jQuery xslTransform
-===================
-Brief:     Perform browser-based XSL transformations.
-Version:   20071203
-Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com>
-Copyright: Copyright (c) 2006 Glyphix Studio, Inc. http://www.glyphix.com
-License:   MIT http://www.opensource.org/licenses/mit-license.php
-Link:      http://jquery.glyphix.com/
-Files:
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.xslt.js
-
-jQuery Layout
-=============
-Brief:     User interface page layout manager.
-Version:   1.2.0
-Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com>
-Copyright: Copyright (c) 2008 Fabrizio Balliano (http://www.fabrizioballiano.net) Kevin Dalman (http://allpro.net)
-License:   Dual MIT or GPL http://jquery.org/license
-Link:      http://layout.jquery-dev.net/
-Files:
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.layout.min.js
-
-jQuery Form
-===========
-Brief:     Upgrade HTML forms to use AJAX.
-Version:   2.47
-Author:    Mike Alsup
-Copyright: Copyright 2010, Mike Alsup
-License:   Dual MIT or GPL http://jquery.org/license
-Link:      http://malsup.com/jquery/form/
-Files:
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.form.js
-
-Sarissa
-=======
-Brief:     Cross-browser wrapper for native XML APIs.
-Version:   0.9.9.4
-Author:    Manos Batsis
-Copyright: Copyright: Manos Batsis, http://dev.abiss.gr
-License:   Dual ASL 2.0 or GPLv2+ or LGPLv2+ http://dev.abiss.gr/sarissa/licenses/asl.txt
-Link:      http://dev.abiss.gr/sarissa
-Files:
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa_ieemu_xpath.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa.js
-
-jsTree
-======
-Brief:     JavaScript based, user interface tree component.
-Version:   0.9.8
-Author:    Ivan Bozhanov
-Copyright: Copyright (c) 2009 Ivan Bozhanov (vakata.com)
-License:   Dual MIT or GPL http://jquery.org/license
-Link:      http://jstree.com/
-Files:
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.css
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.min.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/_lib.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/css.js
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/nested.xsl
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/flat.xsl
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/remove.png
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/marker.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/plus.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/context.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/lastli.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/dot.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/f.png
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fminus_rtl.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/throbber.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/remove.png
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/li.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fminus.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fplus.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/fplus_rtl.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/rename.png
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/style.css
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/lastli_rtl.gif
-@PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/themes/default/create.png
-
-jQuery
-======
-Brief:     JavaScript Library for rapid web development.
-Version:   1.4.2
-Author:    jQuery Team http://jquery.org/team
-Copyright: Copyright 2010, John Resig
-License:   Dual MIT or GPLv2 http://jquery.org/license
-Link:      http://jquery.com/
-Files:
-@PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
-
-Google Gears Init
-=================
-Brief:     The only supported way to access Google Gears.
-Version:   1.2.4
-Author:    Google Inc.
-Copyright: Copyright 2007, Google Inc.
-License:   BSD 3-clause no advertising https://fedoraproject.org/wiki/Licensing/BSD#3ClauseBSD
-Link:      http://code.google.com/apis/gears/gears_init.js
-Files:
-@PKG_DATA_DIR@/assets/javascript/plupload/gears_init.js
-
-BrowserPlus Gateway
-===================
-Brief:     Gateway between user JavaScript and the BrowserPlus platform.
-Version:   2.4.21
-Author:    Yahoo! Inc.
-Copyright: Copyright (c) 2009 Yahoo! Inc.
-License:   MPLv1.1 http://www.mozilla.org/MPL/MPL-1.1.html
-Link:      http://bp.yahooapis.com/2.4.21/browserplus-min.js
-Link:      http://bp.yahooapis.com/2.4.21/browserplus.js
-Link:      https://github.com/browserplus/platform/blob/master/src/javascript/src/browserplus.js.erb
-Files:
-@PKG_DATA_DIR@/assets/javascript/plupload/browserplus-min.js
-
-Plupload
+ParsePHP
 ========
-Brief:     Upload via HTML5, Gears, Silverlight, Flash, BrowserPlus or normal forms.
-Version:   1.2.4
-Author:    Developers of TinyMCE http://tinymce.moxiecode.com/
-Copyright: Copyright 2009, Moxiecode Systems AB
-License:   GPLv2 http://www.plupload.com/license.php
-Link:      http://www.plupload.com/
+Brief:     Parse function for PHP in-browser code editing.
+Version:   0.63
+Author:    Dan Vlad Dascalescu dandv@yahoo-inc.com
+Copyright: Copyright (c) 2008-2009 Yahoo! Inc. All rights reserved.
+License:   BSD 3-clause no advertising https://github.com/marijnh/CodeMirror/blob/master/contrib/php/LICENSE
+Link:      https://github.com/marijnh/CodeMirror/tree/master/contrib/php/
 Files:
-@PKG_DATA_DIR@/assets/javascript/plupload/jquery.plupload.queue.min.js
-@PKG_DATA_DIR@/assets/javascript/plupload/plupload.full.min.js
-@PKG_DATA_DIR@/assets/javascript/plupload/plupload.queue.css
-@PKG_DATA_DIR@/assets/javascript/plupload/upload.php
-@PKG_DATA_DIR@/assets/javascript/plupload/plupload.flash.swf
-@PKG_DATA_DIR@/assets/javascript/plupload/img/delete.gif
-@PKG_DATA_DIR@/assets/javascript/plupload/img/throbber.gif
-@PKG_DATA_DIR@/assets/javascript/plupload/img/done.gif
-@PKG_DATA_DIR@/assets/javascript/plupload/img/backgrounds.gif
-@PKG_DATA_DIR@/assets/javascript/plupload/img/buttons-disabled.png
-@PKG_DATA_DIR@/assets/javascript/plupload/img/error.gif
-@PKG_DATA_DIR@/assets/javascript/plupload/img/buttons.png
-@PKG_DATA_DIR@/assets/javascript/plupload/img/transp50.png
+@PKG_DATA_DIR@/assets/javascript/codemirror/css/phpcolors.css
+@PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephp.js
+@PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephphtmlmixed.js
+@PKG_DATA_DIR@/assets/javascript/codemirror/js/tokenizephp.js

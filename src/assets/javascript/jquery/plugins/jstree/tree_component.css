@@ -1,3 +1,17 @@
+/*
+ * jsTree 0.9.8
+ * http://jstree.com/
+ *
+ * Copyright (c) 2009 Ivan Bozhanov (vakata.com)
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * Date: 2009-05-15
+ *
+ */
+
 /* TREE LAYOUT */
 .tree ul { margin:0 0 0 5px; padding:0 0 0 0; list-style-type:none; }
 .tree li { display:block; min-height:18px; line-height:18px; padding:0 0 0 15px; margin:0 0 0 0; /* Background fix */ clear:both; _height:18px; #height:auto; }

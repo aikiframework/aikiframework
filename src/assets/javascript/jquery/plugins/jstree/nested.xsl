@@ -2,6 +2,18 @@
 	version="1.0"
 	encoding="utf-8"
 	?>
+<!--
+ * jsTree 0.9.8
+ * http://jstree.com/
+ *
+ * Copyright (c) 2009 Ivan Bozhanov (vakata.com)
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * Date: 2009-05-15
+ -->
 <xsl:stylesheet
 	version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
