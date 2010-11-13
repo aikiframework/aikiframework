@@ -12,7 +12,7 @@ INSERT INTO `aiki_config` (`config_id`, `app_id`, `config_type`, `config_data`) 
 
 INSERT INTO `aiki_users` (`userid`, `username`, `full_name`, `country`, `sex`, `job`, `password`, `usergroup`, `email`, `avatar`, `homepage`, `first_ip`, `first_login`, `last_login`, `last_ip`, `user_permissions`, `maillist`, `logins_number`, `randkey`, `is_active`) VALUES
 (1, 'guest', 'guest', '', '', '', '', 3, '', '', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', 0, 0, '', 0),
-(2, 'admin', 'admin', '', '', '', '74be16979710d4c4e7c6647856088456', 1, '', '', '', '', '', '', '', '', 0, 0, '', 0);
+(2, '@ADMIN_USER@', '@ADMIN_NAME@', '', '', '', '@ADMIN_PASS@', 1, '@ADMIN_MAIL@', '', '', '', '', '', '', '', 0, 0, '', 0);
 
 -- ------------------------------------------------------
 

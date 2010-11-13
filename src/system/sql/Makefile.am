@@ -26,6 +26,7 @@ aiki_sql_files = \
 	DropUser.sql \
 	InsertDefaults.sql \
 	InsertVariable.sql \
+	InsertVariable-in.sql \
 	UserExists.sql
 
 # Additional files to remove on dist-clean
