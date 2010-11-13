@@ -412,6 +412,7 @@ AC_CONFIG_FILES([ \
   src/assets/apps/admin/images/Makefile \
   src/assets/apps/admin/images/icons/Makefile \
   src/assets/images/Makefile \
+  src/assets/extensions/Makefile \
   src/assets/javascript/Makefile \
   src/assets/javascript/codemirror/Makefile \
   src/assets/javascript/codemirror/css/Makefile \

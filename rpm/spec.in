@@ -146,6 +146,7 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %{_datadir}/%{name}/system/sql/
 %{_datadir}/%{name}/system/libraries/
 %{_datadir}/%{name}/assets/apps/
+%{_datadir}/%{name}/assets/extensions/
 %{_datadir}/%{name}/assets/images/
 %{_datadir}/%{name}/assets/javascript/%{name}.js
 %{_datadir}/%{name}/assets/uploads/
@@ -169,7 +170,11 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 #============================
 %changelog
 
-* Tue Nov 12 2010 Steven Garcia <webwhammy@gmail.com> 0.6.3-1
+* Sat Nov 13 2010 Steven Garcia <webwhammy@gmail.com> 0.6.5-1
+- Upstream released 0.6.5
+- Added extensions directory to files section
+
+* Fri Nov 12 2010 Steven Garcia <webwhammy@gmail.com> 0.6.3-1
 - Upstream released 0.6.3
 - Changed summary field
 - Replaced wildcards from files section

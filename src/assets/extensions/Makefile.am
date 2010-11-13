@@ -18,23 +18,14 @@
 # Written by Steven Garcia
 
 # The source files
-aiki_src_files =
+aiki_src_files = \
+	readme
 
 # Subdirectories to be built
-SUBDIRS = \
-	apps \
-	images \
-	javascript \
-	uploads \
-	extensions
+SUBDIRS =
 
 # Subdirectories to distribute
-DIST_SUBDIRS = \
-	apps \
-	images \
-	javascript \
-	uploads \
-	extensions
+DIST_SUBDIRS =
 
 # Additional files to distribute
 EXTRA_DIST = \
@@ -42,7 +33,7 @@ EXTRA_DIST = \
 
 # The directory to put the files
 aiki_srcdir = \
-	$(pkgdatadir)/assets
+	$(pkgdatadir)/assets/extensions
 
 # The source data
 aiki_src_DATA = \
