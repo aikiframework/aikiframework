@@ -55,16 +55,23 @@ class aiki
 
 			require($system_folder.'/system/libraries/'.$class.'.php');
 
-			$objects[$class] = new $class();
-
-			$this->$class = $objects[$class];
-
-			return $objects[$class];
-
+		}elseif(file_exists($system_folder.'/assets/extensions/'.$class.'.php')){
+				
+			require($system_folder.'/assets/extensions/'.$class.'.php');
+				
 		}else{
 
 			return false;
+				
 		}
+
+		$objects[$class] = new $class();
+
+		$this->$class = $objects[$class];
+
+		return $objects[$class];
+
+
 	}
 
 
