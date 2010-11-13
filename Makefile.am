@@ -1,5 +1,21 @@
+# Make aiki                                                 -*-Makefile-*-
 
-## Process this file with automake to produce Makefile.in
+# Copyright (C) 2010 Aikilab
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Written by Steven Garcia
 
 # The doc files
 aiki_doc_files = \
@@ -8,8 +24,7 @@ aiki_doc_files = \
 	INSTALL \
 	LICENSE \
 	README \
-	README.fedora \
-	VERSION
+	README.fedora
 
 # Subdirectories to be built
 SUBDIRS = \
@@ -39,7 +54,8 @@ RPM_CONFIG =
 EXTRA_DIST = \
 	$(aiki_doc_files) \
 	.bzr/branch/last-revision \
-	PACKAGE-LICENSING.in
+	PACKAGE-LICENSING.in \
+	VERSION.in
 
 # The directory to put the files
 aiki_docdir = \
@@ -48,7 +64,8 @@ aiki_docdir = \
 # The source data
 aiki_doc_DATA = \
 	$(aiki_doc_files) \
-	PACKAGE-LICENSING
+	PACKAGE-LICENSING \
+	VERSION
 
 # Additional files to remove on dist-clean
 DISTCLEANFILES = \
@@ -180,7 +197,7 @@ rev :
 	--exclude="*.in" \
 	--exclude="*.m4" \
 	--exclude="README.fedora" \
-	--exclude="$(PACKAGE)-in.php" \
+	--exclude="VERSION.in" \
 	--exclude="$(distdir)/.bzr" \
 	--exclude="$(distdir)/build" \
 	--exclude="$(distdir)/build-aux" \
@@ -193,8 +210,7 @@ rev :
 	@$(MV) $(distdir)/src/* $(distdir)/ && $(RM) -rf $(distdir)/src
 	@$(RM) -rf $(abs_top_srcdir)/build/$(PACKAGE)
 	@$(MV) $(distdir) $(PACKAGE)
-	@$(RM) -fv $(PACKAGE)/$(PACKAGE)-in.php
-	@$(CP) -v src/$(PACKAGE).php $(PACKAGE)/
+	@$(CP) -vf VERSION $(PACKAGE)/
 	@for d in $$($(FIND) $(PACKAGE) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
 	@$(ZIP) -rq $(PACKAGE)-$@-$(REVISION).zip $(PACKAGE)
