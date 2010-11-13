@@ -46,8 +46,7 @@ class aiki
 
 		$objects = array();
 
-		if (isset($objects[$class]))
-		{
+		if (isset($this->$class)){
 			return $objects[$class];
 		}
 
@@ -56,13 +55,13 @@ class aiki
 			require($system_folder.'/system/libraries/'.$class.'.php');
 
 		}elseif(file_exists($system_folder.'/assets/extensions/'.$class.'.php')){
-				
+
 			require($system_folder.'/assets/extensions/'.$class.'.php');
-				
+
 		}else{
 
 			return false;
-				
+
 		}
 
 		$objects[$class] = new $class();
@@ -70,7 +69,6 @@ class aiki
 		$this->$class = $objects[$class];
 
 		return $objects[$class];
-
 
 	}
 
