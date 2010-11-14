@@ -42,6 +42,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
 
 
 $get_urls = $db->get_results("select distinct display_urls from aiki_widgets where display_urls NOT REGEXP 'admin' and display_urls != '' order by BINARY display_urls");
+//$get_urls = $db->get_results("select distinct display_urls from aiki_widgets where  display_urls != '' order by BINARY display_urls");
+
 $used = array();
 $used_url = array();
 foreach ($get_urls as $url){
@@ -66,7 +68,7 @@ foreach ($get_urls as $url){
 		foreach ($get_widgets as $widget){
 
 			if (!in_array($widget->id, $used)){
-				
+
 				if ($widget->father_widget == 0 or $widget->display_urls == $url->display_urls){
 					$used[$widget->id] = $widget->id;
 					echo '<item parent_id="'.$url->display_urls.'" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->widget_name.']]></name></content></item>';

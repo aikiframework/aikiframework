@@ -358,12 +358,11 @@ class bot
 
 
 		if ($orderby){
-			$orderbykey = $orderby;
 			$orderby = "order by ".$orderby;
-
-		}else{
-			$orderbykey = $pkey;
+		}elseif ($pkey){
 			$orderby = "order by ".$pkey;
+		}else{
+			$orderby = '';
 		}
 
 		$data = $db->get_results("select * from $tablename $orderby");
