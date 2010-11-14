@@ -380,6 +380,7 @@ class bot
 					} else {
 						$li_class = "dashboard_li_odd";
 					}
+					$field_data->$fields_names['0'] = htmlspecialchars($field_data->$fields_names['0']);
 					$output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
 					$i++;
 				}
