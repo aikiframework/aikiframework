@@ -119,6 +119,9 @@ PROG_LIST_ADD HEAD $HEAD
 AC_CHECK_PROG(AWK,awk,awk,MISSING)
 PROG_LIST_ADD AWK $AWK
 
+AC_CHECK_PROG(CAT,cat,cat,MISSING)
+PROG_LIST_ADD CAT $CAT
+
 AC_CHECK_PROG(TAR,tar,tar,MISSING)
 PROG_LIST_ADD TAR $TAR
 
@@ -438,8 +441,8 @@ AC_CONFIG_FILES([ \
   src/system/sql/InsertVariable.sql:src/system/sql/InsertVariable-in.sql \
   src/system/sql/DropUser.sql:src/system/sql/DropUser-in.sql \
   src/system/sql/DropDatabase.sql:src/system/sql/DropDatabase-in.sql \
-  configs/aiki-defs.php:configs/aiki-defs.inc \
-  configs/z-aiki.conf:configs/z-aiki.in \
+  src/configs/aiki-defs.php:src/configs/aiki-defs.inc \
+  src/configs/z-aiki.conf:src/configs/z-aiki.in \
   scripts/aiki:scripts/aiki.in \
   man/aiki.1:man/man.in \
   man/Makefile \
@@ -451,7 +454,7 @@ AC_CONFIG_FILES([ \
   desktop/aiki.directory:desktop/aiki-in.directory \
   desktop/aiki.menu:desktop/aiki-in.menu \
   desktop/Makefile \
-  configs/Makefile \
+  src/configs/Makefile \
   scripts/Makefile \
   rpm/SPECS/aiki.spec:rpm/spec.in \
   rpm/Makefile \

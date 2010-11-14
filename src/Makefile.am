@@ -26,11 +26,13 @@ aiki_src_files = \
 # Subdirectories to be built
 SUBDIRS = \
 	assets \
+	configs \
 	system
 
 # Subdirectories to distribute
 DIST_SUBDIRS = \
 	assets \
+	configs \
 	system
 
 # Additional files to remove on dist-clean

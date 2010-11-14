@@ -229,92 +229,19 @@ Before we start you need the following:
 	$system_folder_strlen =  strlen($system_folder);
 	$_SERVER["REQUEST_URI"] = str_replace("index.php", '', $_SERVER["REQUEST_URI"]);
 
-
-	$config_file = '<?php
-
-$config = array();
-
-$config["db_type"] = "'.$_POST['db_type'].'";
-$config["db_name"] = "'.$_POST['db_name'].'";
-$config["db_user"] = "'.$_POST['db_user'].'";
-$config["db_pass"] = "'.$_POST['db_pass'].'";
-$config["db_host"] = "'.$_POST['db_host'].'";
-$config["db_encoding"] = "'.$_POST['db_encoding'].'";
-$config["db_use_mysql_set_charset"] = false;
-
-//set the full path for SQLite and sqlite PDO
-$config["db_path"] = "";
-
-//sqlite PDO only
-$config["db_dsn"] = "";
-
-//set time out for deleteing db cached querires - in hours
-$config["db_cache_timeout"] = 24;
-
-//db cacheing
-$config["cache_dir"] = "";
-
-//if set to true will cache the results of sql querires to files
-$config["enable_query_cache"] = false;
-
-//use html tidy php extinsion to format the html output
-$config["html_tidy"] = false;
-$config["tidy_compress"] = false;
-$config["html_tidy_config"] = array(
- \'indent\'         => true,
- \'output-xhtml\' =>    true,
- \'wrap\' =>    \'0\',
-);
-
-//remove empty spaces and lines and have the whole html on one line
-$config["compress_output"] = false;
-
-//cache each widget individually in its own file
-$config["widget_cache"] = false;
-
-//full path to widgets cache directory in case $config["widget_cache"] was true 
-$config["widget_cache_dir"] = "";
-
-$config["css_cache"] = true;
-$config["css_cache_timeout"] = 24;
-$config["css_cache_file"] = "";
-
-//full html cache
-//full path to html cache directory
-//this will store each page in its own file
-$config["html_cache"] = false; 
-
-//time out for pages cache - in millisecond
-$config["cache_timeout"] = "86400";
-
-//session life time before auto log out 
-//if no activites from the logged in user - in millisecond
-$config["session_timeout"] = 7200;
-
-//if true will allow same username and password to login from two different IPs
-$config["allow_multiple_sessions"] = false;
-
-//register guests sessions
-//for tracking how many users are currently visiting the site
-$config["allow_guest_sessions"] = false;
-
-//enable version control system
-//this will store each change for any sql UPDATE command in aiki_revisions
-$config["save_revision_history"] = false;
-
-//store information about not found pages in aiki_redirects
-//so admin can later add redirects
-$config["register_errors"] = false;
-
-//custom 404 error page
-$config["error_404"] = "<h1>404 Page Not Found</h1>
-
-<p>This page is not found</p>
-<p>Please visit <a href=\"'.$pageURL.'\">Home page</a> so you may find what you are looking for.</p>"; 
-
-$config["debug"] = false;
-
-?>';	
+	/* Read config from file. This way the configurations can be shared with the
+	 * other installers and it's much easier to maintain one PHP configuration file */
+	$config_file = file_get_contents("$system_folder/configs/config.php");
+	if (false == $config_file){
+		die("<br />FATAL: failed to read file -> $system_folder/configs/config.php<br />");
+	}
+	$config_file = str_replace("DB_TYPE","\"".$_POST['db_type']."\"",$config_file);
+	$config_file = str_replace("DB_NAME","\"".$_POST['db_name']."\"",$config_file);
+	$config_file = str_replace("DB_USER","\"".$_POST['db_user']."\"",$config_file);
+	$config_file = str_replace("DB_PASS","\"".$_POST['db_pass']."\"",$config_file);
+	$config_file = str_replace("DB_HOST","\"".$_POST['db_host']."\"",$config_file);
+	$config_file = str_replace("DB_ENCODE","\"".$_POST['db_encoding']."\"",$config_file);
+	$config_file = str_replace("\".AIKI_SITE_URL.\"",$pageURL,$config_file);
 
 	$config_file_html = htmlspecialchars($config_file);
 	$config_file_html = nl2br($config_file_html);

@@ -29,7 +29,6 @@ aiki_doc_files = \
 # Subdirectories to be built
 SUBDIRS = \
 	src \
-	configs \
 	scripts \
 	man \
 	desktop \
@@ -38,7 +37,6 @@ SUBDIRS = \
 # Sub directories to pass to the dist build
 DIST_SUBDIRS = \
 	src \
-	configs \
 	scripts \
 	man \
 	desktop \
@@ -99,8 +97,10 @@ install-mysql-database:
 	@$(MYSQL) -v -u $(DB_USER) -p$(DB_PASS) \
 	-e "CREATE DATABASE IF NOT EXISTS $(DB_NAME) \
 	DEFAULT CHARACTER SET $(DB_ENCODE) COLLATE utf8_general_ci;" \
-	&& $(MYSQL) -B -u $(DB_USER) -p$(DB_PASS) $(DB_NAME) \
-	< $(abs_top_builddir)/configs/CreateTables.sql
+	&& $(CAT) $(abs_top_srcdir)/src/system/sql/CreateTables.sql \
+	$(abs_top_srcdir)/src/system/sql/InsertDefaults.sql \
+	$(abs_top_builddir)/src/system/sql/InsertVariable.sql \
+	| $(MYSQL) -B -u $(DB_USER) -p$(DB_PASS) $(DB_NAME)
 
 # Additional things to do on install
 install-mysql-user:
@@ -201,7 +201,6 @@ rev :
 	--exclude="$(distdir)/.bzr" \
 	--exclude="$(distdir)/build" \
 	--exclude="$(distdir)/build-aux" \
-	--exclude="$(distdir)/configs" \
 	--exclude="$(distdir)/desktop" \
 	--exclude="$(distdir)/scripts" \
 	--exclude="$(distdir)/rpm" \

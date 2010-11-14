@@ -12,4 +12,23 @@ menu, click on the following:
 
 When prompted, type in the mysql super user password. Once aiki is
 launched you can sign in using the default user name 'admin'. Leave
-the password field blank and press enter.
+the password field blank and press enter. You should set your password
+immediately. Click on the 'admin' link in upper-right corner of the
+page next to the '@' character and the 'Logout' link.
+
+-----
+
+Copyright (C) 2010 Aikilab
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
