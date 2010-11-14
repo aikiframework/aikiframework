@@ -1,3 +1,27 @@
+/* Insert default table records with variable fields for aiki
+
+ * Copyright (C) 2010 Aikilab
+
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ * Written by Bassel Safadi, Steven Garcia
+ * 
+ * IMPORTANT in between each pair of SQL statements there must
+ * exist a comment line with a precise series of dashes.
+ * These are delimiters used by system/libraries/installer.php
+ * For more info see SQL_DELIMIT in system/libraries/installer.php.
+ */
 
 INSERT INTO `aiki_config` (`config_id`, `app_id`, `config_type`, `config_data`) VALUES
 (1, 0, 'global_settings', 'a:9:{s:4:"site";s:7:"default";s:3:"url";s:@AIKI_SITE_URL_LEN@:"@AIKI_SITE_URL@";s:13:"cookie_domain";s:0:"";s:13:"default_chmod";s:4:"0777";s:11:"pretty_urls";s:1:"1";s:16:"default_language";s:7:"english";s:19:"default_time_format";s:9:"d - m - Y";s:8:"site_dir";s:3:"ltr";s:19:"language_short_name";s:2:"en";}'),
