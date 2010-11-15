@@ -130,6 +130,13 @@ uninstall-mysql-database:
 	@$(MYSQL) -v -u $(DB_SUPER_USER) -p$(DB_SUPER_USER_PASS) \
 	-e "DROP DATABASE IF EXISTS $(DB_NAME);"
 
+if !ENABLE_SIGS
+DISTCHECK_CONFIGURE_FLAGS += \
+	--disable-sigs
+RPM_CONFIG += \
+	--disable sigs
+endif
+
 if ENABLE_RPM
 DISTCHECK_CONFIGURE_FLAGS += \
 	--enable-rpm
@@ -220,6 +227,11 @@ rev :
 	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).zip > $(PACKAGE)-$@-$(REVISION).zip.shasum-$(ALGORITHM).txt
 	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).tar.gz > $(PACKAGE)-$@-$(REVISION).tar.gz.shasum-$(ALGORITHM).txt
 	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).tar.bz2 > $(PACKAGE)-$@-$(REVISION).tar.bz2.shasum-$(ALGORITHM).txt
+if ENABLE_SIGS
+	@$(GPG) -b $(PACKAGE)-$@-$(REVISION).zip
+	@$(GPG) -b $(PACKAGE)-$@-$(REVISION).tar.gz
+	@$(GPG) -b $(PACKAGE)-$@-$(REVISION).tar.bz2
+endif
 	@for f in $$($(FIND) . -name $(PACKAGE)-$@-$(REVISION).\*); do $(CHMOD) 0644 $$f; done
 	@$(ECHO) "*****************************************************************"
 	@$(ECHO) "$(PACKAGE) revision $(REVISION) archives ready for distribution:"
@@ -235,6 +247,11 @@ summod :
 	@$(SHASUM) -a $(ALGORITHM) $(distdir).zip > $(distdir).zip.shasum-$(ALGORITHM).txt
 	@$(SHASUM) -a $(ALGORITHM) $(distdir).tar.gz > $(distdir).tar.gz.shasum-$(ALGORITHM).txt
 	@$(SHASUM) -a $(ALGORITHM) $(distdir).tar.bz2 > $(distdir).tar.bz2.shasum-$(ALGORITHM).txt
+if ENABLE_SIGS
+	@$(GPG) -b $(distdir).zip
+	@$(GPG) -b $(distdir).tar.gz
+	@$(GPG) -b $(distdir).tar.bz2
+endif
 	@for f in $$($(FIND) . -name $(distdir).\*); do $(CHMOD) 0644 $$f; done
 
 # declare phony targets

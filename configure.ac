@@ -236,6 +236,21 @@ if $TEST "x$enable_rpm" == "xyes" ; then
 fi
 AM_CONDITIONAL(ENABLE_RPM, $TEST x$enable_rpm = xyes)
 featurelist="$featurelist ENABLE_RPM=$enable_rpm"
+
+AC_ARG_ENABLE([sigs],
+  [AS_HELP_STRING([--enable-sigs],
+    [Enable generation of GPG detached signatures on distribution archives [default=yes]])],
+  [enable_sigs=$enableval],
+  [enable_sigs=yes])
+if $TEST "x$enable_sigs" == "xyes" ; then
+
+  AC_ARG_VAR(GPG,[Set the GNU Privacy Guard program [default: GPG=gpg]])
+  AC_CHECK_PROG(GPG,gpg,gpg,MISSING)
+  PROG_LIST_ADD GPG $GPG
+
+fi
+AM_CONDITIONAL(ENABLE_SIGS, $TEST x$enable_sigs = xyes)
+featurelist="$featurelist ENABLE_SIGS=$enable_sigs"
 #### END OPTIONAL FEATURES
 
 #############################
