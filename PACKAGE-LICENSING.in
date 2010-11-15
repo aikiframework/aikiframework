@@ -7,7 +7,7 @@ under different licenses as follows.
 
 ezSQL
 =====
-Brief:     Class to make it very easy to deal with database connections.
+Brief:     PHP class to make it very easy to deal with database connections.
 Version:   2.03
 Author:    Justin Vincent jv@jvmultimedia.com
 Copyright: Copyright (C) 2010 Justin Vincent
@@ -46,7 +46,7 @@ Files:
 
 jQuery xslTransform
 ===================
-Brief:     Perform browser-based XSL transformations.
+Brief:     JavaScript browser-based XSL transformations.
 Version:   20071203
 Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com>
 Copyright: Copyright (c) 2006 Glyphix Studio, Inc. http://www.glyphix.com
@@ -57,7 +57,7 @@ Files:
 
 jQuery Layout
 =============
-Brief:     User interface page layout manager.
+Brief:     JavaScript user interface page layout manager.
 Version:   1.2.0
 Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com>
 Copyright: Copyright (c) 2008 Fabrizio Balliano (http://www.fabrizioballiano.net) Kevin Dalman (http://allpro.net)
@@ -68,7 +68,7 @@ Files:
 
 jQuery Form
 ===========
-Brief:     Upgrade HTML forms to use AJAX.
+Brief:     JavaScript library to upgrade HTML forms to use AJAX.
 Version:   2.47
 Author:    Mike Alsup
 Copyright: Copyright (c) 2010, Mike Alsup
@@ -79,7 +79,7 @@ Files:
 
 jQuery UI
 =========
-Brief:     JavaScript Library for user interfaces.
+Brief:     JavaScript library for user interfaces.
 Version:   1.7.2
 Author:    jQuery Team http://jquery.org/team
 Copyright: Copyright (c) 2009 AUTHORS.txt (http://jqueryui.com/about)
@@ -139,7 +139,7 @@ Files:
 
 Sarissa
 =======
-Brief:     Cross-browser wrapper for native XML APIs.
+Brief:     JavaScript cross-browser wrapper for native XML APIs.
 Version:   0.9.9.4
 Author:    Manos Batsis
 Copyright: Copyright: Manos Batsis, http://dev.abiss.gr
@@ -151,7 +151,7 @@ Files:
 
 Plupload
 ========
-Brief:     Upload via HTML5, Gears, Silverlight, Flash, BrowserPlus or normal forms.
+Brief:     PHP and JavaScript based, upload via HTML5, Gears, Silverlight, Flash, BrowserPlus or normal forms.
 Version:   1.2.4
 Author:    Developers of TinyMCE http://tinymce.moxiecode.com/
 Copyright: Copyright 2009, Moxiecode Systems AB
@@ -174,7 +174,7 @@ Files:
 
 Google Gears Init
 =================
-Brief:     The only supported way to access Google Gears.
+Brief:     JavaScript supported way to access Google Gears.
 Version:   1.2.4
 Author:    Google Inc.
 Copyright: Copyright 2007, Google Inc.
@@ -185,7 +185,7 @@ Files:
 
 BrowserPlus Gateway
 ===================
-Brief:     Gateway between user JavaScript and the BrowserPlus platform.
+Brief:     JavaScript gateway between user and the BrowserPlus platform.
 Version:   2.4.21
 Author:    Yahoo! Inc.
 Copyright: Copyright (c) 2009 Yahoo! Inc.
@@ -198,7 +198,7 @@ Files:
 
 CodeMirror
 ==========
-Brief:     In-browser code editing.
+Brief:     JavaScript based, in-browser code editing.
 Version:   0.63
 Author:    Marijn Haverbeke marijnh@gmail.com
 Copyright: Copyright (c) 2007-2010 Marijn Haverbeke
@@ -229,7 +229,7 @@ Files:
 
 ParsePHP
 ========
-Brief:     Parse function for PHP in-browser code editing.
+Brief:     JavaScript based, parse function for PHP in-browser code editing.
 Version:   0.63
 Author:    Dan Vlad Dascalescu dandv@yahoo-inc.com
 Copyright: Copyright (c) 2008-2009 Yahoo! Inc. All rights reserved.
