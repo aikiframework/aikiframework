@@ -49,6 +49,10 @@ class php
 					$php_output = $this->aiki_str_replace($php_function);
 				}
 
+				if (preg_match('/substr((.*));/Us', $php_function)){
+					$php_output = $this->aiki_substr($php_function);
+				}
+
 				if (preg_match('/if(.*) then (.*)/Us', $php_function)){
 					$php_output = $this->aiki_if_then($php_function);
 				}
@@ -95,7 +99,7 @@ class php
 
 			$class = $aiki->get_string_between($text, '$aiki->', '->');
 			$function = $aiki->get_string_between($text, '$aiki->'.$class.'->', '(');
-				
+
 			$vars_array = preg_match('/'.$function.'\((.*)\)\;$/Us', $text, $vars_match);
 			if ($vars_match[1]){
 				$vars_array = $vars_match[1];
@@ -172,6 +176,21 @@ class php
 		$string = explode(",", $string );
 
 		$output = str_replace($string[0], $string[1] , $string[2]);
+			
+		return $output;
+	}
+
+	public function aiki_substr($text){
+		global $aiki;
+
+		$string = $aiki->get_string_between($text, "substr(", ");");
+		$string = explode(",", $string );
+
+		if ($string[2]){
+			$output = substr($string[0], $string[1] , $string[2]);
+		}else{
+			$output = substr($string[0], $string[1]);
+		}
 			
 		return $output;
 	}
