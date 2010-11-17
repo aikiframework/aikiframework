@@ -33,14 +33,14 @@ class input
 		global $aiki, $layout;
 
 		foreach ($_GET as $key => $req){
-			$req = mysql_real_escape_string($req);
+			$req = addslashes($req);
 			$_GET[$key] = $req;
 		}
 
 
 		foreach ($_POST as $key => $req){
 
-			$req = mysql_real_escape_string($req);
+			$req = addslashes($req);
 			$_POST[$key] = str_replace("&#95;", "_", $req);
 
 			switch ($key){
@@ -96,7 +96,7 @@ class input
 	public function validate($data){
 
 		foreach ($data as $key => $req){
-			$req = mysql_real_escape_string($req);
+			$req = addslashes($req);
 			$data[$key] = $req;
 		}
 

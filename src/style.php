@@ -32,8 +32,8 @@ define('IN_AIKI', true);
  */
 require_once("aiki.php");
 
-$site = mysql_real_escape_string($_GET['site']);
-$widgets = mysql_real_escape_string($_GET['widgets']);
+$site = addslashes($_GET['site']);
+$widgets = addslashes($_GET['widgets']);
 
 if (!$site){
 	$site = "default";
