@@ -254,7 +254,7 @@ class CreateLayout
 		global $aiki, $db, $url, $language, $dir, $membership, $nogui, $custome_output, $config;
 
 		if (isset($_GET['page'])){
-			$page = mysql_real_escape_string($_GET['page']);
+			$page = addslashes($_GET['page']);
 		}else{
 			$page = "";
 		}
