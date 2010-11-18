@@ -368,26 +368,50 @@ class bot
 		$data = $db->get_results("select * from $tablename $orderby");
 
 		$form_fields = mysql_query('SHOW COLUMNS FROM '.$tablename) or die('cannot show columns from '.$tablename);
+		
 		if(mysql_num_rows($form_fields)) {
+			
 			$output .= "<div class='dashboard_grid_container'><ul>";
+			
+			$records_output = '';
+			$edit_delete_output = '';
+			
 			while($fields_names = mysql_fetch_row($form_fields)) {
-				$output .= "<li>";
-				$output .= "<span class='dashboard_manage_text'><b><a href=\"\">".$fields_names['0']."</a></b></span><ul>";
+				
+				if ($fields_names['0'] == $pkey){
+					$edit_delete_output .= "<li><span class='dashboard_manage_text'><b>Tools</b></span><ul>";
+				}
+				
+				$records_output .= "<li><span class='dashboard_manage_text'><b><a href=\"\">".$fields_names['0']."</a></b></span><ul>";
+
 				$i = 0;
+				
 				foreach ($data as $field_data){
+
 					if ( ($i % 2) == 0 ) {
 						$li_class="dashboard_li_even";
 					} else {
 						$li_class = "dashboard_li_odd";
 					}
 					$field_data->$fields_names['0'] = htmlspecialchars($field_data->$fields_names['0']);
-					$output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
+
+					if ($fields_names['0'] == $pkey){
+						$edit_delete_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>edit - delete</span></li>";
+					}
+
+					$records_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
+
 					$i++;
 				}
-				$output .= "</ul></li>";
-
+				
+				if ($fields_names['0'] == $pkey){
+					$edit_delete_output .= "</ul></li>";
+				}
+				
+				$records_output .= "</ul></li>";
 			}
-			$output .="</ul></div>";
+			
+			$output .= $edit_delete_output . $records_output . "</ul></div>";
 		}
 
 		return $output;
