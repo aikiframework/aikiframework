@@ -88,10 +88,24 @@ if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $con
 }else{
 
 
-	if (isset($config["compress_output"]) and $config["compress_output"]){
+	if (isset($_REQUEST['compress_output']) or (isset($config["compress_output"]) and $config["compress_output"])){
 		$html_output = preg_replace("/\<\!\-\-(.*)\-\-\>/U", "", $html_output);
-		$html_output = str_replace("\n", "", $html_output);
-		$html_output = str_replace("\r", "", $html_output);
+
+		$search = array(
+		'/\n/',			// replace end of line by a space
+		'/\>[^\S ]+/s',		// strip whitespaces after tags, except space
+		'/[^\S ]+\</s',		// strip whitespaces before tags, except space
+	 	'/(\s)+/s'		// shorten multiple whitespace sequences
+	 );
+
+	 $replace = array(
+		' ',
+		'>',
+	 	'<',
+	 	'\\1'
+	  );
+
+	  $html_output  = preg_replace($search, $replace, $html_output );
 	}
 
 	print $html_output;
@@ -112,7 +126,7 @@ if ($config['html_cache'] and isset($html_cache_file)){
 	}
 	else
 	{
-		
+
 		$full_html_input = $aiki->languages->L10n($full_html_input);
 
 		error_log ( $full_html_input, 3, $html_cache_file);
