@@ -163,6 +163,18 @@ class aiki
 		$text = str_replace('[site]', $config['site'], $text);
 		$text = str_replace("[direction]", $dir, $text);
 
+		$text = str_replace("insertedby_username", $membership->username, $text);
+		$text = str_replace("insertedby_userid", $membership->userid, $text);
+
+		$current_month = date("n");
+		$text = str_replace("current_month", $current_month, $text);
+
+		$current_year = date("Y");
+		$text = str_replace("current_year", $current_year, $text);
+
+		$current_day = date("j");
+		$text = str_replace("current_day", $current_day, $text);
+
 		if ($config['pretty_urls'] == 0){
 			$text = preg_replace('/href\=\"\[root\](.*)\"/U', 'href="[root]?pretty=\\1"', $text);
 			$text = str_replace('[root]', $config['url'], $text);

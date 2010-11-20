@@ -248,17 +248,7 @@ class records
 					case "value":
 						$post[$intwalker[0]] = $aiki->url->apply_url_on_query($intwalker[3]);
 
-						$post[$intwalker[0]] = str_replace("insertedby_username", $membership->username, $post[$intwalker[0]]);
-						$post[$intwalker[0]] = str_replace("insertedby_userid", $membership->userid, $post[$intwalker[0]]);
-
-						$current_month = date("n");
-						$post[$intwalker[0]] = str_replace("current_month", $current_month, $post[$intwalker[0]]);
-						
-						$current_year = date("Y");
-						$post[$intwalker[0]] = str_replace("current_year", $current_year, $post[$intwalker[0]]);
-						
-						$current_day = date("j");
-						$post[$intwalker[0]] = str_replace("current_day", $current_day, $post[$intwalker[0]]);
+						$post[$intwalker[0]] = $aiki->processVars($post[$intwalker[0]]);
 
 						$post[$intwalker[0]] = $aiki->url->apply_url_on_query($post[$intwalker[0]]);
 
@@ -366,6 +356,8 @@ class records
 
 			if (!isset($full_path) and isset($config["upload_path"])){
 				$full_path = $aiki->processVars($config["upload_path"]);
+			}else{
+				$full_path = $aiki->processVars($full_path);
 			}
 
 			if (isset($unique_filename) and isset($intwalker[2]) and $unique_filename == $intwalker[2] and $full_path){ //unique_filename processing
@@ -441,8 +433,8 @@ class records
 					if (!file_exists($newfile)) {
 						@$result = move_uploaded_file($tmp_filename,$newfile);
 						if (!$result) {
-
-							if (@mkdir($path,0775)){
+							
+							if (@mkdir($path,0775,true)){
 								$output_result .= "new directory created: $path";
 								@$result = move_uploaded_file($tmp_filename,$newfile);
 							}else{
