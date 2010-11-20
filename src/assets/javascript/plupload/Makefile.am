@@ -19,11 +19,11 @@
 
 # Find the source files of only the current source directory non-recursively
 aiki_src_files = \
-	$(shell find $(srcdir) -maxdepth 1 -name \*\.php -o -name \*\.js -o -name \*\.css -o -name \*\.swf)
+	$(shell find ${srcdir} -maxdepth 1 -name \*\.php -o -name \*\.js -o -name \*\.css -o -name \*\.swf)
 
 # Find the sub directories of only the current build directory non-recursively
 export aiki_sub_dirs = \
-	$(shell find -maxdepth 1 -type d | $(SED) s/\.\\/*//)
+	$(shell find -maxdepth 1 -type d | sed s/\.\\/*//)
 
 # Subdirectories to distribute and build
 DIST_SUBDIRS = $(aiki_sub_dirs)
