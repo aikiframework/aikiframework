@@ -17,17 +17,24 @@
 
 # Written by Steven Garcia
 
-# Find the source files of only the current source directory non-recursively
-aiki_src_files = \
-	$(shell find ${srcdir} -maxdepth 1 -name \*\.php)
+# The source files
+aiki_src_files =
 
-# Find the sub directories of only the current build directory non-recursively
-export aiki_sub_dirs = \
-	$(shell find -maxdepth 1 -type d | sed s/\.\\/*//)
+# Subdirectories to be built
+SUBDIRS = \
+	apps \
+	images \
+	javascript \
+	uploads \
+	extensions
 
-# Subdirectories to distribute and build
-DIST_SUBDIRS = $(aiki_sub_dirs)
-SUBDIRS = $(DIST_SUBDIRS)
+# Subdirectories to distribute
+DIST_SUBDIRS = \
+	apps \
+	images \
+	javascript \
+	uploads \
+	extensions
 
 # Additional files to distribute
 EXTRA_DIST = \

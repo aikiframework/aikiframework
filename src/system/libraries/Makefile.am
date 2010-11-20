@@ -17,17 +17,35 @@
 
 # Written by Steven Garcia
 
-# Find the source files of only the current source directory non-recursively
+# The source files
 aiki_src_files = \
-	$(shell find ${srcdir} -maxdepth 1 -name \*\.php)
+	aiki_array.php \
+	aiki_curl.php \
+	aiki_oauth.php \
+	aiki_openid.php \
+	bot.php \
+	errors.php \
+	forms.php \
+	image.php \
+	input.php \
+	installer.php \
+	languages.php \
+	membership.php \
+	output.php \
+	parser.php \
+	php.php \
+	records.php \
+	security.php \
+	sql_markup.php \
+	text.php \
+	url.php \
+	wiki.php
 
-# Find the sub directories of only the current build directory non-recursively
-export aiki_sub_dirs = \
-	$(shell find -maxdepth 1 -type d | sed s/\.\\/*//)
+# Subdirectories to be built
+SUBDIRS =
 
-# Subdirectories to distribute and build
-DIST_SUBDIRS = $(aiki_sub_dirs)
-SUBDIRS = $(DIST_SUBDIRS)
+# Subdirectories to distribute
+DIST_SUBDIRS =
 
 # Additional files to distribute
 EXTRA_DIST = \

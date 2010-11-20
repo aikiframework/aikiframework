@@ -17,17 +17,33 @@
 
 # Written by Steven Garcia
 
-# Find the source files of only the current source directory non-recursively
+# The source files
 aiki_src_files = \
-	$(shell find ${srcdir} -maxdepth 1 -name \*\.js)
+	codemirror.js \
+	editor.js \
+	highlight.js \
+	mirrorframe.js \
+	parsecss.js \
+	parsedummy.js \
+	parsehtmlmixed.js \
+	parsejavascript.js \
+	parsephphtmlmixed.js \
+	parsephp.js \
+	parsesparql.js \
+	parsexml.js \
+	select.js \
+	stringstream.js \
+	tokenizejavascript.js \
+	tokenize.js \
+	tokenizephp.js \
+	undo.js \
+	util.js
 
-# Find the sub directories of only the current build directory non-recursively
-export aiki_sub_dirs = \
-	$(shell find -maxdepth 1 -type d | sed s/\.\\/*//)
+# Subdirectories to be built
+SUBDIRS =
 
-# Subdirectories to distribute and build
-DIST_SUBDIRS = $(aiki_sub_dirs)
-SUBDIRS = $(DIST_SUBDIRS)
+# Subdirectories to distribute
+DIST_SUBDIRS =
 
 # Additional files to distribute
 EXTRA_DIST = \

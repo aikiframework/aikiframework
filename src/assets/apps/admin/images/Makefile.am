@@ -17,17 +17,24 @@
 
 # Written by Steven Garcia
 
-# Find the source files of only the current source directory non-recursively
+# The source files
 aiki_src_files = \
-	$(shell find ${srcdir} -maxdepth 1 -name \*\.png -o -name \*\.gif)
+	accordeon_active.png \
+	accordeon_default.png \
+	aiki-icon.png \
+	input_bg.png \
+	input_button_active.png \
+	input_button.png \
+	logo.png \
+	vgrabber.gif
 
-# Find the sub directories of only the current build directory non-recursively
-export aiki_sub_dirs = \
-	$(shell find -maxdepth 1 -type d | sed s/\.\\/*//)
+# Subdirectories to be built
+SUBDIRS = \
+	icons
 
-# Subdirectories to distribute and build
-DIST_SUBDIRS = $(aiki_sub_dirs)
-SUBDIRS = $(DIST_SUBDIRS)
+# Subdirectories to distribute
+DIST_SUBDIRS = \
+	icons
 
 # Additional files to distribute
 EXTRA_DIST = \
