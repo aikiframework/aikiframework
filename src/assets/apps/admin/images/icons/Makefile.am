@@ -17,30 +17,17 @@
 
 # Written by Steven Garcia
 
-# The source files
+# Find the source files of only the current source directory non-recursively
 aiki_src_files = \
-	application_form.png \
-	bullet_go.png \
-	chart_organisation.png \
-	database.png \
-	group.png \
-	images.png \
-	layout_add.png \
-	layout_content.png \
-	link_add.png \
-	link.png \
-	page_gear.png \
-	page_link.png \
-	shape_square.png \
-	textfield_rename.png \
-	user.png \
-	world.png
+	$(shell $(FIND) $(srcdir) -maxdepth 1 -name \*\.png)
 
-# Subdirectories to be built
-SUBDIRS =
+# Find the sub directories of only the current build directory non-recursively
+export aiki_sub_dirs = \
+	$(shell $(FIND) -maxdepth 1 -type d | $(SED) s/\.\\/*//)
 
-# Subdirectories to distribute
-DIST_SUBDIRS =
+# Subdirectories to distribute and build
+DIST_SUBDIRS = $(aiki_sub_dirs)
+SUBDIRS = $(DIST_SUBDIRS)
 
 # Additional files to distribute
 EXTRA_DIST = \

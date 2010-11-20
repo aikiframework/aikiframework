@@ -17,22 +17,17 @@
 
 # Written by Steven Garcia
 
-# The source files
+# Find the source files of only the current source directory non-recursively
 aiki_src_files = \
-	backgrounds.gif \
-	buttons-disabled.png \
-	buttons.png \
-	delete.gif \
-	done.gif \
-	error.gif \
-	throbber.gif \
-	transp50.png
+	$(shell $(FIND) $(srcdir) -maxdepth 1 -name \*\.png -o -name \*\.gif)
 
-# Subdirectories to be built
-SUBDIRS =
+# Find the sub directories of only the current build directory non-recursively
+export aiki_sub_dirs = \
+	$(shell $(FIND) -maxdepth 1 -type d | $(SED) s/\.\\/*//)
 
-# Subdirectories to distribute
-DIST_SUBDIRS =
+# Subdirectories to distribute and build
+DIST_SUBDIRS = $(aiki_sub_dirs)
+SUBDIRS = $(DIST_SUBDIRS)
 
 # Additional files to distribute
 EXTRA_DIST = \

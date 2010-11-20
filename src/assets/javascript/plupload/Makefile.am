@@ -17,23 +17,17 @@
 
 # Written by Steven Garcia
 
-# The source files
+# Find the source files of only the current source directory non-recursively
 aiki_src_files = \
-	browserplus-min.js \
-	gears_init.js \
-	jquery.plupload.queue.min.js \
-	plupload.flash.swf \
-	plupload.full.min.js \
-	plupload.queue.css \
-	upload.php
+	$(shell $(FIND) $(srcdir) -maxdepth 1 -name \*\.php -o -name \*\.js -o -name \*\.css -o -name \*\.swf)
 
-# Subdirectories to be built
-SUBDIRS = \
-	img
+# Find the sub directories of only the current build directory non-recursively
+export aiki_sub_dirs = \
+	$(shell $(FIND) -maxdepth 1 -type d | $(SED) s/\.\\/*//)
 
-# Subdirectories to distribute
-DIST_SUBDIRS = \
-	img
+# Subdirectories to distribute and build
+DIST_SUBDIRS = $(aiki_sub_dirs)
+SUBDIRS = $(DIST_SUBDIRS)
 
 # Additional files to distribute
 EXTRA_DIST = \

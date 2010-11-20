@@ -228,9 +228,9 @@ rev :
 	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).tar.gz > $(PACKAGE)-$@-$(REVISION).tar.gz.shasum-$(ALGORITHM).txt
 	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).tar.bz2 > $(PACKAGE)-$@-$(REVISION).tar.bz2.shasum-$(ALGORITHM).txt
 if ENABLE_SIGS
-	@$(GPG) -b $(PACKAGE)-$@-$(REVISION).zip
-	@$(GPG) -b $(PACKAGE)-$@-$(REVISION).tar.gz
-	@$(GPG) -b $(PACKAGE)-$@-$(REVISION).tar.bz2
+	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(REVISION).zip
+	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(REVISION).tar.gz
+	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(REVISION).tar.bz2
 endif
 	@for f in $$($(FIND) . -name $(PACKAGE)-$@-$(REVISION).\*); do $(CHMOD) 0644 $$f; done
 	@$(ECHO) "*****************************************************************"
@@ -248,9 +248,9 @@ summod :
 	@$(SHASUM) -a $(ALGORITHM) $(distdir).tar.gz > $(distdir).tar.gz.shasum-$(ALGORITHM).txt
 	@$(SHASUM) -a $(ALGORITHM) $(distdir).tar.bz2 > $(distdir).tar.bz2.shasum-$(ALGORITHM).txt
 if ENABLE_SIGS
-	@$(GPG) -b $(distdir).zip
-	@$(GPG) -b $(distdir).tar.gz
-	@$(GPG) -b $(distdir).tar.bz2
+	@$(GPG) --batch --yes -qb $(distdir).zip
+	@$(GPG) --batch --yes -qb $(distdir).tar.gz
+	@$(GPG) --batch --yes -qb $(distdir).tar.bz2
 endif
 	@for f in $$($(FIND) . -name $(distdir).\*); do $(CHMOD) 0644 $$f; done
 

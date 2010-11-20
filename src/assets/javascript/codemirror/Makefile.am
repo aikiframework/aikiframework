@@ -17,18 +17,17 @@
 
 # Written by Steven Garcia
 
-# The source files
-aiki_src_files =
+# Find the source files of only the current source directory non-recursively
+aiki_src_files = \
+	$(shell $(FIND) $(srcdir) -maxdepth 1 -name \*\.js)
 
-# Subdirectories to be built
-SUBDIRS = \
-	css \
-	js
+# Find the sub directories of only the current build directory non-recursively
+export aiki_sub_dirs = \
+	$(shell $(FIND) -maxdepth 1 -type d | $(SED) s/\.\\/*//)
 
-# Subdirectories to distribute
-DIST_SUBDIRS = \
-	css \
-	js
+# Subdirectories to distribute and build
+DIST_SUBDIRS = $(aiki_sub_dirs)
+SUBDIRS = $(DIST_SUBDIRS)
 
 # Additional files to distribute
 EXTRA_DIST = \

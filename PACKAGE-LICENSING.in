@@ -13,6 +13,7 @@ Author:    Justin Vincent jv@jvmultimedia.com
 Copyright: Copyright (C) 2010 Justin Vincent
 License:   LGPL http://www.gnu.org/licenses/lgpl.html
 Link:      http://justinvincent.com/ezsql
+Download:  http://justinvincent.com/wp-content/uploads/2010/10/ez_sql_2.05.zip
 Files:
 @PKG_DATA_DIR@/system/database/index.php
 @PKG_DATA_DIR@/system/database/mssql.php
@@ -30,6 +31,7 @@ Author:    jQuery Team http://jquery.org/team
 Copyright: Copyright 2010, John Resig
 License:   Dual MIT or GPLv2 http://jquery.org/license
 Link:      http://jquery.com/
+Download:  http://code.jquery.com/jquery-1.4.4.js
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
 
@@ -41,6 +43,8 @@ Author:    The Dojo Foundation http://www.dojofoundation.org/
 Copyright: Copyright 2010, The Dojo Foundation
 License:   MIT, BSD, and GPL https://github.com/jeresig/sizzle/blob/master/LICENSE
 Link:      http://sizzlejs.com/
+Download:  http://github.com/jeresig/sizzle/raw/master/sizzle.js
+Download:  http://github.com/jeresig/sizzle/zipball/master
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-1.4.2.min.js
 
@@ -52,6 +56,7 @@ Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com
 Copyright: Copyright (c) 2006 Glyphix Studio, Inc. http://www.glyphix.com
 License:   MIT http://www.opensource.org/licenses/mit-license.php
 Link:      http://jquery.glyphix.com/
+Download:  http://jquery.glyphix.com/jquery.xslTransform/jquery.xslTransform.package.zip
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.xslt.js
 
@@ -63,6 +68,7 @@ Author:    Brad Brizendine <brizbane@gmail.com>, Matt Antone <antone@glyphix.com
 Copyright: Copyright (c) 2008 Fabrizio Balliano (http://www.fabrizioballiano.net) Kevin Dalman (http://allpro.net)
 License:   Dual MIT or GPL http://jquery.org/license
 Link:      http://layout.jquery-dev.net/
+Download:  http://layout.jquery-dev.net/download/jquery.layout.all-1.2.0.zip
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.layout.min.js
 
@@ -74,6 +80,8 @@ Author:    Mike Alsup
 Copyright: Copyright (c) 2010, Mike Alsup
 License:   Dual MIT or GPL http://jquery.org/license
 Link:      http://malsup.com/jquery/form/
+Download:  https://github.com/malsup/form/raw/master/jquery.form.js
+Download:  https://github.com/malsup/form/tarball/master
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jquery.form.js
 
@@ -85,6 +93,8 @@ Author:    jQuery Team http://jquery.org/team
 Copyright: Copyright (c) 2009 AUTHORS.txt (http://jqueryui.com/about)
 License:   Dual MIT or GPL http://jquery.org/license
 Link:      http://jqueryui.com/
+Download:  http://jqueryui.com/download
+Download:  http://jqueryui.com/download/jquery-ui-1.8.6.custom.zip
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/jquery-ui-1.7.2.custom.min.js
 @PKG_DATA_DIR@/assets/javascript/jquery/css/smoothness/jquery-ui-1.7.1.custom.css
@@ -110,6 +120,7 @@ Author:    Ivan Bozhanov
 Copyright: Copyright (c) 2009 Ivan Bozhanov (vakata.com)
 License:   Dual MIT or GPL http://jquery.org/license
 Link:      http://jstree.com/
+Download:  http://jstree.googlecode.com/files/jsTree.v.1.0rc2.zip
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/css.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/tree_component.css
@@ -145,6 +156,7 @@ Author:    Manos Batsis
 Copyright: Copyright: Manos Batsis, http://dev.abiss.gr
 License:   Dual ASL 2.0 or GPLv2+ or LGPLv2+ http://dev.abiss.gr/sarissa/licenses/asl.txt
 Link:      http://dev.abiss.gr/sarissa
+Download:  http://sourceforge.net/projects/sarissa/files/sarissa/Sarissa 0.9.9.5 (full)/sarissa-full-0.9.9.5.zip
 Files:
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa_ieemu_xpath.js
 @PKG_DATA_DIR@/assets/javascript/jquery/plugins/jstree/sarissa.js
@@ -157,6 +169,7 @@ Author:    Developers of TinyMCE http://tinymce.moxiecode.com/
 Copyright: Copyright 2009, Moxiecode Systems AB
 License:   GPLv2 http://www.plupload.com/license.php
 Link:      http://www.plupload.com/
+Download:  http://www.plupload.com/download.php
 Files:
 @PKG_DATA_DIR@/assets/javascript/plupload/jquery.plupload.queue.min.js
 @PKG_DATA_DIR@/assets/javascript/plupload/plupload.full.min.js
@@ -198,12 +211,13 @@ Files:
 
 CodeMirror
 ==========
-Brief:     JavaScript based, in-browser code editing.
+Brief:     In-browser code editing JavaScript library.
 Version:   0.63
 Author:    Marijn Haverbeke marijnh@gmail.com
 Copyright: Copyright (c) 2007-2010 Marijn Haverbeke
 License:   zlib http://codemirror.net/LICENSE
 Link:      http://codemirror.net/
+Download:  http://codemirror.net/codemirror-0.63.zip
 Files:
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/csscolors.css
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/docs.css
@@ -235,6 +249,7 @@ Author:    Dan Vlad Dascalescu dandv@yahoo-inc.com
 Copyright: Copyright (c) 2008-2009 Yahoo! Inc. All rights reserved.
 License:   BSD 3-clause no advertising https://github.com/marijnh/CodeMirror/blob/master/contrib/php/LICENSE
 Link:      https://github.com/marijnh/CodeMirror/tree/master/contrib/php/
+Download:  http://codemirror.net/codemirror-0.63.zip
 Files:
 @PKG_DATA_DIR@/assets/javascript/codemirror/css/phpcolors.css
 @PKG_DATA_DIR@/assets/javascript/codemirror/js/parsephp.js
