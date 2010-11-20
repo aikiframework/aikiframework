@@ -332,7 +332,7 @@ class bot
 	}
 
 	function DataGrid($form_id){
-		global $db;
+		global $db, $config, $aiki;
 
 		$table_info = $db->get_row("select form_table, form_array from aiki_forms where form_table not rlike 'aiki_' and id = '$form_id'");
 		$tablename = $table_info->form_table;
@@ -368,24 +368,24 @@ class bot
 		$data = $db->get_results("select * from $tablename $orderby");
 
 		$form_fields = mysql_query('SHOW COLUMNS FROM '.$tablename) or die('cannot show columns from '.$tablename);
-		
+
 		if(mysql_num_rows($form_fields)) {
-			
+
 			$output .= "<div class='dashboard_grid_container'><ul>";
-			
+
 			$records_output = '';
 			$edit_delete_output = '';
-			
+
 			while($fields_names = mysql_fetch_row($form_fields)) {
-				
+
 				if ($fields_names['0'] == $pkey){
 					$edit_delete_output .= "<li><span class='dashboard_manage_text'><b>Tools</b></span><ul>";
 				}
-				
+
 				$records_output .= "<li><span class='dashboard_manage_text'><b><a href=\"\">".$fields_names['0']."</a></b></span><ul>";
 
 				$i = 0;
-				
+
 				foreach ($data as $field_data){
 
 					if ( ($i % 2) == 0 ) {
@@ -396,23 +396,25 @@ class bot
 					$field_data->$fields_names['0'] = htmlspecialchars($field_data->$fields_names['0']);
 
 					if ($fields_names['0'] == $pkey){
-						$edit_delete_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>edit - delete</span></li>";
+						$edit_delete_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'><a href='".$config['url']."dashboard/edit/(!(2)!)/".$field_data->$fields_names['0']."'>edit</a> - <a href='".$config['url']."dashboard/delete/(!(2)!)/".$field_data->$fields_names['0']."'>delete</a></span></li>";
 					}
 
 					$records_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
 
 					$i++;
 				}
-				
+
 				if ($fields_names['0'] == $pkey){
 					$edit_delete_output .= "</ul></li>";
 				}
-				
+
 				$records_output .= "</ul></li>";
 			}
-			
+
 			$output .= $edit_delete_output . $records_output . "</ul></div>";
 		}
+
+		$output = $aiki->url->apply_url_on_query($output);
 
 		return $output;
 	}

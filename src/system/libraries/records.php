@@ -433,7 +433,6 @@ class records
 					if (!file_exists($newfile)) {
 						@$result = move_uploaded_file($tmp_filename,$newfile);
 						if (!$result) {
-							
 							if (@mkdir($path,0775,true)){
 								$output_result .= "new directory created: $path";
 								@$result = move_uploaded_file($tmp_filename,$newfile);
