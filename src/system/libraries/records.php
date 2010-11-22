@@ -994,10 +994,10 @@ class records
 							$output = '
 <script type="text/javascript">
 $(function () { 
-$(".editready_'.$primary_value.$field.'").live("click", function () {
+$(".edit_ready_'.$primary_value.$field.'").live("click", function () {
 var htmldata = $(this).html();
 $(this).html(\''.$select_output.'<br /><button id="button_'.$primary_value.$field.'">Save</button>\');
-$(this).removeClass(\'editready_'.$primary_value.$field.'\');
+$(this).removeClass(\'edit_ready_'.$primary_value.$field.'\');
 $(this).addClass(\'edit_in_progress'.$primary_value.$field.'\');
 });
 ';
@@ -1008,7 +1008,7 @@ $("#button_'.$primary_value.$field.'").live("click", function () {
 var htmldata = $("#'.$primary_value.$field.' select").val();
 $.post("?noheaders=true&nogui=true&widget=0",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
 $("div #'.$primary_value.$field.'").removeClass(\'edit_in_progress'.$primary_value.$field.'\');
-$("div #'.$primary_value.$field.'").addClass(\'editready_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").addClass(\'edit_ready_'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").html(htmldata);
 });
 
@@ -1021,10 +1021,10 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 							$output = '
 <script type="text/javascript">
 $(function () { 
-$(".editready_'.$primary_value.$field.'").live("click", function () {
+$(".edit_ready_'.$primary_value.$field.'").live("click", function () {
 var htmldata = $(this).html();
 $(this).html(\'<textarea>\' + htmldata + \'</textarea><br /><button id="button_'.$primary_value.$field.'">Save</button> <button id="cancel_'.$primary_value.$field.'">Cancel</button>\');
-$(this).removeClass(\'editready_'.$primary_value.$field.'\');
+$(this).removeClass(\'edit_ready_'.$primary_value.$field.'\');
 $(this).addClass(\'edit_in_progress'.$primary_value.$field.'\');
 });
 ';
@@ -1033,7 +1033,7 @@ $(this).addClass(\'edit_in_progress'.$primary_value.$field.'\');
 $("#cancel_'.$primary_value.$field.'").live("click", function () {
 var originaldata = $("#'.$primary_value.$field.' textarea").text();
 $("div #'.$primary_value.$field.'").removeClass(\'edit_in_progress'.$primary_value.$field.'\');
-$("div #'.$primary_value.$field.'").addClass(\'editready_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").addClass(\'edit_ready_'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").html(originaldata);
 });
 
@@ -1043,7 +1043,7 @@ var originaldata = $("#'.$primary_value.$field.' textarea").text();
 if (htmldata != originaldata){
 $.post("?noheaders=true&nogui=true&widget=0",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
 $("div #'.$primary_value.$field.'").removeClass(\'edit_in_progress'.$primary_value.$field.'\');
-$("div #'.$primary_value.$field.'").addClass(\'editready_'.$primary_value.$field.'\');
+$("div #'.$primary_value.$field.'").addClass(\'edit_ready_'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").html(htmldata);
 });
 }
@@ -1056,7 +1056,7 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 
 						$output = str_replace("\n", '', $output);
 
-						$output .= '<div id="'.$primary_value.$field.'" class="editready_'.$primary_value.$field.' editinplace">'.$widget_value->$field.'</div>';
+						$output .= '<div id="'.$primary_value.$field.'" class="edit_ready_'.$primary_value.$field.' edit_in_place">'.$widget_value->$field.'</div>';
 
 					}
 				}else{
