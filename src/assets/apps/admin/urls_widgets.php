@@ -71,10 +71,10 @@ foreach ($get_urls as $url){
 
 				if ($widget->father_widget == 0 or $widget->display_urls == $url->display_urls){
 					$used[$widget->id] = $widget->id;
-					echo '<item parent_id="'.$url->display_urls.'" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->widget_name.']]></name></content></item>';
+					echo '<item parent_id="'.$url->display_urls.'" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->id.' - '.$widget->widget_name.']]></name></content></item>';
 				}else{
 					$used[$widget->id] = $widget->id;
-					echo '<item parent_id="'.$widget->father_widget.'" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->widget_name.']]></name></content></item>';
+					echo '<item parent_id="'.$widget->father_widget.'" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->id.' - '.$widget->widget_name.']]></name></content></item>';
 				}
 			}
 
