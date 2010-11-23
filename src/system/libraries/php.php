@@ -46,27 +46,28 @@ class php
 			foreach ($matchs[1] as $php_function){
 
 				if (preg_match('/eval((.*));/Us', $php_function)){
-					$php_output = $this->aiki_eval($php_function);
-				}
-
-				if (preg_match('/str_replace((.*));/Us', $php_function)){
-					$php_output = $this->aiki_str_replace($php_function);
-				}
-
-				if (preg_match('/substr((.*));/Us', $php_function)){
-					$php_output = $this->aiki_substr($php_function);
-				}
-
-				if (preg_match('/if(.*) then (.*)/Us', $php_function)){
-					$php_output = $this->aiki_if_then($php_function);
-				}
-
-				if (preg_match('/htmlspecialchars\((.*)\)/Us', $php_function)){
-					$php_output = $this->aiki_htmlspecialchars($php_function);
-				}
-
-				if (preg_match('/\$aiki\-\>(.*)\-\>(.*)\((.*)\)\;/Us', $php_function)){
-					$php_output = $this->aiki_function($php_function);
+					$php_output = $this->aiki_eval('<php '.$php_function.' php>');
+				}else{
+	
+					if (preg_match('/str_replace((.*));/Us', $php_function)){
+						$php_output = $this->aiki_str_replace($php_function);
+					}
+	
+					if (preg_match('/substr((.*));/Us', $php_function)){
+						$php_output = $this->aiki_substr($php_function);
+					}
+	
+					if (preg_match('/if(.*) then (.*)/Us', $php_function)){
+						$php_output = $this->aiki_if_then($php_function);
+					}
+	
+					if (preg_match('/htmlspecialchars\((.*)\)/Us', $php_function)){
+						$php_output = $this->aiki_htmlspecialchars($php_function);
+					}
+	
+					if (preg_match('/\$aiki\-\>(.*)\-\>(.*)\((.*)\)\;/Us', $php_function)){
+						$php_output = $this->aiki_function($php_function);
+					}
 				}
 
 				$text = str_replace("<php $php_function php>", $php_output , $text);
@@ -85,7 +86,7 @@ class php
 	public function aiki_eval($text){
 		global $aiki;
 
-		$code = $aiki->get_string_between($text, "eval(", ")");
+		$code = $aiki->get_string_between($text, '<php eval(', '); php>');
 
 		$result = eval($code);
 			
