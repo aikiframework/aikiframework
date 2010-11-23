@@ -45,6 +45,10 @@ class php
 
 			foreach ($matchs[1] as $php_function){
 
+				if (preg_match('/eval((.*));/Us', $php_function)){
+					$php_output = $this->aiki_eval($php_function);
+				}
+
 				if (preg_match('/str_replace((.*));/Us', $php_function)){
 					$php_output = $this->aiki_str_replace($php_function);
 				}
@@ -70,6 +74,22 @@ class php
 		}
 
 		return $text;
+	}
+
+	/**
+	 * Evaluate a string as PHP code.
+	 * 
+	 * @param   string $text The complete PHP statement such as: eval(echo "hello";);
+	 * @return  mixed $result Returns NULL unless return is called in the evaluated code, in which case the value passed to return is returned. If there is a parse error in the evaluated code, eval() returns FALSE and execution of the following code continues normally
+	 */
+	public function aiki_eval($text){
+		global $aiki;
+
+		$code = $aiki->get_string_between($text, "eval(", ")");
+
+		$result = eval($code);
+			
+		return $result;
 	}
 
 	public function aiki_function($text){
