@@ -52,11 +52,11 @@ class aiki
 
 		if (file_exists($system_folder.'/system/libraries/'.$class.'.php')){
 
-			require($system_folder.'/system/libraries/'.$class.'.php');
+			require_once($system_folder.'/system/libraries/'.$class.'.php');
 
 		}elseif(file_exists($system_folder.'/assets/extensions/'.$class.'.php')){
 
-			require($system_folder.'/assets/extensions/'.$class.'.php');
+			require_once($system_folder.'/assets/extensions/'.$class.'.php');
 
 		}else{
 
