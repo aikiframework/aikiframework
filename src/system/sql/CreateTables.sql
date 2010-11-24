@@ -239,12 +239,14 @@ CREATE TABLE IF NOT EXISTS `aiki_widgets` (
   `is_admin` tinyint(1) NOT NULL,
   `if_authorized` text NOT NULL,
   `permissions` text NOT NULL,
-  `widget_privilege` varchar(255) NOT NULL,  
   `remove_container` int(1) NOT NULL,
   `widget_cache_timeout` int(11) NOT NULL,
   `custome_output` int(1) NOT NULL,
   `custome_header` text NOT NULL,
   `is_active` int(1) NOT NULL,
+  `widget_owner` int(9) unsigned NOT NULL default '2',
+  `widgetgrouplevel` int(11) NOT NULL default '1',
+  `widget_privilege` varchar(1) NOT NULL default 'w',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
 
