@@ -239,6 +239,7 @@ CREATE TABLE IF NOT EXISTS `aiki_widgets` (
   `is_admin` tinyint(1) NOT NULL,
   `if_authorized` text NOT NULL,
   `permissions` text NOT NULL,
+  `widget_privilege` varchar(255) NOT NULL,  
   `remove_container` int(1) NOT NULL,
   `widget_cache_timeout` int(11) NOT NULL,
   `custome_output` int(1) NOT NULL,
