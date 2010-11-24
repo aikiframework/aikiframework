@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `aiki_dictionary` (
   `lang_german` text NOT NULL,
   `lang_chinese` text NOT NULL,
   PRIMARY KEY  (`term_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
 
 -- ------------------------------------------------------
 

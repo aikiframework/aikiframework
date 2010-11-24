@@ -206,7 +206,7 @@ class records
 			}
 
 			if (isset($get_permission_and_man_info[2]) and $get_permission_and_man_info[2] == "true" and !$post[$intwalker[0]]){
-				$output_result .= "__warning__ Please fill $intwalker[1]<br />";
+				$output_result .= "__warning__ __please_fill__ $intwalker[1]<br />";
 				$this->stop = true;
 			}
 
@@ -232,7 +232,7 @@ class records
 
 					case "password":
 						if (!$post[$intwalker[0]]){
-							$output_result .= "<b>Please enter a password</b><br />";
+							$output_result .= "__please_enter_a_password__";
 							$this->stop = true;
 						}
 
@@ -265,7 +265,7 @@ class records
 					case "email":
 
 						if (!$aiki->text->is_valid("email",$post[$intwalker[0]])){
-							$output_result .= "<b>The email address is not valid</b><br />";
+							$output_result .= "__the_email_address_is_not_valid__";
 							$this->stop = true;
 						}
 
@@ -282,7 +282,7 @@ class records
 
 						if ($this->record_exists($post[$intwalker[0]], $tablename, $intwalker[0])){
 
-							$output_result .= "<b>This value is already in use</b><br />";
+							$output_result .= "__this_value_is_already_in_use__";
 							$this->stop = true;
 						}
 						break;
@@ -392,7 +392,7 @@ class records
 
 					$tmp_filesize = filesize($tmp_filename);
 					if ($tmp_filesize == 0){
-						return "an error occurred while uploading 0 byte file size, please go back and try again";
+						return "__error_while_uploading__";
 					}
 
 					if (!isset($config['allowed_extensions'])){
@@ -401,7 +401,7 @@ class records
 
 					if (!preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$name)){
 
-						return "Not valid filename";
+						return "__not_valid_filename__";
 
 					}
 
@@ -414,7 +414,7 @@ class records
 					$exists_filename = $this->file_exists_sha1($tablename, $this->checksum_sha1);
 					if ($exists_filename){
 
-						return "Sorry the same file is already uploaded $exists_filename";
+						return "__file_is_already_uploaded__ $exists_filename";
 					}
 
 					//check if filename already exists
@@ -434,10 +434,10 @@ class records
 						@$result = move_uploaded_file($tmp_filename,$newfile);
 						if (!$result) {
 							if (@mkdir($path,0775,true)){
-								$output_result .= "new directory created: $path";
+								$output_result .= "__new_directory_created__ $path";
 								@$result = move_uploaded_file($tmp_filename,$newfile);
 							}else{
-								return "can't upload file. folder not found";
+								return "__folder_not_found__";
 							}
 						}
 
@@ -445,10 +445,10 @@ class records
 						//TODO: keep original file name for insert into original_filename field
 
 					} else {
-						$output_result .=( "Sorry, but that file '$newfile' already exists.");
+						$output_result .=( "__sorry__ __the_file__ '$newfile' __already_exists__");
 					}
 				}else{
-					return "Please choose a file to upload";
+					return "__please_choose_a_file_to_upload__";
 				}
 
 				$post[$intwalker[0]] = $name;
@@ -514,13 +514,13 @@ class records
 								$insertResult = $db->query($multi_files_query);
 								$num_of_uploaded_files++;
 							}else{
-								$not_uploaded_output .= "$plupload_files[$i] <small>(File already exists)</small><br />";
+								$not_uploaded_output .= "$plupload_files[$i] __file_already_exists__";
 							}
 						}else{
-							$not_uploaded_output .= "$plupload_files[$i] <small>(Not allowed file name)</small><br />";
+							$not_uploaded_output .= "$plupload_files[$i] __not_allowed_file_name__";
 						}
 					}else{
-						$not_uploaded_output .= "$plupload_files[$i] <small>(File upload fail)</small><br />";
+						$not_uploaded_output .= "$plupload_files[$i] __file_upload_fail__";
 					}
 				}
 			}else{
@@ -561,15 +561,15 @@ class records
 
 			if (isset($insertResult)){
 
-				$output_result .= "__added_successfully__<br />";
+				$output_result .= "__added_successfully__";
 
 				if (isset($num_of_uploaded_files) and $num_of_uploaded_files){
-					$output_result .= "uploaded <b>$num_of_uploaded_files</b> files out of <b>$total_uploaded_files</b> selected files<br /><br />";
-					$output_result .= "<b>Uploaded files:</b><br />".$files_names_output;
+					$output_result .= "__uploaded__ <b>$num_of_uploaded_files</b> __files_out_of__ <b>$total_uploaded_files</b> __selected_files__";
+					$output_result .= "__uploaded_files__".$files_names_output;
 				}
 
 				if (isset($not_uploaded_output) and $not_uploaded_output){
-					$output_result .= "<br /><b>NOT uploaded files:</b><br />".$not_uploaded_output;
+					$output_result .= "__not_uploaded_files__".$not_uploaded_output;
 				}
 
 				if ($send_email){
@@ -606,14 +606,14 @@ class records
 
 
 				if (isset($filename)){
-					$output_result .= "Filename:<br />";
+					$output_result .= "__filename__";
 					$output_result .= "<p dir='ltr'>".$name."</p>";
 				}
 			}else{
-				$output_result = "__error_inserting_into_database__<br>";
+				$output_result = "__error_inserting_into_database__";
 				$output_result .= "Nothing uploaded <br />";
 				if (isset($not_uploaded_output) and $not_uploaded_output){
-					$output_result .= "<br /><b>NOT uploaded files:</b><br />".$not_uploaded_output;
+					$output_result .= "__not_uploaded_files__".$not_uploaded_output;
 				}
 			}
 
@@ -684,7 +684,7 @@ class records
 		global $db;
 
 		if (!$recordid){
-			return "Fatel Error: No primary key, nothing to do";
+			return "__no_primary_key__";
 		}
 
 		if (!isset($confirm) or $confirm != "yes"){
@@ -693,13 +693,13 @@ class records
 			$result .= (" From: ");
 			$result .= ("<b>$tablename</b> ?");
 			$result .= ("<br />");
-			$result .= ("<a href=\"index.php?language=$_GET[language]&module=admin&operators=$_GET[operators]&op=del&do=del&pkey=$pkeyexploded[0]:$pkeyexploded[1]:yes&extras=$extras\">Yes</a> | <a href=\"\">No</a>");
+			$result .= ("<a href=\"\">__yes__</a> | <a href=\"\">__no__</a>");
 		}else{
 
 			$delete = $db->query("delete from $tablename where $pkey=".$recordid);
 
 			if ($tablename){
-				$result = ("Record <b>#$recordid</b> Deleted from <b>$tablename</b>");
+				$result = ("__record__ <b>#$recordid</b> __deleted_from__ <b>$tablename</b>");
 			}
 		}
 
@@ -906,7 +906,7 @@ class records
 
 			//$this->unlockdocument($pkey, $postedpkey, $tablename);
 		}else{
-			$output_result = "Faild to edit record $record_id in $tablename";
+			$output_result = "__faild_to_edit_record__ $record_id __in__ $tablename";
 		}
 
 		return $output_result;
@@ -1060,7 +1060,7 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 
 					}
 				}else{
-					$output = 'error: wrong table name';
+					$output = '__wrong_table_name__';
 				}
 
 
