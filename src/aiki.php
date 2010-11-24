@@ -91,7 +91,7 @@ $membership = $aiki->load("membership");
 
 
 if(isset($_GET['site'])){
-	$site=$_GET['site'];
+	$site=addslashes($_GET['site']);
 }else{
 	$site = $config['site'];
 }
