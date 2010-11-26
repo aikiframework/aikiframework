@@ -37,10 +37,8 @@ class aiki
 	public function load($class){
 		global $system_folder;
 
-		$objects = array();
-
 		if (isset($this->$class)){
-			return $objects[$class];
+			return $this->$class;
 		}
 
 		if (file_exists($system_folder.'/system/libraries/'.$class.'.php')){
@@ -57,12 +55,11 @@ class aiki
 
 		}
 
-		$objects[$class] = new $class();
+		$object = new $class();
 
-		$this->$class = $objects[$class];
-
-		return $objects[$class];
-
+		$this->$class = $object;
+			
+		return $object;
 	}
 
 
