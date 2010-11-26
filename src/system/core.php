@@ -28,13 +28,6 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki
 {
 
-	//stores the config data after getting them from config.php and db.table aiki_config
-	private $aikiarray;
-
-	//stores the keys of config data after getting them from config.php and db.table aiki_config
-	private $array_keys;
-
-
 	/**
 	 * Loads an aiki library.
 	 *
@@ -73,6 +66,7 @@ class aiki
 	}
 
 
+
 	/**
 	 * Add db.table aiki_config data to config array
 	 *
@@ -83,23 +77,15 @@ class aiki
 		global $db;
 
 		$settings = $db->get_results("SELECT config_data FROM aiki_config");
-		$i=0;
-		foreach ( $settings as $setting_group )
-		{
-			$this->aikiarray = @unserialize($setting_group->config_data);
-			if (is_array($this->aikiarray)){
-				$arrykeys = array_keys($this->aikiarray);
-				foreach($this->aikiarray as $field)
-				{
-					$config[$arrykeys[$i]] = $field;
-					$i++;
-				}
+		foreach ( $settings as $setting_group ){
+			$temp = @unserialize($setting_group->config_data);
+			if (is_array($temp)){
+				$config= array_merge($config,$temp );
 			}
-			$i=0;
 		}
+
 		return $config;
 	}
-
 
 	/**
 	 * Get a String that is between two delimiters.
@@ -171,7 +157,7 @@ class aiki
 		"current_year" => $current_year,
 		"current_day" => $current_day
 		);
-		
+
 		$text= strtr ( $text, $aReplace );
 
 		if ($config['pretty_urls'] == 0){
