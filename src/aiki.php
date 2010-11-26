@@ -23,11 +23,8 @@
 define('IN_AIKI', true);
 
 //try to determine the full-server path
-if (function_exists('realpath') AND @realpath(dirname(__FILE__)) !== FALSE)
-{
-	$system_folder = realpath(dirname(__FILE__));
+$system_folder = realpath(dirname(__FILE__));
 
-}
 
 if (isset($_GET['nogui'])){ $nogui = true; }
 if (isset($_GET['noheaders'])){ $noheaders = true; }
