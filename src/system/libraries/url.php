@@ -37,8 +37,7 @@ class url
 	public function url(){
 
 		if (isset($_GET["pretty"])){
-			$pretty = $_GET["pretty"];
-			$this->url = $pretty;
+			$this->url = $_GET["pretty"];
 		}
 
 		$this->url = str_replace("|", "/", $this->url);
@@ -59,9 +58,7 @@ class url
 
 		if ($count > 0){
 			foreach ($matches[1] as $parsed){
-				if (isset($parsed)){
-					$query = @str_replace("(!($parsed)!)", $this->url[$parsed], $query);
-				}
+				$query = @str_replace("(!($parsed)!)", $this->url[$parsed], $query);
 			}
 		}
 
@@ -72,9 +69,10 @@ class url
 	public function fix_url($text){
 
 		$text = trim($text);
-		$text = str_replace(" ", "_", $text);
-		$text = str_replace("'", "", $text);
-		$text = str_replace('"', "", $text);
+		$text = strtr ( $text, array (
+                      " " =>"_",
+                      "'" =>"" ,
+                      '"' =>""));
 		$text = strtolower($text);
 
 		return $text;
@@ -89,7 +87,7 @@ class url
 
 		foreach ($display_urls_array as $display_url){
 
-			if (preg_match('/\//', $display_url)){
+			if ( strpos( $display_url, '/' ) !== false ){
 				$match_pattern = '/'.$this->url['0'].'/D';
 			}else{
 				$match_pattern = '/^'.$this->url['0'].'$/D';
@@ -114,7 +112,7 @@ class url
 				foreach ($comapre as $operator){
 
 					if (isset ($second_side[$i])){
-						if (!preg_match("/^$operator$/D", "$second_side[$i]")){
+						if ($second_side[$i] != $operator){
 							$do_not_display_widget = 1;
 						}else{
 							$display_widget = 1;
