@@ -2,6 +2,27 @@
 
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
+if (function_exists('mysql_set_charset') === false) {
+	/**
+	 * Sets the client character set.
+	 *
+	 * Credits: http://www.php.net/manual/en/function.mysql-set-charset.php#81560
+	 * Note: This function requires MySQL 5.0.7 or later.
+	 *
+	 * @see http://www.php.net/mysql-set-charset
+	 * @param string $charset A valid character set name
+	 * @param resource $link_identifier The MySQL connection
+	 * @return TRUE on success or FALSE on failure
+	 */
+	function mysql_set_charset($charset, $link_identifier = null)
+	{
+		if ($link_identifier == null) {
+			return mysql_query('SET NAMES "'.$charset.'"');
+		} else {
+			return mysql_query('SET NAMES "'.$charset.'"', $link_identifier);
+		}
+	}
+}
 
 /**
  * ezSQL
@@ -100,7 +121,7 @@ class ezSQL_mysql extends ezSQLcore
 		else
 		{
 
-			if (function_exists("mysql_set_charset") and isset($config['db_encoding']) and isset($config['db_use_mysql_set_charset']) and $config['db_use_mysql_set_charset']){
+			if (isset($config['db_encoding']) and isset($config['db_use_mysql_set_charset']) and $config['db_use_mysql_set_charset']){
 
 				$db_encoding = $config['db_encoding'];
 
