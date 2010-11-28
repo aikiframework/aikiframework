@@ -112,7 +112,7 @@ class url
 				foreach ($comapre as $operator){
 
 					if (isset ($second_side[$i])){
-						if ($second_side[$i] != $operator){
+						if (!preg_match("/^$operator$/D", "$second_side[$i]")){
 							$do_not_display_widget = 1;
 						}else{
 							$display_widget = 1;
