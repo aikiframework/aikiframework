@@ -64,7 +64,8 @@ var XMLParser = Editor.Parser = (function() {
     function inText(source, setState) {
       var ch = source.next();
       if (ch == "<") {
-        if (source.equals("!")) {
+    	  
+    	  if (source.equals("!")) {
           source.next();
           if (source.equals("[")) {
             if (source.lookAhead("[CDATA[", true)) {
@@ -82,6 +83,10 @@ var XMLParser = Editor.Parser = (function() {
           else {
             return "xml-text";
           }
+        }else if (source.lookAhead("php", true)){
+                source.next();
+                setState(inBlock("xml-processing", "php>"));
+                return "xml-processing";
         }
         else if (source.equals("?")) {
           source.next();
@@ -102,7 +107,7 @@ var XMLParser = Editor.Parser = (function() {
         }
         return "xml-entity";
       }
-      else {
+      else{
         source.nextWhileMatches(/[^&<\n]/);
         return "xml-text";
       }

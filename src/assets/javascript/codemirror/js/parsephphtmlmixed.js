@@ -72,15 +72,19 @@ var PHPHTMLMixedParser = Editor.Parser = (function() {
     var iter = {next: top, copy: copy};
 
     function top() {
+  	  
       var token = htmlParser.next();
       if (token.content == "<")
         inTag = true;
       else if (token.style == "xml-tagname" && inTag === true)
         inTag = token.content.toLowerCase();
       else if (token.type == "xml-processing") {
-        // dispatch on PHP
-        if (token.content == "<?php")
+        // dispatch on PHP and Aiki Markup
+    	  if (token.content == "<php "){
+              iter.next = local(PHPParser, "php>");
+          }else if (token.content == "<?php"){
           iter.next = local(PHPParser, "?>");
+        }
       }
       // "xml-processing" tokens are ignored, because they should be handled by a specific local parser
       else if (token.content == ">") {
