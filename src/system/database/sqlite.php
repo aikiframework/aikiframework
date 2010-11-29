@@ -216,5 +216,3 @@ class ezSQL_sqlite extends ezSQLcore
 	}
 
 }
-
-?>

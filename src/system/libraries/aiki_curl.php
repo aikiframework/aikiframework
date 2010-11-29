@@ -44,6 +44,3 @@ class aiki_curl
 
 
 }
-
-
-?>

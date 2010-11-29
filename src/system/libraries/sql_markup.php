@@ -223,5 +223,3 @@ class sql_markup
 
 
 }
-
-?>

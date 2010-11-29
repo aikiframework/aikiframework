@@ -274,4 +274,3 @@ class aiki_array
 
 	}
 }
-?>

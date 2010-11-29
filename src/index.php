@@ -140,6 +140,3 @@ if (isset($config["debug"]) and $config["debug"]){
 	echo "\n <!-- queries: ".$db->num_queries." -->\n";
 	echo "\n <!-- Time: ".$end_time." seconds -->";
 }
-
-
-?>

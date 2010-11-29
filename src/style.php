@@ -55,5 +55,3 @@ if (isset($widgets) and $widgets != ''){
 		}
 	}
 }
-
-?>

@@ -49,5 +49,3 @@ foreach ($get_config as $config_group){
 
 
 echo "</root>";
-
-?>

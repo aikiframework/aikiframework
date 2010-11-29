@@ -1075,6 +1075,3 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 
 
 }
-
-
-?>

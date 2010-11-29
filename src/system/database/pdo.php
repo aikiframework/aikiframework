@@ -308,5 +308,3 @@ class ezSQL_pdo extends ezSQLcore
 	}
 
 }
-
-?>

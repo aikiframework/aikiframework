@@ -316,5 +316,3 @@ class ezSQL_mysql extends ezSQLcore
 	}
 
 }
-
-?>

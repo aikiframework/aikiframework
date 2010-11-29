@@ -64,5 +64,3 @@ foreach ( $db->get_col("SHOW TABLES",0) as $table_name )
 
 
 echo "</root>";
-
-?>

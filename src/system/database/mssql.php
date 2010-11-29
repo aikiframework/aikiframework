@@ -392,6 +392,3 @@ class ezSQL_mssql extends ezSQLcore
 
 
 }
-
-
-?>

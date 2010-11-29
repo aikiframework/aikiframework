@@ -640,5 +640,3 @@ if ($config['enable_query_cache']){
 	$db->use_disk_cache = true;
 	$db->cache_queries = true;
 }
-
-?>

@@ -38,5 +38,3 @@ if ($membership->permissions != "SystemGOD"){
 if (isset($_POST['widget']) and isset($_POST['input'])){
 
 }
-
-?>

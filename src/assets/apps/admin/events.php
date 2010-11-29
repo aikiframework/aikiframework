@@ -63,4 +63,3 @@ if (!isset($_GET['widget'])){
 
 	$delete_older_events = $db->query("delete from aiki_events where username = '".$aiki->membership->username."' and id != '$latest_action'");
 }
-?>

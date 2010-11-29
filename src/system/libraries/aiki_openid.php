@@ -33,6 +33,3 @@ class aiki_openid
 
 
 }
-
-
-?>

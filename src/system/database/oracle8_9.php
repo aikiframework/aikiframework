@@ -283,5 +283,3 @@ class ezSQL_oracle8_9 extends ezSQLcore
 	}
 
 }
-
-?>

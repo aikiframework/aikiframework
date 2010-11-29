@@ -423,4 +423,3 @@ class parser extends aiki
 	}
 
 }
-?>

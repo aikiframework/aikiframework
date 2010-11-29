@@ -132,5 +132,3 @@ if(isset($_GET['language'])){
 	$dir = $config['site_dir'];
 	$language_short_name =$config['language_short_name'];
 }
-
-?>

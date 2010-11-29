@@ -92,5 +92,3 @@ if($get_widgets){
 }
 
 echo "</root>";
-
-?>

@@ -146,4 +146,3 @@ if (strpos($contentType, "multipart") !== false) {
 
 // Return JSON-RPC response
 die('{"jsonrpc" : "2.0", "result" : null, "id" : "id"}');
-?>
