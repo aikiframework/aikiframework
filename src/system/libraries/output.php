@@ -30,22 +30,21 @@ class output
 {
 
 	public $html;
-	public $title;
+	private $title;
 
 
 
 	public function set_title($title){
-		global $aiki;
 		$this->title = $title;
 	}
 
-	public function write_title_and_metas($title){
-		global $site_info, $db, $config, $aiki;
+	public function write_title_and_metas(){
+		global $site_info;
 		$header = '
 		<meta http-equiv="Content-Type" content="text/html; charset=__encoding__" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<title>'; if (!$title){$header .= $site_info->site_name;}else{$header .= $title." - ".$site_info->site_name;} $header .='</title>
-		<meta name="generator" content="Aikiframework '.AIKI_VERSION.'" />
+		<title>' . ( $this->title ? "$this->title - " : "" ) .  $site_info->site_name . '</title>
+		<meta name="generator" content="Bluefish 1.0.7"/>
 		';
 
 		return $header;
@@ -53,7 +52,7 @@ class output
 	}
 
 	public function write_doctype(){
-		global $header, $dir, $language_short_name;
+		global $dir, $language_short_name;
 
 		//don't change the direction if the page is the admin panel on /admin
 		if (isset($_GET["pretty"]) and $_GET["pretty"] == 'admin'){
@@ -70,12 +69,12 @@ class output
 
 
 	public function write_headers(){
-		global $aiki, $db, $layout, $nogui, $site, $config;
+		global $aiki, $db, $layout, $nogui, $site, $config, $language;
 
 		$header = "";
 		$header .= $this->write_doctype();
 		$header .= '<head>';
-		$header .= $this->write_title_and_metas("$this->title");
+		$header .= $this->write_title_and_metas();
 
 		if (!$nogui){
 
@@ -119,34 +118,42 @@ class output
 	public function displayInTable($widget, $columns){
 		$widgetTabled = "<table width='100%'>";
 		$widgetExploded = explode("<!-- The End of a Record -->", $widget);
+		if ( !$columns ) {
+			$columns = 1; // to avaid %i % 0 error.
+		}
+
 		$i = 0;
 		foreach ($widgetExploded as $cell){
 
-
-			if ($i == $columns or $i == 0){
+			if ($i % $columns == 0){
 				$widgetTabled .= "<tr>";
 			}
-
-			$widgetTabled .= "<td>";
-			$widgetTabled .= $cell;
-			$widgetTabled .= "</td>";
+			$widgetTabled .= "<td>$cell</td>";
 			$i++;
-			if ($i == $columns){
-				$widgetTabled .= "</tr>";
+			if ($i % $columns == 0){
+				$widgetTabled .= "</tr>\n";	//add a \n line.
 			}
-
-			if ($i == $columns){
-				//$widgetTabled .= "<tr><td colspan='".$columns."'></td></tr>";
-				$i = 0;
-			}
-
 		}
 
+		// add remained columns and close tr
+		if ( $i % $columns ) {
+			for ( ;$i % $columns; $i++){
+				$widgetTabled.= "<td></td>";
+			}
+			$widgetTabled.= "</tr>\n";
+		}
 		$widgetTabled .= "</table>";
 
 		return $widgetTabled;
 	}
 
+
+	/**
+	 * return false if no cache configuration or nor had permissiones.
+	 * if exist fresh file ( no time-out) it is served and application dies.
+	 * in other case, return the name (including path) of cache file that must be created
+	 * and if exist, delete the obsolete cache file.
+	 */
 	public function from_cache(){
 		global $config, $membership;
 
