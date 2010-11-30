@@ -40,7 +40,9 @@ class input
 
 		foreach ($_POST as $key => $req){
 
-			$req = addslashes($req);
+			if (!is_array($req)){
+				$req = addslashes($req);
+			}
 			$_POST[$key] = str_replace("&#95;", "_", $req);
 
 			switch ($key){
@@ -96,8 +98,10 @@ class input
 	public function validate($data){
 
 		foreach ($data as $key => $req){
-			$req = addslashes($req);
-			$data[$key] = $req;
+			if (!is_array($req)){
+				$req = addslashes($req);
+				$data[$key] = $req;
+			}
 		}
 
 		return $data;
