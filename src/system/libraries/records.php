@@ -623,16 +623,19 @@ class records
 				$events_loop = explode("|", $events);
 				foreach ($events_loop as $event){
 					$event = explode(":", $event);
-					switch ($event[0]){
 
+					if (isset($event[1])){
+						preg_match_all( '/\[(.*)\]/U', $event[1], $matches );
+						foreach ($matches[1] as $parsed){
+							$event[1] = str_replace("[$parsed]", $values_array["$parsed"], $event[1]);
+						}
+						$event[1] = str_replace("this_pkey", $this_pkey, $event[1]);
+					}
+
+					switch ($event[0]){
 						case "upload_success":
 
 							if (isset($filename) and isset($name)){
-
-								preg_match_all( '/\[(.*)\]/U', $event[1], $matches );
-								foreach ($matches[1] as $parsed){
-									$event[1] = str_replace("[$parsed]", $values_array["$parsed"], $event[1]);
-								}
 
 								$event[1] = $config['url'].$event[1];
 
@@ -663,6 +666,26 @@ class records
 									if (isset ($event[2])){
 										header("Location: $event[2]");
 									}
+									break;
+
+								default:
+
+									$event[1] = $config['url'].$event[1];
+
+									$ch = curl_init();
+									curl_setopt ($ch, CURLOPT_URL, $event[1]);
+									curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 0);
+
+									ob_start();
+									curl_exec($ch);
+									curl_close($ch);
+									$content = ob_get_contents();
+									ob_end_clean();
+
+									if ($content !== false) {
+										echo $content;
+									}
+
 									break;
 
 							}
