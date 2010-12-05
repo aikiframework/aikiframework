@@ -93,7 +93,7 @@ class CreateLayout
 					$url->widget_if_match_url($widget);
 
 					//TODO move this to widget_if_match_url
-					if (isset($_GET["pretty"]) and $widget->kill_urls != "" and $widget->kill_urls == $_GET["pretty"]){
+					if (isset($_GET["pretty"]) and $widget->kill_urls != "" and ($widget->kill_urls == $_GET["pretty"] or preg_match('/'.preg_quote($widget->kill_urls, '/').'/', $_GET["pretty"]))){
 
 						$kill_this_widget = true;
 
@@ -193,7 +193,7 @@ class CreateLayout
 							$url->widget_if_match_url($son_widget);
 
 							//TODO move this to widget_if_match_url
-							if (isset($_GET["pretty"]) and $son_widget->kill_urls != "" and $son_widget->kill_urls == $_GET["pretty"]){
+							if (isset($_GET["pretty"]) and $son_widget->kill_urls != "" and ($son_widget->kill_urls == $_GET["pretty"] or preg_match('/'.preg_quote($son_widget->kill_urls, '/').'/U', $_GET["pretty"]))){
 								$kill_this_widget = true;
 							}else{
 								$kill_this_widget = false;

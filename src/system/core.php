@@ -136,6 +136,9 @@ class aiki
 	public function processVars($text){
 		global $aiki, $page, $membership, $config, $dir;
 
+		//TODO: add this to config
+		date_default_timezone_set("America/Los_Angeles"); 
+		
 		$current_month = date("n");
 		$current_year = date("Y");
 		$current_day = date("j");
