@@ -39,15 +39,12 @@ if (!$site){
 	$site = "default";
 }
 
-
 if (isset($widgets) and $widgets != ''){
 
+	$widgets = str_replace('_', "' or id = '", $widgets);
 
-	if (preg_match('/\_/', $widgets)){
-		$widgets = str_replace('_', " or id = ", $widgets);
-	}
+	$get_widgets_css = $db->get_results("SELECT css from aiki_widgets where id = '$widgets' and is_active = 1 order by id");
 
-	$get_widgets_css = $db->get_results("SELECT css from aiki_widgets where id = $widgets and is_active = 1 order by id");
 	if ($get_widgets_css){
 		foreach ( $get_widgets_css as $widget_css )
 		{
