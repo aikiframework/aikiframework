@@ -223,7 +223,7 @@ class CreateLayout
 					if ($widget->if_no_results){
 						$widget->if_no_results =  $aiki->processVars ($widget->if_no_results);
 
-						$dead_widget = '<'.$widget->widget_type.' id="'.$widget->style_id.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
+						$dead_widget = '<'.$widget->widget_type.' id="'.$widget->widget_name.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
 
 					}else{
 						$dead_widget = "";
@@ -709,7 +709,12 @@ class CreateLayout
 
 
 			if ($output_to_string){
-				return $processed_widget;
+				if (!$processed_widget and $widget->if_no_results){
+					$widget->if_no_results =  $aiki->processVars ($widget->if_no_results);
+					return $widget->if_no_results;
+				}else{
+					return $processed_widget;
+				}
 			}else{
 				$this->widget_html .=  $processed_widget;
 			}
