@@ -31,7 +31,7 @@ class php
 {
 
 	public function parser($text){
-		global $aiki; //put global $hi to test dump.
+		global $aiki;
 
 		$para="([^,]*)"; // for comodity
 
