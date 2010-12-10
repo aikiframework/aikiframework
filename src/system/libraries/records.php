@@ -573,8 +573,6 @@ class records
 				}
 
 				if ($send_email){
-					
-					$send_email = $aiki->processVars($send_email);
 
 					$send_email = explode("|", $send_email);
 
@@ -591,7 +589,9 @@ class records
 					$message = $send_email[3];
 					$count = preg_match_all( '/\[(.*)\]/U', $message, $matches );
 					foreach ($matches[1] as $parsed){
-						$message = str_replace("[$parsed]", $post[$parsed], $message);
+						if (isset($post[$parsed])){
+							$message = str_replace("[$parsed]", $post[$parsed], $message);
+						}
 					}
 
 					$from = $send_email[1];
@@ -600,6 +600,9 @@ class records
 					$headers .= "From: $from\r\n";
 
 					$message = nl2br($message);
+
+					$send_email[2] = $aiki->processVars($send_email[2]);
+					$message = $aiki->processVars($message);
 
 					mail($send_email[0],$send_email[2],$message,$headers);
 
