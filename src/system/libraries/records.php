@@ -573,6 +573,8 @@ class records
 				}
 
 				if ($send_email){
+					
+					$send_email = $aiki->processVars($send_email);
 
 					$send_email = explode("|", $send_email);
 
