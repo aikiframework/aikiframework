@@ -633,6 +633,7 @@ class records
 						$event = str_replace("[$parsed]", $values_array["$parsed"], $event);
 					}
 					$event = str_replace("this_pkey", $this_pkey, $event);
+					$event = $aiki->url->apply_url_on_query($event);
 
 					$event = explode(":", $event);
 
