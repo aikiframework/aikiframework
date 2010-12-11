@@ -627,15 +627,14 @@ class records
 
 				$events_loop = explode("|", $events);
 				foreach ($events_loop as $event){
-					$event = explode(":", $event);
 
-					if (isset($event[1])){
-						preg_match_all( '/\[(.*)\]/U', $event[1], $matches );
-						foreach ($matches[1] as $parsed){
-							$event[1] = str_replace("[$parsed]", $values_array["$parsed"], $event[1]);
-						}
-						$event[1] = str_replace("this_pkey", $this_pkey, $event[1]);
+					preg_match_all( '/\[(.*)\]/U', $event, $matches );
+					foreach ($matches[1] as $parsed){
+						$event = str_replace("[$parsed]", $values_array["$parsed"], $event);
 					}
+					$event = str_replace("this_pkey", $this_pkey, $event);
+
+					$event = explode(":", $event);
 
 					switch ($event[0]){
 						case "upload_success":
