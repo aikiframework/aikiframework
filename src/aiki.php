@@ -114,6 +114,7 @@ $aiki->load("parser");
 $aiki->load("php");
 $aiki->load("sql_markup");
 $aiki->load("languages");
+$aiki->load("image");
 
 $errors = $aiki->load("errors");
 
