@@ -36,7 +36,6 @@ $html_cache_file = $aiki->output->from_cache();
 require_once ("system/widgets.php");
 $layout = new CreateLayout();
 
-
 if (isset($global_widget)){
 	$noheaders = true;
 	$nogui = true;

@@ -107,17 +107,16 @@ class CreateLayout
 						}
 
 					}
-				}
 
+				}
+				
 				$this->createWidget('', $widget_group);
 
 			}else{
-
 				$this->html_output .= $errors->page_not_found();
 			}
+
 		}
-
-
 	}
 
 
@@ -167,7 +166,6 @@ class CreateLayout
 					}
 				}
 
-
 				if (!$custome_output and $widget->widget_type and $widget->remove_container != 1){
 					$this->widget_html .= "\n <!--start $widget->id--> \n";
 					$this->widget_html .= "<$widget->widget_type id=\"$widget->widget_name\"";
@@ -208,7 +206,6 @@ class CreateLayout
 						}
 						$this->createWidget('', $son_widget_group);
 						$son_widget_group = '';
-
 					}
 				}
 
