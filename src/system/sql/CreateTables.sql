@@ -182,7 +182,8 @@ CREATE TABLE IF NOT EXISTS `aiki_users` (
   `logins_number` int(11) NOT NULL,
   `randkey` varchar(255) NOT NULL,
   `is_active` int(5) NOT NULL,
-  PRIMARY KEY  (`userid`)
+  PRIMARY KEY  (`userid`),
+  KEY `username` (`username`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- ------------------------------------------------------
