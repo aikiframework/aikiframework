@@ -135,6 +135,10 @@ class membership
 			$this->getUserPermissions($get_user->username);
 
 			$update_acces = $db->query("UPDATE `aiki_users` SET `last_login`= NOW(),`last_ip`='$user_ip', `logins_number`=`logins_number`+1 WHERE `userid`='".$get_user->userid."' LIMIT 1");
+				
+			if ($get_user->logins_number == 0){
+				$update_acces = $db->query("UPDATE `aiki_users` SET `first_login`= NOW(),`first_ip`='$user_ip' WHERE `userid`='".$get_user->userid."' LIMIT 1");
+			}
 
 		} else{
 			echo '<center><b>Sorry wrong username or password</b></center>';
