@@ -183,8 +183,10 @@ class records
 		$insertCount = count($form_array);
 		foreach($form_array as $field)
 		{
-			$field = $aiki->sql_markup->sql($field);
 				
+			$field = $aiki->url->apply_url_on_query($field);
+			$field = $aiki->sql_markup->sql($field);
+
 			$intwalker = explode(":", $field);
 
 			$get_permission_and_man_info = explode("|", $intwalker[0]);
