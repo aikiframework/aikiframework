@@ -43,25 +43,44 @@ class parser extends aiki
 		return $text;
 	}
 
+    /**
+     * For reading a feed.
+     *
+     * @todo replace the usage of rss_parser in the code with feed_parser.
+     * @param   string $text text to process from aiki.
+     * @return  mixed processed output.
+     */
+    public function feed_parser($text) {
+        $this->rss_parser($text);
+    }
 
+    /**
+     * For reading a feed. 
+     * @todo should move this function to feed_parser and deprecate this
+     *       as an interface.
+     * @deprecated when version 0.7 of Aiki. @see feed_parser.
+     *
+     * @param   string $text text to process from aiki.
+     * @return  mixed processed output.
+     */
 	public function rss_parser($text){
 		global $aiki;
 
-		$rss_matchs = preg_match_all('/\<rss\>(.*)\<\/rss\>/Us', $text, $matchs);
+		$feed_matchs = preg_match_all('/\<rss\>(.*)\<\/rss\>/Us', $text, $matchs);
 
-		if ($rss_matchs > 0){
+		if ($feed_matchs > 0){
 
-			foreach ($matchs[1] as $rss){
+			foreach ($matchs[1] as $feed){
 
-				$rss_url = $aiki->get_string_between($rss , "<url>", "</url>");
-				$rss_url = trim($rss_url);
+				$feed_url = $aiki->get_string_between($feed , "<url>", "</url>");
+				$feed_url = trim($feed_url);
 
-				$limit = $aiki->get_string_between($rss , "<limit>", "</limit>");
+				$limit = $aiki->get_string_between($feed , "<limit>", "</limit>");
 				$limit = trim($limit);
 
-				$output = $aiki->get_string_between($rss , "<output>", "</output>");
+				$output = $aiki->get_string_between($feed , "<output>", "</output>");
 
-				$type = $aiki->get_string_between($rss , "<type>", "</type>");
+				$type = $aiki->get_string_between($feed , "<type>", "</type>");
 				if (!$type){
 					$type = "rss";
 				}
@@ -77,7 +96,7 @@ class parser extends aiki
 				}
 
 				$ch = curl_init();
-				curl_setopt ($ch, CURLOPT_URL, $rss_url);
+				curl_setopt ($ch, CURLOPT_URL, $feed_url);
 				curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
 
 				ob_start();
@@ -162,7 +181,7 @@ class parser extends aiki
 					}
 				}
 
-				$text = str_replace("<rss>$rss</rss>", $html_output , $text);
+				$text = str_replace("<rss>$feed</rss>", $html_output , $text);
 			}
 		}
 
@@ -422,4 +441,8 @@ class parser extends aiki
 
 	}
 
+<<<<<<< TREE
 }
+?>
+=======
+}>>>>>>> MERGE-SOURCE
