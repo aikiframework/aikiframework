@@ -98,7 +98,7 @@ class records
 
 
 	public function insert_from_form_to_db($input_data){
-		global $db, $aiki, $membership, $config, $system_folder;
+		global $db, $aiki, $membership, $config, $system_folder, $layout;
 
 		$vars = explode('|||||', $input_data);
 		$post = $vars[0];
@@ -183,9 +183,9 @@ class records
 		$insertCount = count($form_array);
 		foreach($form_array as $field)
 		{
-
 			$field = $aiki->sql_markup->sql($field);
-			
+			echo $field;
+				
 			$intwalker = explode(":", $field);
 
 			$get_permission_and_man_info = explode("|", $intwalker[0]);
