@@ -184,7 +184,6 @@ class records
 		foreach($form_array as $field)
 		{
 			$field = $aiki->sql_markup->sql($field);
-			echo $field;
 				
 			$intwalker = explode(":", $field);
 
