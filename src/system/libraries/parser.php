@@ -441,8 +441,5 @@ class parser extends aiki
 
 	}
 
-<<<<<<< TREE
 }
 ?>
-=======
-}>>>>>>> MERGE-SOURCE
