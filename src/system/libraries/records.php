@@ -184,9 +184,9 @@ class records
 		foreach($form_array as $field)
 		{
 
-
+			$field = $aiki->sql_markup->sql($field);
+			
 			$intwalker = explode(":", $field);
-
 
 			$get_permission_and_man_info = explode("|", $intwalker[0]);
 
@@ -715,6 +715,7 @@ class records
 			return "__no_primary_key__";
 		}
 
+		//TODO add way for admin to add the yes and no links
 		if (!isset($confirm) or $confirm != "yes"){
 			$result = ("Delete record #");
 			$result .= ("<b>$recordid</b>");
