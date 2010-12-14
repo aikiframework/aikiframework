@@ -98,7 +98,7 @@ class records
 
 
 	public function insert_from_form_to_db($input_data){
-		global $db, $aiki, $membership, $config, $system_folder, $layout;
+		global $db, $aiki, $membership, $config, $system_folder;
 
 		$vars = explode('|||||', $input_data);
 		$post = $vars[0];
