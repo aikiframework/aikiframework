@@ -183,7 +183,7 @@ class records
 		$insertCount = count($form_array);
 		foreach($form_array as $field)
 		{
-				
+
 			$field = $aiki->url->apply_url_on_query($field);
 			$field = $aiki->sql_markup->sql($field);
 
@@ -747,7 +747,7 @@ class records
 		if (!isset($post['form_post_type'])){
 			$post['form_post_type'] = "save";
 		}
-		
+
 		$output_result = '';
 
 		$form = $db->get_row("SELECT * from aiki_forms where id='$form_id' limit 1");
@@ -834,6 +834,13 @@ class records
 								}
 							}
 
+							break;
+
+						case "email":
+							if (!$aiki->text->is_valid("email",$post[$intwalker[0]])){
+								$output_result .= "The email address is not valid<br />";
+								$do_not_update = $intwalker['0'];
+							}
 							break;
 					}
 				}
