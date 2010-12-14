@@ -747,6 +747,8 @@ class records
 		if (!isset($post['form_post_type'])){
 			$post['form_post_type'] = "save";
 		}
+		
+		$output_result = '';
 
 		$form = $db->get_row("SELECT * from aiki_forms where id='$form_id' limit 1");
 
@@ -817,7 +819,7 @@ class records
 						case "password":
 
 							if (!$_POST[$intwalker[0]]){
-								echo "<b>Please enter a password</b><br />";
+								$output_result .= "Password is not changed<br />";
 								$do_not_update = $intwalker['0'];
 							}
 
@@ -926,17 +928,17 @@ class records
 
 			switch ($post['form_post_type']){
 				case "save":
-					$output_result = "Edited record $record_id in $tablename successfully";
+					$output_result .= "Edited record $record_id in $tablename successfully";
 					break;
 
 				case "insert_new":
-					$output_result = "Inserted new record in $tablename successfully";
+					$output_result .= "Inserted new record in $tablename successfully";
 					break;
 			}
 
 			//$this->unlockdocument($pkey, $postedpkey, $tablename);
 		}else{
-			$output_result = "__faild_to_edit_record__ $record_id __in__ $tablename";
+			$output_result .= "__faild_to_edit_record__ $record_id __in__ $tablename";
 		}
 
 		return $output_result;
