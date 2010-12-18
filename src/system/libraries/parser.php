@@ -43,26 +43,26 @@ class parser extends aiki
 		return $text;
 	}
 
-    /**
-     * For reading a feed.
-     *
-     * @todo replace the usage of rss_parser in the code with feed_parser.
-     * @param   string $text text to process from aiki.
-     * @return  mixed processed output.
-     */
-    public function feed_parser($text) {
-        $this->rss_parser($text);
-    }
+	/**
+	 * For reading a feed.
+	 *
+	 * @todo replace the usage of rss_parser in the code with feed_parser.
+	 * @param   string $text text to process from aiki.
+	 * @return  mixed processed output.
+	 */
+	public function feed_parser($text) {
+		$this->rss_parser($text);
+	}
 
-    /**
-     * For reading a feed. 
-     * @todo should move this function to feed_parser and deprecate this
-     *       as an interface.
-     * @deprecated when version 0.7 of Aiki. @see feed_parser.
-     *
-     * @param   string $text text to process from aiki.
-     * @return  mixed processed output.
-     */
+	/**
+	 * For reading a feed.
+	 * @todo should move this function to feed_parser and deprecate this
+	 *       as an interface.
+	 * @deprecated when version 0.7 of Aiki. @see feed_parser.
+	 *
+	 * @param   string $text text to process from aiki.
+	 * @return  mixed processed output.
+	 */
 	public function rss_parser($text){
 		global $aiki;
 
@@ -95,18 +95,19 @@ class parser extends aiki
 						</div>";
 				}
 
-				$ch = curl_init();
-				curl_setopt ($ch, CURLOPT_URL, $feed_url);
-				curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
+				if ( function_exists( "curl_init")) {
+					$ch = curl_init();
+					curl_setopt ($ch, CURLOPT_URL, $feed_url);
+					curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
 
-				ob_start();
-				curl_exec($ch);
-				curl_close($ch);
-				$content = ob_get_contents();
-				ob_end_clean();
+					ob_start();
+					curl_exec($ch);
+					curl_close($ch);
+					$content = ob_get_contents();
+					ob_end_clean();
+				}
 
-
-				if ($content !== false) {
+				if (isset($content) && $content !== false) {
 
 					$xml = @simplexml_load_string($content);
 
@@ -180,8 +181,9 @@ class parser extends aiki
 
 					}
 				}
-
-				$text = str_replace("<rss>$feed</rss>", $html_output , $text);
+				if ( isset($html_output)) {
+					$text = str_replace("<rss>$feed</rss>", $html_output , $text);
+				}
 			}
 		}
 
