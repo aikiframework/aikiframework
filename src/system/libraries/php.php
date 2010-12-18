@@ -58,12 +58,12 @@ class php
 						$php_output= ob_get_clean();
 						break;
 
-					   case "echo":
+						case "echo":
 						preg_match('/echo (.*);/s', $php_function, $partial);
 						$php_output = eval( "return {$partial[1]};") ;
 						break;
 
-					case "eval":
+						case "eval":
 						preg_match('/eval\((.*)\);/s', $php_function, $partial);
 						$php_output = eval($partial[1] . ( substr($partial[1],-1)!=";" ? ";" :"")) ;
 						break;*/
@@ -120,6 +120,10 @@ class php
 		// load class if not exists..
 		if (!isset($aiki->$class)){
 			$aiki->load($class);
+				
+			if (!isset($aiki->$class)) {
+				return "Sorry, [$class] don't exists";
+			}
 		}
 
 		if ($para){
