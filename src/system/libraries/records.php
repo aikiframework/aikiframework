@@ -37,6 +37,7 @@ class records
 	public $width;
 	public $height;
 	public $rand;
+	public $mime_type;
 
 	//if not provided by config
 	private $allowed_extensions = "jpg|gif|png|jpeg|svg";
@@ -294,6 +295,10 @@ class records
 
 					case "mime_type":
 
+						if (isset($this->mime_type)){
+							$post[$intwalker[0]] = $this->mime_type;
+						}
+
 						break;
 
 					case "upload_file_name":
@@ -379,6 +384,8 @@ class records
 				$tmp_filename = $filename['tmp_name'];
 
 				$this->file_size = filesize($tmp_filename);
+
+				$this->mime_type = @mime_content_type($tmp_filename);
 
 				$this->checksum_sha1 = @sha1_file($tmp_filename);
 				$this->checksum_md5 = @md5_file($tmp_filename);
