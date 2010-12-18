@@ -102,5 +102,4 @@ INSERT INTO `aiki_users_groups` (`id`, `app_id`, `name`, `group_permissions`, `g
 (2, 0, 'Modules Administrators', 'ModulesGOD', 2),
 (3, 0, 'Guests', 'ViewPublished', 100),
 (4, 0, 'Banned users', 'ViewPublished', 101),
-(5, 0, 'Normal User', 'normal', 4),
-(6, 0, 'employees', 'employees', 3);
+(5, 0, 'Normal User', 'normal', 3);
