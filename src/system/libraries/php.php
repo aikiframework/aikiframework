@@ -80,9 +80,9 @@ class php
 						break;
 
 					case "if":
-						if (preg_match('/if (.*) then (.*) else (.*);/s', $php_function, $partial)){
+						if (preg_match('/if (.*) then (.*) else (.*)/s', $php_function, $partial)){
 							$php_output=  ( $partial[1] ? $partial[2]: $partial[3]);
-						} elseif (preg_match('/if (.*) then (.*);/s', $php_function, $partial)){
+						} elseif (preg_match('/if (.*) then (.*)/s', $php_function, $partial)){
 							$php_output=  ( $partial[1] ? $partial[2]:"");
 						}
 						break;
