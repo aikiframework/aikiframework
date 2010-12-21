@@ -61,7 +61,7 @@ class sql_markup
 
 		$html_output = '';
 
-		$count_sql = preg_match_all('/\((.*)\)/s', $match, $matches);
+		$count_sql = preg_match_all('/\((.*)\)/', $match, $matches);
 
 		$match = '';
 
@@ -72,20 +72,29 @@ class sql_markup
 
 			$sql_html[1] = str_replace($sql_html[0]."||", '', $sql);
 
-
-
 			$sql_query = $sql_html[0];
-
 
 			if ($sql_query){
 
 				$sql_query = str_replace("\'", "'", $sql_query);
 				$sql_query = str_replace('\"', '"', $sql_query);
 
+				//if there are results from previous query apply on the next query
+				//also apply on the next query output 
+				if (isset($result)){
+					foreach ($result as $field){
+						if (isset($result_key[$field])){
+							$sql_query = str_replace("[-[".$result_key[$field]."]-]", $field,  $sql_query);
+							$sql_html[1] = str_replace("[-[".$result_key[$field]."]-]", $field,  $sql_html[1]);
+						}
+					}
+				}
+
+
 				$results = $db->get_results($sql_query);
 
 				if ($results){
-
+						
 					foreach ($results as $result) {
 
 						$html =  $sql_html[1];
@@ -98,7 +107,6 @@ class sql_markup
 								$html = str_replace("[-[".$result_key[$field]."]-]", $field,  $html);
 							}
 						}
-
 
 						$match .= $html;
 
