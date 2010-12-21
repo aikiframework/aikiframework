@@ -91,12 +91,12 @@ class sql_markup
 						$html =  $sql_html[1];
 
 						$result = $aiki->aiki_array->object2array($result);
-						$result_key = array_flip($result);
+						$result_key = @array_flip($result);
 
 						foreach ($result as $field){
-
-							$html = str_replace("[-[".$result_key[$field]."]-]", $field,  $html);
-
+							if (isset($result_key[$field])){
+								$html = str_replace("[-[".$result_key[$field]."]-]", $field,  $html);
+							}
 						}
 
 
