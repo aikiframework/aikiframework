@@ -17,8 +17,8 @@
  * @filesource
  */
 
-//error_reporting(0);
-error_reporting(E_STRICT | E_ALL);
+error_reporting(0);
+//error_reporting(E_STRICT | E_ALL);
 
 
 $id = $_GET['id'];
