@@ -46,8 +46,8 @@ class sql_markup
 			}
 
 		}
+		
 		$text = preg_replace('/\(select(.*)\)/Us', '', $text);
-		$text = str_replace(')', '', $text);
 
 		return $text;
 			
@@ -100,6 +100,11 @@ class sql_markup
 						}
 
 						$match .= $html;
+
+						$match = str_replace("\r", ' ', $match);
+						$match = str_replace("\n", ' ', $match);
+						$match = preg_replace("/\)\s\s+\(/", '(', $match);
+
 						$match .= $this->sql_query($html);
 
 					}
