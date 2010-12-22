@@ -17,11 +17,18 @@
  * @filesource
  */
 
-error_reporting(0);
+//error_reporting(0);
+error_reporting(E_STRICT | E_ALL);
+
 
 $id = $_GET['id'];
 $size = $_GET['size'];
-$mode = $_GET['mode'];
+
+if (isset($_GET['mode'])){
+	$mode = $_GET['mode'];
+}else{
+	$mode = '';
+}
 
 $ext = substr($id, strrpos($id, '.') + 1);
 
@@ -53,6 +60,12 @@ switch ($ext){
 switch ($mode){
 	case "svg_to_png":
 		$ext = "svg";
+		break;
+
+	default:
+		if ($mode){
+			$hard_full_path = $mode;
+		}
 		break;
 }
 
@@ -88,9 +101,21 @@ if ($id){
 		$image = $db->get_row("SELECT id, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where filename='$file'");
 	}
 
+	if (!$image){
+		$image =  new stdClass();
+		if (!isset($hard_full_path) or !$hard_full_path){
+			$hard_full_path = '';
+		}
+
+		$image->full_path = $hard_full_path."/";
+		$image->filename = $id;
+		$image->no_watermark_under = '';
+		$image->watermark = '';
+		$image->available_sizes = '';
+		$hard_image = true;
+	}
 
 	if ($image){
-
 
 		$get_root = $system_folder."/";
 
@@ -252,8 +277,9 @@ if ($id){
 				if (file_exists($req_filename)){
 
 					$image->available_sizes = $image->available_sizes."$size".'px|';
-					$update_sizes = $db->query("UPDATE $default_photo_module set available_sizes = '$image->available_sizes' where id = '$image->id'");
-
+					if (!isset($hard_image)){
+						$update_sizes = $db->query("UPDATE $default_photo_module set available_sizes = '$image->available_sizes' where id = '$image->id'");
+					}
 
 					switch ($ext){
 						case "png":
