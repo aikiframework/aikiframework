@@ -46,7 +46,8 @@ class sql_markup
 			}
 
 		}
-		$text = preg_replace('/\)(.*)\(select(.*)\)/Us', '', $text);
+		$text = preg_replace('/\(select(.*)\)/Us', '', $text);
+		$text = str_replace(')', '', $text);
 
 		return $text;
 			
@@ -109,7 +110,6 @@ class sql_markup
 
 
 		}
-
 
 
 		return $match;
