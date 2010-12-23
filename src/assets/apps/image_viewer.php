@@ -85,23 +85,26 @@ $default_photo_module = $config['default_photo_module'];
 
 if ($id){
 
-	if (!preg_match('/jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG/i', $id)){
+	if (!isset($hard_full_path)){
+		
+		if (!preg_match('/jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG/i', $id)){
 
-		$image = $db->get_row("SELECT filename, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where id='$id'");
-		$id = $image->filename;
+			$image = $db->get_row("SELECT filename, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where id='$id'");
+			$id = $image->filename;
 
-	}else{
-		$file = $id;
-		switch ($mode){
-			case "svg_to_png":
-				$file = str_replace(".png", ".svg", $file);
-				break;
+		}else{
+			$file = $id;
+			switch ($mode){
+				case "svg_to_png":
+					$file = str_replace(".png", ".svg", $file);
+					break;
+			}
+
+			$image = $db->get_row("SELECT id, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where filename='$file'");
 		}
-
-		$image = $db->get_row("SELECT id, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where filename='$file'");
-	}
-
-	if (!$image){
+		
+	}else{
+		
 		$image =  new stdClass();
 		if (!isset($hard_full_path) or !$hard_full_path){
 			$hard_full_path = '';
@@ -113,6 +116,7 @@ if ($id){
 		$image->watermark = '';
 		$image->available_sizes = '';
 		$hard_image = true;
+		
 	}
 
 	if ($image){
