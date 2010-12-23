@@ -42,7 +42,7 @@ if (file_exists("$system_folder/configs/aiki-defs.php")){
 	/**
 	 * Aiki Framework Version
 	 */
-	define('AIKI_VERSION','0.7.2');
+	define('AIKI_VERSION','0.7.3');
 }
 
 /*
