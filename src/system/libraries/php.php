@@ -80,7 +80,11 @@ class php
 						break;
 
 					case "if":
-						if (preg_match('/if (.*)\=(.*) then (.*) else (.*)/s', $php_function, $partial)){
+						if (preg_match('/if (.*)\=\=(.*) then (.*) else (.*)/s', $php_function, $partial)){
+							$php_output=  ( $partial[1] == $partial[2] ? $partial[3]: $partial[4]);
+						} elseif (preg_match('/if (.*)\=\=(.*) then (.*)/s', $php_function, $partial)){
+							$php_output=  ( $partial[1] == $partial[2] ? $partial[3]:"");
+						}elseif (preg_match('/if (.*)\=(.*) then (.*) else (.*)/s', $php_function, $partial)){
 							$php_output=  ( $partial[1] == $partial[2] ? $partial[3]: $partial[4]);
 						} elseif (preg_match('/if (.*)\=(.*) then (.*)/s', $php_function, $partial)){
 							$php_output=  ( $partial[1] == $partial[2] ? $partial[3]:"");
@@ -120,7 +124,7 @@ class php
 		// load class if not exists..
 		if (!isset($aiki->$class)){
 			$aiki->load($class);
-				
+
 			if (!isset($aiki->$class)) {
 				return "Sorry, [$class] don't exists";
 			}
