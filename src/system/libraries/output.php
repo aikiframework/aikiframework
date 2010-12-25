@@ -44,7 +44,7 @@ class output
 		<meta http-equiv="Content-Type" content="text/html; charset=__encoding__" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<title>' . ( $this->title ? "$this->title - " : "" ) .  $site_info->site_name . '</title>
-		<meta name="generator" content="Bluefish 1.0.7"/>
+        <meta name="generator" content="Aikiframework '.AIKI_VERSION.'" />
 		';
 
 		return $header;
