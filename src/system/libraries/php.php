@@ -106,7 +106,6 @@ class php
 							$php_output = "<php $php_function php>";
 						}
 
-
 				}
 
 				$text = str_replace("<php $php_function php>", $php_output , $text);
