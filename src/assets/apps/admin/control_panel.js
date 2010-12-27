@@ -21,6 +21,8 @@ function code_mirror_if_authorized(){
 	        stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
 	        path: "assets/javascript/codemirror/js/",
 	        continuousScanning: 500,
+            tabMode: "indent",
+            indentUnit: 4,
 	        lineNumbers: true
 	      }); 
 
@@ -35,6 +37,8 @@ function code_mirror(){
         stylesheet: ["assets/javascript/codemirror/css/xmlcolors.css", "assets/javascript/codemirror/css/jscolors.css", "assets/javascript/codemirror/css/csscolors.css", "assets/javascript/codemirror/css/phpcolors.css"],
         path: "assets/javascript/codemirror/js/",
         continuousScanning: 500,
+        tabMode: "indent",
+        indentUnit: 4,
         lineNumbers: true
       }); 
     
