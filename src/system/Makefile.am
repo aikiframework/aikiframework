@@ -26,15 +26,13 @@ aiki_src_files = \
 SUBDIRS = \
 	database \
 	libraries \
-	sql \
-	updates
+	sql 
 
 # Subdirectories to distribute
 DIST_SUBDIRS = \
 	database \
 	libraries \
-	sql \
-	updates
+	sql 
 
 # Additional files to distribute
 EXTRA_DIST = \
