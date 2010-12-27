@@ -426,12 +426,16 @@ AC_CONFIG_FILES([ \
   src/Makefile \
   src/assets/Makefile \
   src/assets/apps/Makefile \
+  src/assets/apps/aiki/Makefile \
   src/assets/apps/admin/Makefile \
   src/assets/apps/admin/images/Makefile \
   src/assets/apps/admin/images/icons/Makefile \
   src/assets/images/Makefile \
+  src/assets/images/aiki/Makefile \
   src/assets/extensions/Makefile \
+  src/assets/extensions/aiki/Makefile \
   src/assets/javascript/Makefile \
+  src/assets/javascript/aiki/Makefile \
   src/assets/javascript/codemirror/Makefile \
   src/assets/javascript/codemirror/css/Makefile \
   src/assets/javascript/codemirror/js/Makefile \

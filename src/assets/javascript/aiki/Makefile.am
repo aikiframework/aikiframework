@@ -18,18 +18,13 @@
 # Written by Steven Garcia
 
 # The source files
-aiki_src_files = \
-	image_viewer.php
+aiki_src_files =
 
 # Subdirectories to be built
-SUBDIRS = \
-	admin \
-	aiki
+SUBDIRS = 
 
 # Subdirectories to distribute
-DIST_SUBDIRS = \
-	admin \
-	aiki
+DIST_SUBDIRS = 
 
 # Additional files to distribute
 EXTRA_DIST = \
@@ -37,7 +32,7 @@ EXTRA_DIST = \
 
 # The directory to put the files
 aiki_srcdir = \
-	$(pkgdatadir)/assets/apps
+	$(pkgdatadir)/assets/javascript/aiki
 
 # The source data
 aiki_src_DATA = \

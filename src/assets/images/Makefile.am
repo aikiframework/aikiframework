@@ -24,10 +24,10 @@ aiki_src_files = \
 	favicon.ico
 
 # Subdirectories to be built
-SUBDIRS =
+SUBDIRS = aiki
 
 # Subdirectories to distribute
-DIST_SUBDIRS =
+DIST_SUBDIRS = aiki
 
 # Additional files to distribute
 EXTRA_DIST = \
