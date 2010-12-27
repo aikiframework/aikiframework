@@ -19,22 +19,13 @@
 
 # The source files
 aiki_src_files = \
-	core.php \
-	widgets.php
+	README
 
 # Subdirectories to be built
-SUBDIRS = \
-	database \
-	libraries \
-	sql \
-	updates
+SUBDIRS = 
 
 # Subdirectories to distribute
-DIST_SUBDIRS = \
-	database \
-	libraries \
-	sql \
-	updates
+DIST_SUBDIRS = 
 
 # Additional files to distribute
 EXTRA_DIST = \
@@ -42,7 +33,7 @@ EXTRA_DIST = \
 
 # The directory to put the files
 aiki_srcdir = \
-	$(pkgdatadir)/system
+	$(pkgdatadir)/system/updates
 
 # The source data
 aiki_src_DATA = \
