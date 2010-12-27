@@ -93,6 +93,7 @@ dist-hook:
 install-mysql-database:
 	@$(ECHO) "***********************************"
 	@$(ECHO) "Attempting installation of database"
+	@$(ECHO) "Enter Your Database Super-User Password."
 	@$(ECHO) "***********************************"
 	@$(MYSQL) -v -u $(DB_USER) -p$(DB_PASS) \
 	-e "CREATE DATABASE IF NOT EXISTS $(DB_NAME) \
@@ -106,6 +107,7 @@ install-mysql-database:
 install-mysql-user:
 	@$(ECHO) "****************************************"
 	@$(ECHO) "Attempting installation of database user"
+	@$(ECHO) "Enter Your Database Super-User Password."
 	@$(ECHO) "****************************************"
 	@if $(TEST) "$$($(MYSQL) -u $(DB_SUPER_USER) -p$(DB_SUPER_USER_PASS) \
 	-e "SELECT IF(user.user='$(DB_USER)','TRUE','') AS USER_EXISTS \
@@ -122,11 +124,13 @@ install-mysql-user:
 
 # Additional things to do on uninstall
 uninstall-mysql-user:
+	@$(ECHO) "Enter Your Database Super-User Password."
 	@$(MYSQL) -v -u $(DB_SUPER_USER) -p$(DB_SUPER_USER_PASS) \
 	-e "DROP USER '$(DB_USER)'@'$(DB_HOST)';"
 
 # Additional things to do on uninstall
 uninstall-mysql-database:
+	@$(ECHO) "Enter Your Database Super-User Password."
 	@$(MYSQL) -v -u $(DB_SUPER_USER) -p$(DB_SUPER_USER_PASS) \
 	-e "DROP DATABASE IF EXISTS $(DB_NAME);"
 
