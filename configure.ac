@@ -332,6 +332,13 @@ if $TEST -z $AIKI_LOGIN_URL; then AC_SUBST(AIKI_LOGIN_URL,[http://$DOMAIN/$PACKA
 fi
 VAR_LIST_ADD AIKI_LOGIN_URL $AIKI_LOGIN_URL
 
+
+AC_ARG_VAR(AIKI_REWRITE_BASE,[Set the rewrite-base [default: AIKI_REWRITE_BASE=/]])
+if $TEST -z $AIKI_REWRITE_BASE; then AC_SUBST(AIKI_REWRITE_BASE,/])
+fi
+VAR_LIST_ADD AIKI_REWRITE_BASE $AIKI_REWRITE_BASE
+
+
 AC_ARG_VAR(AIKI_SITE_URL,[Set the site URL [default: AIKI_SITE_URL=http://$DOMAIN/$PACKAGE/]])
 if $TEST -z $AIKI_SITE_URL; then AC_SUBST(AIKI_SITE_URL,[http://$DOMAIN/$PACKAGE/])
 fi
@@ -464,6 +471,7 @@ AC_CONFIG_FILES([ \
   src/system/sql/DropDatabase.sql:src/system/sql/DropDatabase-in.sql \
   src/configs/aiki-defs.php:src/configs/aiki-defs.inc \
   src/configs/z-aiki.conf:src/configs/z-aiki.in \
+  src/configs/htaccess:src/configs/htaccess.in \
   scripts/aiki:scripts/aiki.in \
   man/aiki.1:man/man.in \
   man/Makefile \

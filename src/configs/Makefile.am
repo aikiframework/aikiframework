@@ -28,6 +28,7 @@ httpd_conf_files = \
 
 # Additional files to remove on dist-clean
 DISTCLEANFILES = \
+	htaccess \
 	z-$(PACKAGE).conf \
 	$(PACKAGE)-defs.php
 
@@ -35,6 +36,7 @@ DISTCLEANFILES = \
 EXTRA_DIST = \
 	$(PACKAGE)-defs.inc \
 	config.php \
+	htaccess.in \
 	z-$(PACKAGE).in
 
 # The directory to put the files

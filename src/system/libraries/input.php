@@ -56,10 +56,6 @@ class input
 					$key_request = "edit_form";
 					break;
 
-				case "edit_form_keep_history":
-					$key_request = "edit_form_keep_history";
-					break;
-
 				case "form_id":
 					$form_id = $req;
 					break;
@@ -87,9 +83,6 @@ class input
 
 					break;
 
-				case "edit_form_keep_history":
-
-					break;
 			}
 		}
 

@@ -36,7 +36,7 @@ DIST_SUBDIRS = \
 	system
 
 # Additional files to remove on dist-clean
-DISTCLEANFILES =
+DISTCLEANFILES = .htaccess
 
 # Additional files to distribute
 EXTRA_DIST = \

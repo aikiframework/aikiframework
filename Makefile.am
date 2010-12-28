@@ -89,6 +89,15 @@ distclean-local :
 dist-hook:
 	$(MKDIR) -vp $(distdir)/build
 
+# Additional things to do on .htaccess for devs mostly
+install-htaccess:
+	$(CP) $(abs_top_srcdir)/src/configs/htaccess \
+		$(abs_top_srcdir)/src/.htaccess
+
+# Additional things to do to remove .htaccess
+uninstall-htaccess:
+	$(RM) -rf $(abs_top_srcdir)/src/.htaccess
+
 # Additional things to do on install
 install-mysql-database:
 	@$(ECHO) "***********************************"
