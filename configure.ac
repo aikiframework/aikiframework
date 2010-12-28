@@ -359,7 +359,10 @@ AC_SUBST(AIKI_SITE_URL_LEN,$AIKI_SITE_URL_LEN)
 # defaults for insert variable SQL
 AC_SUBST(ADMIN_USER,[admin])
 AC_SUBST(ADMIN_NAME,[admin])
-AC_SUBST(ADMIN_PASS,[74be16979710d4c4e7c6647856088456])
+# btw, this is an md5/md5 password stored in the db, so no password stored
+# You can generate this by: echo SOME_PASSWORD | md5sum | md5sum
+# since this is just for dev environment, password is same as ADMIN_USER
+AC_SUBST(ADMIN_PASS,[c4f588ddfeff57433fe1bb88fabf331e])
 AC_SUBST(ADMIN_MAIL,[''])
 
 # for rpm spec, desktop and others
