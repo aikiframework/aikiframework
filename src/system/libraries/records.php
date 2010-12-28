@@ -770,6 +770,9 @@ class records
 			return '';
 		}
 
+		if (!isset($post['form_post_type'])){
+			$post['form_post_type'] = "save";
+		}
 
 		$output_result = '';
 
@@ -809,7 +812,7 @@ class records
 			case "save":
 				$editQuery = "update $tablename set ";
 				break;
-					
+
 			case "insert_new":
 				$editQuery = "INSERT into $tablename ";
 				break;
@@ -898,7 +901,7 @@ class records
 				$editQuery .= " where ".$pkey."=".$record_id;
 				$editQuery = str_replace("set ,", "set", $editQuery);
 				break;
-					
+
 			case "insert_new":
 				$editQuery .= "($insert_query_fields) VALUES ($insert_query_values)";
 				break;
