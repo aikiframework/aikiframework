@@ -71,8 +71,7 @@ class output
 	public function write_headers(){
 		global $aiki, $db, $layout, $nogui, $site, $config, $language;
 
-		$header = "";
-		$header .= $this->write_doctype();
+		$header = $this->write_doctype();
 		$header .= '<head>';
 		$header .= $this->write_title_and_metas();
 
