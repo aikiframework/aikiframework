@@ -285,10 +285,10 @@ $("#new_record_form").ajaxForm(function() {
 					case "static_input":
 						$form .= '<h2>'.$intwalker[1].'</h2><input type="text" dir="'.$get_permission_and_man_info[3].'" name="'.$intwalker[0].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
-						
+
 					case "edit_type":
 						$this->edit_type = $intwalker[0];
-					break;
+						break;
 
 					case "filemanager":
 						switch ($intwalker[2]){
@@ -361,92 +361,92 @@ $(function() {
 
 
 
-							case "autofiled":
-								switch ($intwalker[2]){
-									case "publishdate":
-										$form .= ("<h2>$intwalker[1]</h2><input type=\"text\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\" value=\""); $form .= $_POST[$intwalker[0]]; $form .= ("\">");
-										break;
+					case "autofiled":
+						switch ($intwalker[2]){
+							case "publishdate":
+								$form .= ("<h2>$intwalker[1]</h2><input type=\"text\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\" value=\""); $form .= $_POST[$intwalker[0]]; $form .= ("\">");
+								break;
 
-									case "uploaddate":
-										if (isset ($form_data)){
-											$currentdatetime = $form_data->$intwalker['0'];
-										}else{
-											$currentdatetime = time();
-										}
-										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$currentdatetime\">");
-										break;
+							case "uploaddate":
+								if (isset ($form_data)){
+									$currentdatetime = $form_data->$intwalker['0'];
+								}else{
+									$currentdatetime = time();
+								}
+								$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$currentdatetime\">");
+								break;
 
-									case "orderby":
-										if ($intwalker[3]){
-											$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"\">");
-										}
-										break;
+							case "orderby":
+								if ($intwalker[3]){
+									$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"\">");
+								}
+								break;
 
-									case "insertedby":
-										if (isset ($form_data)){
-											$insertedby_value = $form_data->$intwalker['0'];
-										}else{
-											$insertedby_value = $membership->full_name;
-										}
-										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_value\">");
-										break;
+							case "insertedby":
+								if (isset ($form_data)){
+									$insertedby_value = $form_data->$intwalker['0'];
+								}else{
+									$insertedby_value = $membership->full_name;
+								}
+								$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_value\">");
+								break;
 
-									case "insertedby_username":
-										if (isset ($form_data)){
-											$insertedby_username = $form_data->$intwalker['0'];
-										}else{
-											$insertedby_username = $membership->username;
-										}
-
-										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_username\">");
-										break;
-
-									case "insertedby_userid":
-										if (isset ($form_data)){
-											$insertedby_userid = $form_data->$intwalker['0'];
-										}else{
-											$insertedby_userid = $membership->userid;
-										}
-
-										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_userid\">");
-										break;
-										
-									case "insertedby_id":
-										if (isset ($form_data)){
-											$insertedby_userid = $form_data->$intwalker['0'];
-										}else{
-											$insertedby_userid = $membership->userid;
-										}
-
-										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_userid\">");
-										break;										
-
-									case "hitscounter":
-										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"0\">");
-										break;
-
-									case "EditingHistory":
-										$currentdatetime = time();
-										//TODO: Custom Time output formats inserted by user
-										$datetime = date('m/d/y g:ia', $currentdatetime);
-
-										if (isset ($form_data)){
-											$EditingHistory = $form_data->$intwalker['0'];
-											$EditingHistory .= "- Edit By $membership->full_name on $datetime <br />";
-										}else{
-											$EditingHistory = "- Inserted By $membership->full_name on $datetime <br />";
-										}
-
-										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$EditingHistory\">");
-										break;
-
-									case "is_editable":
-										$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"\">");
-										break;
-
+							case "insertedby_username":
+								if (isset ($form_data)){
+									$insertedby_username = $form_data->$intwalker['0'];
+								}else{
+									$insertedby_username = $membership->username;
 								}
 
+								$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_username\">");
 								break;
+
+							case "insertedby_userid":
+								if (isset ($form_data)){
+									$insertedby_userid = $form_data->$intwalker['0'];
+								}else{
+									$insertedby_userid = $membership->userid;
+								}
+
+								$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_userid\">");
+								break;
+
+							case "insertedby_id":
+								if (isset ($form_data)){
+									$insertedby_userid = $form_data->$intwalker['0'];
+								}else{
+									$insertedby_userid = $membership->userid;
+								}
+
+								$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$insertedby_userid\">");
+								break;
+
+							case "hitscounter":
+								$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"0\">");
+								break;
+
+							case "EditingHistory":
+								$currentdatetime = time();
+								//TODO: Custom Time output formats inserted by user
+								$datetime = date('m/d/y g:ia', $currentdatetime);
+
+								if (isset ($form_data)){
+									$EditingHistory = $form_data->$intwalker['0'];
+									$EditingHistory .= "- Edit By $membership->full_name on $datetime <br />";
+								}else{
+									$EditingHistory = "- Inserted By $membership->full_name on $datetime <br />";
+								}
+
+								$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"$EditingHistory\">");
+								break;
+
+							case "is_editable":
+								$form .= ("<input type=\"hidden\" name=\"$intwalker[0]\" value=\"\">");
+								break;
+
+						}
+
+						break;
 				}
 			}
 
@@ -474,7 +474,7 @@ $(function() {
 		if (isset($form_data)){
 			$record_id = $form_data->$pkey;
 			$form .= ("<input type=\"hidden\" value=\"$record_id\" name=\"record_id\">");
-				
+
 			$form .= ("<input type=\"submit\" class=\"edit_button\" value=\"$this->submit_button\" name=\"edit_form\">");
 		}else{
 			$form .= ("<input type=\"submit\" class=\"submit_button\" value=\"$this->submit_button\" name=\"add_to_form\">");
@@ -616,58 +616,52 @@ $(function() {
 		//if table has records
 		$table_info = $db->get_results("SELECT * FROM $table limit 1");
 
-		//TODO: find a way to get the info if the table is empty
+		$form_array["tablename"] = $table;
 
-		if ($table_info){
+		$i = 0;
 
-			$form_array["tablename"] = $table;
+		foreach ($db->col_info as $column){
 
-			$i = 0;
+			$column = $aiki->aiki_array->object2array($column);
+				
+				
+			if ($column['primary_key'] == 1){
+				$form_array["pkey"] = $column['name'];
+			}else{
 
-			foreach ($db->col_info as $column){
+				$i++;
 
-				$column = $aiki->aiki_array->object2array($column);
-					
-					
-				if ($column['primary_key'] == 1){
-					$form_array["pkey"] = $column['name'];
-				}else{
+				switch ($column['type']){
 
-					$i++;
+					case "int":
+						$column['type'] = 'textinput';
+						break;
 
-					switch ($column['type']){
+					case "string":
+						$column['type'] = 'textinput';
+						break;
 
-						case "int":
-							$column['type'] = 'textinput';
-							break;
-
-						case "string":
-							$column['type'] = 'textinput';
-							break;
-
-						case "blob":
-							$column['type'] = 'textblock';
-							break;
-					}
-
-					$column_display_name = str_replace('_', ' ', $column['name']);
-					$column_display_name = str_replace('-', ' ', $column_display_name);
-
-					$form_array[$column['type'].$i] = $column['name']."|SystemGOD:$column_display_name";
+					case "blob":
+						$column['type'] = 'textblock';
+						break;
 				}
 
+				$column_display_name = str_replace('_', ' ', $column['name']);
+				$column_display_name = str_replace('-', ' ', $column_display_name);
+
+				$form_array[$column['type'].$i] = $column['name']."|SystemGOD:$column_display_name";
 			}
 
-			$form_array = serialize($form_array);
-
-			$insert_form = $db->query("insert into aiki_forms (form_name, form_array, form_table) values ('$table', '$form_array', '$table')");
-			if (isset ($insert_form)){
-				echo "Form for db table: <b>$table</b> created successfully";
-			}
-
-		}else{
-			echo "Sorry db table: <b>$table</b> doesn't exists or unable to create form for it";
 		}
+
+		$form_array = serialize($form_array);
+
+		$insert_form = $db->query("insert into aiki_forms (form_name, form_array, form_table) values ('$table', '$form_array', '$table')");
+		if (isset ($insert_form)){
+			echo "Form for db table: <b>$table</b> created successfully";
+		}
+
+
 	}
 
 }
