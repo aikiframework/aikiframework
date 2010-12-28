@@ -69,7 +69,7 @@ function create_form(selector, id, name, code, tree){
    
 	$(selector).click(function(event){
 		$('#tools_box').remove();
-			$("#widget-form").load("admin_tools/new/"+id,  {limit: 25}, function(){
+			$("#widget-form").load("admin_tools/new/"+id, function(){
 				
 				var current_form = $("#new_record_form").html();
 				if (code == 1){
