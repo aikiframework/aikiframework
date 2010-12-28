@@ -162,6 +162,7 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{pkgmenudir}/%{name}.menu
 %config(noreplace) %{_sysconfdir}/%{name}/config.php
+%config(noreplace) %{_sysconfdir}/%{name}/htaccess.inc
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}-defs.php
 %config(noreplace) %{httpdconfdir}/z-%{name}.conf
 

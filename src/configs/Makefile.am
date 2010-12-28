@@ -20,6 +20,7 @@
 # The config files
 aiki_conf_files = \
 	$(PACKAGE)-defs.php \
+	htaccess.inc \
 	config.php
 
 # The httpd config files
@@ -36,7 +37,7 @@ DISTCLEANFILES = \
 EXTRA_DIST = \
 	$(PACKAGE)-defs.inc \
 	config.php \
-	htaccess.in \
+	htaccess.inc \
 	z-$(PACKAGE).in
 
 # The directory to put the files

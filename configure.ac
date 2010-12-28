@@ -474,7 +474,7 @@ AC_CONFIG_FILES([ \
   src/system/sql/DropDatabase.sql:src/system/sql/DropDatabase-in.sql \
   src/configs/aiki-defs.php:src/configs/aiki-defs.inc \
   src/configs/z-aiki.conf:src/configs/z-aiki.in \
-  src/configs/htaccess:src/configs/htaccess.in \
+  src/configs/htaccess:src/configs/htaccess.inc \
   scripts/aiki:scripts/aiki.in \
   man/aiki.1:man/man.in \
   man/Makefile \

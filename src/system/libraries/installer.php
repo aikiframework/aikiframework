@@ -261,7 +261,7 @@ Before we start you need the following:
 		}
 	}
 
-    $htaccess_file_path = "$system_folder/configs/htaccess.in";
+    $htaccess_file_path = "$system_folder/configs/htaccess.inc";
     $htaccess_file = file_get_contents($htaccess_file_path);
     if ( false == $htaccess_file )
         die("<br />WARN: failed to read file $htaccess_file_path<br />");
