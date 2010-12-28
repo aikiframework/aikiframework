@@ -844,7 +844,7 @@ class records
 
 						case "password":
 
-							if (!$_POST[$intwalker[0]]){
+							if (!isset($_POST[$intwalker[0]])){
 								$output_result .= "Password is not changed<br />";
 								$do_not_update = $intwalker['0'];
 							}
@@ -853,7 +853,7 @@ class records
 								$intwalker['3'] = "md5|md5";
 							}
 
-							if ($intwalker['3'] and $_POST[$intwalker['0']]){
+							if ($intwalker['3'] and isset($_POST[$intwalker['0']])){
 								$num_levels = explode("|", $intwalker['3']);
 								foreach ($num_levels as $crypt_level){
 									$_POST[$intwalker[0]] = md5(stripcslashes($_POST[$intwalker[0]]));
@@ -981,6 +981,13 @@ class records
 	public function edit_in_place($text, $widget_value){
 		global $aiki,$db, $membership, $layout;
 
+		if (isset($_POST['edit_form']) and isset($_POST['form_id']) and isset($_POST['record_id'])){
+				
+			$serial_post = serialize($_POST);
+
+			echo $aiki->records->edit_db_record_by_form_post($serial_post, $_POST['form_id'], $_POST['record_id']);
+		}
+
 		$edit_matchs = preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
 
 		if ($edit_matchs > 0){
@@ -1071,7 +1078,7 @@ $(this).addClass(\'edit_in_progress'.$primary_value.$field.'\');
 
 $("#button_'.$primary_value.$field.'").live("click", function () {
 var htmldata = $("#'.$primary_value.$field.' select").val();
-$.post("?noheaders=true&nogui=true&widget=0",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
+$.post("?noheaders=true&nogui=true&no_output=true",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
 $("div #'.$primary_value.$field.'").removeClass(\'edit_in_progress'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").addClass(\'edit_ready_'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").html(htmldata);
@@ -1106,7 +1113,7 @@ $("#button_'.$primary_value.$field.'").live("click", function () {
 var htmldata = $("#'.$primary_value.$field.' textarea").val();
 var originaldata = $("#'.$primary_value.$field.' textarea").text();
 if (htmldata != originaldata){
-$.post("?noheaders=true&nogui=true&widget=0",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
+$.post("?noheaders=true&nogui=true&no_output=true",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
 $("div #'.$primary_value.$field.'").removeClass(\'edit_in_progress'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").addClass(\'edit_ready_'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").html(htmldata);

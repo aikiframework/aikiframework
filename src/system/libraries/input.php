@@ -60,9 +60,7 @@ class input
 			switch ($key_request){
 
 				case "process":
-
 					$this->form_handler($process_type, $_POST);
-
 					break;
 
 			}

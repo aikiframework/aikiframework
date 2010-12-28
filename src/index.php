@@ -106,9 +106,10 @@ if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $con
 
 	  $html_output  = preg_replace($search, $replace, $html_output );
 	}
-
-	print $html_output;
-
+	
+	if (!isset($_GET['no_output'])){
+		print $html_output;
+	}
 }
 
 
