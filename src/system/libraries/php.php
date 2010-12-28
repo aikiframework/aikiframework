@@ -88,6 +88,8 @@ class php
 							$php_output=  ( $partial[1] == $partial[2] ? $partial[3]: $partial[4]);
 						} elseif (preg_match('/if (.*)\=(.*) then (.*)/s', $php_function, $partial)){
 							$php_output=  ( $partial[1] == $partial[2] ? $partial[3]:"");
+						}elseif (preg_match('/if (.*) then (.*)/s', $php_function, $partial)){
+							$php_output=  ( $partial[1] ? $partial[2]:"");
 						}
 						break;
 
