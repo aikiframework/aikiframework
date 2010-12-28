@@ -261,17 +261,16 @@ Before we start you need the following:
 		}
 	}
 
-	$htaccess_file = 'Options +FollowSymLinks
-RewriteEngine on
-RewriteBase '.$_SERVER["REQUEST_URI"].'
-RewriteRule ^image/(.*)px/(.*)/(.*) assets/apps/image_viewer.php?id=$3&size=$1&mode=$2
-RewriteRule ^image/(.*)px/(.*) assets/apps/image_viewer.php?id=$2&size=$1
-RewriteRule ^image/(.*) assets/apps/image_viewer.php?id=$1
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{SCRIPT_FILENAME} !-d
-RewriteCond %{SCRIPT_FILENAME} !-f
-RewriteRule ^(.*)$ index.php?pretty=$1 [L,QSA]';
+    $htaccess_file_path = "$system_folder/configs/htaccess.in";
+    $htaccess_file = file_get_contents($htaccess_file_path);
+    if ( false == $htaccess_file )
+        die("<br />WARN: failed to read file $htaccess_file_path<br />");
+
+    // $rewrite_base = ( AIKI_REWRITE_BASE != $_SERVER["REQUEST_URI"] ) ? 
+    //                  $_SERVER["REQUEST_URI"] : AIKI_REWRITE_BASE;
+    $htaccess_file = str_replace("@AIKI_REWRITE_BASE@", 
+                                 $_SERVER["REQUEST_URI"], 
+                                 $htaccess_file);
 
 	$htaccess_file_html = nl2br($htaccess_file);
 

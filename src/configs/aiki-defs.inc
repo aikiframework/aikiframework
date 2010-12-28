@@ -56,3 +56,7 @@ define("DB_ENCODE", "@DB_ENCODE@");
  * Aiki Site URL
  */
 define("AIKI_SITE_URL", "@AIKI_SITE_URL@");
+/**
+ * Aiki Rewrite Base (for htaccess)
+ */
+define("AIKI_REWRITE_BASE", "@AIKI_REWRITE_BASE@");

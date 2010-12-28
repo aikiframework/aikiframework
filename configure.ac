@@ -332,6 +332,13 @@ if $TEST -z $AIKI_LOGIN_URL; then AC_SUBST(AIKI_LOGIN_URL,[http://$DOMAIN/$PACKA
 fi
 VAR_LIST_ADD AIKI_LOGIN_URL $AIKI_LOGIN_URL
 
+
+AC_ARG_VAR(AIKI_REWRITE_BASE,[Set the rewrite-base [default: AIKI_REWRITE_BASE=/]])
+if $TEST -z $AIKI_REWRITE_BASE; then AC_SUBST(AIKI_REWRITE_BASE,/])
+fi
+VAR_LIST_ADD AIKI_REWRITE_BASE $AIKI_REWRITE_BASE
+
+
 AC_ARG_VAR(AIKI_SITE_URL,[Set the site URL [default: AIKI_SITE_URL=http://$DOMAIN/$PACKAGE/]])
 if $TEST -z $AIKI_SITE_URL; then AC_SUBST(AIKI_SITE_URL,[http://$DOMAIN/$PACKAGE/])
 fi
@@ -352,7 +359,10 @@ AC_SUBST(AIKI_SITE_URL_LEN,$AIKI_SITE_URL_LEN)
 # defaults for insert variable SQL
 AC_SUBST(ADMIN_USER,[admin])
 AC_SUBST(ADMIN_NAME,[admin])
-AC_SUBST(ADMIN_PASS,[74be16979710d4c4e7c6647856088456])
+# btw, this is an md5/md5 password stored in the db, so no password stored
+# You can generate this by: echo SOME_PASSWORD | md5sum | md5sum
+# since this is just for dev environment, password is same as ADMIN_USER
+AC_SUBST(ADMIN_PASS,[c4f588ddfeff57433fe1bb88fabf331e])
 AC_SUBST(ADMIN_MAIL,[''])
 
 # for rpm spec, desktop and others
@@ -464,6 +474,7 @@ AC_CONFIG_FILES([ \
   src/system/sql/DropDatabase.sql:src/system/sql/DropDatabase-in.sql \
   src/configs/aiki-defs.php:src/configs/aiki-defs.inc \
   src/configs/z-aiki.conf:src/configs/z-aiki.in \
+  src/configs/htaccess:src/configs/htaccess.in \
   scripts/aiki:scripts/aiki.in \
   man/aiki.1:man/man.in \
   man/Makefile \
