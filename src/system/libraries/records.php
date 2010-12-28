@@ -98,13 +98,8 @@ class records
 	}
 
 
-	public function insert_from_form_to_db($input_data){
+	public function insert_from_form_to_db($post, $form_id, $form_posted_id){
 		global $db, $aiki, $membership, $config, $system_folder;
-
-		$vars = explode('|||||', $input_data);
-		$post = $vars[0];
-		$form_id = $vars[1];
-		$form_posted_id = $vars[2];
 
 		if (!$form_posted_id){
 			return '';
@@ -751,6 +746,30 @@ class records
 	public function edit_db_record_by_form_post($post, $form_id, $record_id){
 		global $db, $aiki, $membership, $config;
 
+		if (!$post){
+			return '';
+		}else{
+
+			$post = unserialize($post);
+
+			if (empty($post)){
+				return '';
+			}else{
+
+				foreach ($post as $post_value){
+
+					if ($post_value and $post_value != ''){
+						$found_a_value = true;
+					}
+				}
+
+			}
+		}
+
+		if (!isset($found_a_value)){
+			return '';
+		}
+
 		if (!isset($post['form_post_type'])){
 			$post['form_post_type'] = "save";
 		}
@@ -793,7 +812,7 @@ class records
 			case "save":
 				$editQuery = "update $tablename set ";
 				break;
-					
+
 			case "insert_new":
 				$editQuery = "INSERT into $tablename ";
 				break;
@@ -882,7 +901,7 @@ class records
 				$editQuery .= " where ".$pkey."=".$record_id;
 				$editQuery = str_replace("set ,", "set", $editQuery);
 				break;
-					
+
 			case "insert_new":
 				$editQuery .= "($insert_query_fields) VALUES ($insert_query_values)";
 				break;

@@ -97,7 +97,7 @@ class php
 						break;
 
 					case '$aiki':
-						preg_match('/\$aiki\-\>(.*)\-\>(.*)\((.*)\)\;/s', $php_function,$partial);
+						preg_match('/\$aiki\-\>(.*)\-\>(.*)\((.*)\)\;/Us', $php_function,$partial);
 						$php_output = $this->aiki_function($partial[1],$partial[2],$partial[3]);
 						break;
 

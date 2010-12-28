@@ -69,7 +69,7 @@ function create_form(selector, id, name, code, tree){
    
 	$(selector).click(function(event){
 		$('#tools_box').remove();
-			$("#widget-form").load("admin_tools/new/"+id,  {limit: 25}, function(){
+			$("#widget-form").load("admin_tools/new/"+id, function(){
 				
 				var current_form = $("#new_record_form").html();
 				if (code == 1){
@@ -290,7 +290,7 @@ function urls_widgets_tree(){
     	  }else{
     		 
   if (stop == 1){
-			$("#widget-form").load('admin_tools/edit/20/'+NODE.id,  {limit: 25}, function(){
+			$("#widget-form").load('admin_tools/edit/20/'+NODE.id,  function(){
 				
 				aiki_log('Widget: You are editing widget '+NODE.id);
 				$("<div id='events_listener'></div>").appendTo("#widget-form");

@@ -52,18 +52,6 @@ class input
 					$process_type = $req;
 					break;
 
-				case "edit_form":
-					$key_request = "edit_form";
-					break;
-
-				case "form_id":
-					$form_id = $req;
-					break;
-
-				case "record_id":
-					$record_id = $req;
-					break;
-
 			}
 
 		}
@@ -74,12 +62,6 @@ class input
 				case "process":
 
 					$this->form_handler($process_type, $_POST);
-
-					break;
-
-				case "edit_form":
-
-					echo $aiki->records->edit_db_record_by_form_post($_POST, $form_id, $record_id);
 
 					break;
 

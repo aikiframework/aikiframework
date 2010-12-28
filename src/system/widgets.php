@@ -348,7 +348,6 @@ class CreateLayout
 
 			$widget->widget = str_replace('(noloop_bottom('.$no_loop_bottom_part.')noloop_bottom)', '', $widget->widget);
 
-
 			if (isset($normal_select) and $normal_select){
 				$widget->normal_select = trim($normal_select);
 			}else{
@@ -639,11 +638,9 @@ class CreateLayout
 				$processed_widget = '';
 			}
 
-
 			$processed_widget = $this->parsDBpars($processed_widget, '');
 			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
-
 
 			// Apply new headers.
 			$new_header = preg_match_all("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);
@@ -760,7 +757,7 @@ class CreateLayout
 	private function parsDBpars($text, $widget_value = ''){
 		global $aiki;
 
-		$count = preg_match_all( '/\(\((.*)\)\)/U', $text, $matches );
+		$count = preg_match_all( '/\({2,}(.*?)\){2,}/', $text, $matches );
 
 		if (!$widget_value){
 			$widget_value = $this->global_values;
