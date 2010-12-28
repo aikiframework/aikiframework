@@ -876,7 +876,7 @@ class records
 					$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_permission_and_man_info[1]'");
 				}
 
-				if ((!isset($get_permission_and_man_info[1]) or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level) and $do_not_update != $intwalker['0'] and isset($_POST[$intwalker[0]])){
+				if ((!isset($get_permission_and_man_info[1]) or !$get_permission_and_man_info[1] or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level) and $do_not_update != $intwalker['0'] and isset($_POST[$intwalker[0]])){
 
 					$_POST[$intwalker[0]] = @str_replace('&lt;', '<' , $_POST[$intwalker[0]]);
 					$_POST[$intwalker[0]] = @str_replace('&gt;', '>' , $_POST[$intwalker[0]]);
