@@ -98,13 +98,8 @@ class records
 	}
 
 
-	public function insert_from_form_to_db($input_data){
+	public function insert_from_form_to_db($post, $form_id, $form_posted_id){
 		global $db, $aiki, $membership, $config, $system_folder;
-
-		$vars = explode('|||||', $input_data);
-		$post = $vars[0];
-		$form_id = $vars[1];
-		$form_posted_id = $vars[2];
 
 		if (!$form_posted_id){
 			return '';
@@ -751,9 +746,30 @@ class records
 	public function edit_db_record_by_form_post($post, $form_id, $record_id){
 		global $db, $aiki, $membership, $config;
 
-		if (!isset($post['form_post_type'])){
-			$post['form_post_type'] = "save";
+		if (!$post){
+			return '';
+		}else{
+
+			$post = unserialize($post);
+
+			if (empty($post)){
+				return '';
+			}else{
+
+				foreach ($post as $post_value){
+
+					if ($post_value and $post_value != ''){
+						$found_a_value = true;
+					}
+				}
+
+			}
 		}
+
+		if (!isset($found_a_value)){
+			return '';
+		}
+
 
 		$output_result = '';
 

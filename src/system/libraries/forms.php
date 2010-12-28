@@ -72,7 +72,9 @@ $("#new_record_form").ajaxForm(function() {
 
 							$serial_post = serialize($_POST);
 
-							$form_output = $form_javascript."\n".'<php $aiki->records->insert_from_form_to_db('.$serial_post.'|||||'.$form->id.'|||||POST[form_id]); php>';
+							$form_output = $form_javascript."\n";
+								
+							$form_output .= $aiki->records->insert_from_form_to_db($serial_post,$form->id,'POST[form_id]');
 
 							$form_output .= $this->create_insert_form($form_array, $form->form_html, $form->id);
 
@@ -80,8 +82,12 @@ $("#new_record_form").ajaxForm(function() {
 
 						case "edit":
 
-							$form_output = $this->create_update_form($form_array, $form->form_html, $form->id, $form_sides[2]);
+							$serial_post = serialize($_POST);
 
+							$form_output = $aiki->records->edit_db_record_by_form_post($serial_post, $form->id, $form_sides[2]);
+
+							$form_output .= $this->create_update_form($form_array, $form->form_html, $form->id, $form_sides[2]);
+								
 							break;
 
 						case "auto_generate":
@@ -623,8 +629,8 @@ $(function() {
 		foreach ($db->col_info as $column){
 
 			$column = $aiki->aiki_array->object2array($column);
-				
-				
+
+
 			if ($column['primary_key'] == 1){
 				$form_array["pkey"] = $column['name'];
 			}else{

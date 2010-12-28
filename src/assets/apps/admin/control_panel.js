@@ -290,7 +290,7 @@ function urls_widgets_tree(){
     	  }else{
     		 
   if (stop == 1){
-			$("#widget-form").load('admin_tools/edit/20/'+NODE.id,  {limit: 25}, function(){
+			$("#widget-form").load('admin_tools/edit/20/'+NODE.id,  function(){
 				
 				aiki_log('Widget: You are editing widget '+NODE.id);
 				$("<div id='events_listener'></div>").appendTo("#widget-form");
