@@ -855,7 +855,7 @@ class CreateLayout
 		// Fix a typo that was in the first version inherit was called inherent.
 		$widget = str_replace("(#(inherit", "(#(inherent", $widget);
 
-		$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/', $widget, $matches);
+		$numMatches = preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/Us', $widget, $matches);
 		if ($numMatches > 0){
 			foreach ($matches['1'] as $widget_info){
 
