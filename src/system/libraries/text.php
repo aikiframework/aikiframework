@@ -37,6 +37,8 @@ class text
 		if ($nl2br){
 			$nl2br_processed = nl2br($nl2br);
 			$text = str_replace("[br[".$nl2br."]br]", $nl2br_processed, $text);
+		}else{
+			$text = str_replace("[br[]br]", "", $text);
 		}
 
 		return $text;
@@ -62,6 +64,8 @@ class text
 
 			$text = str_replace("[p[".$nl2p."]p]", $nl2p_text, $text);
 
+		}else{
+			$text = str_replace("[p[]p]", "", $text);
 		}
 
 		return $text;
