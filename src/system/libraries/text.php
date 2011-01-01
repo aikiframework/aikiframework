@@ -31,41 +31,35 @@ class text
 
 
 	public function aiki_nl2br($text){
-		global $aiki;
 
-		$nl2br = $aiki->get_string_between($text, "[br[", "]br]");
-		if ($nl2br){
-			$nl2br_processed = nl2br($nl2br);
-			$text = str_replace("[br[".$nl2br."]br]", $nl2br_processed, $text);
-		}else{
-			$text = str_replace("[br[]br]", "", $text);
+		if ( preg_match_all( "#\[br\[(.*)\]br\]#sUi", $text, $captured) ){
+			foreach ($captured[1] as $i=>$match){
+				$replace[ $captured[0][$i]]= nl2br($match);
+			}
+			$text= strtr($text, $replace);
 		}
-
 		return $text;
 	}
 
 	public function aiki_nl2p($text){
 		global $aiki;
 
-		$nl2p = $aiki->get_string_between($text, "[p[", "]p]");
+		if ( preg_match_all( "#\[p\[(.*)\]p\]#sUi", $text, $captured) ){
+				
+			foreach ($captured[1] as $i=>$match){
 
-		if ($nl2p){
+				$nl2p_text = str_replace("\n\r", "</p><p>", $match);
 
-			$nl2p_text = str_replace("\n\r", "</p><p>", $nl2p);
+				$nl2p_text = "<p>".$nl2p_text."</p>";
 
-			$nl2p_text = "<p>".$nl2p_text."</p>";
+				$nl2p_text = nl2br($nl2p_text);
 
-			$nl2p_text = nl2br($nl2p_text);
+				$nl2p_text = str_replace("<br />\r</p>", "</p>", $nl2p_text);
+				$nl2p_text = str_replace("<p><br />", "<p>", $nl2p_text);
+				$replace[ $captured[0][$i]] = str_replace("<p></p>", "<br />", $nl2p_text);
+			}
+			$text= strtr($text, $replace);
 
-			$nl2p_text = str_replace("<br />\r</p>", "</p>", $nl2p_text);
-			$nl2p_text = str_replace("<p><br />", "<p>", $nl2p_text);
-			$nl2p_text = str_replace("<p></p>", "<br />", $nl2p_text);
-
-
-			$text = str_replace("[p[".$nl2p."]p]", $nl2p_text, $text);
-
-		}else{
-			$text = str_replace("[p[]p]", "", $text);
 		}
 
 		return $text;
