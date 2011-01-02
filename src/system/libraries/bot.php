@@ -461,7 +461,62 @@ class bot
 	}
 
 	function auto_update_to_latest_aiki(){
+		global $system_folder, $db;
 
+		$output = '';
+		//create tables if one doesn't exists and check structure
+		$sql_create_tables = file_get_contents("$system_folder/system/sql/CreateTables.sql");
+		if (false == $sql_create_tables){
+			die("<br />FATAL: failed to read file -> $system_folder/system/sql/CreateTables.sql<br />");
+		}
+
+		define("SQL_DELIMIT",'-- ------------------------------------------------------');
+		$sql = $sql_create_tables;
+
+		$sql = explode(SQL_DELIMIT, $sql);
+
+		foreach($sql as $sql_statment)
+		{
+			mysql_query($sql_statment);
+
+			$table_name = preg_match('/CREATE TABLE IF NOT EXISTS \`(.*)\` \(/Usi', $sql_statment, $matches);
+			$table_name = trim($matches['1']);
+
+
+			//get the currnet table structure
+			$descripe_table = mysql_query('describe '.$table_name);
+			while($field_name = mysql_fetch_row($descripe_table)) {
+				$current_table_structure[] = $field_name[0];
+			}
+
+			//get the table structure from stored database query
+			$table_fields = preg_match_all('/\`(.*)\`/Usi', $sql_statment, $table_fields_matches);
+			foreach ($table_fields_matches['1'] as $field){
+
+				//find if column exists
+				if ($field != $table_name and !in_array($field, $fields_array) and !in_array($field, $current_table_structure)){
+
+					//get column description
+					$field_description = preg_match('/\`'.$field.'\`(.*)\,/Usi', $sql_statment, $desc_matches);
+					$sql = "ALTER TABLE `$table_name` ADD `$field` ".$desc_matches[1];
+					$update_table = mysql_query($sql);
+					if ($update_table){
+						$output .= "Added the field $field to $table_name<br>";
+					}
+				}
+				$fields_array[] = $field;
+			}
+
+		}
+
+		//check for values
+		$sql_insert_defaults = file_get_contents("$system_folder/system/sql/InsertDefaults.sql");
+		if (false == $sql_insert_defaults){
+			die("<br />FATAL: failed to read file -> $system_folder/system/sql/InsertDefaults.sql<br />");
+		}
+
+		return $output;
+		//return AIKI_VERSION;
 	}
 
 
