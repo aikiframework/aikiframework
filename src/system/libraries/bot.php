@@ -501,12 +501,13 @@ class bot
 					$sql = "ALTER TABLE `$table_name` ADD `$field` ".$desc_matches[1];
 					$update_table = mysql_query($sql);
 					if ($update_table){
-						$output .= "Added the field $field to $table_name<br>";
+						$output .= "Added the field $field to table <b>$table_name</b><br>";
 					}
 				}
 				$fields_array[] = $field;
 			}
 
+			$output .= "the table <b>$table_name</b> exists and have the latest structure.<br>";
 		}
 
 		//check for values
