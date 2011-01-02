@@ -718,7 +718,6 @@ class records
 			return "__no_primary_key__";
 		}
 
-		//TODO add way for admin to add the yes and no links
 		if (!isset($confirm) or $confirm != "yes"){
 			$result = ("<div id='delete_confirm_box'>Delete record #");
 			$result .= ("<b>$recordid</b>");
