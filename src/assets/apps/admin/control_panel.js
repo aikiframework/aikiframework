@@ -49,7 +49,7 @@ function code_mirror(){
         path: "assets/javascript/codemirror/js/"
       });  
 
-   var sqleditor = CodeMirror.fromTextArea('authorized_select', {
+   var authorizedselect = CodeMirror.fromTextArea('authorized_select', {
        height: "250px",
        parserfile: "parsesparql.js",
        stylesheet: ["assets/javascript/codemirror/css/sparqlcolors.css"],
