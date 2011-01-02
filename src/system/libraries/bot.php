@@ -434,7 +434,7 @@ class bot
 
 					if ($fields_names['0'] == $pkey){
 						$edit_delete_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'><a href='".$config['url']."admin_tools/edit/".$table_info->id."/".$field_data->$fields_names['0']."'  rel=\"edit_record\" rev=\"#table_information_container\">edit</a> - 
-						<a href='".$config['url']."admin_tools/delete/".$table_info->id."/".$field_data->$fields_names['0']."' rel=\"edit_record\" rev=\"#table_information_container\">delete</a></span></li>";
+						<a href='".$config['url']."admin_tools/delete/".$table_info->id."/".$field_data->$fields_names['0']."' rel=\"delete_record\" rev=\"#table_information_container\">delete</a></span></li>";
 					}
 
 					$records_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
