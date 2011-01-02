@@ -462,7 +462,7 @@ function database_forms_tree(){
     	 
     	      $.get('admin_tools/auto_generate/'+NODE.id,function(data) { 
    	    	    $('#tools_box').remove();
-    	    	  $('#widget-form').html(data);
+    	    	  $('#widget-form').html(data); 
     	    	  if (refreshtree == 1){
     	    	    $.tree_reference('databaseformstree').refresh();
     	    	    

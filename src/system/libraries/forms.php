@@ -99,7 +99,10 @@ $("#new_record_form").ajaxForm(function() {
 							break;
 
 						case "delete":
-							$form_output = $aiki->records->delete_record($form_array['tablename'], $form_sides[2],  $form_sides[3], $form_array['pkey']);
+							if (!isset($form_sides['3'])){
+								$form_sides['3'] = 'no';
+							}
+							$form_output = $aiki->records->delete_record($form_array['tablename'], $form_sides['2'],  $form_sides['3'], $form_array['pkey']);
 							break;
 
 					}
