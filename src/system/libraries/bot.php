@@ -362,6 +362,9 @@ class bot
 		$table_name = trim($table_name);
 
 		$table_info = $db->get_row("select * from aiki_forms where form_table like '$table_name'");
+		if (!$table_info){
+			return "no form was found for the table <b>$table_name</b> please generate the form first";
+		}
 		$tablename = $table_info->form_table;
 		$form_array = $table_info->form_array;
 		$form_array = unserialize($form_array);

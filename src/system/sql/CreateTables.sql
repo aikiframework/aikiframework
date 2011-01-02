@@ -248,7 +248,7 @@ CREATE TABLE IF NOT EXISTS `aiki_widgets` (
   `widget_owner` int(9) unsigned NOT NULL default '2',
   `widget_privilege` varchar(1) NOT NULL default 'w',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
 
 -- ------------------------------------------------------
 
