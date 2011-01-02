@@ -516,8 +516,8 @@ class bot
 			die("<br />FATAL: failed to read file -> $system_folder/system/sql/InsertDefaults.sql<br />");
 		}
 
+		$output .= "your aiki installation is now up to date using version ".AIKI_VERSION;
 		return $output;
-		//return AIKI_VERSION;
 	}
 
 
