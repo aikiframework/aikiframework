@@ -49,13 +49,7 @@ function code_mirror(){
         path: "assets/javascript/codemirror/js/"
       });  
 
-   var authorizedselect = CodeMirror.fromTextArea('authorized_select', {
-       height: "250px",
-       parserfile: "parsesparql.js",
-       stylesheet: ["assets/javascript/codemirror/css/sparqlcolors.css"],
-       path: "assets/javascript/codemirror/js/"
-     });     
-   
+ 
    var csseditor = CodeMirror.fromTextArea('css', {
        height: "400px",
        parserfile: ["parsecss.js"],
@@ -64,6 +58,13 @@ function code_mirror(){
        continuousScanning: 500,
        lineNumbers: true
      });    
+   
+   var authorizedselect = CodeMirror.fromTextArea('authorized_select', {
+       height: "250px",
+       parserfile: "parsesparql.js",
+       stylesheet: ["assets/javascript/codemirror/css/sparqlcolors.css"],
+       path: "assets/javascript/codemirror/js/"
+     });        
 	
 }
 
