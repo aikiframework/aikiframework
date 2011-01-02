@@ -499,7 +499,49 @@ function database_forms_tree(){
     	  }    		  
   		  
     	  }
-        }
+        },
+        
+		beforedelete    : function(NODE, TREE_OBJ,RB) { 
+			
+    		$("#deleteformdialog").dialog({
+    			bgiframe: true,
+    			resizable: false,
+    			height:140,
+    			modal: true,
+    			overlay: {
+    				backgroundColor: '#000',
+    				opacity: 0.5
+    			},
+    			close: function(event, ui) {
+    				$(this).dialog('destroy');
+    			},
+    			buttons: {
+    				'Delete form': function() {
+
+    					if(isNaN(NODE.id)) {
+
+    					}else{
+    						$("#widget-form").load("admin_tools/delete/6/"+NODE.id+":yes",  {limit: 25}, function(){
+    							$.tree_reference('databaseformstree').refresh();
+    						    $('#tools_box').remove();
+         					});
+    					}
+         				
+         				$(this).dialog('close');
+         				$(this).dialog('destroy');
+         				
+    				},
+    				Cancel: function() {
+    					$(this).dialog('close');
+    					$(this).dialog('destroy');
+    				}
+    			}
+    		});
+
+    				
+
+     
+    		}        
        }
 
     } );
