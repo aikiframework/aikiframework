@@ -332,12 +332,14 @@ class bot
 	}
 
 	function ShowTableStructure($table){
+		global $aiki;
 
-		$output = '<h3>'.$table.'</h3>';
 		$result2 = mysql_query('SHOW COLUMNS FROM '.$table) or die('cannot show columns from '.$table);
 		if(mysql_num_rows($result2)) {
-			echo '<table cellpadding="0" cellspacing="0" class="db-table">';
-			echo '<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default<th>Extra</th></tr>';
+			$output = '<div id="table_information_container">
+			<table cellpadding="0" cellspacing="0" class="db-table" style="width: 100%">';
+			$output .= '<tr><td><b>Field</b></td><td><b>Type</b></td><td><b>Null</b></td>
+			<td><b>Key</b></td><td><b>Default</b><td><b>Extra</b></td></tr>';
 			while($row2 = mysql_fetch_row($result2)) {
 				$output .= '<tr>';
 				foreach($row2 as $key=>$value) {
@@ -345,7 +347,8 @@ class bot
 				}
 				$output .= '</tr>';
 			}
-			$output .= '</table>';
+			$output .= '</table>
+			</div>';
 
 			return $output;
 		}
@@ -353,16 +356,25 @@ class bot
 
 
 
-	function DataGrid($form_id){
+	function DataGrid($table_name){
 		global $db, $config, $aiki;
-
-		$table_info = $db->get_row("select form_table, form_array from aiki_forms where form_table not rlike 'aiki_' and id = '$form_id'");
+		
+		$table_name = trim($table_name);
+		
+		$table_info = $db->get_row("select * from aiki_forms where form_table like '$table_name'");
 		$tablename = $table_info->form_table;
 		$form_array = $table_info->form_array;
 		$form_array = unserialize($form_array);
 		$pkey = $form_array['pkey'];
 
-		$output = ("<form method=\"POST\">
+		$output = ("
+		<style type=\"text/css\">
+		.dashboard_grid_container ul li{
+		    float: left;
+            padding-right: 10px;
+		}
+		</style>
+		<form method=\"POST\">
 							Search: 
 							<input type=\"text\" name=\"keyword\" size=\"30\">
 							<select name=\"wheresearch\">");
@@ -371,7 +383,7 @@ class bot
 			if ($field != $tablename){
 				$intwalker = explode(":", $field);
 
-				if (!$intwalker[1]){$intwalker[1] = $intwalker[0];}
+				if (!isset($intwalker[1])){$intwalker[1] = $intwalker[0];}
 				$output .= "<option value=\"$intwalker[0]\">".$intwalker[1]."</option>";
 			}
 		}
@@ -379,7 +391,7 @@ class bot
 							</form>");
 
 
-		if ($orderby){
+		if (isset($orderby)){
 			$orderby = "order by ".$orderby;
 		}elseif ($pkey){
 			$orderby = "order by ".$pkey;
