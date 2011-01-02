@@ -218,8 +218,8 @@ class CreateLayout
 				if ($this->kill_widget){
 
 					if ($widget->if_no_results){
+						$widget->if_no_results = stripcslashes($widget->if_no_results);
 						$widget->if_no_results =  $aiki->processVars ($widget->if_no_results);
-
 						$dead_widget = '<'.$widget->widget_type.' id="'.$widget->widget_name.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
 
 					}else{
@@ -705,7 +705,7 @@ class CreateLayout
 			if ($output_to_string){
 				if (!$processed_widget and $widget->if_no_results){
 					$widget->if_no_results =  $aiki->processVars ($widget->if_no_results);
-					return $widget->if_no_results;
+					return stripslashes($widget->if_no_results);
 				}else{
 					return $processed_widget;
 				}
