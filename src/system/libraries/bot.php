@@ -373,6 +373,9 @@ class bot
 		    float: left;
             padding-right: 10px;
 		}
+		.dashboard_grid_container ul li ul li{
+		 float: none;
+		}
 		</style>
 		<form method=\"POST\">
 							Search: 
