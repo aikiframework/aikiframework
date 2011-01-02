@@ -358,9 +358,9 @@ class bot
 
 	function DataGrid($table_name){
 		global $db, $config, $aiki;
-		
+
 		$table_name = trim($table_name);
-		
+
 		$table_info = $db->get_row("select * from aiki_forms where form_table like '$table_name'");
 		$tablename = $table_info->form_table;
 		$form_array = $table_info->form_array;
@@ -422,26 +422,26 @@ class bot
 				$records_output .= "<li><span class='dashboard_manage_text'><b><a href=\"\">".$fields_names['0']."</a></b></span><ul>";
 
 				$i = 0;
+				if ($data){
+					foreach ($data as $field_data){
 
-				foreach ($data as $field_data){
+						if ( ($i % 2) == 0 ) {
+							$li_class="dashboard_li_even";
+						} else {
+							$li_class = "dashboard_li_odd";
+						}
+						$field_data->$fields_names['0'] = htmlspecialchars($field_data->$fields_names['0']);
 
-					if ( ($i % 2) == 0 ) {
-						$li_class="dashboard_li_even";
-					} else {
-						$li_class = "dashboard_li_odd";
-					}
-					$field_data->$fields_names['0'] = htmlspecialchars($field_data->$fields_names['0']);
-
-					if ($fields_names['0'] == $pkey){
-						$edit_delete_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'><a href='".$config['url']."admin_tools/edit/".$table_info->id."/".$field_data->$fields_names['0']."'  rel=\"edit_record\" rev=\"#table_information_container\">edit</a> - 
+						if ($fields_names['0'] == $pkey){
+							$edit_delete_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'><a href='".$config['url']."admin_tools/edit/".$table_info->id."/".$field_data->$fields_names['0']."'  rel=\"edit_record\" rev=\"#table_information_container\">edit</a> -
 						<a href='".$config['url']."admin_tools/delete/".$table_info->id."/".$field_data->$fields_names['0']."' rel=\"delete_record\" rev=\"#table_information_container\">delete</a></span></li>";
+						}
+
+						$records_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
+
+						$i++;
 					}
-
-					$records_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
-
-					$i++;
 				}
-
 				if ($fields_names['0'] == $pkey){
 					$edit_delete_output .= "</ul></li>";
 				}
