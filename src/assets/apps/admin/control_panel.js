@@ -463,6 +463,11 @@ function database_forms_tree(){
     	      $.get('admin_tools/auto_generate/'+NODE.id,function(data) { 
    	    	    $('#tools_box').remove();
     	    	  $('#widget-form').html(data); 
+    	    	  
+    	    	  $("#delete_confirm_no").live('click', function(){
+    	    		  $("#delete_confirm_box").remove();
+    	    		  return false;
+    	    	  });
     	    	  if (refreshtree == 1){
     	    	    $.tree_reference('databaseformstree').refresh();
     	    	    

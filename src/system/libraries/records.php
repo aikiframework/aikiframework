@@ -720,12 +720,12 @@ class records
 
 		//TODO add way for admin to add the yes and no links
 		if (!isset($confirm) or $confirm != "yes"){
-			$result = ("Delete record #");
+			$result = ("<div id='delete_confirm_box'>Delete record #");
 			$result .= ("<b>$recordid</b>");
 			$result .= (" From: ");
 			$result .= ("<b>$tablename</b> ?");
 			$result .= ("<br />");
-			$result .= ("<a href=\"\">__yes__</a> | <a href=\"\">__no__</a>");
+			$result .= ("<a href=\"".$_GET["pretty"].":yes\" rel=\"delete_record\" rev=\"#table_information_container\">__yes__</a> | <a href=\"\" id=\"delete_confirm_no\">__no__</a></div>");
 		}else{
 
 			$delete = $db->query("delete from $tablename where $pkey=".$recordid);
