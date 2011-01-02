@@ -25,6 +25,14 @@ function code_mirror_if_authorized(){
             indentUnit: 4,
 	        lineNumbers: true
 	      }); 
+	   
+	   
+	   var authorizedselect = CodeMirror.fromTextArea('authorized_select', {
+	       height: "250px",
+	       parserfile: "parsesparql.js",
+	       stylesheet: ["assets/javascript/codemirror/css/sparqlcolors.css"],
+	       path: "assets/javascript/codemirror/js/"
+	     });  
 
 	}
 
@@ -57,15 +65,7 @@ function code_mirror(){
        path: "assets/javascript/codemirror/js/",
        continuousScanning: 500,
        lineNumbers: true
-     });    
-   
-   var authorizedselect = CodeMirror.fromTextArea('authorized_select', {
-       height: "250px",
-       parserfile: "parsesparql.js",
-       stylesheet: ["assets/javascript/codemirror/css/sparqlcolors.css"],
-       path: "assets/javascript/codemirror/js/"
-     });        
-	
+     });       
 }
 
 
@@ -85,9 +85,7 @@ function create_form(selector, id, name, code, tree){
 					}
 				$('#new_record_form').ajaxForm(function() { 
 					refreshthetree(tree);
-
 					$("#widget-form").html("Added new " + name + " successfully");
-
 	           }); 
 
 			});	
@@ -439,12 +437,8 @@ function database_forms_tree(){
     }; 
 	
     var refreshtree = 1;
-    var stop = 1;
-    
-   //create_form("#create_new_table", 3, "Table", 0);
-   create_form("#create_new_form", 6, "Form", 0, "databaseformstree");   
-    
-    
+    var stop = 1;   
+        
    $("#databaseformstree").tree( {
       
       data  : {
@@ -559,12 +553,7 @@ function config_tree(){
     var refreshtree = 1;
     var stop = 1;
     
-
     $('#tools_box').remove();
-    
-   //create_form("#create_new_table", 3, "Table", 0);
-   //create_form("#create_new_form", 6, "Form", 0, "databaseformstree");   
-    
     
    $("#configtree").tree( {
       
