@@ -29,7 +29,46 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class php
 {
-
+    
+    function evalNeg($text){
+        $text= trim($text);
+        return ( $text && $text[0]=='!' ? !substr($text,1) : $text );
+    }
+    
+    function php_ifelse($text){
+    
+        //divide the text
+        // @TODO improve this.
+        $partial= preg_split('/if |then |else /s', $text);
+                
+        if ( !isset($partial[3])) {
+            $partial[3]="";
+        }
+        
+        if ( preg_match ( '/([^<>=]+)(=|==|>|<|>=|<=|<>| in | not in )([^<>=]+)/is', $partial[1],$evaluation)){    
+            $first = $this->evalNeg($evaluation[1]);
+            $second= $this->evalNeg($evaluation[3]);    
+        
+            switch ( $evaluation[2]){
+              case "<" : $condition= $first  < $second ; break;   
+              case ">" : $condition= $first  > $second ; break;
+              case "<=": $condition= $first <= $second ; break;
+              case ">=": $condition= $first >= $second ; break;
+              case "<>": $condition= $first <> $second ; break;
+              case "=": 
+              case "==": $condition= $first == $second ; break;
+              case " in "    : $condition = stripos($second,$first)!==false;break;
+              case " not in ": $condition = stripos($second,$first)===false;break;
+            }
+        
+        } else {
+            $condition = $this->evalNeg($partial[1]);
+        }                        
+        
+    return (bool) $condition ? $partial[2]: $partial[3];   
+    }                        
+    
+    
 	public function parser($text){
 		global $aiki;
 
@@ -80,17 +119,7 @@ class php
 						break;
 
 					case "if":
-						if (preg_match('/if (.*)\=\=(.*) then (.*) else (.*)/s', $php_function, $partial)){
-							$php_output=  ( $partial[1] == $partial[2] ? $partial[3]: $partial[4]);
-						} elseif (preg_match('/if (.*)\=\=(.*) then (.*)/s', $php_function, $partial)){
-							$php_output=  ( $partial[1] == $partial[2] ? $partial[3]:"");
-						}elseif (preg_match('/if (.*)\=(.*) then (.*) else (.*)/s', $php_function, $partial)){
-							$php_output=  ( $partial[1] == $partial[2] ? $partial[3]: $partial[4]);
-						} elseif (preg_match('/if (.*)\=(.*) then (.*)/s', $php_function, $partial)){
-							$php_output=  ( $partial[1] == $partial[2] ? $partial[3]:"");
-						}elseif (preg_match('/if (.*) then (.*)/s', $php_function, $partial)){
-							$php_output=  ( $partial[1] ? $partial[2]:"");
-						}
+                        $php_output= $this->php_ifelse($php_function);						
 						break;
 
 					case "htmlspecialchars":
