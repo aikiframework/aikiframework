@@ -510,7 +510,7 @@ class bot
 			$output .= "the table <b>$table_name</b> exists and have the latest structure.<br>";
 		}
 
-		//check for values
+		//check for default values
 		$sql_insert_defaults = file_get_contents("$system_folder/system/sql/InsertDefaults.sql");
 		if (false == $sql_insert_defaults){
 			die("<br />FATAL: failed to read file -> $system_folder/system/sql/InsertDefaults.sql<br />");
