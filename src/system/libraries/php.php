@@ -74,7 +74,7 @@ class php
 						break;
 
 					case "substr":
-						preg_match("/substr\(\'(.*)\',$para(,(.*))?\);/s", $php_function, $partial);
+						preg_match("/substr\($para,$para(,(.*))?\);/s", $php_function, $partial);
 						$php_output = ( $partial[4] ? substr($partial[1], $partial[2],$partial[4])
 						: substr($partial[1], $partial[2] ));
 						break;
