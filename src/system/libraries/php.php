@@ -29,46 +29,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class php
 {
-    
-    function evalNeg($text){
-        $text= trim($text);
-        return ( $text && $text[0]=='!' ? !substr($text,1) : $text );
-    }
-    
-    function php_ifelse($text){
-    
-        //divide the text
-        // @TODO improve this.
-        $partial= preg_split('/if |then |else /s', $text);
-                
-        if ( !isset($partial[3])) {
-            $partial[3]="";
-        }
-        
-        if ( preg_match ( '/([^<>=]+)(=|==|>|<|>=|<=|<>| in | not in )([^<>=]+)/is', $partial[1],$evaluation)){    
-            $first = $this->evalNeg($evaluation[1]);
-            $second= $this->evalNeg($evaluation[3]);    
-        
-            switch ( $evaluation[2]){
-              case "<" : $condition= $first  < $second ; break;   
-              case ">" : $condition= $first  > $second ; break;
-              case "<=": $condition= $first <= $second ; break;
-              case ">=": $condition= $first >= $second ; break;
-              case "<>": $condition= $first <> $second ; break;
-              case "=": 
-              case "==": $condition= $first == $second ; break;
-              case " in "    : $condition = stripos($second,$first)!==false;break;
-              case " not in ": $condition = stripos($second,$first)===false;break;
-            }
-        
-        } else {
-            $condition = $this->evalNeg($partial[1]);
-        }                        
-        
-    return (bool) $condition ? $partial[2]: $partial[3];   
-    }                        
-    
-    
+
 	public function parser($text){
 		global $aiki;
 
@@ -87,6 +48,7 @@ class php
 				// obtain first word..
 				$len= strcspn($php_function," -(");
 				$word = ( $len ? substr($php_function,0,$len): "");
+				$rest= trim(substr($php_function,$len+1,-1));
 
 				//evaluate each case..
 				switch ($word) {
@@ -107,19 +69,23 @@ class php
 						$php_output = eval($partial[1] . ( substr($partial[1],-1)!=";" ? ";" :"")) ;
 						break;*/
 
+					case "replace":
 					case "str_replace":
-						preg_match("/str_replace\($para,$para,$para\);/Us", $php_function, $partial);
-						$php_output = str_replace($partial[1],$partial[2],$partial[3]);
+						$partial = $this->mtoken($rest);
+						$php_output = str_replace($partial[0],$partial[1],$partial[2]);
 						break;
 
 					case "substr":
-						preg_match("/substr\($para,$para(,(.*))?\);/s", $php_function, $partial);
-						$php_output = ( $partial[4] ? substr($partial[1], $partial[2],$partial[4])
-						: substr($partial[1], $partial[2] ));
+						$partial = $this->mtoken($rest);
+						if ( isset($partial[2])) {
+							$php_output = substr($partial[0], $partial[1],$partial[2]);
+						} else {
+							$php_output = substr($partial[0], $partial[1]);
+						}
 						break;
 
 					case "if":
-                        $php_output= $this->php_ifelse($php_function);						
+						$php_output= $this->php_ifelse($php_function);
 						break;
 
 					case "htmlspecialchars":
@@ -146,7 +112,89 @@ class php
 
 	}
 
+	/**
+	 * Internal function to parser argument
+	 */
 
+	function mtoken ( $text, $separator=',' ){
+		$max  = strlen($text)-1;
+		/**
+		 *  state 0: waiting a token
+		 * 1: over ' delimited string
+		 * 2  over " delimited string
+		 * 3  over a no delimited string,
+		 * 4  waiting coma
+		 */
+		$state= 0 ;
+		$word = "";
+		$resul= array();
+
+		for($i=0;$i<=$max;$i++){
+			$char = $text[$i];
+
+			// continue over white space
+			if ( ( $state==0 || $state==4) && ( $char==" " || $char=="\n" || $char=="\r" || $char=="\t" )) {
+				$continue;
+			} elseif ( ( $char=="'" && $state==1) || ( $char=='"' && $state==2) ||	( $char==$separator && $state==3) || $i==$max ) {
+				$state= ( $state==3 ? 0 : 4);
+				$resul[]= $word ;
+				$word="";
+			} elseif ( $char==$separator && $state==4 ) { //found a ' when waiting
+				$state=0 ;
+			} elseif ( ($char=="'" || $char=='"' ) && $state==0) { //initiate a string
+				$state= ( $char=="'" ? 1: 2) ;
+			} elseif ( $char=='\\'  ) {
+				$i++;
+				$word .= $text[$i];
+			} elseif ( $state==0){
+				$state=3;
+				$word = $char;
+			} else {
+				$word .= $char;
+			}
+
+		}
+
+		return $resul;
+	}
+
+	function evalNeg($text){
+		$text= trim($text);
+		return ( $text && $text[0]=='!' ? !substr($text,1) : $text );
+	}
+
+	function php_ifelse($text){
+
+		//divide the text
+		// @TODO improve this.
+		$partial= preg_split('/if |then |else /s', $text);
+
+		if ( !isset($partial[3])) {
+			$partial[3]="";
+		}
+
+		if ( preg_match ( '/([^<>=]+)(=|==|>|<|>=|<=|<>| in | not in )([^<>=]+)/is', $partial[1],$evaluation)){
+			$first = $this->evalNeg($evaluation[1]);
+			$second= $this->evalNeg($evaluation[3]);
+
+			switch ( $evaluation[2]){
+				case "<" : $condition= $first  < $second ; break;
+				case ">" : $condition= $first  > $second ; break;
+				case "<=": $condition= $first <= $second ; break;
+				case ">=": $condition= $first >= $second ; break;
+				case "<>": $condition= $first <> $second ; break;
+				case "=":
+				case "==": $condition= $first == $second ; break;
+				case " in "    : $condition = stripos($second,$first)!==false;break;
+				case " not in ": $condition = stripos($second,$first)===false;break;
+			}
+
+		} else {
+			$condition = $this->evalNeg($partial[1]);
+		}
+
+		return (bool) $condition ? $partial[2]: $partial[3];
+	}
 
 	public function aiki_function($class,$function, $para){
 		global $aiki;
