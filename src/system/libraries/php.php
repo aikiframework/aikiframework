@@ -33,6 +33,9 @@ class php
 	public function parser($text){
 		global $aiki;
 
+		$text = htmlspecialchars_decode($text);
+		$text = stripslashes($text);
+
 		$para="([^,]*)"; // for comodity
 
 		if (preg_match ("/\<form(.*)\<php (.*) php\>(.*)\<\/form\>/Us", $text)){
