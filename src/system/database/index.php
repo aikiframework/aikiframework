@@ -518,6 +518,7 @@ class ezSQLcore
 
 					foreach ( $one_row as $item )
 					{
+						$item = htmlentities($item);
 						echo "<td nowrap><font face=arial size=2>$item</font></td>";
 					}
 
