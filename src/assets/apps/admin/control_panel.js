@@ -643,7 +643,8 @@ $().ready(function() {
 
 		widget_accordion();
 
-		aiki_log("System: Loaded"); 
+		aiki_log("Sql Command: <input type='text' name='sql_query' style='border: 1px solid; width: 80%;'>" +
+				"<input type='button' name='submit' value='Run' style='border: 1px solid'>"); 
 	 	 
 	   $("#database_forms").click(function(event){
 		   database_forms_tree();
