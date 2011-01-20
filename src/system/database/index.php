@@ -425,23 +425,13 @@ class ezSQLcore
 		// Start outup buffering
 		ob_start();
 
-		echo "<p><table><tr><td bgcolor=ffffff><blockquote><font color=000090>";
-		echo "<pre><font face=arial>";
-
-		if ( ! $this->vardump_called )
-		{
-			echo "<font color=800080><b>ezSQL</b> (v".EZSQL_VERSION.") <b>Variable Dump..</b></font>\n\n";
-		}
-
 		$var_type = gettype ($mixed);
 		print_r(($mixed?$mixed:"<font color=red>No Value / False</font>"));
 		echo "\n\n<b>Type:</b> " . ucfirst($var_type) . "\n";
-		echo "<b>Last Query</b> [$this->num_queries]<b>:</b> ".($this->last_query?$this->last_query:"NULL")."\n";
-		echo "<b>Last Function Call:</b> " . ($this->func_call?$this->func_call:"None")."\n";
-		echo "<b>Last Rows Returned:</b> ".count($this->last_result)."\n";
-		echo "</font></pre></font></blockquote></td></tr></table>".$this->donation();
-		echo "\n<hr size=1 noshade color=dddddd>";
-
+		echo "<b>Query</b> [$this->num_queries]<b>:</b> ".($this->last_query?$this->last_query:"NULL")."\n";
+		//echo "<b>Last Function Call:</b> " . ($this->func_call?$this->func_call:"None")."\n";
+		echo "<b>Results Num	:</b> ".count($this->last_result)."\n";
+		echo "</font></pre></font></blockquote></td></tr></table>";
 		// Stop output buffering and capture debug HTML
 		$html = ob_get_contents();
 		ob_end_clean();
@@ -480,12 +470,6 @@ class ezSQLcore
 		ob_start();
 
 		echo "<blockquote>";
-
-		// Only show ezSQL credits once..
-		if ( ! $this->debug_called )
-		{
-			echo "<font color=800080 face=arial size=2><b>ezSQL</b> (v".EZSQL_VERSION.") <b>Debug..</b></font><p>\n";
-		}
 
 		if ( $this->last_error )
 		{

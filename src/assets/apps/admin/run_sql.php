@@ -36,5 +36,11 @@ if ($membership->permissions != "SystemGOD"){
 }
 
 if (isset($_POST['sql_query'])){
-echo "heeey";
+	$query = stripslashes($_POST['sql_query']);
+	if ($query){
+		$result = $db->query($query);
+		$db->debug();		 
+	}else{
+		echo "Empty Query";
+	}
 }

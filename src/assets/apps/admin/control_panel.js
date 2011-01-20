@@ -643,12 +643,17 @@ $().ready(function() {
 
 		widget_accordion();
 
-		aiki_log("Sql Command: <input type='text' name='sql_query' style='border: 1px solid; width: 80%;'>" +
+		aiki_log("Sql Command: <input type='text' id='sql_query' name='sql_query' style='border: 1px solid; width: 80%;'>" +
 				"<input type='button' id='submit_query' name='submit_query' value='Run' style='border: 1px solid'>"); 
 	 	 
 	   $("#submit_query").click(function(event){
-
-	   });
+        var query_value = $('#sql_query').val();
+        
+         $.post("assets/apps/admin/run_sql.php", { sql_query: query_value},
+          function(data){
+            aiki_log(data);
+           });
+	     });
 		
 	   $("#database_forms").click(function(event){
 		   database_forms_tree();
