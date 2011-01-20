@@ -298,7 +298,7 @@ function urls_widgets_tree(){
   if (stop == 1){
 			$("#widget-form").load('admin_tools/edit/20/'+NODE.id,  function(){
 				
-				aiki_log('Widget: You are editing widget '+NODE.id);
+				/*aiki_log('Widget: You are editing widget '+NODE.id);*/
 				$("<div id='events_listener'></div>").appendTo("#widget-form");
 				$("#events_listener").load("assets/apps/admin/events.php?widget="+NODE.id);
 				
@@ -325,7 +325,7 @@ function urls_widgets_tree(){
 					$('<div id="note_container" style="background:none repeat scroll 0 0 #FDA501; color:#FFFFFF; font-weight:bold; padding:6px; position:fixed; right:0; text-align:center; top:0; width:100%; z-index:10000;"><span>Changes Saved</span></div>').appendTo("#widget-form").hide().fadeIn(1000).fadeOut(2000,
 							function() {
 						
-						aiki_log('Widget: You changed widget '+NODE.id);
+						/*aiki_log('Widget: You changed widget '+NODE.id);*/
 						
 					        	$('#note_container').remove();	
 								$("<div id='events_listener'></div>").appendTo("#widget-form");
@@ -353,7 +353,7 @@ function urls_widgets_tree(){
 							$('<div id="note_container" style="background:none repeat scroll 0 0 #FDA501; color:#FFFFFF; font-weight:bold; padding:6px; position:fixed; right:0; text-align:center; top:0; width:100%; z-index:10000;"><span>Changes Saved</span></div>').appendTo("#widget-form").hide().fadeIn(1000).fadeOut(2000,
 									function() {
 								
-								aiki_log('Widget: You changed widget '+NODE.id);
+								/*aiki_log('Widget: You changed widget '+NODE.id);*/
 								
 							        	$('#note_container').remove();	
 										$("<div id='events_listener'></div>").appendTo("#widget-form");
@@ -644,8 +644,12 @@ $().ready(function() {
 		widget_accordion();
 
 		aiki_log("Sql Command: <input type='text' name='sql_query' style='border: 1px solid; width: 80%;'>" +
-				"<input type='button' name='submit' value='Run' style='border: 1px solid'>"); 
+				"<input type='button' id='submit_query' name='submit_query' value='Run' style='border: 1px solid'>"); 
 	 	 
+	   $("#submit_query").click(function(event){
+
+	   });
+		
 	   $("#database_forms").click(function(event){
 		   database_forms_tree();
 	   });	 
