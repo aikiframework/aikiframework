@@ -333,8 +333,6 @@ function urls_widgets_tree(){
 								$("#events_listener").remove();					        	
 					        }
 					);
-
-					
 					$.tree_reference('widgettree').refresh();
 					
 					stop = 1;
@@ -417,17 +415,10 @@ function urls_widgets_tree(){
 				}
 			}
 		});
-
-				
-
- 
 		}
-        
        }
-
     } );
 }
-
 
 function database_forms_tree(){
 
@@ -454,7 +445,6 @@ function database_forms_tree(){
       callback : {
         onselect : function(NODE,TREE_OBJ) {
     	  if (isNaN(NODE.id)){
-    	 
     	      $.get('admin_tools/auto_generate/'+NODE.id,function(data) { 
    	    	    $('#tools_box').remove();
     	    	  $('#widget-form').html(data); 
@@ -469,9 +459,6 @@ function database_forms_tree(){
     	    	    refreshtree = 0
     	    	  }
     	    });
-    	    		
-    	      
-    		  
     	  }else{
  if (stop == 1){
 	    $('#tools_box').remove();
@@ -492,7 +479,6 @@ function database_forms_tree(){
 
     				});	
     	  }    		  
-  		  
     	  }
         },
         
@@ -532,13 +518,8 @@ function database_forms_tree(){
     				}
     			}
     		});
-
-    				
-
-     
     		}        
        }
-
     } );
 }
 
@@ -547,7 +528,6 @@ function config_tree(){
 
     var formoptions = { 
         target:        '#widget-form'
- 
     }; 
 	
     var refreshtree = 1;
@@ -589,14 +569,11 @@ function config_tree(){
 
     				});	
     	  }    		  
-  		  
-    	  
         }
        }
 
     } );
 }
-
 
 function system_accordion(){
 	$("#system_accordion").accordion({
@@ -671,7 +648,6 @@ $().ready(function() {
 		   return false;
 	   });	 	   
 	   	   
-	   
 	    $("<li><a href='#' id='open_events_listener'>Events Listener</a></li>").appendTo("#main-navigation");
 		$("<div id='events_output' title='Events Listener'></div>").appendTo("#header");
 		$("#events_output").load("assets/apps/admin/events.php");
@@ -686,5 +662,4 @@ $().ready(function() {
 		        $("#events_output").load("assets/apps/admin/events.php");
 			}
 		 }, 3000);
-	   
 });
