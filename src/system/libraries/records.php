@@ -557,7 +557,7 @@ class records
 						$secondery_insert_query .= ")";
 
 						$secondery_insert_query = str_replace("'NOW()'", "NOW()", $secondery_insert_query);
-						
+
 						$secondery_result = $db->query($secondery_insert_query);
 					}
 				}
@@ -862,6 +862,23 @@ class records
 							}
 
 							break;
+								
+						case "value":
+							$post[$intwalker[0]] = $aiki->url->apply_url_on_query($intwalker[3]);
+
+							$post[$intwalker[0]] = $aiki->processVars($post[$intwalker[0]]);
+
+							$post[$intwalker[0]] = $aiki->url->apply_url_on_query($post[$intwalker[0]]);
+
+							$values_array[$intwalker[0]] = $post[$intwalker[0]];
+
+							break;
+
+						case "datetime":
+
+							$post[$intwalker[0]]= 'NOW()';
+
+							break;
 
 						case "email":
 							if (!$aiki->text->is_valid("email",$post[$intwalker[0]])){
@@ -876,18 +893,23 @@ class records
 				if (isset($get_permission_and_man_info[1])){
 					$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_permission_and_man_info[1]'");
 				}
+				if (!preg_match("/\-\>/Us", $intwalker[0])){
+					if ((!isset($get_permission_and_man_info[1]) or !$get_permission_and_man_info[1] or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level) and $do_not_update != $intwalker['0'] and isset($_POST[$intwalker[0]])){
+							
+						$_POST[$intwalker[0]] = @str_replace('&lt;', '<' , $_POST[$intwalker[0]]);
+						$_POST[$intwalker[0]] = @str_replace('&gt;', '>' , $_POST[$intwalker[0]]);
 
-				if ((!isset($get_permission_and_man_info[1]) or !$get_permission_and_man_info[1] or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level) and $do_not_update != $intwalker['0'] and isset($_POST[$intwalker[0]])){
+						$insert_query_fields .= "$intwalker[0], ";
+						$insert_query_values .= "'".$_POST[$intwalker[0]]."', ";
 
-					$_POST[$intwalker[0]] = @str_replace('&lt;', '<' , $_POST[$intwalker[0]]);
-					$_POST[$intwalker[0]] = @str_replace('&gt;', '>' , $_POST[$intwalker[0]]);
-
-					$insert_query_fields .= "$intwalker[0], ";
-					$insert_query_values .= "'".$_POST[$intwalker[0]]."', ";
-
-					if ($post['form_post_type'] == "save"){
-						$editQuery .= ", ".$intwalker[0]."='".$_POST[$intwalker[0]]."'";
+						if ($post['form_post_type'] == "save"){
+							$editQuery .= ", ".$intwalker[0]."='".$_POST[$intwalker[0]]."'";
+						}
 					}
+				}else{
+					$delimitered_field = explode("->", $intwalker[0]);
+
+					$secondery_queries[$delimitered_field[1]][$delimitered_field[0]] = $post[$delimitered_field[0]."->".$delimitered_field[1]];
 				}
 
 			}
@@ -958,6 +980,38 @@ class records
 			}
 		}
 
+		if (isset($secondery_queries) and is_array($secondery_queries)){
+			foreach($secondery_queries as $table => $secondery_query){
+				$secondery_insert_query = "";
+				$secondery_insert_query .= "INSERT into $table (";
+
+				foreach ($secondery_query as $field_name => $field_value){
+					$secondery_insert_query .= "$field_name, ";
+				}
+				$secondery_insert_query = preg_replace("/\, $/", "", $secondery_insert_query);
+
+				$secondery_insert_query .= ") values (";
+
+				foreach ($secondery_query as $field_name => $field_value){
+					$field_value = str_replace("this_pkey", $this_pkey, $field_value);
+
+					$field_value_var = $aiki->get_string_between($field_value, '[', ']');
+					if ($field_value_var){
+						$field_value = str_replace('['.$field_value_var.']', $post["$field_value_var"], $field_value);
+					}
+
+					$secondery_insert_query .= "'".$field_value."', ";
+				}
+				$secondery_insert_query = preg_replace("/\, $/", "", $secondery_insert_query);
+
+				$secondery_insert_query .= ")";
+
+				$secondery_insert_query = str_replace("'NOW()'", "NOW()", $secondery_insert_query);
+
+				$secondery_result = $db->query($secondery_insert_query);
+			}
+		}
+
 		if (isset($editResult)){
 
 			switch ($post['form_post_type']){
@@ -983,7 +1037,7 @@ class records
 		global $aiki,$db, $membership, $layout;
 
 		if (isset($_POST['edit_form']) and isset($_POST['form_id']) and isset($_POST['record_id'])){
-				
+
 			$serial_post = serialize($_POST);
 
 			echo $aiki->records->edit_db_record_by_form_post($serial_post, $_POST['form_id'], $_POST['record_id']);
