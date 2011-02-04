@@ -556,6 +556,8 @@ class records
 
 						$secondery_insert_query .= ")";
 
+						$secondery_insert_query = str_replace("'NOW()'", "NOW()", $secondery_insert_query);
+						
 						$secondery_result = $db->query($secondery_insert_query);
 					}
 				}
