@@ -226,5 +226,10 @@ class php
 		return ( $this->odd ? "odd" : "even");
 	}
 
+	function setcounter($para){
+		$this->counters[$para[0]]     = (isset($para[1]) ? $para[1] :1);
+		$this->increments[$para[0]] = (isset($para[2]) ? (int) $para[2] :1);
+		$this->initialized[$para[0]] = false;
+	}
 
 }
