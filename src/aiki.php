@@ -18,6 +18,12 @@
  */
 
 /**
+ * 
+ * This is the bootstrap file
+ * 
+ */
+
+/**
  * Used to test for script access
  */
 define('IN_AIKI', true);
