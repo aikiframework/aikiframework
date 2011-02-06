@@ -52,24 +52,24 @@ class output
 	}
 
 	public function write_doctype(){
-		global $dir, $language_short_name;
+		global $languages;
 
 		//don't change the direction if the page is the admin panel on /admin
 		if (isset($_GET["pretty"]) and $_GET["pretty"] == 'admin'){
-			$language_short_name = "en";
-			$dir = "ltr";
+			$languages->language_short_name = "en";
+			$languages->dir = "ltr";
 		}
 
 		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="'.$language_short_name.'" xml:lang="'.$language_short_name.'"
-	dir="'.$dir.'">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="'.$languages->language_short_name.'" xml:lang="'.$languages->language_short_name.'"
+	dir="'.$languages->dir.'">
 ';
 
 	}
 
 
 	public function write_headers(){
-		global $aiki, $db, $layout, $nogui, $site, $config, $language;
+		global $aiki, $db, $layout, $nogui, $site, $config;
 
 		$header = $this->write_doctype();
 		$header .= '<head>';

@@ -134,7 +134,7 @@ class aiki
 	 * @return  string
 	 */
 	public function processVars($text){
-		global $aiki, $page, $membership, $config, $dir;
+		global $aiki, $page, $membership, $config, $languages;
 
 		//TODO: add this to config
 		date_default_timezone_set("America/Los_Angeles"); 
@@ -146,11 +146,11 @@ class aiki
 		$aReplace = array (
 		"[userid]"      => $membership->userid,
         "[full_name]" => $membership->full_name,
-        "[language]" => $config['default_language'],
+        "[language]" => $languages->language,
 		"[username]" => $membership->username,
 		"[page]" => $page,
 		"[site]" => $config['site'],
-		"[direction]" => $dir,
+		"[direction]" => $languages->dir,
 		"insertedby_username" => $membership->username,
 		"insertedby_userid" => $membership->userid,
 		"current_month" => $current_month,
