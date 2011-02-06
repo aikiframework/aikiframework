@@ -232,4 +232,17 @@ class php
 		$this->initialized[$para[0]] = false;
 	}
 
+	function counter($counter){
+		if ( !isset( $this->counters[$counter]) )  {
+			$this->counters[$counter]=0;
+			$this->increments[$counter]=1;
+			$this->initialized[$counter]=true;
+		} elseif ( ! $this->initialized[$counter] ) {
+			$this->initialized[$counter]=true;
+		} else {
+			$this->counters[$counter]+= $this->increments[$counter];
+		}
+		return $this->counters[$counter];
+	}
+
 }
