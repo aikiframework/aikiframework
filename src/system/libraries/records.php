@@ -862,7 +862,7 @@ class records
 							}
 
 							break;
-								
+
 						case "value":
 							$post[$intwalker[0]] = $aiki->url->apply_url_on_query($intwalker[3]);
 
@@ -1059,9 +1059,6 @@ class records
 				$field = trim($field);
 
 				$label = $aiki->get_string_between($edit , "<label>", "</label>");
-				if ($label){
-					$label = trim($label);
-				}
 
 				$output = $aiki->get_string_between($edit , "<output>", "</output>");
 
@@ -1112,7 +1109,11 @@ class records
 					}else{
 
 						if (!$widget_value->$field){
-							$widget_value->$field = 'Click here to edit';
+							if ($label){
+								$widget_value->$field = trim($label);
+							}else{
+								$widget_value->$field = 'Click here to edit';
+							}
 						}else{
 							$widget_value->$field = $aiki->convert_to_specialchars($widget_value->$field);
 						}
