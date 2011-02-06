@@ -245,4 +245,11 @@ class php
 		return $this->counters[$counter];
 	}
 
+	function mod($factor){
+		$factor= (int)$factor;
+		$cRet =  ( $factor != 0 ? $this->mod % $factor: 0);
+		$this->mod++;
+		return ( $cRet);
+	}
+
 }
