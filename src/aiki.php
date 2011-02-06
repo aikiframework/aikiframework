@@ -18,9 +18,9 @@
  */
 
 /**
- * 
+ *
  * This is the bootstrap file
- * 
+ *
  */
 
 /**
@@ -100,12 +100,11 @@ if(isset($_GET['site'])){
 }
 
 
-$site_info = 
-   $db->get_row("SELECT * from aiki_sites where site_shortcut='$site' limit 1");
+$site_info = $db->get_row("SELECT * from aiki_sites where site_shortcut='$site' limit 1");
 if (!$site_info)
 {
-    die("Fatal Error: Wrong site name provided. " . 
-        (( ENABLE_RUNTIME_INSTALLER == FALSE ) ? 
+	die("Fatal Error: Wrong site name provided. " .
+	  (( ENABLE_RUNTIME_INSTALLER == FALSE ) ?
            "ENABLE_RUNTIME_INSTALLER is set to FALSE." : ""));
 }
 if ($site_info and $site_info->is_active != 1){
@@ -129,17 +128,3 @@ $aiki->load("image");
 $errors = $aiki->load("errors");
 
 $url = $aiki->load("url");
-
-if(isset($_GET['language'])){
-	$language=$_GET['language'];
-	$is_real_language = $db->get_row("SELECT sys_name, dir, short_name from aiki_languages where sys_name='$language'");
-	if (isset($is_real_language->sys_name)){
-		$config['default_language'] = $is_real_language->sys_name;
-		$dir = $is_real_language->dir;
-		$language_short_name = $is_real_language->short_name;
-	}
-}else{
-	$default_language = $config['default_language'];
-	$dir = $config['site_dir'];
-	$language_short_name =$config['language_short_name'];
-}

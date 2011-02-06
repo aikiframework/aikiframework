@@ -28,6 +28,30 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class languages
 {
 
+	function __construct() {
+		global $dir, $language, $language_short_name, $config;
+
+		if( !isset($_GET['language']) || !$this->set($_GET['language'])) {
+			$language = $config['default_language'];
+			$dir = $config['site_dir'];
+			$language_short_name  = $config['language_short_name'];
+		}
+	}
+
+	private function set($lang) {
+		global $dir, $language, $language_short_name;
+		global $db, $config;
+		$is_real_language = $db->get_row("SELECT sys_name,dir, short_name from aiki_languages where sys_name='$lang'");
+		if (isset($is_real_language->sys_name)) {
+			$language= $lang;
+			$config['default_language']= $language;
+			$dir = $is_real_language->dir;
+			$language_short_name= $is_real_language->short_name;
+			return true;
+		}
+
+		return false;
+	}
 
 	public function L10n($string){
 		global $db, $config;
