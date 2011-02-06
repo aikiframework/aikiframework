@@ -30,6 +30,8 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class php
 {
 
+	private $odd=0, $mod=0,$counters=array(), $increments=array(), $initialized=array();
+
 	public function parser($text){
 		global $aiki;
 
@@ -217,7 +219,11 @@ class php
 			return $aiki->$class->$function();
 		}
 
+	}
 
+	function odd(){
+		$this->odd= ( $this->odd==0 ? 1:0);
+		return ( $this->odd ? "odd" : "even");
 	}
 
 
