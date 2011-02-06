@@ -122,7 +122,7 @@ class CreateLayout
 
 
 	private function createWidget($widget_id, $widget_group=''){
-		global $db, $aiki,$url, $language, $dir, $page, $site, $custome_output;
+		global $db, $aiki,$url, $page, $site, $custome_output;
 
 		if ($widget_group){
 
@@ -248,7 +248,7 @@ class CreateLayout
 
 
 	private function createWidgetContent($widget, $output_to_string='', $normal_select=''){
-		global $aiki, $db, $url, $language, $dir, $membership, $nogui, $custome_output, $config;
+		global $aiki, $db, $url, $membership, $nogui, $custome_output, $config;
 
 		if (isset($_GET['page'])){
 			$page = addslashes($_GET['page']);
