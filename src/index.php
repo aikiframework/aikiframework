@@ -129,6 +129,7 @@ if ($config['html_cache'] and isset($html_cache_file)){
 
 		$full_html_input = $aiki->languages->L10n($full_html_input);
 
+		//write the cache file
 		error_log ( $full_html_input, 3, $html_cache_file);
 
 	}
