@@ -30,12 +30,6 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 // vim: foldmethod=marker
 
-/* Generic exception class
- */
-class OAuthException extends Exception {
-	// pass
-}
-
 class OAuthConsumer {
 	public $key;
 	public $secret;
