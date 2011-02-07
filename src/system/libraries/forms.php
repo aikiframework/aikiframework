@@ -255,7 +255,7 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "textinput":
-						$form .= '<h2>'.$intwalker['1'].'</h2><input type="text" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" value="'; if (isset($form_data) and isset($form_data->$intwalker[0])){$form .= $form_data->$intwalker[0] ;} $form .= '">';
+						$form .= '<h2>'.$intwalker['1'].'</h2><input type="text" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'" value="'; if (isset($form_data) and isset($form_data->$intwalker[0])){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
 
 					case "unique_textinput":
@@ -276,7 +276,7 @@ $("#new_record_form").ajaxForm(function() {
 
 
 					case "bigtextblock":
-						$form .= '<h2>'.$intwalker[1].'</h2><textarea id="bigfont" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" style="height: 500px; width: 600px; display: block;" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea>';
+						$form .= '<h2>'.$intwalker[1].'</h2><textarea id="bigfont" style="height: 500px; width: 600px; display: block;" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea>';
 						break;
 
 					case "textblock":
@@ -292,7 +292,7 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "static_input":
-						$form .= '<h2>'.$intwalker[1].'</h2><input type="text" dir="'.$get_permission_and_man_info[3].'" name="'.$intwalker[0].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
+						$form .= '<h2>'.$intwalker[1].'</h2><input type="text" name="'.$intwalker[0].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
 
 					case "edit_type":
