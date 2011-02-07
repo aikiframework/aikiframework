@@ -259,7 +259,7 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "unique_textinput":
-						$form .= '<h2>'.$intwalker['1'].'</h2><input type="text" name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
+						$form .= '<h2>'.$intwalker['1'].'</h2><input type="text" name="'.$intwalker['0'].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
 
 					case "password":
