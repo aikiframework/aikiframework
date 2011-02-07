@@ -263,7 +263,7 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "password":
-						$form .= '<h2>'.$intwalker['1'].'</h2><input type="password" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" name="'.$intwalker['0'].'" ">';
+						$form .= '<h2>'.$intwalker['1'].'</h2><input type="password" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" name="'.$intwalker['0'].'">';
 						break;
 
 					case "submit":
