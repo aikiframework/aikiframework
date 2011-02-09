@@ -13,7 +13,7 @@ function  globalajaxify(file, targetwidget){
 
 if (stop != 1){
 	stop = 1;
-	$('<div id="loading_box"><span>Loading please wait...</span></div>').hide().appendTo(targetwidget).fadeIn("fast");
+	$('<div id="loading_box"><span>Loading...</span></div>').hide().appendTo(targetwidget).fadeIn("fast");
 	$.get(file,function(data) {
 		$('#loading_box').fadeOut("fast", function() { $(this).remove(); 
 		$(targetwidget).hide().fadeIn(500).html(data);
