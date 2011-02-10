@@ -121,52 +121,66 @@ class php
 	 * Internal function to parser argument
 	 */
 
-	function mtoken ( $text, $separator=',' ){
-		$max  = strlen($text)-1;
-		/**
-		 *  state 0: waiting a token
-		 * 1: over ' delimited string
-		 * 2  over " delimited string
-		 * 3  over a no delimited string,
-		 * 4  waiting coma
-		 */
-		$state= 0 ;
-		$word = "";
-		$resul= array();
+	function mtoken ( $text, $separator=',' ){    
+    $max  = strlen($text);
+    $state= 0 ; /* state 0: waiting a token
+                         1: over ' delimited string
+                         2  over " delimited string
+                         3  over a no delimited string,
+                         4  waiting coma */
+    $word = "";
+    $resul= array();
+        
+    for($i=0;$i<=$max;$i++){            
+        $char = $text[$i];
+                    
+        // continue over white space
+        if ( ( $state==0 || $state==4) && ( $char==" " || $char=="\n" || $char=="\r" || $char=="\t" )) {
+            $continue;
+        } elseif ( ( $char=="'" && $state==1) ||  //anotate string ends.
+                   ( $char=='"' && $state==2) ||
+                   ( $char==$separator && $state==3) ||
+                   ( $i==$max && ($state>0 && $state<4) ) ){
+            $state= ( $state==3 ? 0 : 4);
+            $resul[]= $word ; 
+            $word=""; 
+        } elseif ( $char==$separator && $state==4 ) { //found a ' when waiting
+            $state=0 ; 
+        } elseif ( ($char=="'" || $char=='"' ) && $state==0) { //initiate a string
+            $state= ( $char=="'" ? 1: 2) ;                                        
+        } elseif ( $char=='\\'  ) {
+            $i++;
+            $word .= $text[$i]; 
+        } elseif ( $state==0){
+            $state=3;
+            $word = $char;     
+        } else {
+            $word .= $char;
+        }
 
-		for($i=0;$i<=$max;$i++){
-			$char = $text[$i];
+   } // for
+            
+   return $resul;
+}
 
-			// continue over white space
-			if ( ( $state==0 || $state==4) && ( $char==" " || $char=="\n" || $char=="\r" || $char=="\t" )) {
-				$continue;
-			} elseif ( ( $char=="'" && $state==1) || ( $char=='"' && $state==2) ||	( $char==$separator && $state==3) || $i==$max ) {
-				$state= ( $state==3 ? 0 : 4);
-				$resul[]= $word ;
-				$word="";
-			} elseif ( $char==$separator && $state==4 ) { //found a ' when waiting
-				$state=0 ;
-			} elseif ( ($char=="'" || $char=='"' ) && $state==0) { //initiate a string
-				$state= ( $char=="'" ? 1: 2) ;
-			} elseif ( $char=='\\'  ) {
-				$i++;
-				$word .= $text[$i];
-			} elseif ( $state==0){
-				$state=3;
-				$word = $char;
-			} else {
-				$word .= $char;
-			}
-
-		}
-
-		return $resul;
-	}
-
-	function evalNeg($text){
-		$text= trim($text);
-		return ( $text && $text[0]=='!' ? !substr($text,1) : $text );
-	}
+    
+    function evalNeg($text){    
+        $text= trim($text);        
+        if ( preg_match ( '/^\$_(GET|POST|SESSION|REQUEST|COOKIE)\[(.*)\]$/', $text, $cap )){
+            $key= preg_replace ( "/^['\"]|['\"]$/",'',$cap[2]);
+            switch ( $cap[1] ) {
+                case "POST"   : $text= isset($_POST[$key])    ? $_POST[$key] : "" ; break;
+                case "GET"    : $text= isset($_GET[$key])     ? $_GET[$key] : "" ; break;
+                case "REQUEST": $text= isset($_REQUEST[$key]) ? $_REQUEST[$key] : "" ; break;
+                case "SESSION": $text= isset($_SESSION[$key]) ? $_SESSION[$key] : "" ; break;
+                case "COOKIE" : $text= isset($_COOKIE[$key])  ? $_COOKIE[$key] : "" ; break;
+                default:
+                    $text="";
+             } 
+        }
+        $text =  preg_replace ( "/^(!?)\s?['\"]|['\"]$/",'\\1', $text );
+        return ( $text && $text[0]=='!' ? !substr($text,1) : $text );
+    }
 
 	function php_ifelse($text){
 
