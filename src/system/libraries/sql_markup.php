@@ -101,8 +101,8 @@ class sql_markup
 
 						$match .= $html;
 
-						$match = str_replace("\r", ' ', $match);
-						$match = str_replace("\n", ' ', $match);
+						//$match = str_replace("\r", ' ', $match);
+						//$match = str_replace("\n", ' ', $match);
 						$match = preg_replace("/\)\s\s+\(/", '(', $match);
 
 						$match .= $this->sql_query($html);

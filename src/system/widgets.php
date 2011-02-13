@@ -109,7 +109,7 @@ class CreateLayout
 					}
 
 				}
-				
+
 				$this->createWidget('', $widget_group);
 
 			}else{
@@ -641,6 +641,9 @@ class CreateLayout
 			$processed_widget = $this->parsDBpars($processed_widget, '');
 			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
+				
+			$processed_widget = $aiki->text->aiki_nl2br($processed_widget);
+			$processed_widget = $aiki->text->aiki_nl2p($processed_widget);
 
 			// Apply new headers.
 			$new_header = preg_match_all("/\(\#\(header\:(.*)\)\#\)/U",$processed_widget, $new_header_match);

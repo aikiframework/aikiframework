@@ -45,7 +45,7 @@ class text
 		global $aiki;
 
 		if ( preg_match_all( "#\[p\[(.*)\]p\]#sUi", $text, $captured) ){
-				
+
 			foreach ($captured[1] as $i=>$match){
 
 				$nl2p_text = str_replace("\n\r", "</p><p>", $match);
