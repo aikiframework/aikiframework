@@ -1149,8 +1149,10 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 							$output = '
 <script type="text/javascript">
 $(function () { 
+if (typeof js_'.$primary_value.$field.' == "undefined"){
 $(".edit_ready_'.$primary_value.$field.'").live("click", function () {
 var htmldata = $(this).html();
+js_'.$primary_value.$field.' = "true";
 $(this).html(\'<textarea>\' + htmldata + \'</textarea><br /><button id="button_'.$primary_value.$field.'">Save</button> <button id="cancel_'.$primary_value.$field.'">Cancel</button>\');
 $(this).removeClass(\'edit_ready_'.$primary_value.$field.'\');
 $(this).addClass(\'edit_in_progress'.$primary_value.$field.'\');
@@ -1176,6 +1178,7 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 });
 }
 });
+}
 });
 </script>
 ';
