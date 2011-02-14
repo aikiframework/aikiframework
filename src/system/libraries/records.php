@@ -1058,6 +1058,9 @@ class records
 				$field = $aiki->get_string_between($edit , "<field>", "</field>");
 				$field = trim($field);
 
+				$post_to_url = $aiki->get_string_between($edit , "<post_to>", "</post_to>");
+				$post_to_url = trim($post_to_url);
+				
 				$label = $aiki->get_string_between($edit , "<label>", "</label>");
 
 				$output = $aiki->get_string_between($edit , "<output>", "</output>");
@@ -1134,7 +1137,7 @@ $(this).addClass(\'edit_in_progress'.$primary_value.$field.'\');
 
 $("#button_'.$primary_value.$field.'").live("click", function () {
 var htmldata = $("#'.$primary_value.$field.' select").val();
-$.post("?noheaders=true&nogui=true&no_output=true",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
+$.post("'.$post_to_url.'?noheaders=true&nogui=true&no_output=true",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
 $("div #'.$primary_value.$field.'").removeClass(\'edit_in_progress'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").addClass(\'edit_ready_'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").html(htmldata);
@@ -1171,7 +1174,7 @@ $("#button_'.$primary_value.$field.'").live("click", function () {
 var htmldata = $("#'.$primary_value.$field.' textarea").val();
 var originaldata = $("#'.$primary_value.$field.' textarea").text();
 if (htmldata != originaldata){
-$.post("?noheaders=true&nogui=true&no_output=true",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
+$.post("'.$post_to_url.'?noheaders=true&nogui=true&no_output=true",  { edit_form: "ok", record_id: '.$primary_value.', '.$field.': htmldata, form_id: "'.$form_num.'" }, function(data){
 $("div #'.$primary_value.$field.'").removeClass(\'edit_in_progress'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").addClass(\'edit_ready_'.$primary_value.$field.'\');
 $("div #'.$primary_value.$field.'").html(htmldata);
