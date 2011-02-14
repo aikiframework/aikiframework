@@ -31,11 +31,14 @@ class output
 
 	public $html;
 	private $title;
-
-
+	private $headers = '';
 
 	public function set_title($title){
 		$this->title = $title;
+	}
+
+	public function set_headers($headers){
+		$this->headers = $headers;
 	}
 
 	public function write_title_and_metas(){
@@ -99,6 +102,8 @@ class output
 			$header .= $layout->head_output;
 		}
 
+		$header .= $this->headers;
+		
 		$header .= "</head>";
 
 		$header .= "\n<body>\n";

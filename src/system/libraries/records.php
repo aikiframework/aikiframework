@@ -1181,9 +1181,10 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 ';
 						}
 
-
 						$output = str_replace("\n", '', $output);
-
+						
+						//$aiki->output->set_headers($output);
+						
 						$output .= '<div id="'.$primary_value.$field.'" class="edit_ready_'.$primary_value.$field.' edit_in_place">'.$widget_value->$field.'</div>';
 
 					}
