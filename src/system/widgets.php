@@ -569,6 +569,8 @@ class CreateLayout
 					$widgetContents = $no_loop_part.$widgetContents;
 					$widgetContents = $widgetContents.$no_loop_bottom_part;
 
+					$widgetContents = $aiki->php->parser($widgetContents);
+						
 					$widgetContents = $this->inline_widgets($widgetContents);
 					$widgetContents = $this->inherent_widgets($widgetContents);
 
@@ -641,7 +643,7 @@ class CreateLayout
 			$processed_widget = $this->parsDBpars($processed_widget, '');
 			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
-				
+
 			$processed_widget = $aiki->text->aiki_nl2br($processed_widget);
 			$processed_widget = $aiki->text->aiki_nl2p($processed_widget);
 
