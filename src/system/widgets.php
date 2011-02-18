@@ -220,6 +220,8 @@ class CreateLayout
 					if ($widget->if_no_results){
 						$widget->if_no_results = stripcslashes($widget->if_no_results);
 						$widget->if_no_results =  $aiki->processVars ($widget->if_no_results);
+						$widget->if_no_results = $aiki->url->apply_url_on_query($widget->if_no_results);
+
 						$dead_widget = '<'.$widget->widget_type.' id="'.$widget->widget_name.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
 
 					}else{
@@ -570,7 +572,7 @@ class CreateLayout
 					$widgetContents = $widgetContents.$no_loop_bottom_part;
 
 					$widgetContents = $aiki->php->parser($widgetContents);
-						
+
 					$widgetContents = $this->inline_widgets($widgetContents);
 					$widgetContents = $this->inherent_widgets($widgetContents);
 
