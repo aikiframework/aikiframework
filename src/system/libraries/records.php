@@ -862,13 +862,8 @@ class records
 							break;
 
 						case "value":
-							$_POST[$intwalker[0]] = $aiki->url->apply_url_on_query($intwalker[3]);
 
-							$_POST[$intwalker[0]] = $aiki->processVars($post[$intwalker[0]]);
-
-							$_POST[$intwalker[0]] = $aiki->url->apply_url_on_query($_POST[$intwalker[0]]);
-
-							$values_array[$intwalker[0]] = $_POST[$intwalker[0]];
+							$_POST[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
 
 							break;
 
