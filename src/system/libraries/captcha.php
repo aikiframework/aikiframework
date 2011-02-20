@@ -29,7 +29,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class captcha
 {
 
-	public function create_randome_text(){
+	public function create_random_text(){
 
 		$md5 = md5(microtime() * mktime());
 
@@ -41,7 +41,7 @@ class captcha
 
 	public function write_text_to_image(){
 
-		$string = $this->create_randome_text();
+		$string = $this->create_random_text();
 
 		$captcha = imagecreatefrompng("./captcha.png");
 
