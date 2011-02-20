@@ -863,7 +863,9 @@ class records
 
 						case "value":
 
-							$_POST[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
+							if (!isset($_POST[$intwalker[0]])){
+								$_POST[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
+							}
 
 							break;
 
