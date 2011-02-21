@@ -156,8 +156,8 @@ class aiki_array
 				if ($table == "aiki_forms"){
 					$html_form .= '<select name="'.$y.$arrykeys[$i]."_type".'" >
 				<option value="'.$display.'" selected="selected">'.$display.'</option>
-				<option value="selection" >selection</option>
-				<option value="staticselect" >staticselect</option>
+				<option value="selection" >Dynamic Select Menu</option>
+				<option value="staticselect" >Static Select Menu</option>
 				<option value="unique_textinput" >unique_textinput</option>
 				<option value="password" >password</option>
 				<option value="textblock" >textblock</option>
@@ -173,6 +173,7 @@ class aiki_array
 				<option value="filemanager" >filemanager</option>
 				<option value="permission" >permission</option>
 				<option value="events" >events</option>
+				<option value="captcha" >captcha</option>
 				<option value="edit_type" >Editing Type</option>
 				</select>';
 
