@@ -295,7 +295,13 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "textblock":
-						$form .= '<h2>'.$intwalker['1'].'</h2><div id="'.$intwalker['0'].'_container"><textarea rows="7" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '" cols="50" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea></div>';
+						$form .= '<h2>'.$intwalker['1'].'</h2><div id="'.$intwalker['0'].'_container"><textarea rows="7" cols="50" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'">';
+						if (isset($form_data)){
+							$form .= $form_data->$intwalker[0] ;
+						}elseif(isset($_POST[$intwalker['0']])){
+							$form .=$_POST[$intwalker['0']];
+						}
+						$form .= '</textarea></div>';
 						break;
 
 					case "datetime":
@@ -504,7 +510,7 @@ $(function() {
 			$form .= ("<input type=\"submit\" class=\"submit_button\" value=\"$this->submit_button\" name=\"add_to_form\">");
 		}
 		$form .= ("</p></form></div>");
-		
+
 		if ($aiki->records->form_insert_success != true){
 			return $form;
 		}
