@@ -280,13 +280,16 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "captcha":
-						switch ($intwalker['0']){
-							case "default":
+						//if this is an edit form then don't display captcha
+						if (!$record_id){
+							switch ($intwalker['0']){
+								case "default":
 
-								$form .= "<img src='".$config['url']."assets/apps/captcha/captcha.php'><br />
+									$form .= "<img src='".$config['url']."assets/apps/captcha/captcha.php'><br />
 								<input type='text' name='default_captcha'> ";
 
-								break;
+									break;
+							}
 						}
 						break;
 
