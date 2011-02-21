@@ -156,24 +156,24 @@ class aiki_array
 				if ($table == "aiki_forms"){
 					$html_form .= '<select name="'.$y.$arrykeys[$i]."_type".'" >
 				<option value="'.$display.'" selected="selected">'.$display.'</option>
+				<option value="textinput" >Textinput</option>
 				<option value="selection" >Dynamic Select Menu</option>
 				<option value="staticselect" >Static Select Menu</option>
-				<option value="unique_textinput" >unique_textinput</option>
-				<option value="password" >password</option>
-				<option value="textblock" >textblock</option>
-				<option value="bigtextblock" >bigtextblock</option>
-				<option value="textinput" >textinput</option>
-				<option value="hidden" >hidden</option>
-				<option value="static_input" >static_input</option>
-				<option value="autofield" >autofield</option>
-				<option value="submit" >submit</option>
-				<option value="pkey" >pkey</option>
-				<option value="send_email" >send_email</option>
-				<option value="tablename" >tablename</option>
-				<option value="filemanager" >filemanager</option>
-				<option value="permission" >permission</option>
-				<option value="events" >events</option>
-				<option value="captcha" >captcha</option>
+				<option value="unique_textinput" >Unique Textinput</option>
+				<option value="password" >Password</option>
+				<option value="textblock" >Text Block</option>
+				<option value="bigtextblock" >Big Text Block</option>
+				<option value="hidden" >Hidden Field</option>
+				<option value="static_input" >Static Textinput</option>
+				<option value="autofield" >Auto Filled Field</option>
+				<option value="submit" >Submit</option>
+				<option value="pkey" >Primary Key</option>
+				<option value="send_email" >Send Email</option>
+				<option value="tablename" >Database Table Name</option>
+				<option value="filemanager" >File Manager</option>
+				<option value="permission" >Permissions</option>
+				<option value="events" >Events</option>
+				<option value="captcha" >Captcha</option>
 				<option value="edit_type" >Editing Type</option>
 				</select>';
 
@@ -190,23 +190,24 @@ class aiki_array
 
 			if ($table == "aiki_forms"){
 				$html_form .= '<select name="left_'.$newfield.'" >
-				<option value="selection" >selection</option>
-				<option value="staticselect" >staticselect</option>
-				<option value="unique_textinput" >unique_textinput</option>
-				<option value="password" >password</option>
-				<option value="textblock" >textblock</option>
-				<option value="bigtextblock" >bigtextblock</option>
-				<option value="textinput" selected="selected">textinput</option>
-				<option value="hidden" >hidden</option>
-				<option value="static_input" >static_input</option>
-				<option value="autofield" >autofield</option>	
-				<option value="submit" >submit</option>			
-				<option value="pkey" >pkey</option>
-				<option value="send_email" >send_email</option>
-				<option value="tablename" >tablename</option>
-				<option value="filemanager" >filemanager</option>
-				<option value="permission" >permission</option>
-				<option value="events" >events</option>
+				<option value="textinput" >Textinput</option>
+				<option value="selection" >Dynamic Select Menu</option>
+				<option value="staticselect" >Static Select Menu</option>
+				<option value="unique_textinput" >Unique Textinput</option>
+				<option value="password" >Password</option>
+				<option value="textblock" >Text Block</option>
+				<option value="bigtextblock" >Big Text Block</option>
+				<option value="hidden" >Hidden Field</option>
+				<option value="static_input" >Static Textinput</option>
+				<option value="autofield" >Auto Filled Field</option>
+				<option value="submit" >Submit</option>
+				<option value="pkey" >Primary Key</option>
+				<option value="send_email" >Send Email</option>
+				<option value="tablename" >Database Table Name</option>
+				<option value="filemanager" >File Manager</option>
+				<option value="permission" >Permissions</option>
+				<option value="events" >Events</option>
+				<option value="captcha" >Captcha</option>
 				<option value="edit_type" >Editing Type</option>
 				</select>';	
 			}else{
