@@ -73,7 +73,7 @@ $("#new_record_form").ajaxForm(function() {
 							$serial_post = serialize($_POST);
 
 							$form_output = $form_javascript."\n";
-								
+
 							$form_output .= $aiki->records->insert_from_form_to_db($serial_post,$form->id,'POST[form_id]');
 
 							$form_output .= $this->create_insert_form($form_array, $form->form_html, $form->id);
@@ -87,7 +87,7 @@ $("#new_record_form").ajaxForm(function() {
 							$form_output = $aiki->records->edit_db_record_by_form_post($serial_post, $form->id, $form_sides[2]);
 
 							$form_output .= $this->create_update_form($form_array, $form->form_html, $form->id, $form_sides[2]);
-								
+
 							break;
 
 						case "auto_generate":
@@ -274,6 +274,14 @@ $("#new_record_form").ajaxForm(function() {
 
 						break;
 
+					case "captcha":
+						switch ($intwalker['0']){
+							case "default":
+								$aiki->load("captcha");
+								$aiki->captcha->write_text_to_image();
+								break;
+						}
+						break;
 
 					case "bigtextblock":
 						$form .= '<h2>'.$intwalker[1].'</h2><textarea id="bigfont" style="height: 500px; width: 600px; display: block;" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea>';
