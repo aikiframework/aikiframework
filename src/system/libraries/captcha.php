@@ -43,7 +43,7 @@ class captcha
 
 		$string = $this->create_random_text();
 
-		$captcha = imagecreatefrompng("./captcha.png");
+		$captcha = imagecreatefrompng("../../../assets/apps/captcha/captcha.png");
 
 		$black = imagecolorallocate($captcha, 0, 0, 0);
 		$line = imagecolorallocate($captcha,233,239,239);

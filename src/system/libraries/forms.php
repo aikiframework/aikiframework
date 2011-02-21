@@ -278,7 +278,7 @@ $("#new_record_form").ajaxForm(function() {
 						switch ($intwalker['0']){
 							case "default":
 								
-								$form .= "<img src='".$config['url']."assets/apps/captcha.php'>";
+								$form .= "<img src='".$config['url']."assets/apps/captcha/captcha.php'>";
 
 								break;
 						}

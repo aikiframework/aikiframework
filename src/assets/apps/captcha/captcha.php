@@ -17,8 +17,9 @@
  * @filesource
  */
 
+error_reporting(0);
 
-require_once("../../aiki.php");
+require_once("../../../aiki.php");
 
 $aiki->load("captcha");
 
