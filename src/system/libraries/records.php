@@ -487,7 +487,7 @@ class records
 			$i++;
 
 		}
-
+	
 		//verify captcha
 		if (isset($form_array["captcha"])){
 			switch ($form_array["captcha"]){
