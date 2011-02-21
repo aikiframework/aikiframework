@@ -202,7 +202,7 @@ class records
 				}
 			}
 
-			if (isset($get_permission_and_man_info[2]) and $get_permission_and_man_info[2] == "true" and !$post[$intwalker[0]]){
+			if (isset($get_permission_and_man_info[2]) and $get_permission_and_man_info[2] == "true" and !$_POST[$intwalker[0]]){
 				$output_result .= "__warning__ __please_fill__ $intwalker[1]<br />";
 				$this->stop = true;
 			}
@@ -486,6 +486,25 @@ class records
 
 		}
 
+		//verify captcha
+		if (isset($form_array["captcha"])){
+			switch ($form_array["captcha"]){
+
+				case "default":
+					
+					if ($_POST['default_captcha']){
+						$captcha_input = md5($_POST['default_captcha']);
+					}
+					
+					if (!isset($captcha_input) or !$captcha_input or $captcha_input != $_SESSION['captcha_key']){
+						$output_result .= "Input error: invalid captcha";
+						$this->stop = true;
+					}
+					
+					break;
+				
+			}
+		}
 
 		if (!$this->stop){
 
