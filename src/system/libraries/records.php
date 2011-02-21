@@ -38,6 +38,7 @@ class records
 	public $height;
 	public $rand;
 	public $mime_type;
+	public $form_insert_success;
 
 	//if not provided by config
 	private $allowed_extensions = "jpg|gif|png|jpeg|svg";
@@ -587,6 +588,7 @@ class records
 			if (isset($insertResult)){
 
 				$output_result .= "__added_successfully__";
+				$this->form_insert_success = true;
 
 				if (isset($num_of_uploaded_files) and $num_of_uploaded_files){
 					$output_result .= "__uploaded__ <b>$num_of_uploaded_files</b> __files_out_of__ <b>$total_uploaded_files</b> __selected_files__";

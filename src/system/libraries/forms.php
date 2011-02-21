@@ -255,7 +255,12 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "textinput":
-						$form .= '<h2>'.$intwalker['1'].'</h2><input type="text" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'" value="'; if (isset($form_data) and isset($form_data->$intwalker[0])){$form .= $form_data->$intwalker[0] ;} $form .= '">';
+						$form .= '<h2>'.$intwalker['1'].'</h2><input type="text" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'" value="';
+						if (isset($form_data) and isset($form_data->$intwalker[0])){
+							$form .= $form_data->$intwalker[0] ;
+						}elseif(isset($_POST[$intwalker['0']])){
+							$form .=$_POST[$intwalker['0']];
+						} $form .= '">';
 						break;
 
 					case "unique_textinput":
@@ -277,7 +282,7 @@ $("#new_record_form").ajaxForm(function() {
 					case "captcha":
 						switch ($intwalker['0']){
 							case "default":
-								
+
 								$form .= "<img src='".$config['url']."assets/apps/captcha/captcha.php'><br />
 								<input type='text' name='default_captcha'> ";
 
@@ -499,8 +504,10 @@ $(function() {
 			$form .= ("<input type=\"submit\" class=\"submit_button\" value=\"$this->submit_button\" name=\"add_to_form\">");
 		}
 		$form .= ("</p></form></div>");
-
-		return $form;
+		
+		if ($aiki->records->form_insert_success != true){
+			return $form;
+		}
 
 	}
 
