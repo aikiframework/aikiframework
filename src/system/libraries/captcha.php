@@ -49,8 +49,9 @@ class captcha
 		$line = imagecolorallocate($captcha,233,239,239);
 		imageline($captcha,0,0,39,29,$line);
 		imageline($captcha,40,0,64,29,$line);
-
-		imagestring($captcha, 5, 20, 10, $string, $black);
+		imageline($captcha,29,64,0,29,$line);
+		imageline($captcha,29,64,120,0,$line);
+		imagestring($captcha, 5, 20, 5, $string, $black);
 
 		$_SESSION['captcha_key'] = md5($string);
 
