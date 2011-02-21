@@ -277,8 +277,9 @@ $("#new_record_form").ajaxForm(function() {
 					case "captcha":
 						switch ($intwalker['0']){
 							case "default":
-								$aiki->load("captcha");
-								$aiki->captcha->write_text_to_image();
+								
+								$form .= "<img src='".$config['url']."assets/apps/captcha.php'>";
+
 								break;
 						}
 						break;
