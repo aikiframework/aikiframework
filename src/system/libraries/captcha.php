@@ -32,8 +32,8 @@ class captcha
 	public function create_random_text(){
 
 		$md5 = md5(microtime() * mktime());
-
-		$string = substr($md5,0,5);
+		$randnumber = rand(2, 6);
+		$string = substr($md5,$randnumber,6);
 
 		return $string;
 	}
