@@ -40,9 +40,11 @@ if ($membership->permissions != "SystemGOD"){
 echo '<?xml version="1.0" encoding="UTF-8"?>
 <root>';
 
-
-$get_urls = $db->get_results("select distinct display_urls from aiki_widgets where display_urls NOT REGEXP 'admin' and display_urls != '' order by BINARY display_urls");
-//$get_urls = $db->get_results("select distinct display_urls from aiki_widgets where  display_urls != '' order by BINARY display_urls");
+// admin widgets not shown by default
+if ( $config['admin_widgets_display'] )
+    $get_urls = $db->get_results("select distinct display_urls from aiki_widgets where  display_urls != '' order by BINARY display_urls");
+else
+    $get_urls = $db->get_results("select distinct display_urls from aiki_widgets where display_urls NOT REGEXP 'admin' and display_urls != '' order by BINARY display_urls");
 
 $used = array();
 $used_url = array();
