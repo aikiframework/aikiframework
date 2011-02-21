@@ -199,6 +199,7 @@ class records
 
 				}elseif (isset($get_permission_and_man_info[1])){
 					$post[$intwalker[0]] = '';
+					$_POST[$intwalker[0]] = '';
 				}
 			}
 
