@@ -168,11 +168,11 @@ class records
 			$pkey = 'id';
 		}
 
-		if (isset($post['unique_filename']))
+		if (isset($_POST['unique_filename']))
 		$unique_filename = $_REQUEST['unique_filename'];
 
-		if (isset($post['multifiles_plupload']))
-		$multifiles_plupload = $post['multifiles_plupload'];
+		if (isset($_POST['multifiles_plupload']))
+		$multifiles_plupload = $_POST['multifiles_plupload'];
 
 
 		$insertQuery = "insert into $tablename ";
@@ -199,7 +199,6 @@ class records
 				if (isset($get_permission_and_man_info['1']) and $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level){
 
 				}elseif (isset($get_permission_and_man_info[1])){
-					$post[$intwalker[0]] = '';
 					$_POST[$intwalker[0]] = '';
 				}
 			}
@@ -222,48 +221,48 @@ class records
 
 					case "full_path":
 						//get full path dir value from post
-						$full_path = $post[$intwalker[0]];
+						$full_path = $_POST[$intwalker[0]];
 						if (!$full_path and isset($config["upload_path"])){
 							$full_path = $aiki->processVars($config["upload_path"]);
-							$post[$intwalker[0]] = $full_path;
+							$_POST[$intwalker[0]] = $full_path;
 						}
 						break;
 
 					case "password":
-						if (!$post[$intwalker[0]]){
+						if (!$_POST[$intwalker[0]]){
 							$output_result .= "__please_enter_a_password__";
 							$this->stop = true;
 						}
 
-						if ($intwalker[3] and $post[$intwalker[0]]){
+						if ($intwalker[3] and $_POST[$intwalker[0]]){
 							$num_levels = explode("|", $intwalker[3]);
 							foreach ($num_levels as $crypt_level){
 
-								$post[$intwalker[0]] = md5(stripcslashes($post[$intwalker[0]]));
+								$_POST[$intwalker[0]] = md5(stripcslashes($_POST[$intwalker[0]]));
 							}
 						}
 						break;
 
 					case "value":
-						$post[$intwalker[0]] = $aiki->url->apply_url_on_query($intwalker[3]);
+						$_POST[$intwalker[0]] = $aiki->url->apply_url_on_query($intwalker[3]);
 
-						$post[$intwalker[0]] = $aiki->processVars($post[$intwalker[0]]);
+						$_POST[$intwalker[0]] = $aiki->processVars($_POST[$intwalker[0]]);
 
-						$post[$intwalker[0]] = $aiki->url->apply_url_on_query($post[$intwalker[0]]);
+						$_POST[$intwalker[0]] = $aiki->url->apply_url_on_query($_POST[$intwalker[0]]);
 
-						$values_array[$intwalker[0]] = $post[$intwalker[0]];
+						$values_array[$intwalker[0]] = $_POST[$intwalker[0]];
 
 						break;
 
 					case "rand":
 
-						$post[$intwalker[0]] = substr(md5(uniqid(rand(),true)),1,15);
-						$this->rand = $post[$intwalker[0]];
+						$_POST[$intwalker[0]] = substr(md5(uniqid(rand(),true)),1,15);
+						$this->rand = $_POST[$intwalker[0]];
 						break;
 
 					case "email":
 
-						if (!$aiki->text->is_valid("email",$post[$intwalker[0]])){
+						if (!$aiki->text->is_valid("email",$_POST[$intwalker[0]])){
 							$output_result .= "__the_email_address_is_not_valid__";
 							$this->stop = true;
 						}
@@ -273,13 +272,13 @@ class records
 
 					case "datetime":
 
-						$post[$intwalker[0]]= 'NOW()';
+						$_POST[$intwalker[0]]= 'NOW()';
 
 						break;
 
 					case "unique":
 
-						if ($this->record_exists($post[$intwalker[0]], $tablename, $intwalker[0])){
+						if ($this->record_exists($_POST[$intwalker[0]], $tablename, $intwalker[0])){
 
 							$output_result .= "__this_value_is_already_in_use__";
 							$this->stop = true;
@@ -293,7 +292,7 @@ class records
 					case "mime_type":
 
 						if (isset($this->mime_type)){
-							$post[$intwalker[0]] = $this->mime_type;
+							$_POST[$intwalker[0]] = $this->mime_type;
 						}
 
 						break;
@@ -301,38 +300,38 @@ class records
 					case "upload_file_name":
 
 						if (isset($this->file_name)){
-							$post[$intwalker[0]] = $this->file_name;
+							$_POST[$intwalker[0]] = $this->file_name;
 						}
 
 						break;
 
 					case "upload_file_size":
 						if (isset($this->file_size)){
-							$post[$intwalker[0]] = $this->file_size;
+							$_POST[$intwalker[0]] = $this->file_size;
 						}
 						break;
 
 					case "width":
 						if (isset($this->width)){
-							$post[$intwalker[0]] = $this->width;
+							$_POST[$intwalker[0]] = $this->width;
 						}
 						break;
 
 					case "height":
 						if (isset($this->hight)){
-							$post[$intwalker[0]] = $this->hight;
+							$_POST[$intwalker[0]] = $this->hight;
 						}
 						break;
 
 					case "checksum_sha1":
 						if (isset($this->checksum_sha1)){
-							$post[$intwalker[0]] = $this->checksum_sha1;
+							$_POST[$intwalker[0]] = $this->checksum_sha1;
 						}
 						break;
 
 					case "checksum_md5":
 						if (isset($this->checksum_md5)){
-							$post[$intwalker[0]] = $this->checksum_md5;
+							$_POST[$intwalker[0]] = $this->checksum_md5;
 						}
 						break;
 
@@ -340,16 +339,16 @@ class records
 
 						$plupload_files = array();
 
-						if (isset($post['multifiles_plupload']) and isset($post[$intwalker[0].'_count']) and $post[$intwalker[0].'_count'] > 0){
+						if (isset($_POST['multifiles_plupload']) and isset($_POST[$intwalker[0].'_count']) and $_POST[$intwalker[0].'_count'] > 0){
 
-							$total_uploaded_files = $post[$intwalker[0].'_count'];
+							$total_uploaded_files = $_POST[$intwalker[0].'_count'];
 
-							for ($i=0; $i<$post[$intwalker[0].'_count']; $i++){
-								if (isset($post[$intwalker[0]."_".$i."_status"]) and $post[$intwalker[0]."_".$i."_status"] == "done"){
-									$plupload_files[$i] = $post[$intwalker[0]."_".$i."_name"];
+							for ($i=0; $i<$_POST[$intwalker[0].'_count']; $i++){
+								if (isset($_POST[$intwalker[0]."_".$i."_status"]) and $_POST[$intwalker[0]."_".$i."_status"] == "done"){
+									$plupload_files[$i] = $_POST[$intwalker[0]."_".$i."_name"];
 								}
 							}
-							$post[$intwalker[0]] = "__FILE__";
+							$_POST[$intwalker[0]] = "__FILE__";
 						}
 						break;
 
@@ -456,7 +455,7 @@ class records
 					return "__please_choose_a_file_to_upload__";
 				}
 
-				$post[$intwalker[0]] = $name;
+				$_POST[$intwalker[0]] = $name;
 
 			}
 
@@ -466,14 +465,14 @@ class records
 
 
 			if (!preg_match("/\-\>/Us", $intwalker[0])){
-				if ($field != $tablename and $field != $permission and $field != $send_email and $field != $submit and isset($post[$intwalker[0]]) and $post[$intwalker[0]]){
+				if ($field != $tablename and $field != $permission and $field != $send_email and $field != $submit and isset($_POST[$intwalker[0]]) and $_POST[$intwalker[0]]){
 
 					if ($insertCount == $i+1){
 						$tableFields .=$intwalker[0];
-						$preinsertQuery .= "'".$post[$intwalker[0]]."'";
+						$preinsertQuery .= "'".$_POST[$intwalker[0]]."'";
 					}else{
 						$tableFields .= $intwalker[0].", ";
-						$preinsertQuery .= "'".$post[$intwalker[0]]."', ";
+						$preinsertQuery .= "'".$_POST[$intwalker[0]]."', ";
 					}
 
 				}
@@ -481,7 +480,7 @@ class records
 
 				$delimitered_field = explode("->", $intwalker[0]);
 
-				$secondery_queries[$delimitered_field[1]][$delimitered_field[0]] = $post[$delimitered_field[0]."->".$delimitered_field[1]];
+				$secondery_queries[$delimitered_field[1]][$delimitered_field[0]] = $_POST[$delimitered_field[0]."->".$delimitered_field[1]];
 			}
 
 			$i++;
@@ -516,11 +515,11 @@ class records
 			//die("$insertQuery");
 
 			//handle multi files insert query
-			if (isset($post['multifiles_plupload']) and isset($post[$intwalker[0].'_count']) and $post[$intwalker[0].'_count'] > 0){
+			if (isset($_POST['multifiles_plupload']) and isset($_POST[$intwalker[0].'_count']) and $_POST[$intwalker[0].'_count'] > 0){
 				$num_of_uploaded_files = 0;
 				$files_names_output = "";
 				$not_uploaded_output = "";
-				for ($i=0; $i<$post[$intwalker[0].'_count']; $i++){
+				for ($i=0; $i<$_POST[$intwalker[0].'_count']; $i++){
 
 					$plupload_files[$i] = str_replace(" ", "_", $plupload_files[$i]);
 
@@ -531,7 +530,7 @@ class records
 					$plupload_filename = str_replace("_", " ", $plupload_filename);
 					$multi_files_query = str_replace('plupload_filename', $plupload_filename, $multi_files_query);
 
-					if (isset($post[$intwalker[0]."_".$i."_status"]) and $post[$intwalker[0]."_".$i."_status"] == "done"){
+					if (isset($_POST[$intwalker[0]."_".$i."_status"]) and $_POST[$intwalker[0]."_".$i."_status"] == "done"){
 						if (preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$plupload_files[$i])){
 							if (!$this->record_exists($plupload_files[$i], $tablename, $intwalker[0])){
 								$files_names_output .= "$plupload_files[$i] <br />";
@@ -568,7 +567,7 @@ class records
 
 							$field_value_var = $aiki->get_string_between($field_value, '[', ']');
 							if ($field_value_var){
-								$field_value = str_replace('['.$field_value_var.']', $post["$field_value_var"], $field_value);
+								$field_value = str_replace('['.$field_value_var.']', $_POST["$field_value_var"], $field_value);
 							}
 
 							$secondery_insert_query .= "'".$field_value."', ";
@@ -605,19 +604,19 @@ class records
 
 					$get_email = $aiki->get_string_between($send_email[0], '[', ']');
 					if ($get_email){
-						$send_email[0] = $post["$get_email"];
+						$send_email[0] = $_POST["$get_email"];
 					}
 
 					$get_from = $aiki->get_string_between($send_email[1], '[', ']');
 					if ($get_from){
-						$send_email[1] = $post[$get_from];
+						$send_email[1] = $_POST[$get_from];
 					}
 
 					$message = $send_email[3];
 					$count = preg_match_all( '/\[(.*)\]/U', $message, $matches );
 					foreach ($matches[1] as $parsed){
-						if (isset($post[$parsed])){
-							$message = str_replace("[$parsed]", $post[$parsed], $message);
+						if (isset($_POST[$parsed])){
+							$message = str_replace("[$parsed]", $_POST[$parsed], $message);
 						}
 					}
 
@@ -793,8 +792,8 @@ class records
 			return '';
 		}
 
-		if (!isset($post['form_post_type'])){
-			$post['form_post_type'] = "save";
+		if (!isset($_POST['form_post_type'])){
+			$_POST['form_post_type'] = "save";
 		}
 
 		$output_result = '';
@@ -823,7 +822,7 @@ class records
 			$pkey = 'id';
 		}
 
-		if (isset($post['unique_filename']))
+		if (isset($_POST['unique_filename']))
 		$unique_filename = $_REQUEST['unique_filename'];
 
 
@@ -831,7 +830,7 @@ class records
 			$submit = '';
 		}
 
-		switch ($post['form_post_type']){
+		switch ($_POST['form_post_type']){
 			case "save":
 				$editQuery = "update $tablename set ";
 				break;
@@ -898,7 +897,7 @@ class records
 							break;
 
 						case "email":
-							if (!$aiki->text->is_valid("email",$post[$intwalker[0]])){
+							if (!$aiki->text->is_valid("email",$_POST[$intwalker[0]])){
 								$output_result .= "The email address is not valid<br />";
 								$_POST[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
 							}
@@ -919,14 +918,14 @@ class records
 						$insert_query_fields .= "$intwalker[0], ";
 						$insert_query_values .= "'".$_POST[$intwalker[0]]."', ";
 
-						if ($post['form_post_type'] == "save"){
+						if ($_POST['form_post_type'] == "save"){
 							$editQuery .= ", ".$intwalker[0]."='".$_POST[$intwalker[0]]."'";
 						}
 					}
 				}else{
 					$delimitered_field = explode("->", $intwalker[0]);
 
-					$secondery_queries[$delimitered_field[1]][$delimitered_field[0]] = $post[$delimitered_field[0]."->".$delimitered_field[1]];
+					$secondery_queries[$delimitered_field[1]][$delimitered_field[0]] = $_POST[$delimitered_field[0]."->".$delimitered_field[1]];
 				}
 
 			}
@@ -936,7 +935,7 @@ class records
 		$insert_query_fields = preg_replace("/\, $/", "", $insert_query_fields);
 		$insert_query_values = preg_replace("/\, $/", "", $insert_query_values);
 
-		switch ($post['form_post_type']){
+		switch ($_POST['form_post_type']){
 			case "save":
 				$editQuery .= " where ".$pkey."=".$record_id;
 				$editQuery = str_replace("set ,", "set", $editQuery);
@@ -1014,7 +1013,7 @@ class records
 
 					$field_value_var = $aiki->get_string_between($field_value, '[', ']');
 					if ($field_value_var){
-						$field_value = str_replace('['.$field_value_var.']', $post["$field_value_var"], $field_value);
+						$field_value = str_replace('['.$field_value_var.']', $_POST["$field_value_var"], $field_value);
 					}
 
 					$secondery_insert_query .= "'".$field_value."', ";
@@ -1031,7 +1030,7 @@ class records
 
 		if (isset($editResult)){
 
-			switch ($post['form_post_type']){
+			switch ($_POST['form_post_type']){
 				case "save":
 					$output_result .= "Edited record $record_id in $tablename successfully";
 					break;

@@ -122,7 +122,7 @@ class php
 	 */
 
 	function mtoken ( $text, $separator=',' ){    
-    $max  = strlen($text);
+    $max  = strlen($text)-1;
     $state= 0 ; /* state 0: waiting a token
                          1: over ' delimited string
                          2  over " delimited string
@@ -131,7 +131,7 @@ class php
     $word = "";
     $resul= array();
         
-    for($i=0;$i<=$max;$i++){            
+    for($i=0;$i<=$max;$i++){
         $char = $text[$i];
                     
         // continue over white space
