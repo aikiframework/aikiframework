@@ -91,10 +91,10 @@ class records
 		}
 	}
 
-	public function unlockdocument($pkeyname, $pkeybalue, $tablename){
+	public function unlockdocument($pkey, $pkey_value, $tablename){
 		global $db, $membership;
-		if ($pkeyname and $tablename){
-			$lockdocument = $db->query("update $tablename set is_editable = null where $pkeyname='$pkeybalue'");
+		if ($pkey and $tablename){
+			$lockdocument = $db->query("update $tablename set is_editable = null where $pkey='$pkey_value'");
 		}
 	}
 
