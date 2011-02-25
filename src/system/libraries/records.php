@@ -68,11 +68,11 @@ class records
 
 	}
 
-	public function lockdocument($pkeyname, $pkeybalue, $tablename){
+	public function lockdocument($pkey, $pkey_value, $tablename){
 		global $db, $membership;
-		if ($pkeyname and $tablename){
+		if ($pkey and $tablename){
 
-			$not_editable = $db->get_var("select is_editable from $tablename where $pkeyname='$pkeybalue' limit 1");
+			$not_editable = $db->get_var("select is_editable from $tablename where $pkey='$pkey_value' limit 1");
 
 			if (!$not_editable){
 				$currentdatetime = time();
@@ -82,7 +82,7 @@ class records
 
 				$is_editable = "__warning__ <b>$membership->full_name</b>__started_editing__: $datetime";
 
-				$lockdocument = $db->query("update $tablename set is_editable = '$is_editable' where $pkeyname='$pkeybalue'");
+				$lockdocument = $db->query("update $tablename set is_editable = '$is_editable' where $pkey='$pkey_value'");
 			}else{
 
 				return "<br />".$not_editable."<br /><br />";
