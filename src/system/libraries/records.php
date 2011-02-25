@@ -39,10 +39,7 @@ class records
 	public $rand;
 	public $mime_type;
 	public $form_insert_success;
-
-	//if not provided by config
-	private $allowed_extensions = "jpg|gif|png|jpeg|svg|pdf";
-
+	private $allowed_extensions = "jpg|gif|png|jpeg|svg|pdf"; //if not provided by config
 
 	public function record_exists($value, $tablename, $field){
 		global $db;
@@ -97,7 +94,6 @@ class records
 			$lockdocument = $db->query("update $tablename set is_editable = null where $pkey='$pkey_value'");
 		}
 	}
-
 
 	public function insert_from_form_to_db($post, $form_id, $form_posted_id){
 		global $db, $aiki, $membership, $config, $system_folder;
@@ -733,7 +729,6 @@ class records
 		return $output_result;
 	}
 
-
 	public function delete_record($tablename, $recordid, $confirm, $pkey){
 		global $db;
 
@@ -1048,7 +1043,6 @@ class records
 		return $output_result;
 	}
 
-
 	public function edit_in_place($text, $widget_value){
 		global $aiki,$db, $membership, $layout;
 
@@ -1223,6 +1217,5 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 
 		return $text;
 	}
-
 
 }
