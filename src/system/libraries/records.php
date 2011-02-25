@@ -41,7 +41,7 @@ class records
 	public $form_insert_success;
 
 	//if not provided by config
-	private $allowed_extensions = "jpg|gif|png|jpeg|svg";
+	private $allowed_extensions = "jpg|gif|png|jpeg|svg|pdf";
 
 
 	public function record_exists($value, $tablename, $field){
