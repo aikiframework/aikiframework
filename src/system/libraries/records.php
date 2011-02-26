@@ -482,24 +482,24 @@ class records
 			$i++;
 
 		}
-	
+
 		//verify captcha
 		if (isset($form_array["captcha"])){
 			switch ($form_array["captcha"]){
 
 				case "default":
-					
+						
 					if ($_POST['default_captcha']){
 						$captcha_input = md5($_POST['default_captcha']);
 					}
-					
+						
 					if (!isset($captcha_input) or !$captcha_input or $captcha_input != $_SESSION['captcha_key']){
 						$output_result .= "Input error: invalid captcha";
 						$this->stop = true;
 					}
-					
+						
 					break;
-				
+
 			}
 		}
 
@@ -787,8 +787,8 @@ class records
 			return '';
 		}
 
-		if (!isset($_POST['form_post_type'])){
-			$_POST['form_post_type'] = "save";
+		if (!isset($post['form_post_type'])){
+			$post['form_post_type'] = "save";
 		}
 
 		$output_result = '';
@@ -817,7 +817,7 @@ class records
 			$pkey = 'id';
 		}
 
-		if (isset($_POST['unique_filename']))
+		if (isset($post['unique_filename']))
 		$unique_filename = $_REQUEST['unique_filename'];
 
 
@@ -825,7 +825,7 @@ class records
 			$submit = '';
 		}
 
-		switch ($_POST['form_post_type']){
+		switch ($post['form_post_type']){
 			case "save":
 				$editQuery = "update $tablename set ";
 				break;
@@ -853,25 +853,25 @@ class records
 					switch ($intwalker['2']){
 
 						case "orderby":
-							//$_POST[$intwalker[0]] = $_POST['editpkey'];
-							$_POST[$intwalker[0]] = ($_POST['publish_date'] * 1000)+$_POST['editpkey'];
+							//$post[$intwalker[0]] = $post['editpkey'];
+							$post[$intwalker[0]] = ($post['publish_date'] * 1000)+$post['editpkey'];
 							break;
 
 						case "password":
 
-							if (!$_POST[$intwalker[0]]){
+							if (!$post[$intwalker[0]]){
 								$output_result .= "Password is not changed<br />";
-								$_POST[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
+								$post[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
 							}else{
 
 								if(!$intwalker['3']){
 									$intwalker['3'] = "md5|md5";
 								}
 
-								if ($intwalker['3'] and $_POST[$intwalker['0']]){
+								if ($intwalker['3'] and $post[$intwalker['0']]){
 									$num_levels = explode("|", $intwalker['3']);
 									foreach ($num_levels as $crypt_level){
-										$_POST[$intwalker[0]] = md5(stripcslashes($_POST[$intwalker[0]]));
+										$post[$intwalker[0]] = md5(stripcslashes($post[$intwalker[0]]));
 									}
 								}
 							}
@@ -879,22 +879,22 @@ class records
 
 						case "value":
 
-							if (!isset($_POST[$intwalker[0]])){
-								$_POST[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
+							if (!isset($post[$intwalker[0]])){
+								$post[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
 							}
 
 							break;
 
 						case "datetime":
 
-							$_POST[$intwalker[0]]= 'NOW()';
+							$post[$intwalker[0]]= 'NOW()';
 
 							break;
 
 						case "email":
-							if (!$aiki->text->is_valid("email",$_POST[$intwalker[0]])){
+							if (!$aiki->text->is_valid("email",$post[$intwalker[0]])){
 								$output_result .= "The email address is not valid<br />";
-								$_POST[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
+								$post[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
 							}
 							break;
 					}
@@ -905,22 +905,22 @@ class records
 					$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_permission_and_man_info[1]'");
 				}
 				if (!preg_match("/\-\>/Us", $intwalker[0])){
-					if ((!isset($get_permission_and_man_info[1]) or !$get_permission_and_man_info[1] or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level) and isset($_POST[$intwalker[0]])){
+					if ((!isset($get_permission_and_man_info[1]) or !$get_permission_and_man_info[1] or $get_permission_and_man_info[1] == $membership->permissions or $membership->group_level < $get_group_level) and isset($post[$intwalker[0]])){
 							
-						$_POST[$intwalker[0]] = @str_replace('&lt;', '<' , $_POST[$intwalker[0]]);
-						$_POST[$intwalker[0]] = @str_replace('&gt;', '>' , $_POST[$intwalker[0]]);
+						$post[$intwalker[0]] = @str_replace('&lt;', '<' , $post[$intwalker[0]]);
+						$post[$intwalker[0]] = @str_replace('&gt;', '>' , $post[$intwalker[0]]);
 
 						$insert_query_fields .= "$intwalker[0], ";
-						$insert_query_values .= "'".$_POST[$intwalker[0]]."', ";
+						$insert_query_values .= "'".$post[$intwalker[0]]."', ";
 
-						if ($_POST['form_post_type'] == "save"){
-							$editQuery .= ", ".$intwalker[0]."='".$_POST[$intwalker[0]]."'";
+						if ($post['form_post_type'] == "save"){
+							$editQuery .= ", ".$intwalker[0]."='".$post[$intwalker[0]]."'";
 						}
 					}
 				}else{
 					$delimitered_field = explode("->", $intwalker[0]);
 
-					$secondery_queries[$delimitered_field[1]][$delimitered_field[0]] = $_POST[$delimitered_field[0]."->".$delimitered_field[1]];
+					$secondery_queries[$delimitered_field[1]][$delimitered_field[0]] = $post[$delimitered_field[0]."->".$delimitered_field[1]];
 				}
 
 			}
@@ -930,7 +930,7 @@ class records
 		$insert_query_fields = preg_replace("/\, $/", "", $insert_query_fields);
 		$insert_query_values = preg_replace("/\, $/", "", $insert_query_values);
 
-		switch ($_POST['form_post_type']){
+		switch ($post['form_post_type']){
 			case "save":
 				$editQuery .= " where ".$pkey."=".$record_id;
 				$editQuery = str_replace("set ,", "set", $editQuery);
@@ -1004,11 +1004,11 @@ class records
 				$secondery_insert_query .= ") values (";
 
 				foreach ($secondery_query as $field_name => $field_value){
-					$field_value = str_replace("this_pkey", $this_pkey, $field_value);
+					$field_value = str_replace("this_pkey", $record_id, $field_value);
 
 					$field_value_var = $aiki->get_string_between($field_value, '[', ']');
 					if ($field_value_var){
-						$field_value = str_replace('['.$field_value_var.']', $_POST["$field_value_var"], $field_value);
+						$field_value = str_replace('['.$field_value_var.']', $post["$field_value_var"], $field_value);
 					}
 
 					$secondery_insert_query .= "'".$field_value."', ";
@@ -1025,7 +1025,7 @@ class records
 
 		if (isset($editResult)){
 
-			switch ($_POST['form_post_type']){
+			switch ($post['form_post_type']){
 				case "save":
 					$output_result .= "Edited record $record_id in $tablename successfully";
 					break;
@@ -1046,11 +1046,11 @@ class records
 	public function edit_in_place($text, $widget_value){
 		global $aiki,$db, $membership, $layout;
 
-		if (isset($_POST['edit_form']) and isset($_POST['form_id']) and isset($_POST['record_id'])){
+		if (isset($post['edit_form']) and isset($post['form_id']) and isset($post['record_id'])){
 
-			$serial_post = serialize($_POST);
+			$serial_post = serialize($post);
 
-			echo $aiki->records->edit_db_record_by_form_post($serial_post, $_POST['form_id'], $_POST['record_id']);
+			echo $aiki->records->edit_db_record_by_form_post($serial_post, $post['form_id'], $post['record_id']);
 		}
 
 		$edit_matchs = preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
