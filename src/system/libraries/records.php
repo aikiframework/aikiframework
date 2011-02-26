@@ -488,16 +488,16 @@ class records
 			switch ($form_array["captcha"]){
 
 				case "default":
-						
+
 					if ($_POST['default_captcha']){
 						$captcha_input = md5($_POST['default_captcha']);
 					}
-						
+
 					if (!isset($captcha_input) or !$captcha_input or $captcha_input != $_SESSION['captcha_key']){
 						$output_result .= "Input error: invalid captcha";
 						$this->stop = true;
 					}
-						
+
 					break;
 
 			}
@@ -879,8 +879,24 @@ class records
 
 						case "value":
 
-							if (!isset($post[$intwalker[0]])){
-								$post[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
+							if (!isset($post[$intwalker[0]]) or !$post[$intwalker[0]]){
+
+								//if this is not secondery query
+								if (!preg_match("/\-\>/Us", $intwalker[0])){
+
+									$post[$intwalker[0]] = $db->get_var("select $intwalker[0] from $tablename where $pkey=$record_id");
+
+								}else{
+
+									$post[$intwalker[0]] = $aiki->url->apply_url_on_query($intwalker[3]);
+
+									$post[$intwalker[0]] = $aiki->processVars($post[$intwalker[0]]);
+
+									$post[$intwalker[0]] = $aiki->url->apply_url_on_query($post[$intwalker[0]]);
+
+									$values_array[$intwalker[0]] = $post[$intwalker[0]];
+
+								}
 							}
 
 							break;
