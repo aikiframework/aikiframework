@@ -27,7 +27,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * @package     Library
  */
 
-class aiki_openid
+class openid
 {
 
 
