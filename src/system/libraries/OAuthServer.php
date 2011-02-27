@@ -5,15 +5,13 @@
  *
  * LICENSE
  *
- * This source file is subject to the AGPL-3.0 license that is bundled
- * with this package in the file LICENSE.
+ * This source file is subject to the The MIT License license
  *
- * @author      Aikilab http://www.aikilab.com
- * @copyright   (c) 2008-2010 Aikilab
- * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
+ * @author      Arjan Scherpenisse <arjan@scherpenisse.net>
+ * @copyright   (c) 2007-2008 Mediamatic Lab
  * @link        http://www.aikiframework.org
  * @category    Aiki
- * @package     Library
+ * @package     OAuth
  * @filesource
  */
 
