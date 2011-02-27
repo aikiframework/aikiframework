@@ -22,7 +22,7 @@ aiki_src_files = \
 	aiki_array.php \
 	aiki_curl.php \
 	oauth.php \
-	aiki_openid.php \
+	openid.php \
 	bot.php \
 	errors.php \
 	forms.php \
