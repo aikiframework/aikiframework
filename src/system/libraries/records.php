@@ -377,7 +377,9 @@ class records
 
 				$this->file_size = filesize($tmp_filename);
 
-				$this->mime_type = @mime_content_type($tmp_filename);
+				if (function_exists("mime_content_type")){
+					$this->mime_type = @mime_content_type($tmp_filename);
+				}
 
 				$this->checksum_sha1 = @sha1_file($tmp_filename);
 				$this->checksum_md5 = @md5_file($tmp_filename);
