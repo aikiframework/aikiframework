@@ -319,3 +319,17 @@ CREATE TABLE IF NOT EXISTS `apps_wiki_text` (
   FULLTEXT KEY `title` (`title`),
   FULLTEXT KEY `text` (`text`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=1 ;
+
+-- ------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `aiki_databases` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `db_type` varchar(255) NOT NULL,
+  `db_name` varchar(255) NOT NULL,
+  `db_user` varchar(255) NOT NULL,
+  `db_pass` varchar(255) NOT NULL,
+  `db_host` varchar(255) NOT NULL,
+  `db_encoding` varchar(255) NOT NULL,
+  `db_use_mysql_set_charset` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
