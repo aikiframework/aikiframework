@@ -205,6 +205,7 @@ class ezSQL_mysql extends ezSQLcore
 
 	public function query($query)
 	{
+		global $config;
 
 		//echo "<p align='left'>".$query."</p><hr>";
 		// Initialise return
@@ -248,14 +249,46 @@ class ezSQL_mysql extends ezSQLcore
 			// If there is an error then take note of it..
 			if ( $str = @mysql_error($this->dbh) )
 			{
-				$is_insert = true;
-				$this->register_error($str);
+				//check if multi database is enabled
+				if (isset ($config["enable_multi_databases"]) and $config["enable_multi_databases"]){
 
-				// -
-				//$this->show_errors ? trigger_error($str,E_USER_WARNING) : null;
-				return false;
+					$find_request_to_external_db = preg_match('/\bfrom\b\s*(\w+)\.(\w+)/i',$query,$matches);
+					if ($find_request_to_external_db){
+
+						$database_and_table = str_replace("from ", "", $matches['0']);
+
+						//is from external db then look like: database.tablename
+						$database_and_table = explode(".", $database_and_table);
+						if ($database_and_table['0'] and $database_and_table['1']){
+							$external_db_tablename = trim($database_and_table['0']);
+
+							//check if connection information exists in aiki_databases
+							$external_db = $this->get_row("select * from aiki_databases where db_name = '$external_db_tablename'");
+							if ($external_db){
+
+								//found database now connect
+								$this->connect($external_db->db_user, $external_db->db_pass,  $external_db->db_host);
+								$this->select($external_db->db_name);
+
+								$this->result = @mysql_query($query,$this->dbh);
+					
+								//connect back to original host
+								$this->connect($config['db_user'], $config['db_pass'], $config['db_host']);
+								$this->select($config['db_name']);
+							}
+						}
+
+					}
+				}else{
+
+					$is_insert = true;
+					$this->register_error($str);
+
+					// -
+					//$this->show_errors ? trigger_error($str,E_USER_WARNING) : null;
+					return false;
+				}
 			}
-
 			// Query was an insert, delete, update, replace
 			$is_insert = false;
 			if ( preg_match("/^(insert|delete|update|replace)\s+/i",$query) )
