@@ -60,7 +60,7 @@ $config["cache_dir"] = "";
 $config["enable_query_cache"] = false;
 
 // enable multi databases connections
-$config["enable_multi_databases"] = false;
+$config["allow_multiple_databases"] = false;
 
 // use html tidy php extinsion to format the html output
 $config["html_tidy"] = false;

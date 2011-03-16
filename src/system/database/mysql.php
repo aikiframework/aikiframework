@@ -250,7 +250,7 @@ class ezSQL_mysql extends ezSQLcore
 			if ( $str = @mysql_error($this->dbh) )
 			{
 				//check if multi database is enabled
-				if (isset ($config["enable_multi_databases"]) and $config["enable_multi_databases"]){
+				if (isset ($config["allow_multiple_databases"]) and $config["allow_multiple_databases"]){
 
 					$find_request_to_external_db = preg_match('/\bfrom\b\s*(\w+)\.(\w+)/i',$query,$matches);
 					if ($find_request_to_external_db){
