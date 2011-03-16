@@ -105,7 +105,6 @@ class ezSQL_mysql extends ezSQLcore
 	public function connect($dbuser='', $dbpassword='', $dbhost='localhost')
 	{
 		global $ezsql_mysql_str, $config; $return_val = false;
-
 		// Must have a user and a password
 		if ( ! $dbuser )
 		{

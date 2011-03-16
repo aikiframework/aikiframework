@@ -59,6 +59,9 @@ $config["cache_dir"] = "";
 // if set to true will cache the results of sql querires to files
 $config["enable_query_cache"] = false;
 
+// enable multi databases connections
+$config["enable_multi_databases"] = false;
+
 // use html tidy php extinsion to format the html output
 $config["html_tidy"] = false;
 // enable html tidy compression
