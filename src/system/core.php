@@ -134,7 +134,7 @@ class aiki
 	 * @return  string
 	 */
 	public function processVars($text){
-		global $aiki, $page, $membership, $config, $languages;
+		global $aiki, $page, $membership, $config, $languages, $site_info;
 
 		//TODO: add this to config
 		date_default_timezone_set("America/Los_Angeles"); 
@@ -149,6 +149,7 @@ class aiki
         "[language]" => $languages->language,
 		"[username]" => $membership->username,
 		"[page]" => $page,
+		"[site_name]" => $site_info->site_name,
 		"[site]" => $config['site'],
 		"[direction]" => $languages->dir,
 		"insertedby_username" => $membership->username,

@@ -30,7 +30,7 @@ class output
 {
 
 	public $html;
-	private $title;
+	public $title;
 	private $headers = '';
 
 	public function set_title($title){

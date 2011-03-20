@@ -681,6 +681,27 @@ class CreateLayout
 				$processed_widget = str_replace("(#(cache_file_name)#)",$widget_cache_id_hash, $processed_widget);
 			}
 
+
+			// Set page title.
+			if ($widget->pagetitle){
+
+				$widget->pagetitle = $aiki->processVars($widget->pagetitle);
+
+				$widget->pagetitle = $aiki->url->apply_url_on_query($widget->pagetitle);
+
+				if (!isset($widget_value)){
+					$widget_value = '';
+				}
+
+				$title = $this->parsDBpars($widget->pagetitle, $widget_value);
+
+				$title = $aiki->input->requests($title);
+
+				$aiki->output->set_title($title);
+
+				$processed_widget = str_replace('[page_title]', $title, $processed_widget);
+			}
+
 			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->parser->process($processed_widget);
 
@@ -718,25 +739,6 @@ class CreateLayout
 				}
 			}else{
 				$this->widget_html .=  $processed_widget;
-			}
-
-			// Set page title.
-			if ($widget->pagetitle){
-
-				$widget->pagetitle = $aiki->processVars($widget->pagetitle);
-
-				$widget->pagetitle = $aiki->url->apply_url_on_query($widget->pagetitle);
-
-				if (!isset($widget_value)){
-					$widget_value = '';
-				}
-
-				$title = $this->parsDBpars($widget->pagetitle, $widget_value);
-
-
-				$title = $aiki->input->requests($title);
-
-				$aiki->output->set_title($title);
 			}
 
 		}
