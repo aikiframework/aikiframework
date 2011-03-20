@@ -698,10 +698,8 @@ class CreateLayout
 				$title = $aiki->input->requests($title);
 
 				$aiki->output->set_title($title);
-
-				$processed_widget = str_replace('[page_title]', $title, $processed_widget);
 			}
-
+				
 			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->parser->process($processed_widget);
 

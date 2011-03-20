@@ -62,7 +62,9 @@ if ($config['html_cache'] and isset($html_cache_file)){
 	$full_html_input .= $layout->html_output;
 }
 
-
+if (isset($aiki->output->title)){
+	$layout->html_output = str_replace('[page_title]', $aiki->output->title, $layout->html_output);
+}
 $html_output .= $layout->html_output;
 
 if (!isset($noheaders)){
