@@ -20,6 +20,8 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
+
+
 /**
  * BriefDescription
  *
@@ -29,8 +31,12 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 class php
 {
-
-	private $odd=0, $mod=0,$counters=array(), $increments=array(), $initialized=array();
+    // vars user by odd, counter, adn mod functions.
+	private $odd=0, 
+            $mod=0,
+            $counters=array(), 
+            $increments=array(), 
+            $initialized=array();
 
 	public function parser($text){
 		global $aiki;
@@ -73,6 +79,11 @@ class php
 						preg_match('/eval\((.*)\);/s', $php_function, $partial);
 						$php_output = eval($partial[1] . ( substr($partial[1],-1)!=";" ? ";" :"")) ;
 						break;*/
+
+                    case "setcounter": $php_output ="";  $this->setcounter( $this->mtoken($rest)); break;
+                    case "counter"   : $php_output = $this->counter($rest);   break;
+                    case "odd"       : $php_output = $this->odd(); break;
+                    case "mod"       : $php_output = $this->mod($rest); break;
 
 					case "replace":
 					case "str_replace":
@@ -117,51 +128,52 @@ class php
 
 	}
 
-	/**
-	 * Internal function to parser argument
-	 */
+/**
+ * Internal function to parser argument
+ */
 
-	function mtoken ( $text, $separator=',' ){    
-    $max  = strlen($text)-1;
-    $state= 0 ; /* state 0: waiting a token
-                         1: over ' delimited string
-                         2  over " delimited string
-                         3  over a no delimited string,
-                         4  waiting coma */
-    $word = "";
-    $resul= array();
-        
-    for($i=0;$i<=$max;$i++){
-        $char = $text[$i];
-                    
-        // continue over white space
-        if ( ( $state==0 || $state==4) && ( $char==" " || $char=="\n" || $char=="\r" || $char=="\t" )) {
-            $continue;
-        } elseif ( ( $char=="'" && $state==1) ||  //anotate string ends.
-                   ( $char=='"' && $state==2) ||
-                   ( $char==$separator && $state==3) ||
-                   ( $i==$max && ($state>0 && $state<4) ) ){
-            $state= ( $state==3 ? 0 : 4);
-            $resul[]= $word ; 
-            $word=""; 
-        } elseif ( $char==$separator && $state==4 ) { //found a ' when waiting
-            $state=0 ; 
-        } elseif ( ($char=="'" || $char=='"' ) && $state==0) { //initiate a string
-            $state= ( $char=="'" ? 1: 2) ;                                        
-        } elseif ( $char=='\\'  ) {
-            $i++;
-            $word .= $text[$i]; 
-        } elseif ( $state==0){
-            $state=3;
-            $word = $char;     
-        } else {
-            $word .= $char;
-        }
-
-   } // for
+    function mtoken ( $text, $separator=',' ){    
+        $max  = strlen($text);
+        $state= 0 ; /* state 0: waiting a token
+                             1: over ' delimited string
+                             2  over " delimited string
+                             3  over a no delimited string,
+                             4  waiting coma */
+        $word = "";
+        $resul= array();
             
-   return $resul;
-}
+        for($i=0;$i<$max;$i++){            
+            $char = $text[$i];
+                        
+            // continue over white space
+            if ( ( $state==0 || $state==4) && ( $char==" " || $char=="\n" || $char=="\r" || $char=="\t" )) {
+                $continue;
+            } elseif ( ($i+1)==$max && ($state>0 && $state<4) ) {
+                $resul[]= $word . $char;
+            } elseif ( ( $char=="'" && $state==1) ||  //anotate string ends.
+                       ( $char=='"' && $state==2) ||
+                       ( $char==$separator && $state==3) ) {
+                $state= ( $state==3 ? 0 : 4);
+                $resul[]= $word ; 
+                $word=""; 
+            } elseif ( $char==$separator && $state==4 ) { //found a ' when waiting
+                $state=0 ; 
+            } elseif ( ($char=="'" || $char=='"' ) && $state==0) { //initiate a string
+                $state= ( $char=="'" ? 1: 2) ;                                        
+            } elseif ( $char=='\\'  ) {
+                $i++;
+                $word .= $text[$i]; 
+            } elseif ( $state==0){
+                $state=3;
+                $word = $char;     
+            } else {
+                $word .= $char;
+            }
+        } // for
+                
+        return $resul;
+    }
+
 
     
     function evalNeg($text){    
@@ -235,35 +247,35 @@ class php
 
 	}
 
-	function odd(){
-		$this->odd= ( $this->odd==0 ? 1:0);
-		return ( $this->odd ? "odd" : "even");
-	}
+    function odd(){
+        $this->odd= ( $this->odd==0 ? 1:0);
+        return ( $this->odd ? "odd" : "even");
+    }
 
-	function setcounter($para){
-		$this->counters[$para[0]]     = (isset($para[1]) ? $para[1] :1);
-		$this->increments[$para[0]] = (isset($para[2]) ? (int) $para[2] :1);
-		$this->initialized[$para[0]] = false;
-	}
+    function setcounter($para){
+        $this->counters[$para[0]]   = (isset($para[1]) ? $para[1] : 1);
+        $this->increments[$para[0]] = (isset($para[2]) ? (int) $para[2] :1);
+        $this->initialized[$para[0]]= false;
+    }          
 
-	function counter($counter){
-		if ( !isset( $this->counters[$counter]) )  {
-			$this->counters[$counter]=0;
-			$this->increments[$counter]=1;
-			$this->initialized[$counter]=true;
-		} elseif ( ! $this->initialized[$counter] ) {
-			$this->initialized[$counter]=true;
-		} else {
-			$this->counters[$counter]+= $this->increments[$counter];
-		}
-		return $this->counters[$counter];
-	}
+    function counter($counter){
+           if ( !isset( $this->counters[$counter]) )  {
+           $this->counters[$counter]=0;
+           $this->increments[$counter]=1;
+           $this->initialized[$counter]=true;
+       } elseif ( ! $this->initialized[$counter] ) {        
+           $this->initialized[$counter]=true;
+       } else {
+           $this->counters[$counter]+= $this->increments[$counter];
+       }       
+       return $this->counters[$counter];
+   }
 
-	function mod($factor){
-		$factor= (int)$factor;
-		$cRet =  ( $factor != 0 ? $this->mod % $factor: 0);
-		$this->mod++;
-		return ( $cRet);
-	}
+  function mod($factor){
+      $factor= (int)$factor;
+      $cRet =  ( $factor != 0 ? $this->mod % $factor: 0);
+      $this->mod++;
+      return ( $cRet);
+   }
 
 }
