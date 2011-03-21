@@ -562,6 +562,7 @@ class records
 
 						foreach ($secondery_query as $field_name => $field_value){
 							$field_value = str_replace("this_pkey", $this_pkey, $field_value);
+							$field_value = $aiki->sql_markup->sql($field_value);
 
 							$field_value_var = $aiki->get_string_between($field_value, '[', ']');
 							if ($field_value_var){
