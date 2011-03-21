@@ -20,8 +20,6 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
-
-
 /**
  * BriefDescription
  *
@@ -84,11 +82,20 @@ class php
                     case "counter"   : $php_output = $this->counter($rest);   break;
                     case "odd"       : $php_output = $this->odd(); break;
                     case "mod"       : $php_output = $this->mod($rest); break;
+                                                        
+                    case "getinfo"   : $php_output = $this->getinfo($rest);
+                                            
 
 					case "replace":
 					case "str_replace":
 						$partial = $this->mtoken($rest);
-						$php_output = str_replace($partial[0],$partial[1],$partial[2]);
+                        if ( isset($partial[0]) && isset($partial[1])){
+                            if ( isset($partia[2]) ) {
+                                $php_output = str_replace($partial[0],$partial[1],$partial[2]);
+                            } else {
+                                $php_output = str_replace($partial[0],$partial[1],"");
+                            }    
+                        }
 						break;
 
 					case "substr":
@@ -259,23 +266,45 @@ class php
     }          
 
     function counter($counter){
-           if ( !isset( $this->counters[$counter]) )  {
+        if ( !isset( $this->counters[$counter]) )  {
            $this->counters[$counter]=0;
            $this->increments[$counter]=1;
            $this->initialized[$counter]=true;
-       } elseif ( ! $this->initialized[$counter] ) {        
+        } elseif ( ! $this->initialized[$counter] ) {        
            $this->initialized[$counter]=true;
-       } else {
+        } else {
            $this->counters[$counter]+= $this->increments[$counter];
-       }       
-       return $this->counters[$counter];
-   }
+        }       
+        return $this->counters[$counter];
+    }
 
-  function mod($factor){
-      $factor= (int)$factor;
-      $cRet =  ( $factor != 0 ? $this->mod % $factor: 0);
-      $this->mod++;
-      return ( $cRet);
-   }
+    function mod($factor){
+        $factor= (int)$factor;
+        $cRet =  ( $factor != 0 ? $this->mod % $factor: 0);
+        $this->mod++;
+        return ( $cRet);
+    }
+
+    
+    /*
+     * return information about aiki version, and runtime (queries and time)
+     */
+    function getinfo($what) {
+        switch ($what) {
+            case "version":
+            case "hidden-version":
+                return $what=="version" ? AIKI_VERSION : "\n<!-- aikiframework version: ". AIKI_VERSION . "-->\n";
+            case "queries" :    
+            case "hidden-queries" : 
+                global $db;
+                return $what=="queries" ? $db->num_queries : "\n<!-- queries: ". $db->num_queries ."-->\n";
+            case "time":
+            case "hidden-time":
+                global $start_time;
+                $end = (float) array_sum(explode(' ',microtime()));
+                $end_time = sprintf("%.4f", ($end-$start_time));
+                return $what=="time" ? $end_time : "\n <!-- Time: ".$end_time." seconds -->\n";
+        }
+    }
 
 }
