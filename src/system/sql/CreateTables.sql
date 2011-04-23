@@ -178,6 +178,7 @@ CREATE TABLE IF NOT EXISTS `aiki_users` (
   `maillist` int(1) NOT NULL,
   `logins_number` int(11) NOT NULL,
   `randkey` varchar(255) NOT NULL,
+  `token` varchar(32) NOT NULL default '',
   `is_active` int(5) NOT NULL,
   PRIMARY KEY  (`userid`),
   KEY `username` (`username`)
@@ -208,6 +209,15 @@ CREATE TABLE IF NOT EXISTS `aiki_users_sessions` (
   `last_ip` varchar(100) NOT NULL,
   PRIMARY KEY (`session_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- ------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `aiki_sessions_vars` (
+  `user_id` int(11) NOT NULL,
+  `var_name` varchar(255) NOT NULL,
+  `var_value` text NOT NULL,
+  PRIMARY KEY (`user_id`, `var_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- ------------------------------------------------------
 

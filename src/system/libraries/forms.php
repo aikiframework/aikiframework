@@ -31,12 +31,12 @@ class forms
 	public $submit_button;
 	public $edit_type;
 
-	public function displayForms($text){
+	public function displayForms($text) {
 		global $db, $aiki;
 
 		$forms_count = preg_match_all("/\(\#\(form\:(.*)\)\#\)/Us", $text, $forms);
 
-		if ($forms_count >0){
+		if ($forms_count > 0) {
 
 			foreach ($forms['1'] as $form_data){
 
