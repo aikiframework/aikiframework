@@ -256,6 +256,7 @@ class ezSQL_mysql extends ezSQLcore
 					if ($find_request_to_external_db){
 
 						$database_and_table = str_replace("from ", "", $matches['0']);
+						$database_and_table = str_replace("FROM ", "", $matches['0']);
 
 						//is from external db then look like: database.tablename
 						$database_and_table = explode(".", $database_and_table);
