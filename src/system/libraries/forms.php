@@ -300,7 +300,7 @@ $("#new_record_form").ajaxForm(function() {
 					case "textblock":
 						$form .= '<h2>'.$intwalker['1'].'</h2><div id="'.$intwalker['0'].'_container"><textarea rows="7" cols="50" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'">';
 						if (isset($form_data)){
-							$form .= $form_data->$intwalker[0];
+							$form .= htmlspecialchars($form_data->$intwalker[0]);
 						}elseif(isset($_POST[$intwalker['0']])){
 							$form .=$_POST[$intwalker['0']];
 						}

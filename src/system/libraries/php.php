@@ -39,7 +39,7 @@ class php
 	public function parser($text){
 		global $aiki;
 
-		$text = htmlspecialchars_decode($text);
+		//$text = htmlspecialchars_decode($text);
 		$text = stripslashes($text);
 
 		$para="([^,]*)"; // for comodity
