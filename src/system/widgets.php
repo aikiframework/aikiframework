@@ -221,6 +221,7 @@ class CreateLayout
 						$widget->if_no_results = stripcslashes($widget->if_no_results);
 						$widget->if_no_results =  $aiki->processVars ($widget->if_no_results);
 						$widget->if_no_results = $aiki->url->apply_url_on_query($widget->if_no_results);
+						$widget->if_no_results = $aiki->input->requests($widget->if_no_results);
 
 						$dead_widget = '<'.$widget->widget_type.' id="'.$widget->widget_name.'">'.$widget->if_no_results.'</'.$widget->widget_type.'>';
 
@@ -699,7 +700,7 @@ class CreateLayout
 
 				$aiki->output->set_title($title);
 			}
-				
+
 			$processed_widget =  $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->parser->process($processed_widget);
 
