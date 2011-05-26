@@ -368,7 +368,7 @@ AC_SUBST(ADMIN_NAME,[admin])
 # btw, this is an md5/md5 password stored in the db, so no password stored
 # You can generate this by: echo SOME_PASSWORD | md5sum | md5sum
 # since this is just for dev environment, password is same as ADMIN_USER
-AC_SUBST(ADMIN_PASS,[c4f588ddfeff57433fe1bb88fabf331e])
+AC_SUBST(ADMIN_PASS,[c3284d0f94606de1fd2af172aba15bf3])
 AC_SUBST(ADMIN_MAIL,[''])
 
 # for rpm spec, desktop and others
