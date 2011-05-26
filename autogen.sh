@@ -60,5 +60,7 @@ echo
 echo "Or try:
   cd build \\
   && ../configure --help"
+echo "Or try:
+  ./configure && make"
 echo
 

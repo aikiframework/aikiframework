@@ -35,6 +35,7 @@ else
   $(find . -name \*.lo) \
   $(find . -name \*~) \
   $(find . -name COPYING) \
+  $(find . -maxdepth 1 -name "*.in" | sed 's/.in//') \
   $(find . -name ABOUT-NLS) \
   $(find . -name autoscan.log) \
   $(find . -name configure.scan) \

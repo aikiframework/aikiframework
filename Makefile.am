@@ -68,7 +68,8 @@ aiki_doc_DATA = \
 # Additional files to remove on dist-clean
 DISTCLEANFILES = \
 	$$($(FIND) . -name $(distdir).\*) \
-	$$($(FIND) . -name $(distdir)-\*)
+	$$($(FIND) . -name $(distdir)-\*) \
+	$$($(FIND) . -maxdepth 1 -name "*.in" | sed 's/.in//')
 
 # Additional files and directories to remove on clean
 clean-local :

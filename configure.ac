@@ -25,8 +25,11 @@ m4_define([pkgversion],
  [m4_esyscmd(echo -n $(grep define\(\'AIKI_VERSION\',\'.\\+\'\)\; src/aiki.php \
                        | sed s/.*define\(\'.\\+\',\''\(.*\)'\'\).*/'\1'/))])
 
+m4_define([revversion],
+ [m4_esyscmd(echo -n $(bzr revno))])
+
 # Initialize autoconf, set the name of this package and version
-AC_INIT(aiki, pkgversion, [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
+AC_INIT(aiki, pkgversion-revversion, [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
 PACKAGE=aiki
 
 # Search for auxiliary scripts in the build-aux directory
@@ -82,6 +85,9 @@ PROG_LIST_ADD MKDIR $MKDIR
 
 AC_CHECK_PROG(MYSQL,mysql,mysql,MISSING)
 PROG_LIST_ADD MYSQL $MYSQL
+
+AC_CHECK_PROG(BZR,bzr,bzr,MISSING)
+PROG_LIST_ADD BZR $BZR
 
 AC_CHECK_PROG(CHMOD,chmod,chmod,MISSING)
 PROG_LIST_ADD CHMOD $CHMOD
