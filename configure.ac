@@ -366,7 +366,12 @@ AC_SUBST(AIKI_SITE_URL_LEN,$AIKI_SITE_URL_LEN)
 AC_SUBST(ADMIN_USER,[admin])
 AC_SUBST(ADMIN_NAME,[admin])
 # btw, this is an md5/md5 password stored in the db, so no password stored
-# You can generate this by: echo SOME_PASSWORD | md5sum | md5sum
+# You can generate this by making sure newlines stripped, swap SOME_PASSWORD:
+#
+#   echo -n SOME_PASSWORD | md5sum | awk '{printf "%s", $1}' \
+#   | md5sum | awk '{printf "%s", $1}'
+#
+# echo -n SOME_PASSWORD | md5sum | awk '{ | awk '{print $1}' | tr -d '\n'
 # since this is just for dev environment, password is same as ADMIN_USER
 AC_SUBST(ADMIN_PASS,[c3284d0f94606de1fd2af172aba15bf3])
 AC_SUBST(ADMIN_MAIL,[''])
