@@ -161,6 +161,8 @@ $("#new_record_form").ajaxForm(function() {
 
 		$form = "<div id=\"form_container\"><form action=\"$thisurl\" method=\"post\" enctype=\"multipart/form-data\" id=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\" name=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\">
 		";
+		
+		$form .= '<fieldset class="fields">';
 
 		$i = 0;
 
@@ -487,6 +489,8 @@ $(function() {
 
 			$i++;
 		}
+		
+		$form .= '</fieldset>';
 
 		if (isset($form_data) and $this->edit_type != "save"){
 			$form .= ("
@@ -497,7 +501,7 @@ $(function() {
 			</select>");
 		}
 
-		$form .= ('<p class="form-buttons">');
+		$form .= ('<fieldset class="buttons">');
 		$form .= ("<input type=\"hidden\" value=\"$form_id\" name=\"form_id\">");
 
 		if (!isset ($this->submit_button)){
@@ -512,7 +516,7 @@ $(function() {
 		}else{
 			$form .= ("<input type=\"submit\" class=\"submit_button\" value=\"$this->submit_button\" name=\"add_to_form\">");
 		}
-		$form .= ("</p></form></div>");
+		$form .= ("</fieldset></form></div>");
 
 		if ($aiki->records->form_insert_success != true){
 			return $form;
