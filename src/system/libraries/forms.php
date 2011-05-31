@@ -187,7 +187,7 @@ $("#new_record_form").ajaxForm(function() {
 				$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_permission_and_man_info[1]'");
 			}
 
-			$form .= "<div class='$intwalker[0]'>";
+			$form .= "<div class='$intwalker[0] field'>";
 
 			if (isset($form_data) and isset($form_data->$intwalker[0])){
 				//To stop the L10n Function
