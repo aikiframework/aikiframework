@@ -29,7 +29,7 @@ m4_define([revversion],
  [m4_esyscmd(echo -n $(bzr revno))])
 
 # Initialize autoconf, set the name of this package and version
-AC_INIT(aiki, pkgversion-revversion, [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
+AC_INIT([aiki], [pkgversion-revversion], [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
 PACKAGE=aiki
 
 # Search for auxiliary scripts in the build-aux directory
