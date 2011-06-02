@@ -50,19 +50,19 @@ $config["db_path"] = "";
 // sqlite PDO only
 $config["db_dsn"] = "";
 
-// set time out for deleteing db cached querires - in hours
+// set time out for deleting db cached queries - in hours
 $config["db_cache_timeout"] = 24;
 
 // db caching directory
 $config["cache_dir"] = "";
 
-// if set to true will cache the results of sql querires to files
+// if set to true will cache the results of sql queries to files
 $config["enable_query_cache"] = false;
 
 // enable multi databases connections
 $config["allow_multiple_databases"] = false;
 
-// use html tidy php extinsion to format the html output
+// use html tidy php extension to format the html output
 $config["html_tidy"] = false;
 // enable html tidy compression
 $config["tidy_compress"] = false;
@@ -98,7 +98,7 @@ $config["html_cache"] = false;
 $config["cache_timeout"] = "86400";
 
 // session life time before auto log out 
-// if no activites from the logged in user - in milliseconds
+// if no activities from the logged in user - in milliseconds
 $config["session_timeout"] = 7200;
 
 // if true will allow same username and password to login from two different IPs
@@ -121,9 +121,10 @@ $config["error_404"] = "<h1>404 Page Not Found</h1>
 <p>This page is not found</p>
 <p>Please visit <a href=\"".AIKI_SITE_URL."\">Home page</a> so you may find what you are looking for.</p>"; 
 
-
 // show admin widgets or not?
 $config['admin_widgets_display'] = false;
-
+ 
 // enable debugging
 $config["debug"] = false;
+
+?>
