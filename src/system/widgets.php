@@ -370,9 +370,9 @@ class CreateLayout
 				$widget->normal_select = $aiki->processVars ($aiki->languages->L10n ("$widget->normal_select"));
 
 				//Support DISTINCT selection
-				preg_match('/select DISTINCT(.*)from/i', $widget->normal_select, $get_DISTINCT);
+				preg_match('/select DISTINCT(.*)from/si', $widget->normal_select, $get_DISTINCT);
 
-                preg_match('/select(.*) from /i', $widget->normal_select, $selectionmatch);
+                preg_match('/select(.*) from /si', $widget->normal_select, $selectionmatch);
                 if ( isset($selectionmatch['1'])){
                     if ( stripos($widget->normal_select," GROUP BY ") || 
                          stripos($widget->normal_select," LIMIT" )) {
