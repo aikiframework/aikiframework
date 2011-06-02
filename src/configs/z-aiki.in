@@ -17,7 +17,7 @@
 
 # Written by Bassel Safadi, Steven Garcia
 
-Alias /@PACKAGE@ @PKG_DATA_DIR@
+Alias @AIKI_REWRITE_BASE@ @PKG_DATA_DIR@
 
 # The following directories require access over HTTP
 <Directory @PKG_DATA_DIR@/>
@@ -27,7 +27,7 @@ Alias /@PACKAGE@ @PKG_DATA_DIR@
     AllowOverride All
     Options +FollowSymLinks
     RewriteEngine on
-    RewriteBase /@PACKAGE@/
+    RewriteBase @AIKI_REWRITE_BASE@/
     RewriteRule ^image/(.*)px/(.*)/(.*) assets/apps/image_viewer.php?id=$3&size=$1&mode=$2
     RewriteRule ^image/(.*)px/(.*) assets/apps/image_viewer.php?id=$2&size=$1
     RewriteRule ^image/(.*) assets/apps/image_viewer.php?id=$1

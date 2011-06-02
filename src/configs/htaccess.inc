@@ -1,6 +1,6 @@
 Options +FollowSymLinks
 RewriteEngine on
-RewriteBase @AIKI_REWRITE_BASE@
+RewriteBase @AIKI_REWRITE_BASE@/
 RewriteRule ^image/(.*)px/(.*)/(.*) assets/apps/image_viewer.php?id=$3&size=$1&mode=$2
 RewriteRule ^image/(.*)px/(.*) assets/apps/image_viewer.php?id=$2&size=$1
 RewriteRule ^image/(.*) assets/apps/image_viewer.php?id=$1
