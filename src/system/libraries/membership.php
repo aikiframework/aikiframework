@@ -141,7 +141,7 @@ class membership
 			}
 
 		} else{
-			echo '<center><b>Sorry wrong username or password</b></center>';
+			echo '<center><strong>Wrong username or password.</strong></center>';
 		}
 
 	}
@@ -241,10 +241,10 @@ class membership
 					$password = md5(md5($_POST['password']));
 					$update = $db->query("update aiki_users set password = '$password' where randkey = '".$_POST['key']."'");
 
-					return "Password reseted! you can now login to your account";
+					return "Your password has been reset. You can now log in to your account";
 				}else{
 
-					return "Sorry: the two passwords don't match, please try again <br /> $form ";
+					return "The two passwords do not match. Please try again. <br /> $form ";
 				}
 
 
@@ -252,7 +252,7 @@ class membership
 
 
 		}else{
-			return "Sorry worng or expired key";
+			return "The key was incorrect or has expired.";
 		}
 
 	}
@@ -275,11 +275,11 @@ class membership
 		}
 
 		if (!$username){
-			return 'Username is needed to reset your password';
+			return 'You must provide your username in order to reset your password';
 		}
 
 		if (!$email){
-			return 'Email is needed to reset your password';
+			return 'You must enter the email address you used to sign up for the account.';
 		}
 
 
@@ -290,10 +290,10 @@ class membership
 			$is_user = $db->get_var("select userid from aiki_users where username = '$username'");
 			if (!$is_user){
 
-				return "The user: $username doesn't exists. please make sure you typed the name correctly";
+				return "The user $username doesn't exist. Make sure you typed the name correctly.";
 			}else{
 
-				return "The email address doesn't match the username";
+				return "The email address and username do not match what we have on file.";
 			}
 
 		}else{
@@ -312,7 +312,7 @@ class membership
 			$config['url']."secure?key=".$randkey."</a>";
 
 			mail($email,$subject,$message,$headers);
-			return "an email had been sent to your address. please follow the link to reset your password";
+			return "An email had been sent to your address. Please follow the link to reset your password";
 
 		}
 
