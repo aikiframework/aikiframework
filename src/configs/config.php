@@ -59,9 +59,6 @@ $config["cache_dir"] = "";
 // if set to true will cache the results of sql querires to files
 $config["enable_query_cache"] = false;
 
-// enable multi databases connections
-$config["allow_multiple_databases"] = false;
-
 // use html tidy php extinsion to format the html output
 $config["html_tidy"] = false;
 // enable html tidy compression
@@ -121,9 +118,7 @@ $config["error_404"] = "<h1>404 Page Not Found</h1>
 <p>This page is not found</p>
 <p>Please visit <a href=\"".AIKI_SITE_URL."\">Home page</a> so you may find what you are looking for.</p>"; 
 
-
-// show admin widgets or not?
-$config['admin_widgets_display'] = false;
-
 // enable debugging
 $config["debug"] = false;
+
+?>
