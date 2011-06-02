@@ -130,7 +130,7 @@ class aiki_array
 
 			$output_array = array();
 
-			$html_form .= "<h2>".$setting_group->$name."</h2>";
+			$html_form .= "<label>".$setting_group->$name."</label>";
 			foreach($setting_group->$data as $field)
 			{
 

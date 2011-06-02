@@ -187,7 +187,7 @@ $("#new_record_form").ajaxForm(function() {
 				$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_permission_and_man_info[1]'");
 			}
 
-			$form .= "<div class='$intwalker[0]'>";
+			$form .= "<div class='$intwalker[0] field'>";
 
 			if (isset($form_data) and isset($form_data->$intwalker[0])){
 				//To stop the L10n Function
@@ -208,7 +208,7 @@ $("#new_record_form").ajaxForm(function() {
 
 					case "staticselect":
 
-						$form .= "<h2>$intwalker[1]</h2>";
+						$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label>';
 						if (($intwalker[2] == "custome" or $intwalker[2] == "custom") and $intwalker[3]){
 							$form .= '<select name="'.$intwalker[0].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '">';
 							$explodeStaticSelect = explode("&", $intwalker[3]);
@@ -226,7 +226,7 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "selection":
-						$form .= '<h2>'.$intwalker['1'].'</h2>
+						$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label>
 							<select name="'.$intwalker['0'].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '">
 							<option value="0">Please Select</option>';
 
@@ -257,7 +257,7 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "textinput":
-						$form .= '<h2>'.$intwalker['1'].'</h2><input type="text" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'" value="';
+						$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label><input type="text" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'" value="';
 						if (isset($form_data) and isset($form_data->$intwalker[0])){
 							$form .= $form_data->$intwalker[0] ;
 						}elseif(isset($_POST[$intwalker['0']])){
@@ -266,11 +266,11 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "unique_textinput":
-						$form .= '<h2>'.$intwalker['1'].'</h2><input type="text" name="'.$intwalker['0'].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
+						$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label><input type="text" name="'.$intwalker['0'].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
 
 					case "password":
-						$form .= '<h2>'.$intwalker['1'].'</h2><input type="password" name="'.$intwalker['0'].'">';
+						$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label><input type="password" name="'.$intwalker['0'].'">';
 						break;
 
 					case "submit":
@@ -296,11 +296,11 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "bigtextblock":
-						$form .= '<h2>'.$intwalker[1].'</h2><textarea id="bigfont" style="height: 500px; width: 600px; display: block;" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea>';
+						$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label><textarea id="bigfont" style="height: 500px; width: 600px; display: block;" name="'.$intwalker['0'].'">'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '</textarea>';
 						break;
 
 					case "textblock":
-						$form .= '<h2>'.$intwalker['1'].'</h2><div id="'.$intwalker['0'].'_container"><textarea rows="7" cols="50" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'">';
+						$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label><div id="'.$intwalker['0'].'_container"><textarea rows="7" cols="50" id="'.$intwalker['0'].'" name="'.$intwalker['0'].'">';
 						if (isset($form_data)){
 							$form .= htmlspecialchars($form_data->$intwalker[0]);
 						}elseif(isset($_POST[$intwalker['0']])){
@@ -318,7 +318,7 @@ $("#new_record_form").ajaxForm(function() {
 						break;
 
 					case "static_input":
-						$form .= '<h2>'.$intwalker[1].'</h2><input type="text" name="'.$intwalker[0].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
+						$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label><input type="text" name="'.$intwalker[0].'" value="'; if (isset($form_data)){$form .= $form_data->$intwalker[0] ;} $form .= '">';
 						break;
 
 					case "edit_type":
@@ -329,7 +329,7 @@ $("#new_record_form").ajaxForm(function() {
 						switch ($intwalker[2]){
 
 							case "unique_filename":
-								$form .= '<h2>'.$intwalker[1].'</h2><input type="file" name="'.$intwalker[0].'">';
+								$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label><input type="file" name="'.$intwalker[0].'">';
 								$form .= ("<input type=\"hidden\" name=\"unique_filename\" value=\"unique_filename\">");
 								break;
 
@@ -386,7 +386,7 @@ $(function() {
 });							
 </script>
 ';
-								$form .= '<h2>'.$intwalker[1].'</h2><div style="width: 450px; height: 330px;" id="'.$intwalker[0].'"></div>';
+								$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label><div style="width: 450px; height: 330px;" id="'.$intwalker[0].'"></div>';
 								$form .= ("<input type=\"hidden\" name=\"multifiles_plupload\" value=\"plupload\">");
 
 								break;
@@ -399,7 +399,7 @@ $(function() {
 					case "autofiled":
 						switch ($intwalker[2]){
 							case "publishdate":
-								$form .= ("<h2>$intwalker[1]</h2><input type=\"text\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\" value=\""); $form .= $_POST[$intwalker[0]]; $form .= ("\">");
+								$form .= ("<label for=\"$intwalker[0]\">$intwalker[1]</label><input type=\"text\" dir=\"$get_permission_and_man_info[3]\" name=\"$intwalker[0]\" value=\""); $form .= $_POST[$intwalker[0]]; $form .= ("\">");
 								break;
 
 							case "uploaddate":
