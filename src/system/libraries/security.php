@@ -50,13 +50,14 @@ class security
 		if ($inline > 0){
 			foreach ($matchs[1] as $inline_per){
 				$get_sides = explode("||", $inline_per);
-
+                
+                $side1=  isset($get_sides[1]) ? "||" .$get_sides[1] : "";
 				$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_sides[0]'");
 
 				if ($get_sides[0] == $membership->permissions or $membership->group_level < $get_group_level){
-					$text = str_replace("(#(permissions:$get_sides[0]||$get_sides[1])#)", $get_sides[1], $text);
-				}else{
-					$text = str_replace("(#(permissions:$get_sides[0]||$get_sides[1])#)", '', $text);
+					$text = str_replace("(#(permissions:{$get_sides[0]}$side1)#)", $get_sides[1], $text);
+				}else{            
+					$text = str_replace("(#(permissions:{$get_sides[0]}$side1)#)", '', $text);
 				}
 
 			}

@@ -34,9 +34,7 @@ class forms
 	public function displayForms($text){
 		global $db, $aiki;
 
-		$forms_count = preg_match_all("/\(\#\(form\:(.*)\)\#\)/Us", $text, $forms);
-
-		if ($forms_count >0){
+		if ( preg_match_all("/\(\#\(form\:(.*)\)\#\)/Us", $text, $forms)){
 
 			foreach ($forms['1'] as $form_data){
 
@@ -46,7 +44,13 @@ class forms
 
 					$form_sides = explode(":", $form_data);
 
-					$form = $db->get_row("SELECT * from aiki_forms where id='$form_sides[1]' limit 1");
+                    if ( (int) $form_sides[1] > 0 ) {
+                        $s= (int) $form_sides[1];
+                        $form = $db->get_row("SELECT * from aiki_forms where id='$s' limit 1");
+                    } else {
+                        $s= str_replace("'","\\'",$form_sides[1] ); //paranoic sql injection test
+                        $form = $db->get_row("SELECT * from aiki_forms where form_name='$s' limit 1");
+                    }
 
 					if ($form){
 						$form_array = unserialize($form->form_array);
@@ -56,7 +60,7 @@ class forms
 
 						case "add":
 
-							if (isset($form_sides['2']) and $form_sides['2'] == "ajax"){
+							if (isset($form_sides['2']) && $form_sides['2'] == "ajax"){
 								$form_javascript =
 '<script type="text/javascript">
 $(function () { 
@@ -76,7 +80,7 @@ $("#new_record_form").ajaxForm(function() {
 
 							$form_output .= $aiki->records->insert_from_form_to_db($serial_post,$form->id,'POST[form_id]');
 
-							$form_output .= $this->create_insert_form($form_array, $form->form_html, $form->id);
+							$form_output .= $this->create_insert_form( &$form, $form_array);
 
 							break;
 
@@ -86,13 +90,13 @@ $("#new_record_form").ajaxForm(function() {
 
 							$form_output = $aiki->records->edit_db_record_by_form_post($serial_post, $form->id, $form_sides[2]);
 
-							$form_output .= $this->create_update_form($form_array, $form->form_html, $form->id, $form_sides[2]);
+							$form_output .= $this->create_update_form( &$form, $form_array, $form_sides[2]);
 
 							break;
 
 						case "auto_generate":
 
-							if ($form_sides['1']){
+							if (isset($form_sides['1']) && $form_sides[1] ){
 								$this->auto_generate($form_sides['1']);
 							}
 
@@ -122,20 +126,22 @@ $("#new_record_form").ajaxForm(function() {
 
 				$text = str_replace("(#(form:$form_data)#)", $form_output, $text);
 
-			}
 
-		}
+
+			}		}
 
 		return $text;
 	}
 
 
 
-	public function createForm ($form_array, $form_id, $record_id){
+	public function createForm ($form, $form_array, $record_id=""){
 		global $db, $membership, $aiki, $config;
 
-		$arraykeys = array_keys($form_array);
 
+        $form_id= $form->id;
+
+		$arraykeys = array_keys($form_array);
 
 		if (in_array("tablename", $arraykeys))
 		$tablename = $form_array["tablename"];
@@ -158,10 +164,20 @@ $("#new_record_form").ajaxForm(function() {
 		$path = $_SERVER['SCRIPT_NAME'];
 		$queryString = $_SERVER['QUERY_STRING'];
 		$thisurl = "http://" . $domain . $path . "?" . $queryString;
-
-		$form = "<div id=\"form_container\"><form action=\"$thisurl\" method=\"post\" enctype=\"multipart/form-data\" id=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\" name=\""; if (isset($form_data)){$form .= 'edit_form';}else{$form .= 'new_record_form';}$form .= "\">
-		";
-		
+        
+        $default =  isset($form_data)  ? "edit_form" : "new_record_form";
+        $name= $form->form_name;
+        
+        $form_div  = $name  ? "{$name}_container" : "form_container-$form_id" ;
+        $form_id   = $name  ? "form_{$name}"      : $default ;
+        $form_name = $name  ? $name   : $default ;
+        $form_class= "{$name} $default";
+        $method    = $form->form_method ? $form->form_method : "post";
+        
+		$form = "<div id='$form_div'><form action='$thisurl' " .
+                " method='$method' enctype='multipart/form-data'".
+                " id='$form_id' name='$form_name' class='$form_class'>";
+                                    
 		$form .= '<fieldset class="fields">';
 
 		$i = 0;
@@ -524,70 +540,67 @@ $(function() {
 
 	}
 
-	public function create_insert_form($form_array, $form_html, $form_id){
+	public function create_insert_form($form, $form_array ){
 		global $db, $aiki, $membership;
 
-		$form = '';
+		$formOutput = '';
 
+		if ( $form->form_html){
 
-		if (isset($form_html) and $form_html){
-
-			$form = $aiki->sql_markup->sql($form_html);
-			$form = $aiki->processVars($form_html);
-
-			$form = str_replace('$form_id', $form_id, $form);
-			$form = str_replace('$form_type', 'new_record_form', $form);
-			$form = str_replace('$submit', 'add_to_form', $form);
-
-
-
-		}else{
-
-			$form = $this->createForm ($form_array, $form_id, '');
-
+			$formOutput = $aiki->sql_markup->sql($form->form_html);
+			$formOutput = $aiki->processVars($form->form_html);//@TODO..see.
+                   
+			$formOutput = strtr( $formOutput, array(
+                           '$form_id'=> $form->id,
+			               '$form_type'=>'new_record_form',
+                           '$submit', 'add_to_form'));
+		} else {
+			
+            $formOutput = $this->createForm ($form, $form_array);
 		}
 
-		return $form;
+		return $formOutput;
 
 	}
 
-	public function create_update_form($form_array, $form_html, $form_id, $record_id){
+	public function create_update_form($form, $form_array, $record_id){
 		global $aiki;
 
-		$form = '';
+		$formOutput = '';
 			
-		if (isset($form_html) and $form_html){
+		if ($form->form_html){
 
-			$form = $aiki->sql_markup->sql($form_html);
-			$form = $aiki->processVars($form_html);
+			$formOutput = $aiki->sql_markup->sql($form->form_html);
+			$formOutput = $aiki->processVars($form->form_html);//@TODO..see
 
-			$form = str_replace('$form_id', $form_id, $form);
-			$form = str_replace('$record_id', $record_id, $form);
-			$form = str_replace('$form_type', 'edit_form', $form);
-			$form = str_replace('$submit', 'edit_form', $form);
+			$formOutput = strtr ( $formOutput, array(
+                    '$form_id'=> $form->id, 
+                    '$record_id'=> $record_id,
+                    '$form_type'=> 'edit_form', 
+                    '$submit'=> 'edit_form'));
+			
+			if ( isset($form_array["tablename"]) ) {
+                $tablename = $form_array["tablename"];
+            } 
 
-			$arraykeys = array_keys($form_array);
-
-			if (in_array("tablename", $arraykeys))
-			$tablename = $form_array["tablename"];
-
-			if (in_array("pkey", $arraykeys)) {
+			if ( isset($form_array["pkey"]) ) {
 				$pkey = $form_array["pkey"];
 			}else{
 				$pkey = 'id';
 			}
 
-			$sql = "select * from $tablename where $pkey='$record_id' limit 1";
-			$form = $this->fill_form($form, $sql);
-
+            if ( isset($tablename) ) {
+                $sql = "select * from $tablename where $pkey='$record_id' limit 1";
+                $formOutput = $this->fill_form($formOutput, $sql);
+            }
 
 		}else{
 
-			$form = $this->createForm ($form_array, $form_id, $record_id);
+			$formOutput = $this->createForm ($form, $form_array, $record_id);
 
 		}
 
-		return $form;
+		return $formOutput;
 
 
 	}
