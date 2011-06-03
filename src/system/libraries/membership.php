@@ -207,28 +207,28 @@ class membership
 		if ($is_user){
 
 			$form = '
-<form method=\'post\'>
-<div>
-<table border=0>
-  <tbody>
-    <tr>
-      <td><b>New Password:</b></td>
-      <td><input class="input" type="password" dir="" name="password"></td>
-    </tr>
-<tr>
-      <td><b>Confirm New Password:</b></td>
-      <td><input class="input" type="password" dir="" name="password_confirm"></td>
-    </tr>    
-    <tr>
-      <td></td>
-      <td><input class="button" type="submit" name="submit" value="Set Password"></td>
-    </tr>
-<input type="hidden" value="'.$key.'" name="key">
-  </tbody>
-</table>
+<div id="form_container">
+  <form method="post" enctype="multipart/form-data" id="reset_password_form" name="reset_password_form">
+
+  <fieldset class="fields">
+    <div class="password field">
+      <label for="password">New Password</label>
+      <input class="input" type="password" dir="" name="password">
+     </div>
+     
+     <div class="password_confirm field">
+        <label for="password_confirm">Confirm New Password</label>
+        <input class="input" type="password" dir="" name="password_confirm">
+     </div>
+   </fieldset>
+
+   <fieldset class="buttons">
+      <input type="hidden" value="17" name="form_id">
+      <input class="button" type="submit" name="submit" value="Set Password">
+    </fieldset>
+<form>
 </div>
-<form>			
-';			
+';				
 
 			if (!isset($_POST['password']) and !isset($_POST['password_confirm']) and !isset($_POST['key'])){
 
