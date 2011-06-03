@@ -112,8 +112,9 @@ class php
 						break;
 
 					case "htmlspecialchars":
-						preg_match('/htmlspecialchars\((.*)\);/s', $php_function, $partial);
-						$php_output = htmlspecialchars($partial[1]);
+						if (preg_match('/htmlspecialchars\((.*)\);/s', $php_function, $partial)){                        
+                            $php_output = htmlspecialchars($partial[1]);
+                        }    
 						break;
 
 					case '$aiki':
