@@ -169,14 +169,13 @@ $("#new_record_form").ajaxForm(function() {
         $name= $form->form_name;
         
         $form_div  = $name  ? "{$name}_container" : "form_container-$form_id" ;
-        $form_id   = $name  ? "form_{$name}"      : $default ;
-        $form_name = $name  ? $name   : $default ;
-        $form_class= "{$name} $default";
+        $form_id   = $name  ? "{$name}_form"      : $default ;
+        $form_class= "$form_id $default";
         $method    = $form->form_method ? $form->form_method : "post";
         
 		$form = "<div id='$form_div'><form action='$thisurl' " .
                 " method='$method' enctype='multipart/form-data'".
-                " id='$form_id' name='$form_name' class='$form_class'>";
+                " id='$form_id' name='$form_id' class='$form_class'>";
                                     
 		$form .= '<fieldset class="fields">';
 
