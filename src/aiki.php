@@ -90,6 +90,7 @@ $aiki = new aiki();
 
 $config = $aiki->get_config($config);
 
+$aiki->load("message");
 $membership = $aiki->load("membership");
 
 
