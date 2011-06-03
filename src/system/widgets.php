@@ -167,7 +167,7 @@ class CreateLayout
 				}
 
 				if (!$custome_output and $widget->widget_type and $widget->remove_container != 1){
-					$this->widget_html .= "\n <!--start $widget->id--> \n";
+					$this->widget_html .= "\n <!--start {$widget->widget_name}({$widget->id})--> \n";
 					$this->widget_html .= "<$widget->widget_type id=\"$widget->widget_name\"";
 					if ($widget->style_id){
 						$this->widget_html .= " class=\"$widget->style_id\"";
@@ -211,7 +211,7 @@ class CreateLayout
 
 				if (!$custome_output and $widget->widget_type and $widget->remove_container != 1){
 					$this->widget_html .= "\n</$widget->widget_type>\n";
-					$this->widget_html .= "\n <!--$widget->id end--> \n";
+					$this->widget_html .= "\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
 				}
 
 
