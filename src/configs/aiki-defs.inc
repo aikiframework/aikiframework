@@ -14,7 +14,7 @@
  * @link        @PACKAGE_URL@
  * @category    Aiki
  * @package     Aiki
- * @version     @VERSION@
+ * @version     @VERSION@.@REVISION@
  * @filesource
  */
 
@@ -23,6 +23,10 @@
  * Aiki Framework Version
  */
 define("AIKI_VERSION", "@VERSION@");
+/**
+ * Aiki Framework Revision
+ */
+define("AIKI_REVISION", "@REVISION@");
 /**
  * At run-time, write config and database or use an install-time config and database
  * Do NOT put the following value (TRUE or FALSE) in quotes.

@@ -78,7 +78,8 @@ clean-local :
 	$(abs_top_srcdir)/build/$(distdir) \
 	$$($(FIND) . -name $(distdir).\*) \
 	$$($(FIND) . -name $(distdir)-\*) \
-	$$($(FIND) . -name $(PACKAGE)-rev-\*)
+	$$($(FIND) . -name $(PACKAGE)-src-\*) \
+	$$($(FIND) . -name $(PACKAGE)-devel-\*)
 	
 # Additional files and directories to remove on distclean
 distclean-local :
@@ -205,13 +206,9 @@ uninstall-hook :
 am__tar = ${AMTAR} chf - "$$tardir"
 # previously was defined in aclocal.m4: am__tar = ${AMTAR} chof - "$$tardir"
 
-# get source revision number
-REVNFILE = $$($(FIND) $(srcdir) -name last-revision)
-REVISION = $$($(AWK) '{print $$1; exit}' $(REVNFILE))
-
 # generate source revision packages
-all : distsum rev
-rev :
+all : distdevel src
+src :
 	@$(TAR) -xpzf $(distdir).tar.gz \
 	--exclude="*.ac" \
 	--exclude="*.am" \
@@ -233,43 +230,46 @@ rev :
 	@$(CP) -vf VERSION $(PACKAGE)/
 	@for d in $$($(FIND) $(PACKAGE) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
-	@$(ZIP) -rq $(PACKAGE)-$@-$(REVISION).zip $(PACKAGE)
-	@$(TAR) -cpzf $(PACKAGE)-$@-$(REVISION).tar.gz $(PACKAGE)
-	@$(TAR) -cpjf $(PACKAGE)-$@-$(REVISION).tar.bz2 $(PACKAGE)
+	@$(ZIP) -rq $(PACKAGE)-$@-$(VERSION).$(REVISION).zip $(PACKAGE)
+	@$(TAR) -cpzf $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.gz $(PACKAGE)
+	@$(TAR) -cpjf $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.bz2 $(PACKAGE)
 	@$(MV) $(PACKAGE) $(distdir)
 # generate sum for source revision packages
-	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).zip > $(PACKAGE)-$@-$(REVISION).zip.shasum-$(ALGORITHM).txt
-	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).tar.gz > $(PACKAGE)-$@-$(REVISION).tar.gz.shasum-$(ALGORITHM).txt
-	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(REVISION).tar.bz2 > $(PACKAGE)-$@-$(REVISION).tar.bz2.shasum-$(ALGORITHM).txt
+	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(VERSION).$(REVISION).zip > $(PACKAGE)-$@-$(VERSION).$(REVISION).zip.shasum-$(ALGORITHM).txt
+	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.gz > $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.gz.shasum-$(ALGORITHM).txt
+	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.bz2 > $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.bz2.shasum-$(ALGORITHM).txt
 if ENABLE_SIGS
-	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(REVISION).zip
-	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(REVISION).tar.gz
-	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(REVISION).tar.bz2
+	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(VERSION).$(REVISION).zip
+	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.gz
+	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.bz2
 endif
-	@for f in $$($(FIND) . -name $(PACKAGE)-$@-$(REVISION).\*); do $(CHMOD) 0644 $$f; done
+	@for f in $$($(FIND) . -name $(PACKAGE)-$@-$(VERSION).$(REVISION).\*); do $(CHMOD) 0644 $$f; done
 	@$(ECHO) "*****************************************************************"
 	@$(ECHO) "$(PACKAGE) revision $(REVISION) archives ready for distribution:"
-	@$(LS) -1 $(PACKAGE)-$@-$(REVISION).*
+	@$(LS) -1 $(PACKAGE)-$@-$(VERSION).$(REVISION).*
 	@$(ECHO) "*****************************************************************"
 
-# to check: shasum -a 256 -c aiki-rev-429.tar.gz.shasum-256.txt
+# to check: shasum -a 256 -c aiki-src-429.tar.gz.shasum-256.txt
 
-# generate sum for distribution packages
-distsum : dist summod
-distchecksum : distcheck summod
-summod :
-	@$(SHASUM) -a $(ALGORITHM) $(distdir).zip > $(distdir).zip.shasum-$(ALGORITHM).txt
-	@$(SHASUM) -a $(ALGORITHM) $(distdir).tar.gz > $(distdir).tar.gz.shasum-$(ALGORITHM).txt
-	@$(SHASUM) -a $(ALGORITHM) $(distdir).tar.bz2 > $(distdir).tar.bz2.shasum-$(ALGORITHM).txt
+# generate sum for development distribution packages
+distdevel : dist devel
+distcheckdevel : distcheck devel
+devel :
+	@$(CP) -a $(distdir).zip $(PACKAGE)-$@-$(VERSION).$(REVISION).zip
+	@$(CP) -a $(distdir).tar.gz $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.gz
+	@$(CP) -a $(distdir).tar.bz2 $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.bz2
+	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(VERSION).$(REVISION).zip > $(PACKAGE)-$@-$(VERSION).$(REVISION).zip.shasum-$(ALGORITHM).txt
+	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.gz > $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.gz.shasum-$(ALGORITHM).txt
+	@$(SHASUM) -a $(ALGORITHM) $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.bz2 > $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.bz2.shasum-$(ALGORITHM).txt
 if ENABLE_SIGS
-	@$(GPG) --batch --yes -qb $(distdir).zip
-	@$(GPG) --batch --yes -qb $(distdir).tar.gz
-	@$(GPG) --batch --yes -qb $(distdir).tar.bz2
+	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(VERSION).$(REVISION).zip
+	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.gz
+	@$(GPG) --batch --yes -qb $(PACKAGE)-$@-$(VERSION).$(REVISION).tar.bz2
 endif
-	@for f in $$($(FIND) . -name $(distdir).\*); do $(CHMOD) 0644 $$f; done
+	@for f in $$($(FIND) . -name $(PACKAGE)-$@-$(VERSION).$(REVISION).\*); do $(CHMOD) 0644 $$f; done
 
 # declare phony targets
-.PHONY : bone-clean rev summod distsum distchecksum install-desktop rpm srpm
+.PHONY : bone-clean src devel distdevel distcheckdevel install-desktop rpm srpm
 
 # Remove ALL Autotools generated files
 # WARNING: Use this with CAUTION

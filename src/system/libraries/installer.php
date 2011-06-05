@@ -306,6 +306,7 @@ Before we start you need the following:
 	$sql_insert_variable = str_replace("@ADMIN_PASS@",$admin_password_md5_md5,$sql_insert_variable);
 	$sql_insert_variable = str_replace("@ADMIN_MAIL@",$email,$sql_insert_variable);
 	$sql_insert_variable = str_replace("@VERSION@",AIKI_VERSION,$sql_insert_variable);
+  $sql_insert_variable = str_replace("@REVISION@",AIKI_REVISION,$sql_insert_variable);
 	
 	/* In MySQL, the “-- ” (double-dash) comment style requires the second
 	 * dash to be followed by at least one whitespace or control character.

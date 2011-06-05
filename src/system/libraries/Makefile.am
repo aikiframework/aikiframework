@@ -30,6 +30,7 @@ aiki_src_files = \
 	installer.php \
 	languages.php \
 	membership.php \
+	message.php \
 	output.php \
 	parser.php \
 	php.php \

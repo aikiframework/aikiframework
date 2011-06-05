@@ -82,7 +82,7 @@ parseargs()
       };;
       --version | -V)
       {
-        echo "@PACKAGE@ version @VERSION@"
+        echo "@PACKAGE@ version @VERSION@.@REVISION@"
         exit $result
       };;
       --create-usr | -c)

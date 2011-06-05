@@ -25,13 +25,8 @@ m4_define([pkgversion],
  [m4_esyscmd(echo -n $(grep define\(\'AIKI_VERSION\',\'.\\+\'\)\; src/aiki.php \
                        | sed s/.*define\(\'.\\+\',\''\(.*\)'\'\).*/'\1'/))])
 
-m4_define([revversion],
- [m4_esyscmd(echo -n $(bzr revno))])
-
-m4_define([allversion],[pkgversion][-][revversion])
-
 # Initialize autoconf, set the name of this package and version
-AC_INIT([aiki], [allversion], [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
+AC_INIT([aiki], [pkgversion], [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
 PACKAGE=aiki
 
 # Search for auxiliary scripts in the build-aux directory
@@ -87,9 +82,6 @@ PROG_LIST_ADD MKDIR $MKDIR
 
 AC_CHECK_PROG(MYSQL,mysql,mysql,MISSING)
 PROG_LIST_ADD MYSQL $MYSQL
-
-AC_CHECK_PROG(BZR,bzr,bzr,MISSING)
-PROG_LIST_ADD BZR $BZR
 
 AC_CHECK_PROG(CHMOD,chmod,chmod,MISSING)
 PROG_LIST_ADD CHMOD $CHMOD
@@ -363,6 +355,17 @@ AC_SUBST(PKG_DATA_DIR_LEN,$PKG_DATA_DIR_LEN)
 
 AIKI_SITE_URL_LEN=$($ECHO "$AIKI_SITE_URL" | $AWK '{print length}')
 AC_SUBST(AIKI_SITE_URL_LEN,$AIKI_SITE_URL_LEN)
+
+# Get the source control revision number.
+# This is BZR (Bazaar) specific.
+# BZR is NOT required due to .bzr/branch/last-revision
+# in the development distribution archives
+REVNFILE=$($FIND $srcdir/ -name last-revision)
+REVISION=$($AWK '{print $1; exit}' $REVNFILE)
+AC_SUBST(REVNFILE,$REVNFILE)
+AC_SUBST(REVISION,$REVISION)
+VAR_LIST_ADD REVNFILE $REVNFILE
+VAR_LIST_ADD REVISION $REVISION
 
 # defaults for insert variable SQL
 AC_SUBST(ADMIN_USER,[admin])
