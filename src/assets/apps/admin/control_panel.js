@@ -79,11 +79,11 @@ function create_form(selector, id, name, code, tree){
 		$('#tools_box').remove();
 			$("#widget-form").load("admin_tools/new/"+id, function(){
 				
-				var current_form = $("#new_record_form").html();
+				var current_form = $("form.new_record_form").html();
 				if (code == 1){
 					code_mirror();
 					}
-				$('#new_record_form').ajaxForm(function() { 
+				$('form.new_record_form').ajaxForm(function() { 
 					refreshthetree(tree);
 					$("#widget-form").html("Added new " + name + " successfully");
 	           }); 
@@ -318,7 +318,7 @@ function urls_widgets_tree(){
 				
 				code_mirror();
 				code_mirror_if_authorized();
-				$('#edit_form').ajaxForm(function() { 
+				$('form.edit_form').ajaxForm(function() { 
 					
 					stop = 0;
 					
@@ -339,12 +339,12 @@ function urls_widgets_tree(){
 					
 	           }); 
 				
-				$('<input type="hidden" name="edit_form" value="Save">').appendTo("#edit_form");
+				$('<input type="hidden" name="edit_form" value="Save">').appendTo("form.edit_form");
 				
 				$(window).keypress(function(event) {
 				    if (event.which == 115 && event.ctrlKey){
 				    	
-				    	$('#edit_form').ajaxSubmit(function() { 
+				    	$('form.edit_form').ajaxSubmit(function() { 
 							
 							stop = 0;
 							
@@ -465,7 +465,7 @@ function database_forms_tree(){
 
 	    $("#widget-form").load('admin_tools/array/id/form_name/form_array/aiki_forms/'+NODE.id,  {limit: 25}, function(){
 
-    					$('#edit_form').ajaxForm(function() { 
+    					$('form.edit_form').ajaxForm(function() { 
     						
     						stop = 0;
     						
@@ -555,7 +555,7 @@ function config_tree(){
 
     				$("#widget-form").load('admin_tools/array/config_id/config_type/config_data/aiki_config/'+NODE.id,  {limit: 25}, function(){
 
-    					$('#edit_form').ajaxForm(function() { 
+    					$('form.edit_form').ajaxForm(function() { 
     						
     						stop = 0;
     						

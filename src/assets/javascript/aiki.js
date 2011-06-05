@@ -17,7 +17,7 @@ if (stop != 1){
 	$.get(file,function(data) {
 		$('#loading_box').fadeOut("fast", function() { $(this).remove(); 
 		$(targetwidget).hide().fadeIn(500).html(data);
-		$('#edit_form').ajaxForm(function() { $("#edit_form").html("Edited successfully"); });
+		$('form.edit_form').ajaxForm(function() { $("form.edit_form").html("Edited successfully"); });
 		});
 		stop = 0;
 	});
@@ -27,15 +27,21 @@ if (stop != 1){
 $(document).ready(function(){
 
 	$('a').live('click', function() {
-		if($(this).attr('rel') && $(this).attr('href') && $(this).attr('rev')) {
-			globalajaxify($(this).attr('href')+'?noheaders=true&noheaders=true&widget='+$(this).attr('rel'), $(this).attr('rev'));
-			return false;
-		}
+		if($(this).attr('rel') ){
+          if ($(this).attr('href')){
+            if ($(this).attr('rev')) {
+                globalajaxify($(this).attr('href')+'?noheaders=true&noheaders=true&widget='+$(this).attr('rel'), $(this).attr('rev'));
+                return false;
+            }
+          }
+        }    
 	});
 	$('span').live('click', function() {
-		if($(this).attr('rel') && $(this).attr('rev')) {
-			globalajaxify('?noheaders=true&noheaders=true&widget='+$(this).attr('rel'), $(this).attr('rev'));
-			return false;
-		}
-	});
+		if($(this).attr('rel') ) {
+            if ($(this).attr('rev')) {
+                globalajaxify('?noheaders=true&noheaders=true&widget='+$(this).attr('rel'), $(this).attr('rev'));
+                return false;
+            }
+          }  
+		});
 });
