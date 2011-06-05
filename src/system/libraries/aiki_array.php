@@ -119,8 +119,7 @@ class aiki_array
 		$i=0;
 		$y=0;
 
-		$html_form = "
-		<form method='post' id='edit_form' name='edit_form' action='$pageURL' class='edit_form' >";
+		$html_form = "\n<form method='post' id='edit_form' name='edit_form' action='$pageURL' class='edit_form' >";
 		foreach ( $settings as $setting_group )
 		{
 

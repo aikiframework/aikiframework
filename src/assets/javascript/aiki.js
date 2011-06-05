@@ -27,21 +27,18 @@ if (stop != 1){
 $(document).ready(function(){
 
 	$('a').live('click', function() {
-		if($(this).attr('rel') ){
-          if ($(this).attr('href')){
-            if ($(this).attr('rev')) {
+		if( $(this).attr('rel') &&  $(this).attr('href') && $(this).attr('rev')) {
                 globalajaxify($(this).attr('href')+'?noheaders=true&noheaders=true&widget='+$(this).attr('rel'), $(this).attr('rev'));
-                return false;
-            }
-          }
+                return false;            
         }    
 	});
-	$('span').live('click', function() {
+	
+    $('span').live('click', function() {
 		if($(this).attr('rel') ) {
             if ($(this).attr('rev')) {
                 globalajaxify('?noheaders=true&noheaders=true&widget='+$(this).attr('rel'), $(this).attr('rev'));
                 return false;
             }
           }  
-		});
+	});
 });

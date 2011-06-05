@@ -318,6 +318,7 @@ function urls_widgets_tree(){
 				
 				code_mirror();
 				code_mirror_if_authorized();
+                
 				$('form.edit_form').ajaxForm(function() { 
 					
 					stop = 0;
