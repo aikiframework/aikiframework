@@ -55,7 +55,7 @@ if (file_exists("$system_folder/configs/aiki-defs.php")){
 	 * When the MAJOR number is zero, this indicates an alpha or beta type release
    * Each number can, but should probably not exceed 99
 	 */
-	define('AIKI_VERSION','0.9.1');
+	define('AIKI_VERSION','0.8.2');
 }
 
 /*
