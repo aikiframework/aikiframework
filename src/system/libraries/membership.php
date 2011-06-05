@@ -223,7 +223,7 @@ class membership
    </fieldset>
 
    <fieldset class="buttons">
-      <input type="hidden" value="17" name="form_id">
+      <input type="hidden" value="'.$key.'" name="key">
       <input class="button" type="submit" name="submit" value="Set Password">
     </fieldset>
 <form>
