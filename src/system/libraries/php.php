@@ -294,7 +294,7 @@ class php
         switch ($what) {
             case "version":
             case "hidden-version":
-                return $what=="version" ? AIKI_VERSION : "\n<!-- aikiframework version: ". AIKI_VERSION . "-->\n";
+                return $what=="version" ? AIKI_VERSION : "\n<!-- aikiframework version: ". AIKI_VERSION . "." . AIKI_REVISION . " -->\n";
             case "queries" :    
             case "hidden-queries" : 
                 global $db;

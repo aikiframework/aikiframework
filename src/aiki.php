@@ -47,8 +47,15 @@ if (file_exists("$system_folder/configs/aiki-defs.php")){
 }else{
 	/**
 	 * Aiki Framework Version
+	 * The number left or west of the dots indicates a MAJOR production type release.
+	 * The number in the middle of the dots indicates a significant change or MINOR changes.
+	 * The number right or east of the dots indicates a bug FIX or small change.
+	 * When the MINOR number changes, the FIX number should reset to zero.
+	 * When the MAJOR number changes, the MINOR number should reset to zero.
+	 * When the MAJOR number is zero, this indicates an alpha or beta type release
+   * Each number can, but should probably not exceed 99
 	 */
-	define('AIKI_VERSION','0.9-dev');
+	define('AIKI_VERSION','0.9.1');
 }
 
 /*

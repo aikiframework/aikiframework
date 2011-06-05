@@ -1,4 +1,4 @@
-.TH "@PACKAGE@" "1" "@PACKAGE@-@VERSION@" "aikiframework.org" "@GROUP@"
+.TH "@PACKAGE@" "1" "@PACKAGE@-@VERSION@.@REVISION@" "aikiframework.org" "@GROUP@"
 
 .SH "NAME"
 .LP 
@@ -87,7 +87,9 @@ To optionally set the URL to the web application, type:
 .RS 0
 .nf
 Bassel Safadi               Lead Developer/Programmer
-Jon Phillips                Project Manager
+Jon Phillips                Project Manager/Developer
+Christopher Adams           Developer
+Barry Threw                 Developer
 Michi Krnac                 Developer
 Ronaldo Barbachano          Developer
 Vera Lobatcheva             Graphic Design
