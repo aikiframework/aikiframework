@@ -98,7 +98,7 @@ class membership
 	}
 
 	public function login ($username, $password){
-		global $db, $layout, $config;
+		global $db, $layout, $config, $aiki;
 
 		$password = stripslashes($password);
 		$password = md5(md5($password));
@@ -141,7 +141,7 @@ class membership
 			}
 
 		} else{
-			echo '<center><strong>Wrong username or password.</strong></center>';
+		    $aiki->message->error("Wrong username or password.", array("tag"=>"center"));
 		}
 
 	}
@@ -241,10 +241,11 @@ class membership
 					$password = md5(md5($_POST['password']));
 					$update = $db->query("update aiki_users set password = '$password' where randkey = '".$_POST['key']."'");
 
-					return "Your password has been reset. You can now log in to your account";
+					return $aiki->message->ok("Your password has been reset. You can now log in to your account.", NULL, false);
 				}else{
 
-					return "The two passwords do not match. Please try again. <br /> $form ";
+					$error_message = $aiki->message->error("The two passwords do not match. Please try again.", NULL, false);
+                    return $error_message . $form;
 				}
 
 
@@ -275,11 +276,11 @@ class membership
 		}
 
 		if (!$username){
-			return 'You must provide your username in order to reset your password';
+			return $aiki->message->warning('You must provide your username in order to reset your password.', NULL, false);
 		}
 
 		if (!$email){
-			return 'You must enter the email address you used to sign up for the account.';
+			return $aiki->message->warning('You must enter the email address you used to sign up for the account.', NULL, false);
 		}
 
 
@@ -290,10 +291,10 @@ class membership
 			$is_user = $db->get_var("select userid from aiki_users where username = '$username'");
 			if (!$is_user){
 
-				return "The user $username doesn't exist. Make sure you typed the name correctly.";
+				return $aiki->message->error("The user $username doesn't exist. Make sure you typed the name correctly.", NULL, false);
 			}else{
 
-				return "The email address and username do not match what we have on file.";
+				return $aiki->message->error("The email address and username do not match what we have on file.", NULL, false);
 			}
 
 		}else{
@@ -312,7 +313,7 @@ class membership
 			$config['url']."secure?key=".$randkey."</a>";
 
 			mail($email,$subject,$message,$headers);
-			return "An email had been sent to your address. Please follow the link to reset your password";
+			return $aiki->message->ok("An email has been sent to your address. Please follow the link to reset your password.", NULL, false);
 
 		}
 
@@ -320,7 +321,7 @@ class membership
 	}
 
 	public function LogOut(){
-		global $db;
+		global $db, $aiki;
 
 		if (isset($_SESSION['aikiuser'])){
 
@@ -331,10 +332,9 @@ class membership
 			session_destroy();
 			session_unset();
 
-			return "Logged out";
+            return $aiki->message->ok("Logged out.", NULL, false);
 		}else{
-
-			return "You are already logged out";
+            return $aiki->message->warning("You are already logged out.", NULL, false);
 		}
 
 	}
