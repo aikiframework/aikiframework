@@ -141,7 +141,7 @@ class membership
 			}
 
 		} else{
-		    $aiki->message->error("Wrong username or password.", array("tag"=>"center"));
+		    $aiki->message->error("Wrong username or password.", array("tag"=>"strong"));
 		}
 
 	}
