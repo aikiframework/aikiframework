@@ -18,30 +18,30 @@
  *
  * BriefDescription
  *
- * This small module wants to be an attempt to unify all outbound 
+ * This small module wants to be an attempt to unify all outbound
  * messages from the application. Provides a function called 'message'
- * charge of doing all the work, and a class called 'message' that 
+ * charge of doing all the work, and a class called 'message' that
  * can be added to object 'aiki'.
  *
  * No CSS is added except in two cases:
  * - object aiki don't exist ( a error in init process?)
  * - the user specifies the css (a practice whose use is not recommended)
- * For all other cases it is assumed there is a css file who definid the styles 
- * of messages. 
- * 
- * The module redefined three types of messages: 
- * error, warning, ok, that generate messages of the 
+ * For all other cases it is assumed there is a css file who definid the styles
+ * of messages.
+ *
+ * The module redefined three types of messages:
+ * error, warning, ok, that generate messages of the
  * class 'message-error', 'message-warning', 'message-ok', respectively.
  *
- * 
+ *
  * Examples:
  * if (!$site_info){
  *	die( message("Fatal Error: Wrong site name provided",NULL, false) );
- * 
+ *
  * $aiki->message->warning("No clipart's found");
  * $aiki->message->error("No file upload", array("class"=>"fatal")); class will be 'message-error fatal'
  * $aiki->message->general("Hi, Roger", array("id"=>"welcome"));
- * 
+ *
  */
 
 
@@ -51,7 +51,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * function message
  *
  * draft horse of module. Show o return a message.
- * 
+ *
  * @param $text : text to show. Will be translated if there is a
  *                 t (translate) function or is workin $aiki->languages
  * @param $attribs (optional=NULL): array of html atributes (id,class, style,onmouse)..
@@ -61,13 +61,13 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 function message($text,$attribs=NULL, $echo = true) {
         global $aiki;
-        
+
         if ( !isset($aiki) and !isset($attribs) ){
             // when there isn't aiki object and not attributes are provides, assumes error.
             $attribs['style']="background-color:#F8F8FF;color:#c00;font-weight:bold;padding:4px 6px;";
-        }    
-    
-        $tag  = ( isset($attribs["tag"]) ? $attribs["tag"] : "div"); 
+        }
+
+        $tag  = ( isset($attribs["tag"]) ? $attribs["tag"] : "div");
         $cRet = "<$tag";
         if (is_array($attribs)) {
            foreach ( $attribs as $k=>$v) {
@@ -79,40 +79,85 @@ function message($text,$attribs=NULL, $echo = true) {
         if ( function_exists("t")) {
            $text= t($text);
         } elseif ( isset( $aiki->languages) ){
-           $text= $aiki->languages->L10n($text);    
+           $text= $aiki->languages->L10n($text);
         }
         $cRet .= ">". $text. "</$tag>";
         if ( !$echo ) {
            return $cRet;
-        } 
-        echo $cRet;    
+        }
+        echo $cRet;
     }
 
 
 class message {
-                
+    private $stored;
+
+    function __construct(){
+        $this->stored=array();
+    }
+
+    function store($message, $key="", $add=true){
+        if ( $key==""){
+            $this->stored[]= $message;
+        } else {
+            $previuos = ( $add && isset($this->stored[$key])? $this->stored[$key] :"");
+            $this->stored[$key] = $previuos . $message;
+        }        
+    }
+
+    function unstore( $key="*", $echo = false, $clear= true){
+        $ret="";
+        if ( $key=="*" ) {
+           $ret= implode("\n",$this->stored);
+           if ( $clear) {
+               $this->stored= array();
+           }
+        } else {
+            if ( isset($this->stored[$key]) ) {
+                $ret= $this->stored[$key];
+                if ( $clear ){
+                   unset($this->stored[$key]);
+                }
+            }
+        }
+        if ($echo){
+           echo $ret;
+        }
+        return $ret;
+    }
+
+    //shortcuts for login error
+    function set_login_error($error){
+        $this->store( $this->error($error, array("id"=>"login-wrong-username"),false),"error-in-login");
+    }
+
+    function get_login_error(){
+        return $this->unstore( "error-in-login",false,false);
+    }
+
+
     private function Addclass ( $default, &$attribs ){
-        return $default . (isset($attribs['class']) ? " ". $attribs['class'] : "" ); 
+        return $default . (isset($attribs['class']) ? " ". $attribs['class'] : "" );
     }
 
     function error( $text, $attribs=NULL, $echo = true){
        $attribs['class']=  $this->addclass('message-error', $attribs );
        return message( $text,$attribs,$echo);
     }
-        
+
     function warning( $text, $attribs=NULL, $echo = true){
-       $attribs['class']=  $this->addclass('message-warning', $attribs );       
+       $attribs['class']=  $this->addclass('message-warning', $attribs );
        return message( $text,$attribs,$echo);
     }
-    
+
     function ok( $text, $attribs=NULL, $echo = true){
-       $attribs['class']=  $this->addclass('message-ok', $attribs );       
+       $attribs['class']=  $this->addclass('message-ok', $attribs );
        return message( $text,$attribs,$echo);
     }
-    
+
     function general($text,$attribs=NULL, $echo = true) {
-       $attribs['class']=  $this->addclass('message', $attribs );       
-       return message( $text,$attribs,$echo);        
+       $attribs['class']=  $this->addclass('message', $attribs );
+       return message( $text,$attribs,$echo);
     }
 
 }
