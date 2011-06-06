@@ -1,6 +1,6 @@
 # Process this file with automake to produce Makefile.in    -*-Makefile-*-
 
-# Copyright (C) 2010 Aikilab
+# Copyright (c) 2010-2011 Aiki Lab Pte Ltd
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as

@@ -2,7 +2,7 @@
  * Aiki framework
  *
  * @author		Aikilab http://www.aikilab.com
- * @copyright  (c) 2008-2010 Aikilab
+ * @copyright  (c) 2008-2011 Aiki Lab Pte Ltd
  * @license		http://www.fsf.org/licensing/licenses/agpl-3.0.html
  * @link		http://www.aikiframework.org
  */
