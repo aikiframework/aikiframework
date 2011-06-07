@@ -179,7 +179,7 @@ class message {
 
         switch ($glue){
             case "as array": return $this->stored[$key];
-            case "comented-list": return "<!-- ". implode(", ", $this->stored[$key]) ."-->";
+            case "comment-list": return "<!-- ". implode(", ", $this->stored[$key]) ."-->";
             case "li": return "<li>". implode("</li><li>", $this->stored[$key]) ."</li>";
             case "ol":
             case "ul": return "<$glue><li>". implode("</li><li>", $this->stored[$key]) ."</li></$glue>";
