@@ -70,8 +70,6 @@ switch ($mode){
 }
 
 
-//define('IN_AIKI', true);
-
 /**
  * @see aiki.php
  */

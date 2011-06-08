@@ -19,7 +19,7 @@
 
 error_reporting(0);
 
-require_once("../../../aiki.php");
+// require_once("../../../aiki.php"); Unnecesary
 
 
 function create_random_text(){
@@ -48,4 +48,3 @@ $_SESSION['captcha_key'] = md5($string);
 
 header("Content-type: image/png");
 imagepng($captcha);
-

@@ -21,12 +21,6 @@
 error_reporting(0);
 
 /**
- * Used to test for script access
- * @ignore
- */
-define('IN_AIKI', true);
-
-/**
  * @see aiki.php
  */
 require_once("../../../aiki.php");

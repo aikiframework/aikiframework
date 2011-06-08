@@ -22,15 +22,11 @@ error_reporting(0);
 header('Content-type: text/xml');
 
 /**
- * Used to test for script access
- */
-define('IN_AIKI', true);
-
-/**
  * @see aiki.php
  */
-require_once("../../../aiki.php");
 
+
+require_once("../../../aiki.php");
 
 if ($membership->permissions != "SystemGOD"){
 	die("You do not have permissions to access this file");
