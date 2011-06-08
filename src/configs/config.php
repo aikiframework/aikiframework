@@ -54,7 +54,7 @@ $config["db_dsn"] = "";
 $config["db_cache_timeout"] = 24;
 
 // db caching directory
-$config["cache_dir"] = "";
+$config["cache_dir"] = "cache";
 
 // if set to true will cache the results of sql queries to files
 $config["enable_query_cache"] = false;
