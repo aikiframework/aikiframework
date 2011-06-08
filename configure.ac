@@ -23,7 +23,10 @@ AC_PREREQ(2.59)
 
 # Parse the package version as defined in the source code
 m4_define([pkgversion],
-  [m4_esyscmd(printf %s $(sed -n 's/.*define.\+AIKI_VERSION[[^0-9]]\+\([[0-9.]]\+\)[[^0-9]]\+/\1/p' src/aiki.php))])
+  [m4_esyscmd(printf %s $(grep 'define.\+AIKI_VERSION' src/aiki.php \
+                         | sed 's/.*,[[^0-9]]\+\([[0-9.]]\+\).*/\1/'))])
+
+#  [m4_esyscmd(printf %s $(sed -n 's/.*define.\+AIKI_VERSION[[^0-9]]\+\([[0-9.]]\+\)[[^0-9]]\+/\1/p' src/aiki.php))])
 
 # Initialize autoconf, set the name of this package and version
 AC_INIT([aiki], [pkgversion], [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
