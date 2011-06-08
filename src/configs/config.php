@@ -121,6 +121,9 @@ $config["error_404"] = "<h1>404 Page Not Found</h1>
 <p>This page is not found</p>
 <p>Please visit <a href=\"".AIKI_SITE_URL."\">Home page</a> so you may find what you are looking for.</p>"; 
 
+// the default site URL
+$config["url"] = AIKI_SITE_URL;
+
 // show admin widgets or not?
 $config['admin_widgets_display'] = false;
  
