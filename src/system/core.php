@@ -28,39 +28,42 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class aiki
 {
 
-	/**
-	 * Loads an aiki library.
-	 *
-	 * @param   string class name
-	 * @return  mixed
-	 */
-	public function load($class){
-		global $system_folder;
+    /**
+     * Loads an aiki library. Attempts to load from class first *.php, then 
+     * tries to load *.php from extensions.
+     *
+     * @param   string class name
+     * @return  mixed
+     */
+    public function load($class) {
+        global $system_folder;
 
-		if (isset($this->$class)){
-			return $this->$class;
-		}
+        if (isset($this->$class))
+            return $this->$class;
 
-		if (file_exists($system_folder.'/system/libraries/'.$class.'.php')){
 
-			require_once($system_folder.'/system/libraries/'.$class.'.php');
+        if (file_exists($system_folder.'/system/libraries/'.$class.'.php'))
+        {
+            require_once($system_folder.'/system/libraries/'.$class.'.php');
+        }
+        elseif(file_exists($system_folder.'/assets/extensions/'.$class.'.php'))
+        {
+            require_once($system_folder.'/assets/extensions/'.$class.'.php');
+        } 
+        elseif(file_exists(
+                $system_folder.'/assets/extensions/'.$class.'/'.$class.'.php'))
+        {
+            require_once(
+                $system_folder.'/assets/extensions/'.$class.'/'.$class.'.php');
+        } 
+        else {
+            return false;
+        }
 
-		}elseif(file_exists($system_folder.'/assets/extensions/'.$class.'.php')){
-
-			require_once($system_folder.'/assets/extensions/'.$class.'.php');
-
-		}else{
-
-			return false;
-
-		}
-
-		$object = new $class();
-
-		$this->$class = $object;
-			
-		return $object;
-	}
+        $object = new $class();
+        $this->$class = $object;
+        return $object;
+    }
 
 	/**
 	 * Get configrution items stored in the database
@@ -103,94 +106,100 @@ class aiki
 		return $config;
 	}
 
-	/**
-	 * Get a String that is between two delimiters.
-	 *
-	 * @param  string   the full string
-	 * @param  string   first delimiter
-	 * @param  string   second delimiter
-	 * @return  string
-	 */
-	public function get_string_between($string, $start, $end){
-		$ini = strpos($string,$start);
-		if ($ini ===false) return "";
-		$ini += strlen($start);
-		$len = strpos($string,$end,$ini) - $ini;
-		return substr($string,$ini,$len);
-	}
+    /**
+     * Get a String that is between two delimiters.
+     *
+     * @param  string   the full string
+     * @param  string   first delimiter
+     * @param  string   second delimiter
+     * @return  string
+     */
+    public function get_string_between($string, $start, $end) {
+        $ini = strpos($string,$start);
+        if ($ini ===false) return "";
+        $ini += strlen($start);
+        $len = strpos($string,$end,$ini) - $ini;
+        return substr($string,$ini,$len);
+    }
 
 
-	/**
-	 *  Works with HTML special chars. and few other special chars that PHP does not normally convert.
-	 *
-	 * @param   string   text
-	 * @return  string
-	 */
-	public function convert_to_specialchars($text){
+    /**
+     * Works with HTML special characters and few other special characters 
+     * that PHP does not normally convert.
+     *
+     * @param   string   text
+     * @return  string
+     */
+    public function convert_to_specialchars($text) {
 
-		$text = htmlspecialchars($text);
+        $text = htmlspecialchars($text);
 
-		$html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">", "_");
-		$html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;", "&#95;");
+        $html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">", "_");
+        $html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;", "&#95;");
 
-		$text = str_replace($html_chars, $html_entities,$text);
+        $text = str_replace($html_chars, $html_entities,$text);
 
-		return $text;
-	}
-
-
-	public function convert_to_html($text){
-
-		return $text;
-	}
+        return $text;
+    }
 
 
-	/**
-	 * Replace Aiki vars with their assigned values.
-	 * Use normal urls if mod_rewrite is not enabled.
-	 *
-	 * @param  string   text before processing
-	 * @return  string
-	 */
-	public function processVars($text){
-		global $aiki, $page, $membership, $config, $languages, $site_info;
+    /**
+     * This just returns the same output.
+     * 
+     * @todo     This utility function does nothing!
+     * @param    string    text
+     * @return   string
+     */
+    public function convert_to_html($text) {
+        return $text;
+    }
 
-		//TODO: add this to config
-		date_default_timezone_set("America/Los_Angeles"); 
-		
-		$current_month = date("n");
-		$current_year = date("Y");
-		$current_day = date("j");
 
-		$aReplace = array (
-		"[userid]"      => $membership->userid,
+    /**
+     * Replace Aiki vars with their assigned values.
+     * Use normal urls if mod_rewrite is not enabled.
+     *
+     * @param  string   text before processing
+     * @return  string
+     */
+    public function processVars($text) {
+        global $aiki, $page, $membership, $config, $languages, $site_info;
+
+        //@TODO: add this to config
+        date_default_timezone_set("America/Los_Angeles"); 
+        
+        $current_month = date("n");
+        $current_year = date("Y");
+        $current_day = date("j");
+
+        $aReplace = array (
+        "[userid]"      => $membership->userid,
         "[full_name]" => $membership->full_name,
         "[language]" => $languages->language,
-		"[username]" => $membership->username,
-		"[page]" => $page,
-		"[site_name]" => $site_info->site_name,
-		"[site]" => $config['site'],
-		"[direction]" => $languages->dir,
-		"insertedby_username" => $membership->username,
-		"insertedby_userid" => $membership->userid,
-		"current_month" => $current_month,
-		"current_year" => $current_year,
-		"current_day" => $current_day
-		);
+        "[username]" => $membership->username,
+        "[page]" => $page,
+        "[site_name]" => $site_info->site_name,
+        "[site]" => $config['site'],
+        "[direction]" => $languages->dir,
+        "insertedby_username" => $membership->username,
+        "insertedby_userid" => $membership->userid,
+        "current_month" => $current_month,
+        "current_year" => $current_year,
+        "current_day" => $current_day
+        );
 
-		$text= strtr ( $text, $aReplace );
+        $text= strtr ( $text, $aReplace );
 
-		if ($config['pretty_urls'] == 0){
-			$text = preg_replace('/href\=\"\[root\](.*)\"/U', 'href="[root]?pretty=\\1"', $text);
-			$text = str_replace('[root]', $config['url'], $text);
-			$text = str_replace('=/', '=', $text);
-		}else{
-			$text = str_replace('[root]', $config['url'], $text);
-		}
+        if ($config['pretty_urls'] == 0){
+            $text = preg_replace('/href\=\"\[root\](.*)\"/U', 'href="[root]?pretty=\\1"', $text);
+            $text = str_replace('[root]', $config['url'], $text);
+            $text = str_replace('=/', '=', $text);
+        }else{
+            $text = str_replace('[root]', $config['url'], $text);
+        }
 
-		$text = str_replace($config['url'].'/', $config['url'], $text);
+        $text = str_replace($config['url'].'/', $config['url'], $text);
 
-		return $text;
-	}
-
+        return $text;
+    }
 }
