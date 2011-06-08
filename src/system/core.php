@@ -65,8 +65,9 @@ class aiki
         return $object;
     }
 
+
 	/**
-	 * Get configrution items stored in the database
+	 * Get configuration items stored in the database
 	 * and append those items which are NOT set in
 	 * the configuration file. The configuration file
 	 * items take precedence and should NOT be overwriten.
@@ -76,33 +77,32 @@ class aiki
 	 */
 	public function get_config($config) {
 		global $db;
-		
+
 		// get an array of all the existing keys in the config array
 		$preserve_keys = array_keys($config);
-    
+
 		// get the config data stored in the database
 		$settings = $db->get_results("SELECT config_data FROM aiki_config");
-		
-		// go through every config record
-		// if the config item is not already set then use the database record
-		foreach($settings as $setting_group) {
-			
-			// unserialize array key => value pairs stored in this config group
-			// every row should be an array of config items pertaining to a 
-			// config group
-			$temp = @unserialize($setting_group->config_data);
-			
-			if (is_array($temp)){
 
-				// remove/unset all the duplicate config elements we want 
-				// to preserve
+		// go through every config record. if the config item
+		// is not already set then use the database record
+		foreach($settings as $setting_group) {
+
+			// unserialize array key => value pairs stored
+			// in this config group. Every row should be an array
+			// of config items pertaining to a config group
+			$temp = @unserialize($setting_group->config_data);
+
+			if (is_array($temp)) {
+
+				// remove/unset all the duplicate config
+				// elements we want to preserve
 				foreach ($preserve_keys as $duplicate) {
 					unset($temp[$duplicate]);
 				}
 
-				// merging the arrays overwrites the first parameter/array
-				// with the values of the second parameter/array when the 
-				// keys match
+				// merging the arrays overwrites the first parameter/array with
+				// the values of the second parameter/array when the keys match
 				$config = array_merge($config, $temp);
 			}
 		}
