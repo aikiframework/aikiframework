@@ -130,4 +130,16 @@ $config['admin_widgets_display'] = false;
 // enable debugging
 $config["debug"] = false;
 
+// set the aiki log directory
+$config["log_dir"] = AIKI_LOG_DIR;
+
+// set the aiki log file name
+$config["log_file"] = AIKI_LOG_FILE;
+
+// set the aiki host profile name
+$config["log_profile"] = AIKI_LOG_PROFILE;
+
+// set the aiki log level
+$config["log_level"] = AIKI_LOG_LEVEL;
+
 ?>

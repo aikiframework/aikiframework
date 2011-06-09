@@ -16,8 +16,14 @@
  * @package     Aiki
  * @version     @VERSION@.@REVISION@
  * @filesource
+ * 
+ * IMPORTANT
+ * 
+ * The values for the define statements in this file are generated
+ * automatically when the autoconf configure script is executed.
+ * These are ment to be used as the default configuration. Please,
+ * be aware that the configuration is expected change during run-time.
  */
-
 
 /**
  * Aiki Framework Version
@@ -64,3 +70,19 @@ define("AIKI_SITE_URL", "@AIKI_SITE_URL@");
  * Aiki Rewrite Base (for htaccess)
  */
 define("AIKI_REWRITE_BASE", "@AIKI_REWRITE_BASE@");
+/**
+ * Aiki Log Directory
+ */
+define("AIKI_LOG_DIR", "@AIKI_LOG_DIR@");
+/**
+ * Aiki Log File Name
+ */
+define("AIKI_LOG_FILE", "@AIKI_LOG_FILE@");
+/**
+ * Aiki Host Profile File Name
+ */
+define("AIKI_LOG_PROFILE", "@AIKI_LOG_PROFILE@");
+/**
+ * Aiki Log Level
+ */
+define("AIKI_LOG_LEVEL", "@AIKI_LOG_LEVEL@");

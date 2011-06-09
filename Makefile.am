@@ -177,6 +177,9 @@ endif
 
 # Additional things to do on install
 install-data-hook : install-desktop
+	@$(MKDIR) -p $(DESTDIR)$(AIKI_LOG_DIR)
+	@$(CHMOD) 0700 $(DESTDIR)$(AIKI_LOG_DIR) 
+	@$(CHOWN) $(HTTPD_USER):$(HTTPD_USER) $(DESTDIR)$(AIKI_LOG_DIR)
 	@for d in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
 	@for d in $$($(FIND) $(DESTDIR)$(pkgdatadir) -type d); do $(CHMOD) 0755 $$d; done
@@ -192,8 +195,11 @@ install-data-hook : install-desktop
 
 # Additional things to do on uninstall
 uninstall-hook :
+	@$(RM) -f $(DESTDIR)$(AIKI_LOG_DIR)/*
 	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
 	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/config.php
+	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(AIKI_LOG_DIR) -type f)"; then \
+	$(RM) -rf $(DESTDIR)$(AIKI_LOG_DIR); fi
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(pkgdatadir) -type f)"; then \
 	$(RM) -rf $(DESTDIR)$(pkgdatadir); fi
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(docdir)-$(VERSION) -type f)"; then \

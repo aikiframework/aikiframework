@@ -330,23 +330,52 @@ if $TEST -z $HTTPD_CONF_DIR; then
 fi
 VAR_LIST_ADD HTTPD_CONF_DIR $HTTPD_CONF_DIR
 
+AC_ARG_VAR(HTTPD_USER,[Set the HTTPD user. You may specify a numeric user ID \
+as well. On Debian-based systems, Apache runs as the user www-data. In some \
+configurations the user may be set to nobody. Yet in others, the user may \
+be set to your own user ID. This may be found in the Apache conifiguration \
+file as: User apache and Group apache. This will be used by this package for \
+read/write access to files and directories [default: HTTPD_USER=apache]])
+if $TEST -z $HTTPD_USER; then AC_SUBST(HTTPD_USER,[apache])
+fi
+VAR_LIST_ADD HTTPD_USER $HTTPD_USER
+
 AC_ARG_VAR(AIKI_LOGIN_URL,[Set the login URL [default: AIKI_LOGIN_URL=http://$DOMAIN/$PACKAGE/login]])
 if $TEST -z $AIKI_LOGIN_URL; then AC_SUBST(AIKI_LOGIN_URL,[http://$DOMAIN/$PACKAGE/login])
 fi
 VAR_LIST_ADD AIKI_LOGIN_URL $AIKI_LOGIN_URL
-
 
 AC_ARG_VAR(AIKI_REWRITE_BASE,[Set the rewrite-base [default: AIKI_REWRITE_BASE=/$PACKAGE]])
 if $TEST -z $AIKI_REWRITE_BASE; then AC_SUBST(AIKI_REWRITE_BASE,[/$PACKAGE])
 fi
 VAR_LIST_ADD AIKI_REWRITE_BASE $AIKI_REWRITE_BASE
 
-
 AC_ARG_VAR(AIKI_SITE_URL,[Set the site URL [default: AIKI_SITE_URL=http://$DOMAIN/$PACKAGE/]])
 if $TEST -z $AIKI_SITE_URL; then AC_SUBST(AIKI_SITE_URL,[http://$DOMAIN/$PACKAGE/])
 fi
 VAR_LIST_ADD AIKI_SITE_URL $AIKI_SITE_URL
 
+AC_ARG_VAR(AIKI_LOG_DIR,[Set the log directory [default: AIKI_LOG_DIR=/var/log/$PACKAGE]])
+if $TEST -z $AIKI_LOG_DIR; then AC_SUBST(AIKI_LOG_DIR,[/var/log/$PACKAGE])
+fi
+VAR_LIST_ADD AIKI_LOG_DIR $AIKI_LOG_DIR
+
+AC_ARG_VAR(AIKI_LOG_FILE,[Set the log file name [default: AIKI_LOG_FILE=$PACKAGE.log]])
+if $TEST -z $AIKI_LOG_FILE; then AC_SUBST(AIKI_LOG_FILE,[$PACKAGE.log])
+fi
+VAR_LIST_ADD AIKI_LOG_FILE $AIKI_LOG_FILE
+
+AC_ARG_VAR(AIKI_LOG_PROFILE,[Set the host profile log name \
+[default: AIKI_LOG_PROFILE=profile.log]])
+if $TEST -z $AIKI_LOG_PROFILE; then AC_SUBST(AIKI_LOG_PROFILE,[profile.log])
+fi
+VAR_LIST_ADD AIKI_LOG_PROFILE $AIKI_LOG_PROFILE
+
+AC_ARG_VAR(AIKI_LOG_LEVEL,[Set the log level where valid values are: NONE, \
+ERROR, WARN, INFO and DEBUG [default: AIKI_LOG_LEVEL=ERROR]])
+if $TEST -z $AIKI_LOG_LEVEL; then AC_SUBST(AIKI_LOG_LEVEL,[ERROR])
+fi
+VAR_LIST_ADD AIKI_LOG_LEVEL $AIKI_LOG_LEVEL
 
 # use eval to force variable substitution/expansion
 PKG_DATA_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/$PACKAGE)
