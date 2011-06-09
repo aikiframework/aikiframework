@@ -17,9 +17,18 @@
  * @filesource
  */
 
-error_reporting(0);
+if ( isset($_GET["debug"]) && $_GET["debug"] && $_GET["debug"]!="off" ) {
+    error_reporting(E_ALL);
+} else {
+    error_reporting(0);
+}    
 
-// require_once("../../../aiki.php"); Unnecesary
+
+session_start();  
+/* captcha stores displayed text (encrypted by md5) in session variable,
+ * so session must start.
+ * Aiki $config["allow_guest_sessions"] is ignored.
+ */
 
 
 function create_random_text(){
