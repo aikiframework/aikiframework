@@ -36,6 +36,7 @@ $html_cache_file = $aiki->output->from_cache();
 require_once ("system/widgets.php");
 $layout = new CreateLayout();
 
+// @todo need to define these before use + integrate into @see widgets.php
 if (isset($global_widget)){
 	$noheaders = true;
 	$nogui = true;
@@ -144,3 +145,4 @@ if (isset($config["debug"]) and $config["debug"]){
 	echo "\n <!-- queries: ".$db->num_queries." -->\n";
 	echo "\n <!-- Time: ".$end_time." seconds -->";
 }
+?>
