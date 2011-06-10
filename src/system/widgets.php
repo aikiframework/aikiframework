@@ -49,7 +49,7 @@ class CreateLayout
 	public $widgets_css;
 
 	// Boolean: is the widget require custom output.
-	public $widget_custome_output;
+	public $widget_custom_output;
 
 	// Stores the head output of a widget.
 	public $head_output;
@@ -122,7 +122,7 @@ class CreateLayout
 
 
 	private function createWidget($widget_id, $widget_group=''){
-		global $db, $aiki,$url, $page, $site, $custome_output;
+		global $db, $aiki,$url, $page, $site, $custom_output;
 
 		if ($widget_group){
 
@@ -152,21 +152,21 @@ class CreateLayout
 					$this->widgets_css .= $widget->id.'_';
 				}
 
-				if ($widget->custome_output){
-					$custome_output = true;
-					$this->widget_custome_output = true;
+				if ($widget->custom_output){
+					$custom_output = true;
+					$this->widget_custom_output = true;
 				}
 
-				if ($widget->custome_header and $widget->custome_header != ''){
-					$custome_headers = explode("\n", $widget->custome_header);
-					foreach ($custome_headers as $custome_header){
-						if ($custome_header != ""){
-							header("$custome_header");
+				if ($widget->custom_header and $widget->custom_header != ''){
+					$custom_headers = explode("\n", $widget->custom_header);
+					foreach ($custom_headers as $custom_header){
+						if ($custom_header != ""){
+							header("$custom_header");
 						}
 					}
 				}
 
-				if (!$custome_output and $widget->widget_type and $widget->remove_container != 1){
+				if (!$custom_output and $widget->widget_type and $widget->remove_container != 1){
 					$this->widget_html .= "\n <!--start {$widget->widget_name}({$widget->id})--> \n";
 					$this->widget_html .= "<$widget->widget_type id=\"$widget->widget_name\"";
 					if ($widget->style_id){
@@ -209,7 +209,7 @@ class CreateLayout
 					}
 				}
 
-				if (!$custome_output and $widget->widget_type and $widget->remove_container != 1){
+				if (!$custom_output and $widget->widget_type and $widget->remove_container != 1){
 					$this->widget_html .= "\n</$widget->widget_type>\n";
 					$this->widget_html .= "\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
 				}
@@ -251,7 +251,7 @@ class CreateLayout
 
 
 	private function createWidgetContent($widget, $output_to_string='', $normal_select=''){
-		global $aiki, $db, $url, $membership, $nogui, $custome_output, $config;
+		global $aiki, $db, $url, $membership, $nogui, $custom_output, $config;
 
 		if (isset($_GET['page'])){
 			$page = addslashes($_GET['page']);
@@ -540,7 +540,7 @@ class CreateLayout
 					{
 
 
-						if (!$custome_output){
+						if (!$custom_output){
 							$widgetContents .= "\n<!-- The Beginning of a Record -->\n";
 						}
 						$widget->widget = $newwidget;
@@ -559,7 +559,7 @@ class CreateLayout
 
 
 						$widgetContents .= $widget->widget;
-						if (!$custome_output){
+						if (!$custom_output){
 							$widgetContents .= "\n<!-- The End of a Record -->\n";
 						}
 					}
@@ -731,7 +731,7 @@ class CreateLayout
 				}
 			}
 
-			if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1 and $widget->widget_target == 'body' and !preg_match("/admin/", $widget->display_urls) and $widget->custome_output == 0){
+			if ($membership->permissions == "SystemGOD" and $widget->widget and $config['show_edit_widgets'] == 1 and $widget->widget_target == 'body' and !preg_match("/admin/", $widget->display_urls) and $widget->custom_output == 0){
 				$processed_widget = $processed_widget."<a href='".$config['url']."admin_tools/edit/20/".$widget->id."' style='position: absolute; z-index: 100000; background: none repeat scroll 0% 0% rgb(204, 204, 204); padding: 3px; -moz-border-radius: 3px 3px 3px 3px; color: rgb(0, 0, 0);'>Edit Widget: ".$widget->widget_name."</a>";
 			}
 

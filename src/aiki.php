@@ -34,26 +34,31 @@ define('IN_AIKI', true);
  */
 $system_folder = realpath(dirname(__FILE__));
 
+// append to the include path while preserving existing entries
+set_include_path(
+    get_include_path() .
+    PATH_SEPARATOR .
+    "$system_folder" .
+    PATH_SEPARATOR .
+    "$system_folder/system");
+
 /** 
  * @todo these should be set in some class, and are scoped wrong
  */
 if (isset($_GET['nogui'])){ $nogui = true; }
 if (isset($_GET['noheaders'])){ $noheaders = true; }
-/**
- * @todo custome is spelled wrong, need to track down and remove
- */
-if (isset($_GET['custome_output'])){$custome_output = true;	$noheaders = true; }
+if (isset($_GET['custom_output'])){$custom_output = true;	$noheaders = true; }
 
 /**
  * @see aiki-defs.php
  */
-if (file_exists("$system_folder/configs/aiki-defs.php"))
-{
+if (file_exists("configs/aiki-defs.php")) {
 	/**
 	 * @see config.php
 	 */
-	require_once("$system_folder/configs/config.php");
-}else{
+	require_once("configs/config.php");
+}
+else {
 	/**
 	 * Aiki Framework Version
 	 * The number left or west of the dots indicates a MAJOR production type 
@@ -66,7 +71,7 @@ if (file_exists("$system_folder/configs/aiki-defs.php"))
 	 * When the MAJOR number is zero, this indicates an alpha or beta type 
      * release. Each number can, but should probably not exceed 99
 	 */
-	define('AIKI_VERSION','0.8.8');
+	define('AIKI_VERSION','0.8.9');
 }
 
 /**
@@ -81,16 +86,17 @@ if (file_exists("$system_folder/configs/aiki-defs.php"))
 if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
 {
 	/* use run-time installer logic */
-	if (file_exists("$system_folder/config.php")){
+	if (file_exists("config.php")) {
 		/**
 		 * @see config.php
 		 */
-		require_once("$system_folder/config.php");
-	}else{
+		require_once("config.php");
+	}
+	else {
 		/**
 		 * @see installer.php
 		 */
-		require("$system_folder/system/libraries/installer.php");
+		require("libraries/installer.php");
 		die();
 	}
 }
@@ -100,12 +106,12 @@ if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
  * 
  * @see index.php
  */
-require_once("$system_folder/system/database/index.php");
+require_once("database/index.php");
 
 /**
  * @see core.php
  */
-require_once ("$system_folder/system/core.php");
+require_once ("core.php");
 
 /**
  * Global creation of the aiki instance.

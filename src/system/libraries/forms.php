@@ -224,7 +224,7 @@ $("#new_record_form").ajaxForm(function() {
 					case "staticselect":
 
 						$form .= '<label for="'.$intwalker[0].'">'.$intwalker['1'].'</label>';
-						if (($intwalker[2] == "custome" or $intwalker[2] == "custom") and $intwalker[3]){
+						if (($intwalker[2] == "custom" or $intwalker[2] == "custom") and $intwalker[3]){
 							$form .= '<select name="'.$intwalker[0].'" dir="'; if (isset ($get_permission_and_man_info['3'])){$form .= $get_permission_and_man_info['3'];} $form .= '">';
 							$explodeStaticSelect = explode("&", $intwalker[3]);
 							foreach ($explodeStaticSelect as $option){

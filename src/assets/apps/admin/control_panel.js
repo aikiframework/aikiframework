@@ -208,8 +208,8 @@ function hide_advanced(){
 	$('.pagetitle').hide();
 	$('.remove_container').hide();
 	$('.widget_cache_timeout').hide();
-	$('.custome_output').hide();
-	$('.custome_header').hide();
+	$('.custom_output').hide();
+	$('.custom_header').hide();
 	$('.is_father').hide();
 	$('.father_widget').hide();
 	$('.display_urls').hide();
@@ -225,8 +225,8 @@ function show_advanced(){
 	$('.pagetitle').show();
 	$('.remove_container').show();
 	$('.widget_cache_timeout').show();
-	$('.custome_output').show();
-	$('.custome_header').show();
+	$('.custom_output').show();
+	$('.custom_header').show();
 	$('.is_father').show();
 	$('.father_widget').show();
 	$('.display_urls').show();
