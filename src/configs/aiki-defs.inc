@@ -86,3 +86,20 @@ define("AIKI_LOG_PROFILE", "@AIKI_LOG_PROFILE@");
  * Aiki Log Level
  */
 define("AIKI_LOG_LEVEL", "@AIKI_LOG_LEVEL@");
+
+// **** Begin non-generated constants **** //
+
+/* the following error related constants
+ * are built-in on newer versions of PHP */
+if (!defined("E_RECOVERABLE_ERROR")) {
+	/** Define E_RECOVERABLE_ERROR if not defined */
+    define("E_RECOVERABLE_ERROR", 4096);
+}
+if (!defined("E_DEPRECATED")) {
+    /** Define E_DEPRECATED if not defined */
+    define("E_DEPRECATED", 8192);
+}
+if (!defined("E_USER_DEPRECATED")) {
+    /** Define E_USER_DEPRECATED if not defined */
+    define("E_USER_DEPRECATED", 16384);
+}
