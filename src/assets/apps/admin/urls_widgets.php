@@ -28,6 +28,9 @@ header('Content-type: text/xml');
 
 require_once("../../../aiki.php");
 
+/**
+ * @see membership.php
+ */
 if ($membership->permissions != "SystemGOD"){
 	die("You do not have permissions to access this file");
 }

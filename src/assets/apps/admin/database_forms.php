@@ -35,7 +35,9 @@ if ($membership->permissions != "SystemGOD"){
 echo '<?xml version="1.0" encoding="UTF-8"?>
 <root>';
 
-
+/**
+ * @see /src/system/database/index.php
+ */
 $db->select($config['db_name']);
 
 

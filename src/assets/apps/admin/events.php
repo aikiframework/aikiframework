@@ -25,10 +25,17 @@ error_reporting(0);
  */
 require_once("../../../aiki.php");
 
+
+/**
+ * @see /src/system/libraries/membership.php
+ */
 if ($membership->permissions != "SystemGOD"){
 	die("You do not have permissions to access this file");
 }
 
+/**
+ * @see /src/system/database/index.php
+ */
 if (!isset($_GET['widget'])){
 
 	$current_events = $db->get_results("select * from aiki_events order by id DESC");

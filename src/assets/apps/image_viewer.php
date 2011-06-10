@@ -20,8 +20,16 @@
 error_reporting(0);
 //error_reporting(E_STRICT | E_ALL);
 
-
+/**
+ * @global string $id the name of the image
+ * @name $id
+ */
 $id = $_GET['id'];
+
+/**
+ * @global int $size grabs the size of the file
+ * @name $size
+ */
 $size = $_GET['size'];
 
 if (isset($_GET['mode'])){
@@ -30,14 +38,24 @@ if (isset($_GET['mode'])){
 	$mode = '';
 }
 
+/**
+ * @global string $ext isolates the extension of the filename
+ * @name $ext 
+ */
 $ext = substr($id, strrpos($id, '.') + 1);
 
+/**
+ * Converts extension to all lower case, to be read into switch case comparison
+ */
 $ext = strtolower($ext);
 
 if ($ext == "jpeg"){
 	$ext = "jpg";
 }
 
+/**
+ * Compares isolated file extension & generates appropriate content-type
+ */
 switch ($ext){
 	case "svg":
 		header('Content-Type: image/svg+xml');
@@ -57,6 +75,9 @@ switch ($ext){
 
 }
 
+/**
+ * Case to check if file is displayable, by default, or if additional processing is needed
+ */
 switch ($mode){
 	case "svg_to_png":
 		$ext = "svg";
@@ -75,16 +96,23 @@ switch ($mode){
  */
 require_once("../../aiki.php");
 
+/**
+ * @see image.php
+ */
 $aiki->load("image");
 
 
 $default_photo_module = $config['default_photo_module'];
 
-
+/**
+ * If a filename has been pulled, process it
+ */
 if ($id){
-
+	
 	if (!isset($hard_full_path)){
-		
+		/**
+		 * Ensure the extension is a displayable file type
+		 */
 		if (!preg_match('/jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG/i', $id)){
 
 			$image = $db->get_row("SELECT filename, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where id='$id'");
@@ -116,13 +144,21 @@ if ($id){
 		$hard_image = true;
 		
 	}
-
+	
+	/**
+	 * If a row has been pulled from the db describing an image, handle it
+	 */
 	if ($image){
-
+		/**
+		 * Begin constructing the URL
+		 */
 		$get_root = $system_folder."/";
-
+		
 		$original_filename = $get_root.$image->full_path.$id;
-
+		
+		/**
+		 * Sets default size, if no size specified
+		 */
 		if ($config['max_res'] and !$size){
 			$size = $config['max_res'];
 		}
@@ -131,6 +167,9 @@ if ($id){
 			$size = '';
 		}
 
+		/**
+		 * If file is svg, rename to png
+		 */
 		if ($ext == "svg"){
 
 			switch ($mode){

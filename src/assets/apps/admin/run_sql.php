@@ -25,10 +25,16 @@ error_reporting(0);
  */
 require_once("../../../aiki.php");
 
+/**
+ * Checks to ensure user has appropriate permissions
+ */
 if ($membership->permissions != "SystemGOD"){
 	die("You do not have permissions to access this file");
 }
 
+/**
+ * @see /src/system/database/index.php
+ */
 if (isset($_POST['sql_query'])){
 	$query = stripslashes($_POST['sql_query']);
 	if ($query){
