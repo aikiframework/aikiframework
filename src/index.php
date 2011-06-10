@@ -19,8 +19,18 @@
 
 error_reporting(E_STRICT | E_ALL);
 
+/**
+ * Starts the clock so we can measure loading time of the site
+ * @global float $start_time the start time
+ * @name $start_time
+ */
 $start_time = (float) array_sum(explode(' ',microtime()));
 
+/**
+ * Creates a container for the total generated public HTML to display in browser
+ * @global string $html_output the HTML
+ * @name $html_output
+ */
 $html_output = '';
 
 /**
@@ -28,6 +38,11 @@ $html_output = '';
  */
 require_once("aiki.php");
 
+/**
+ * Creates a container that holds cached data
+ * @global string $html_cache_file
+ * @name $html_cache_file
+ */
 $html_cache_file = $aiki->output->from_cache();
 
 /**
