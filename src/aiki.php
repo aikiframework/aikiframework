@@ -28,18 +28,24 @@
  */
 define('IN_AIKI', true);
 
-//try to determine the full-server path
+/**
+ * Determine the full-server path.
+ * @global string $system_folder
+ * @name $system_folder
+ */
 $system_folder = realpath(dirname(__FILE__));
 
-
+// @todo these should be set in some class, and are scoped wrong
 if (isset($_GET['nogui'])){ $nogui = true; }
 if (isset($_GET['noheaders'])){ $noheaders = true; }
+// @todo custome is spelled wrong, need to track down and remove
 if (isset($_GET['custome_output'])){$custome_output = true;	$noheaders = true; }
 
 /**
  * @see aiki-defs.php
  */
-if (file_exists("$system_folder/configs/aiki-defs.php")){
+if (file_exists("$system_folder/configs/aiki-defs.php"))
+{
 	/**
 	 * @see config.php
 	 */
@@ -47,13 +53,15 @@ if (file_exists("$system_folder/configs/aiki-defs.php")){
 }else{
 	/**
 	 * Aiki Framework Version
-	 * The number left or west of the dots indicates a MAJOR production type release.
-	 * The number in the middle of the dots indicates a significant change or MINOR changes.
+	 * The number left or west of the dots indicates a MAJOR production type 
+     * release.
+	 * The number in the middle of the dots indicates a significant change or 
+     * MINOR changes.
 	 * The number right or east of the dots indicates a bug FIX or small change.
 	 * When the MINOR number changes, the FIX number should reset to zero.
 	 * When the MAJOR number changes, the MINOR number should reset to zero.
-	 * When the MAJOR number is zero, this indicates an alpha or beta type release
-     * Each number can, but should probably not exceed 99
+	 * When the MAJOR number is zero, this indicates an alpha or beta type 
+     * release. Each number can, but should probably not exceed 99
 	 */
 	define('AIKI_VERSION','0.8.8');
 }
@@ -66,7 +74,8 @@ if (file_exists("$system_folder/configs/aiki-defs.php")){
  * When ENABLE_RUNTIME_INSTALLER is NOT defined or TRUE, we
  * use the run-time installer logic. Otherwise, we use the install-time logic.
  */
-if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE){
+if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
+{
 	/* use run-time installer logic */
 	if (file_exists("$system_folder/config.php")){
 		/**
@@ -92,25 +101,45 @@ require_once("$system_folder/system/database/index.php");
  */
 require_once ("$system_folder/system/core.php");
 
-
+/**
+ * Global creation of the aiki instance.
+ * @global aiki $aiki
+ * @name $aiki
+ */ 
 $aiki = new aiki();
 
+/**
+ * Get and store the configuration options.
+ * @global array $config
+ * @name $config
+ */ 
 $config = $aiki->get_config($config);
 
 $aiki->load("message");
+
+/**
+ * Load membership class for global use.
+ * @global membership $membership
+ * @name $membership
+ */ 
 $membership = $aiki->load("membership");
 
-
+// @todo: scoping is wrong here, need solution on these.
 if(isset($_GET['site'])){
 	$site=addslashes($_GET['site']);
 }else{
 	$site = $config['site'];
 }
 
-
+/**
+ * Get the site information for determining installer setup.
+ * @global array $site_info
+ * @name $site_info
+ */ 
 $site_info = $db->get_row("SELECT * from aiki_sites where site_shortcut='$site' limit 1");
 if (!$site_info)
 {
+    // @todo: this needs translation. Its a hardcoded string!
 	die("Fatal Error: Wrong site name provided. " .
 	  (( ENABLE_RUNTIME_INSTALLER == FALSE ) ?
            "ENABLE_RUNTIME_INSTALLER is set to FALSE." : ""));
@@ -119,7 +148,7 @@ if ($site_info and $site_info->is_active != 1){
 	die($site_info->if_closed_output);
 }
 
-
+// load rest of classes
 $aiki->load("text");
 $aiki->load("records");
 $aiki->load("input");
@@ -130,9 +159,24 @@ $aiki->load("security");
 $aiki->load("parser");
 $aiki->load("php");
 $aiki->load("sql_markup");
+/**
+ * Global language object for use at runtime.
+ * @global language $language
+ * @name $language
+ */ 
 $languages = $aiki->load("languages");
 $aiki->load("image");
 
+/**
+ * Global error object for use in runtime.
+ * @global errors $errors
+ * @name $errors
+ */ 
 $errors = $aiki->load("errors");
 
+/**
+ * Global object for handling urls.
+ * @global url $url 
+ * @name $url
+ */ 
 $url = $aiki->load("url");
