@@ -17,6 +17,10 @@
  * @filesource
  */
 
+/**
+ * File for outputting CSS for a rendered page.
+ */
+
 error_reporting(0);
 
 header('Content-type: text/css');
@@ -27,7 +31,14 @@ header('Content-type: text/css');
  */
 require_once("aiki.php");
 
+/**
+ * @global string $site
+ * @todo the site var looks useless here, should trace and remove
+ */
 $site = addslashes($_GET['site']);
+/**
+ * @global string $widgets
+ */
 $widgets = addslashes($_GET['widgets']);
 
 if (!$site){
@@ -43,6 +54,9 @@ if (isset($widgets) and $widgets != ''){
 	if ($get_widgets_css){
 		foreach ( $get_widgets_css as $widget_css )
 		{
+            /**
+             * @todo need to be able to disable all output, if not in debug
+             */
 			echo "\n/*Css for the widget $widgets - $widget_css->widget_name */\n";
 			echo stripcslashes($aiki->languages->L10n($widget_css->css));
 		}

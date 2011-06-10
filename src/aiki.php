@@ -31,14 +31,17 @@ define('IN_AIKI', true);
 /**
  * Determine the full-server path.
  * @global string $system_folder
- * @name $system_folder
  */
 $system_folder = realpath(dirname(__FILE__));
 
-// @todo these should be set in some class, and are scoped wrong
+/** 
+ * @todo these should be set in some class, and are scoped wrong
+ */
 if (isset($_GET['nogui'])){ $nogui = true; }
 if (isset($_GET['noheaders'])){ $noheaders = true; }
-// @todo custome is spelled wrong, need to track down and remove
+/**
+ * @todo custome is spelled wrong, need to track down and remove
+ */
 if (isset($_GET['custome_output'])){$custome_output = true;	$noheaders = true; }
 
 /**
@@ -66,10 +69,11 @@ if (file_exists("$system_folder/configs/aiki-defs.php"))
 	define('AIKI_VERSION','0.8.8');
 }
 
-/*
- * ENABLE_RUNTIME_INSTALLER is defined by aiki-defs.php and should be
- * used to test for an Automake installed config and database versus
- * a config and database which is created at run-time via a web page.
+/**
+ * ENABLE_RUNTIME_INSTALLER is defined by aiki-defs.php.
+ *
+ * It should be used to test for an Automake installed config and database 
+ * versus a config and database which is created at run-time via a web page.
  * Basically, config is install-time or run-time generated.
  * When ENABLE_RUNTIME_INSTALLER is NOT defined or TRUE, we
  * use the run-time installer logic. Otherwise, we use the install-time logic.
@@ -92,6 +96,8 @@ if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
 }
 
 /**
+ * Where $db is defined as a switch in this 3rd party library.
+ * 
  * @see index.php
  */
 require_once("$system_folder/system/database/index.php");
@@ -104,14 +110,12 @@ require_once ("$system_folder/system/core.php");
 /**
  * Global creation of the aiki instance.
  * @global aiki $aiki
- * @name $aiki
  */ 
 $aiki = new aiki();
 
 /**
  * Get and store the configuration options.
  * @global array $config
- * @name $config
  */ 
 $config = $aiki->get_config($config);
 
@@ -120,11 +124,13 @@ $aiki->load("message");
 /**
  * Load membership class for global use.
  * @global membership $membership
- * @name $membership
  */ 
 $membership = $aiki->load("membership");
 
-// @todo: scoping is wrong here, need solution on these.
+/**
+ * @todo: scoping is wrong here, need solution on these.
+ * @see aiki.php
+ */
 if(isset($_GET['site'])){
 	$site=addslashes($_GET['site']);
 }else{
@@ -134,12 +140,13 @@ if(isset($_GET['site'])){
 /**
  * Get the site information for determining installer setup.
  * @global array $site_info
- * @name $site_info
  */ 
 $site_info = $db->get_row("SELECT * from aiki_sites where site_shortcut='$site' limit 1");
 if (!$site_info)
 {
-    // @todo: this needs translation. Its a hardcoded string!
+    /** 
+     * @todo: this needs translation. Its a hardcoded string!
+     */
 	die("Fatal Error: Wrong site name provided. " .
 	  (( ENABLE_RUNTIME_INSTALLER == FALSE ) ?
            "ENABLE_RUNTIME_INSTALLER is set to FALSE." : ""));
@@ -162,7 +169,6 @@ $aiki->load("sql_markup");
 /**
  * Global language object for use at runtime.
  * @global language $language
- * @name $language
  */ 
 $languages = $aiki->load("languages");
 $aiki->load("image");
@@ -170,13 +176,11 @@ $aiki->load("image");
 /**
  * Global error object for use in runtime.
  * @global errors $errors
- * @name $errors
  */ 
 $errors = $aiki->load("errors");
 
 /**
  * Global object for handling urls.
  * @global url $url 
- * @name $url
  */ 
 $url = $aiki->load("url");

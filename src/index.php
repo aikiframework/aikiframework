@@ -22,14 +22,12 @@ error_reporting(E_STRICT | E_ALL);
 /**
  * Starts the clock so we can measure loading time of the site
  * @global float $start_time the start time
- * @name $start_time
  */
 $start_time = (float) array_sum(explode(' ',microtime()));
 
 /**
  * Creates a container for the total generated public HTML to display in browser
  * @global string $html_output the HTML
- * @name $html_output
  */
 $html_output = '';
 
@@ -41,7 +39,6 @@ require_once("aiki.php");
 /**
  * Creates a container that holds cached data
  * @global string $html_cache_file
- * @name $html_cache_file
  */
 $html_cache_file = $aiki->output->from_cache();
 
@@ -51,13 +48,17 @@ $html_cache_file = $aiki->output->from_cache();
 require_once ("system/widgets.php");
 $layout = new CreateLayout();
 
-// @todo need to define these before use + integrate into @see widgets.php
+/**
+ * @todo need to define these before use + integrate into @see widgets.php
+ */
 if (isset($global_widget)){
 	$noheaders = true;
 	$nogui = true;
 }
 
-
+/**
+ * @todo fix the misspelling
+ */
 if ($layout->widget_custome_output){
 	$noheaders = true;
 }
@@ -65,7 +66,6 @@ if ($layout->widget_custome_output){
 if (!isset($noheaders)){
 	$html_output = $aiki->output->write_headers();
 }
-
 
 
 if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
@@ -89,7 +89,9 @@ if (!isset($noheaders)){
 
 $html_output = $aiki->languages->L10n($html_output);
 
-//Tidy html using libtidy
+/**
+ * Tidy html using libtidy
+ */
 if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $config["html_tidy"]) {
 
 	$tidy = new tidy();
@@ -154,10 +156,12 @@ if ($config['html_cache'] and isset($html_cache_file)){
 	}
 }
 
+/**
+ * For ending the counter to see the page load time.
+ */
 if (isset($config["debug"]) and $config["debug"]){
 	$end = (float) array_sum(explode(' ',microtime()));
 	$end_time = sprintf("%.4f", ($end-$start_time));
 	echo "\n <!-- queries: ".$db->num_queries." -->\n";
 	echo "\n <!-- Time: ".$end_time." seconds -->";
 }
-?>

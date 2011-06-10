@@ -21,7 +21,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
 /**
- * BriefDescription
+ * This is used for generating and providing functions for outputting content.
  *
  * @category    Aiki
  * @package     Library
@@ -71,6 +71,14 @@ class output
 	}
 
 
+    /**
+     * This writes headers.
+     * @global aiki main object for manipulating configs and urls
+     * @global 
+     * @see aiki.php
+     * @return string
+     * @todo this is super nasty function that pulls in globals
+     */
 	public function write_headers(){
 		global $aiki, $db, $layout, $nogui, $site, $config;
 
