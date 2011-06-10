@@ -58,6 +58,9 @@ echo "Now try:
   && sudo make install"
 echo
 echo "Or try:
+HTTPD_CONF_DIR=/etc/httpd/conf.d ../configure"
+echo
+echo "For more details and help try:
   cd build \\
   && ../configure --help"
 echo

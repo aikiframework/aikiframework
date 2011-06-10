@@ -60,13 +60,11 @@ variablelist=
 # The first parameter is the name of the variable
 # The second parameter is the variable set by AC_CHECK_PROG()
 # Example: PROG_LIST_ADD DATE $DATE
-PROG_LIST_ADD()
-{
+PROG_LIST_ADD() {
   programlist="$programlist $1=$(echo $2 | sed s/" "//g)"
   fcheckslist="$fcheckslist $(echo $2 | sed s/" "//g)"
 }
-VAR_LIST_ADD()
-{
+VAR_LIST_ADD() {
   variablelist="$variablelist $1=$(echo $2 | sed s/" "//g)"
 }
 #### END PROG_LIST_ADD()
@@ -156,9 +154,24 @@ AC_CHECK_PROG(SHASUM,shasum,shasum,MISSING)
 PROG_LIST_ADD SHASUM $SHASUM
 #### END CHECKS FOR PROGRAMS
 
+## Use eval to force variable substitution/expansion
+# Parameter is the varible to expand
+# Returns the expanded variable as a string
+# Example: USER_PREFIX=$(EXPAND_VAR $prefix)
+EXPAND_VAR() {
+  $ECHO "$($EVAL $EVAL $EVAL $ECHO $1)"
+}
+
+# Set the default prefix if NONE is given
+USER_PREFIX=$(EXPAND_VAR $prefix)
+if $TEST "x$USER_PREFIX" == "xNONE" ; then
+  AC_SUBST(prefix,[/usr/local])
+fi
+
 ###################
 # Optional features
 ###################
+
 AC_ARG_ENABLE([runtime-installer],
   [AS_HELP_STRING([--enable-runtime-installer],
     [Enable runtime installer for configuration and database [default=no]])],
@@ -181,28 +194,28 @@ if $TEST "x$enable_desktop" == "xyes" ; then
 
   AC_ARG_VAR(PKG_MENU_DIR,[Set the desktop menu directory [default: PKG_MENU_DIR=$sysconfdir/xdg/menus/applications-merged]])
   if $TEST -z $PKG_MENU_DIR; then
-    PKG_MENU_DIR=$($EVAL $EVAL $EVAL $ECHO $sysconfdir/xdg/menus/applications-merged)
+    PKG_MENU_DIR=$(EXPAND_VAR $sysconfdir/xdg/menus/applications-merged)
     AC_SUBST(PKG_MENU_DIR,[$PKG_MENU_DIR])
   fi
   VAR_LIST_ADD PKG_MENU_DIR $PKG_MENU_DIR
 
   AC_ARG_VAR(PKG_DESKTOP_DIR,[Set the desktop desktop directory [default: PKG_DESKTOP_DIR=$datadir/desktop-directories]])
   if $TEST -z $PKG_DESKTOP_DIR; then
-    PKG_DESKTOP_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/desktop-directories)
+    PKG_DESKTOP_DIR=$(EXPAND_VAR $datadir/desktop-directories)
     AC_SUBST(PKG_DESKTOP_DIR,[$PKG_DESKTOP_DIR])
   fi
   VAR_LIST_ADD PKG_DESKTOP_DIR $PKG_DESKTOP_DIR
 
   AC_ARG_VAR(PKG_ENTRY_DIR,[Set the desktop entry directory [default: PKG_ENTRY_DIR=$datadir/applications]])
   if $TEST -z $PKG_ENTRY_DIR; then
-    PKG_ENTRY_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/applications)
+    PKG_ENTRY_DIR=$(EXPAND_VAR $datadir/applications)
     AC_SUBST(PKG_ENTRY_DIR,[$PKG_ENTRY_DIR])
   fi
   VAR_LIST_ADD PKG_ENTRY_DIR $PKG_ENTRY_DIR
 
   AC_ARG_VAR(PKG_ICON_DIR,[Set the icon directory [default: PKG_ICON_DIR=$datadir/icons/hicolor/scalable/apps]])
   if $TEST -z $PKG_ICON_DIR; then
-    PKG_ICON_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/icons/hicolor/scalable/apps)
+    PKG_ICON_DIR=$(EXPAND_VAR $datadir/icons/hicolor/scalable/apps)
     AC_SUBST(PKG_ICON_DIR,[$PKG_ICON_DIR])
   fi
   VAR_LIST_ADD PKG_ICON_DIR $PKG_ICON_DIR
@@ -325,7 +338,7 @@ VAR_LIST_ADD DOMAIN $DOMAIN
 
 AC_ARG_VAR(HTTPD_CONF_DIR,[Set the HTTPD configuration directory [default: HTTPD_CONF_DIR=$sysconfdir/httpd/conf.d]])
 if $TEST -z $HTTPD_CONF_DIR; then
-  HTTPD_CONF_DIR=$($EVAL $EVAL $EVAL $ECHO $sysconfdir/httpd/conf.d)
+  HTTPD_CONF_DIR=$(EXPAND_VAR $sysconfdir/httpd/conf.d)
   AC_SUBST(HTTPD_CONF_DIR,[$HTTPD_CONF_DIR])
 fi
 VAR_LIST_ADD HTTPD_CONF_DIR $HTTPD_CONF_DIR
@@ -355,8 +368,10 @@ if $TEST -z $AIKI_SITE_URL; then AC_SUBST(AIKI_SITE_URL,[http://$DOMAIN/$PACKAGE
 fi
 VAR_LIST_ADD AIKI_SITE_URL $AIKI_SITE_URL
 
-AC_ARG_VAR(AIKI_LOG_DIR,[Set the log directory [default: AIKI_LOG_DIR=/var/log/$PACKAGE]])
-if $TEST -z $AIKI_LOG_DIR; then AC_SUBST(AIKI_LOG_DIR,[/var/log/$PACKAGE])
+AC_ARG_VAR(AIKI_LOG_DIR,[Set the log directory [default: AIKI_LOG_DIR=$localstatedir/log/$PACKAGE]])
+if $TEST -z $AIKI_LOG_DIR; then
+  AIKI_LOG_DIR=$(EXPAND_VAR $localstatedir/log/$PACKAGE)
+  AC_SUBST(AIKI_LOG_DIR,[$AIKI_LOG_DIR])
 fi
 VAR_LIST_ADD AIKI_LOG_DIR $AIKI_LOG_DIR
 
@@ -378,7 +393,7 @@ fi
 VAR_LIST_ADD AIKI_LOG_LEVEL $AIKI_LOG_LEVEL
 
 # use eval to force variable substitution/expansion
-PKG_DATA_DIR=$($EVAL $EVAL $EVAL $ECHO $datadir/$PACKAGE)
+PKG_DATA_DIR=$(EXPAND_VAR $datadir/$PACKAGE)
 AC_SUBST(PKG_DATA_DIR,$PKG_DATA_DIR)
 VAR_LIST_ADD PKG_DATA_DIR $PKG_DATA_DIR
 
@@ -433,6 +448,7 @@ VAR_LIST_ADD docdir $docdir
 VAR_LIST_ADD datadir $datadir
 VAR_LIST_ADD datarootdir $datarootdir
 VAR_LIST_ADD sysconfdir $sysconfdir
+VAR_LIST_ADD localstatedir $localstatedir
 
 PRINT_CONFIG_SUMMARY()
 {
@@ -458,7 +474,7 @@ PRINT_CONFIG_SUMMARY()
   AC_MSG_NOTICE([VARIABLE INFO])
   AC_MSG_NOTICE([*************])
   for variable in $variablelist ; do
-    AC_MSG_NOTICE([$($EVAL $EVAL $EVAL $ECHO $variable)])
+    AC_MSG_NOTICE([$(EXPAND_VAR $variable)])
   done
   $ECHO
   # Checks for failed checks
