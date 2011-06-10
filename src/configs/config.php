@@ -69,13 +69,13 @@ $config["db_use_mysql_set_charset"] = false;
  * Set the full path for SQLite and sqlite PDO
  * @global string $config["db_path"] 
  */
-$config["db_path"] = "";
+$config["db_path"] = '';
 
 /**
  * sqlite PDO only
  * @global string $config["db_dsn"] 
  */
-$config["db_dsn"] = "";
+$config["db_dsn"] = '';
 
 /**
  * Set time out for deleting db cached queries - in hours
@@ -138,7 +138,7 @@ $config["widget_cache"] = false;
  * was true 
  * @global string $config["widget_cache_dir"] 
  */
-$config["widget_cache_dir"] = "";
+$config["widget_cache_dir"] = '';
 
 /** 
  * Enable caching of css
@@ -212,6 +212,13 @@ $config["error_404"] = "<h1>404 Page Not Found</h1>
 <p>Please visit <a href=\"".AIKI_SITE_URL."\">Home page</a> so you may find what you are looking for.</p>"; 
 
 /**
+ * Your default timezone. Before code had "America/Los_Angeles", should try
+ * defaults first. If one has set this, then it overrides the system.
+ * @global string $config["timezone"]
+ */
+$config["timezone"] = '';
+
+/**
  * The default site URL
  * @global string $config["url"] 
  */
@@ -219,9 +226,9 @@ $config["url"] = AIKI_SITE_URL;
 
 /**
  * Show admin widgets or not?
- * @global bool $config['admin_widgets_display'] 
+ * @global bool $config["admin_widgets_display"] 
  */
-$config['admin_widgets_display'] = false;
+$config["admin_widgets_display"] = false;
  
 /**
  * Enable debug mode

@@ -29,10 +29,13 @@ class aiki
 {
 
     /**
-     * Loads an aiki library. Attempts to load from class first *.php, then 
-     * tries to load *.php from extensions.
+     * Loads an aiki library.
+     * 
+     * Attempts to load from class first *.php, then tries to load *.php 
+     * from extensions, then finally  tries classname/classname.php.
      *
-     * @param   string class name
+     * @param   string $class name of class to be loaded
+     * @global  string $system_folder the system folder
      * @return  mixed
      */
     public function load($class) {
@@ -67,13 +70,16 @@ class aiki
 
 
 	/**
+     * Get configuration options for use.
+     *
 	 * Get configuration items stored in the database
 	 * and append those items which are NOT set in
 	 * the configuration file. The configuration file
 	 * items take precedence and should NOT be overwriten.
 	 *
-	 * @param array config The global configuration array
-	 * @return array config The global configuration array
+	 * @param array $config The global configuration array
+     * @global array $db The global database object
+	 * @return array     The global configuration array
 	 */
 	public function get_config($config) {
 		global $db;
@@ -112,10 +118,10 @@ class aiki
     /**
      * Get a String that is between two delimiters.
      *
-     * @param  string   the full string
-     * @param  string   first delimiter
-     * @param  string   second delimiter
-     * @return  string
+     * @param  string   $string  the full string
+     * @param  string   $start   first delimiter
+     * @param  string   $end     second delimiter
+     * @return string
      */
     public function get_string_between($string, $start, $end) {
         $ini = strpos($string,$start);
@@ -127,10 +133,12 @@ class aiki
 
 
     /**
+     * Converts text to special characters.
+     *
      * Works with HTML special characters and few other special characters 
      * that PHP does not normally convert.
      *
-     * @param   string   text
+     * @param   string   $text text to convert to special characters
      * @return  string
      */
     public function convert_to_specialchars($text) {
@@ -138,7 +146,8 @@ class aiki
         $text = htmlspecialchars($text);
 
         $html_chars = array(")", "(", "[", "]", "{", "|", "}", "<", ">", "_");
-        $html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", "&#124;", "&#125;", "&#60;", "&#62;", "&#95;");
+        $html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;", 
+                               "&#124;", "&#125;", "&#60;", "&#62;", "&#95;");
 
         $text = str_replace($html_chars, $html_entities,$text);
 
@@ -147,29 +156,28 @@ class aiki
 
 
     /**
-     * This just returns the same output.
-     * 
-     * @todo     This utility function does nothing!
-     * @param    string    text
-     * @return   string
-     */
-    public function convert_to_html($text) {
-        return $text;
-    }
-
-
-    /**
      * Replace Aiki vars with their assigned values.
+     *
      * Use normal urls if mod_rewrite is not enabled.
      *
-     * @param  string   text before processing
+     * @param  string   $text before processing
      * @return  string
+     * @todo this function is seriously overloaded and needs to be rethough
      */
     public function processVars($text) {
         global $aiki, $page, $membership, $config, $languages, $site_info;
 
-        //@TODO: add this to config
-        date_default_timezone_set("America/Los_Angeles"); 
+        /**
+         * @todo Setting variables really doesn't have a place in this function
+         */
+        if ( function_exists('date_default_timezone_set') and
+             function_exists('date_default_timezone_get') ) 
+        {
+            if ( isset($config['timezone']) and !empty($config['timezone']) )
+                date_default_timezone_set($config['timezone']); 
+            else
+                date_default_timezone_set(@date_default_timezone_get()); 
+        }
         
         $current_month = date("n");
         $current_year = date("Y");
