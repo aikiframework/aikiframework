@@ -43,10 +43,12 @@ DIST_SUBDIRS = \
 	rpm
 
 # Configure flags to pass to the distcheck build
-DISTCHECK_CONFIGURE_FLAGS =
+DISTCHECK_CONFIGURE_FLAGS = \
+	--disable-mysql-create
 
 # Configure flags to pass to the RPM build
-RPM_CONFIG =
+RPM_CONFIG = \
+	--disable-mysql-create
 
 # Additional files to distribute
 EXTRA_DIST = \
@@ -175,8 +177,17 @@ RPM_CONFIG += \
 install-desktop:
 endif
 
+if ENABLE_MYSQL_CREATE
 # Additional things to do on install
-install-data-hook : install-desktop
+install-mysql-aiki : install-mysql-user install-mysql-database
+uninstall-mysql-aiki : uninstall-mysql-user uninstall-mysql-database
+else
+install-mysql-aiki:
+uninstall-mysql-aiki:
+endif
+
+# Additional things to do on install
+install-data-hook : install-desktop install-mysql-aiki
 	@$(MKDIR) -p $(DESTDIR)$(AIKI_LOG_DIR)
 	@$(CHMOD) 0700 $(DESTDIR)$(AIKI_LOG_DIR) 
 	@$(CHOWN) $(HTTPD_USER):$(HTTPD_USER) $(DESTDIR)$(AIKI_LOG_DIR) &> /dev/null || :
@@ -194,7 +205,7 @@ install-data-hook : install-desktop
 	@/sbin/service httpd condrestart &> /dev/null || :
 
 # Additional things to do on uninstall
-uninstall-hook :
+uninstall-hook : uninstall-mysql-aiki
 	@$(RM) -f $(DESTDIR)$(AIKI_LOG_DIR)/*
 	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
 	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/config.php

@@ -71,7 +71,7 @@ else {
 	 * When the MAJOR number is zero, this indicates an alpha or beta type 
      * release. Each number can, but should probably not exceed 99
 	 */
-	define('AIKI_VERSION','0.8.10');
+	define('AIKI_VERSION','0.8.11');
 }
 
 /**

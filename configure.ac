@@ -185,6 +185,14 @@ fi
 AM_CONDITIONAL(ENABLE_RUNTIME_INSTALLER, $TEST x$enable_runtime_installer = xyes)
 featurelist="$featurelist ENABLE_RUNTIME_INSTALLER=$enable_runtime_installer"
 
+AC_ARG_ENABLE([mysql-create],
+  [AS_HELP_STRING([--enable-mysql-create],
+    [Enable creation/deletion of MySQL user and database during install/uninstall [default=yes]])],
+  [enable_mysql_create=$enableval],
+  [enable_mysql_create=yes])
+AM_CONDITIONAL(ENABLE_MYSQL_CREATE, $TEST x$enable_mysql_create = xyes)
+featurelist="$featurelist ENABLE_MYSQL_CREATE=$enable_mysql_create"
+
 AC_ARG_ENABLE([desktop],
   [AS_HELP_STRING([--enable-desktop],
     [Enable desktop entry in application launch menu [default=yes]])],

@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `aiki_flow` (
 -- ------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `apps_wiki_links` (
+  `id` int(11) NOT NULL auto_increment,
   `name` varchar(250) NOT NULL default '',
   `tagstart` varchar(250) NOT NULL default '',
   `tagend` varchar(250) NOT NULL default '',
@@ -95,8 +96,9 @@ CREATE TABLE IF NOT EXISTS `apps_wiki_links` (
   `namecolumn` varchar(250) NOT NULL default '',
   `idcolumn` varchar(250) NOT NULL default '',
   `extrasql` varchar(255) NOT NULL default '',
-  `is_extrasql_loop` int(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  `is_extrasql_loop` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=2;
 
 -- ------------------------------------------------------
 
@@ -114,10 +116,12 @@ CREATE TABLE IF NOT EXISTS `aiki_languages` (
 -- ------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `aiki_redirects` (
+  `id` int(11) NOT NULL auto_increment,
   `url` varchar(255) NOT NULL,
   `redirect` varchar(255) NOT NULL,
-  `hits` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `hits` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- ------------------------------------------------------
 
@@ -192,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `aiki_users_groups` (
   `group_permissions` varchar(255) NOT NULL,
   `group_level` int(11) NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 -- ------------------------------------------------------
 

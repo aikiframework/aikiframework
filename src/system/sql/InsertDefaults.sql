@@ -23,7 +23,7 @@
  * For more info see SQL_DELIMIT in system/libraries/installer.php.
  */
 
-INSERT INTO `aiki_dictionary` (`term_id`, `app_id`, `short_term`, `lang_english`, `lang_arabic`, `lang_german`, `lang_chinese`) VALUES
+INSERT IGNORE INTO `aiki_dictionary` (`term_id`, `app_id`, `short_term`, `lang_english`, `lang_arabic`, `lang_german`, `lang_chinese`) VALUES
 (1, 0, 'encoding', 'utf-8', 'utf-8', 'utf-8', ''),
 (2, 0, 'added_successfully', 'Added successfully', '', '', ''),
 (3, 0, 'error_inserting_into_database', 'Error inserting into database', '', '', ''),
@@ -66,7 +66,7 @@ INSERT INTO `aiki_dictionary` (`term_id`, `app_id`, `short_term`, `lang_english`
 
 -- ------------------------------------------------------
 
-INSERT INTO `aiki_forms` (`id`, `app_id`, `form_method`, `form_action`, `form_dir`, `form_table`, `form_name`, `form_array`, `form_html`, `form_query`) VALUES
+INSERT IGNORE INTO `aiki_forms` (`id`, `app_id`, `form_method`, `form_action`, `form_dir`, `form_table`, `form_name`, `form_array`, `form_html`, `form_query`) VALUES
 (1, 0, '', '', '', 'aiki_widgets', 'widgets_simple_editor', 'a:16:{s:9:"tablename";s:12:"aiki_widgets";s:4:"pkey";s:2:"id";s:10:"textinput2";s:26:"widget_name|SystemGOD:Name";s:7:"hidden3";s:47:"widget_site|SystemGOD:widget site:value:default";s:13:"staticselect4";s:62:"widget_target|SystemGOD:Target:custom:body>body&header>header";s:7:"hidden5";s:43:"widget_type|SystemGOD:widget type:value:div";s:13:"staticselect6";s:48:"is_father|SystemGOD:Is Father:custom:No>0&Yes>1";s:10:"selection7";s:123:"father_widget|SystemGOD:Father Widget:aiki_widgets:id:widget_name:where display_urls NOT RLIKE (admin) and is_father != (0)";s:10:"textinput8";s:36:"display_order|SystemGOD:Render Order";s:10:"textblock9";s:36:"display_urls|SystemGOD:Address (url)";s:11:"textblock10";s:36:"normal_select|SystemGOD:Select Query";s:11:"textblock11";s:24:"widget|SystemGOD:Content";s:11:"textblock12";s:17:"css|SystemGOD:CSS";s:11:"textinput13";s:42:"records_in_page|SystemGOD:Records per page";s:14:"staticselect14";s:45:"is_active|SystemGOD:Active:custom:Yes>1&No>0";s:6:"submit";s:3:"Add";}', '', ''),
 (4, 0, '', '', '', 'aiki_dictionary', 'aiki_dictionary', 'a:7:{s:9:"tablename";s:15:"aiki_dictionary";s:4:"pkey";s:7:"term_id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:31:"short_term|SystemGOD:short term";s:10:"textblock3";s:35:"lang_english|SystemGOD:lang english";s:10:"textblock4";s:33:"lang_arabic|SystemGOD:lang arabic";s:10:"textblock5";s:33:"lang_german|SystemGOD:lang german";}', '', ''),
 (6, 0, '', '', '', 'aiki_forms', 'aiki_forms', 'a:11:{s:9:"tablename";s:10:"aiki_forms";s:4:"pkey";s:2:"id";s:10:"textinput1";s:23:"app_id|SystemGOD:app id";s:10:"textinput2";s:33:"form_method|SystemGOD:form method";s:10:"textinput3";s:33:"form_action|SystemGOD:form action";s:10:"textinput4";s:27:"form_dir|SystemGOD:form dir";s:10:"textinput5";s:31:"form_table|SystemGOD:form table";s:10:"textinput6";s:29:"form_name|SystemGOD:form name";s:10:"textblock7";s:31:"form_array|SystemGOD:form array";s:10:"textblock8";s:29:"form_html|SystemGOD:form html";s:10:"textblock9";s:31:"form_query|SystemGOD:form query";}', '', ''),
@@ -79,12 +79,12 @@ INSERT INTO `aiki_forms` (`id`, `app_id`, `form_method`, `form_action`, `form_di
 
 -- ------------------------------------------------------
 
-INSERT INTO `apps_wiki_links` (`name`, `tagstart`, `tagend`, `parlset`, `linkexample`, `dbtable`, `namecolumn`, `idcolumn`, `extrasql`, `is_extrasql_loop`) VALUES
-('wikilinks', '(+(', ')+)', '', 'wiki', 'apps_wiki_text', 'title', 'id', '', 0);
+INSERT IGNORE INTO `apps_wiki_links` (`id`, `name`, `tagstart`, `tagend`, `parlset`, `linkexample`, `dbtable`, `namecolumn`, `idcolumn`, `extrasql`, `is_extrasql_loop`) VALUES
+(1, 'wikilinks', '(+(', ')+)', '', 'wiki', 'apps_wiki_text', 'title', 'id', '', 0);
 
 -- ------------------------------------------------------
 
-INSERT INTO `aiki_languages` (`id`, `name`, `sys_name`, `short_name`, `dir`, `align`, `is_default`) VALUES
+INSERT IGNORE INTO `aiki_languages` (`id`, `name`, `sys_name`, `short_name`, `dir`, `align`, `is_default`) VALUES
 (1, 'Arabic', 'arabic', 'ar', 'rtl', 'right', 0),
 (2, 'English', 'english', 'en', 'ltr', 'left', 1),
 (3, 'German', 'german', 'de', 'ltr', 'left', 0),
@@ -92,12 +92,12 @@ INSERT INTO `aiki_languages` (`id`, `name`, `sys_name`, `short_name`, `dir`, `al
 
 -- ------------------------------------------------------
 
-INSERT INTO `aiki_sites` (`site_id`, `site_name`, `site_shortcut`, `is_active`, `if_closed_output`) VALUES
+INSERT IGNORE INTO `aiki_sites` (`site_id`, `site_name`, `site_shortcut`, `is_active`, `if_closed_output`) VALUES
 (1, 'default', 'default', 1, '');
 
 -- ------------------------------------------------------
 
-INSERT INTO `aiki_users_groups` (`id`, `app_id`, `name`, `group_permissions`, `group_level`) VALUES
+INSERT IGNORE INTO `aiki_users_groups` (`id`, `app_id`, `name`, `group_permissions`, `group_level`) VALUES
 (1, 0, 'System Administrators', 'SystemGOD', 1),
 (2, 0, 'Modules Administrators', 'ModulesGOD', 2),
 (3, 0, 'Guests', 'ViewPublished', 100),
