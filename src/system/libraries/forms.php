@@ -80,7 +80,7 @@ $("#new_record_form").ajaxForm(function() {
 
 							$form_output .= $aiki->records->insert_from_form_to_db($serial_post,$form->id,'POST[form_id]');
 
-							$form_output .= $this->create_insert_form( &$form, $form_array);
+							$form_output .= $this->create_insert_form($form, $form_array);
 
 							break;
 
@@ -90,7 +90,7 @@ $("#new_record_form").ajaxForm(function() {
 
 							$form_output = $aiki->records->edit_db_record_by_form_post($serial_post, $form->id, $form_sides[2]);
 
-							$form_output .= $this->create_update_form( &$form, $form_array, $form_sides[2]);
+							$form_output .= $this->create_update_form($form, $form_array, $form_sides[2]);
 
 							break;
 
@@ -542,7 +542,7 @@ $(function() {
 
 	}
 
-	public function create_insert_form($form, $form_array ){
+	public function create_insert_form(&$form, $form_array ){
 		global $db, $aiki, $membership;
 
 		$formOutput = '';
@@ -565,7 +565,7 @@ $(function() {
 
 	}
 
-	public function create_update_form($form, $form_array, $record_id){
+	public function create_update_form(&$form, $form_array, $record_id){
 		global $aiki;
 
 		$formOutput = '';
