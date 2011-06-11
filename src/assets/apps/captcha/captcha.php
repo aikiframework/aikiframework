@@ -25,21 +25,21 @@ if ( isset($_GET["debug"]) && $_GET["debug"] && $_GET["debug"]!="off" ) {
 
 
 session_start();  
-/* captcha stores displayed text (encrypted by md5) in session variable,
+
+/**
+ * captcha stores displayed text (encrypted by md5) in session variable,
  * so session must start.
  * Aiki $config["allow_guest_sessions"] is ignored.
+ * @return string $string
  */
-
-
-function create_random_text(){
-
+function create_random_text()
+{
 	$md5 = md5(microtime() * mktime());
 	$randnumber = rand(2, 6);
 	$string = substr($md5,$randnumber,6);
 
 	return $string;
 }
-
 
 $string = create_random_text();
 
