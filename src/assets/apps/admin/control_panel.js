@@ -598,6 +598,28 @@ function widget_accordion(){
 
 }
 
+/**
+ * This gets called when the log button is clicked.
+ * Displays the log view interface.
+ * 
+ * @return void
+ */
+function log_view() {
+	$("<div id='log-content' title='Log Viewer'></div>").appendTo("#header");
+	$("#log-content").load("assets/apps/admin/log_view.php");
+	$("#log-content").dialog({width: 800, height: 600, autoOpen: false});
+	$("#log-content").dialog('open');
+    
+	var refreshId = setInterval(function(){
+		if ($("#log-content").dialog( "isOpen" )){
+			$("#log-content").load("assets/apps/admin/log_view.php");
+		}
+	}, 5000);
+}
+
+/**
+ * Executes when the DOM is fully loaded. This is basically
+ * the main entry point to the JS control panel. */
 $().ready(function() {
 	$("#dialog").dialog({ autoOpen: false });
 	$("#aiki-icon-button").click(function(){
@@ -641,13 +663,20 @@ $().ready(function() {
 		   urls_widgets_tree();
 	   });	   
 	   
-	   
 	   $("#remove").live('click', function(event){
 		   
 		   $(this).parent().remove();
 		   
 		   return false;
-	   });	 	   
+	   });
+	   
+	   // append the log button to the main navigation
+	    $("<li><a href='#' id='log-button'>Log</a></li>").appendTo("#main-navigation");
+	   // when the log button is clicked,
+	   // display the log view interface.
+	   $("#log-button").click(function(event) {
+		   log_view();
+	   });
 	   	   
 	    $("<li><a href='#' id='open_events_listener'>Events Listener</a></li>").appendTo("#main-navigation");
 		$("<div id='events_output' title='Events Listener'></div>").appendTo("#header");

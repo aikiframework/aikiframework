@@ -236,7 +236,59 @@ class Log {
      * @return mixed The log file contents or FALSE on failure.
      */
     public function getContents() {
-    	return fread($this->_stream, filesize($this->_path));
+    	return file_get_contents($this->_path);
+    }
+    /**
+     * Insert spans into contents and get the result
+     * 
+     * @param string contents The contents of the log
+     * @param string level The log message level
+     * @param string catagory The message element catagory
+     * @return string markup The resulting HTML markup
+     */
+    private function _getInsertSpans($contents, $level, $catagory) {
+        $markup = $contents;
+        switch (true) {
+        	case ("tag" === $catagory):
+		        $markup = preg_replace('/(\[' . $level . '\])/',
+		            '<span class="log-content-' . $catagory .
+		            '-' . strtolower($level) . '">$1</span>', $markup);
+        		break;
+            case ("line" === $catagory):
+            	$markup = preg_replace('/(.+\[' . $level . '\].+)/',
+            	   '<span class="log-content-' . $catagory .
+            	   '-' . strtolower($level) . '">$1</span>', $markup);
+                break;
+        	default:
+        		break;
+        }
+        return $markup;
+    }
+    /**
+     * Get the contents of the log as HTML
+     * 
+     * @return string markup The log contents as HTML
+     */
+    public function getContentsAsHtml() {
+		// get the simple text contents of the log
+		$markup = $this->getContents();
+		if (false === $markup) {
+		    $markup = "Failed to get the log contents";
+		}
+		else {
+		    // insert message-level-tag spans
+		    $markup = $this->_getInsertSpans($markup, "ERROR", "tag");
+            $markup = $this->_getInsertSpans($markup, "WARN", "tag");
+            $markup = $this->_getInsertSpans($markup, "INFO", "tag");
+            $markup = $this->_getInsertSpans($markup, "DEBUG", "tag");
+            // insert per-line spans
+            $markup = $this->_getInsertSpans($markup, "ERROR", "line");
+            $markup = $this->_getInsertSpans($markup, "WARN", "line");
+            $markup = $this->_getInsertSpans($markup, "INFO", "line");
+            $markup = $this->_getInsertSpans($markup, "DEBUG", "line");
+		}
+		// the root element of this markup is pre-formated text
+		return "<pre>" . $markup . "</pre>";
     }
     /**
      * Close the file resource.

@@ -24,7 +24,8 @@ aiki_src_files = \
 	control_panel.js \
 	database_forms.php \
 	events.php \
-	urls_widgets.php
+	urls_widgets.php \
+	log_view.php
 
 # Subdirectories to be built
 SUBDIRS = \
