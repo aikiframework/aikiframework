@@ -161,10 +161,11 @@ class aiki
      * Use normal urls if mod_rewrite is not enabled.
      *
      * @param  string   $text before processing
-     * @return  string
-     * @todo this function is seriously overloaded and needs to be rethough
+     * @return string
+     * @todo this function is seriously overloaded and needs to be rethought
      */
-    public function processVars($text) {
+    public function processVars($text) 
+    {
         global $aiki, $page, $membership, $config, $languages, $site_info;
 
         /**
@@ -202,7 +203,8 @@ class aiki
         $text= strtr ( $text, $aReplace );
 
         if ($config['pretty_urls'] == 0){
-            $text = preg_replace('/href\=\"\[root\](.*)\"/U', 'href="[root]?pretty=\\1"', $text);
+            $text = preg_replace('/href\=\"\[root\](.*)\"/U', 
+                                 'href="[root]?pretty=\\1"', $text);
             $text = str_replace('[root]', $config['url'], $text);
             $text = str_replace('=/', '=', $text);
         }else{
@@ -212,5 +214,5 @@ class aiki
         $text = str_replace($config['url'].'/', $config['url'], $text);
 
         return $text;
-    }
-}
+    } // end of processVars method
+} // end of aiki class

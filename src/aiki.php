@@ -52,7 +52,8 @@ if (isset($_GET['custom_output'])){$custom_output = true;	$noheaders = true; }
 /**
  * @see aiki-defs.php
  */
-if (file_exists("$system_folder/configs/aiki-defs.php")) {
+if (file_exists("$system_folder/configs/aiki-defs.php")) 
+{
 	/**
 	 * @see config.php
 	 */
@@ -137,11 +138,10 @@ $membership = $aiki->load("membership");
  * @todo: scoping is wrong here, need solution on these.
  * @see aiki.php
  */
-if(isset($_GET['site'])){
+if (isset($_GET['site']))
 	$site=addslashes($_GET['site']);
-}else{
+else
 	$site = $config['site'];
-}
 
 /**
  * Get the site information for determining installer setup.
@@ -157,9 +157,9 @@ if (!$site_info)
 	  (( ENABLE_RUNTIME_INSTALLER == FALSE ) ?
            "ENABLE_RUNTIME_INSTALLER is set to FALSE." : ""));
 }
-if ($site_info and $site_info->is_active != 1){
+
+if ($site_info and $site_info->is_active != 1)
 	die($site_info->if_closed_output);
-}
 
 // load rest of classes
 $aiki->load("text");

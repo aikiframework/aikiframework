@@ -51,7 +51,8 @@ $layout = new CreateLayout();
 /**
  * @todo need to define these before use + integrate into @see widgets.php
  */
-if (isset($global_widget)){
+if (isset($global_widget)) 
+{
 	$noheaders = true;
 	$nogui = true;
 }
@@ -59,55 +60,52 @@ if (isset($global_widget)){
 /**
  * @todo fix the misspelling
  */
-if ($layout->widget_custom_output){
+if ($layout->widget_custom_output)
 	$noheaders = true;
-}
 
-if (!isset($noheaders)){
+if (!isset($noheaders))
 	$html_output = $aiki->output->write_headers();
-}
 
 
-if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
+if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders))
 	$full_html_input = $aiki->output->write_headers();
-}
 
-
-if ($config['html_cache'] and isset($html_cache_file)){
-
+if ($config['html_cache'] and isset($html_cache_file))
 	$full_html_input .= $layout->html_output;
-}
 
-if (isset($aiki->output->title)){
-	$layout->html_output = str_replace('[page_title]', $aiki->output->title, $layout->html_output);
-}
+if (isset($aiki->output->title))
+	$layout->html_output = 
+        str_replace('[page_title]', $aiki->output->title, $layout->html_output);
+
 $html_output .= $layout->html_output;
 
-if (!isset($noheaders)){
+if (!isset($noheaders))
 	$html_output .= $aiki->output->write_footer();
-}
 
 $html_output = $aiki->languages->L10n($html_output);
 
 /**
  * Tidy html using libtidy
+ * @todo abstract this use of libtidy here
  */
-if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $config["html_tidy"]) {
-
+if ( extension_loaded('tidy' ) and 
+     function_exists('tidy_parse_string') and 
+     $config["html_tidy"]) 
+{
 	$tidy = new tidy();
 	$tidy->parseString($html_output, $config["html_tidy_config"], 'utf8');
 	$tidy->cleanRepair();
 
-	if ($config["tidy_compress"]){
+	if ($config["tidy_compress"])
 		echo preg_replace("/\r?\n/m", "",tidy_get_output($tidy));
-	}else{
+	else
 		echo tidy_get_output($tidy);
-	}
+} else {
 
-}else{
-
-
-	if (isset($_REQUEST['compress_output']) or (isset($config["compress_output"]) and $config["compress_output"])){
+	if (isset($_REQUEST['compress_output']) or 
+        (isset($config["compress_output"]) and 
+        $config["compress_output"]))
+    {
 		$html_output = preg_replace("/\<\!\-\-(.*)\-\-\>/U", "", $html_output);
 
 		$search = array(
@@ -115,7 +113,7 @@ if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $con
 		'/\>[^\S ]+/s',		// strip whitespaces after tags, except space
 		'/[^\S ]+\</s',		// strip whitespaces before tags, except space
 	 	'/(\s)+/s'		// shorten multiple whitespace sequences
-	 );
+	    );
 
 	 $replace = array(
 		' ',
@@ -127,32 +125,35 @@ if ( extension_loaded('tidy' ) and function_exists('tidy_parse_string') and $con
 	  $html_output  = preg_replace($search, $replace, $html_output );
 	}
 
-	if (!isset($_GET['no_output'])){
+	if (!isset($_GET['no_output']))
+    {
+        /**
+         * @todo is this useful, or kill it?
+         */
 		//print htmlspecialchars_decode($html_output);
 		print $html_output;
 	}
-}
+} // end of using tidy
 
-
-if ($config['html_cache'] and isset($html_cache_file) and !isset($noheaders)){
+if ($config['html_cache'] and 
+    isset($html_cache_file) and 
+    !isset($noheaders))
+{
 	$full_html_input .= $aiki->output->write_footer();
 }
 
-
-if ($config['html_cache'] and isset($html_cache_file)){
-
+if ($config['html_cache'] and isset($html_cache_file))
+{
 	if ( ! is_dir($config['html_cache']) )
 	{
 		echo($config['html_cache']);
 	}
 	else
 	{
-
 		$full_html_input = $aiki->languages->L10n($full_html_input);
 
 		//write the cache file
 		error_log ( $full_html_input, 3, $html_cache_file);
-
 	}
 }
 
