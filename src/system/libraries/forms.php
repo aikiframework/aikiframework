@@ -597,7 +597,7 @@ $(function() {
 	 * @return string
 	 */
 
-	public function create_insert_form($form, $form_array ){
+	public function create_insert_form(&$form, $form_array ){
 		global $db, $aiki, $membership;
 
 		$formOutput = '';
