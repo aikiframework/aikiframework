@@ -35,12 +35,12 @@ define('IN_AIKI', true);
 $system_folder = realpath(dirname(__FILE__));
 
 // append to the include path while preserving existing entries
-/*set_include_path(
+set_include_path(
     get_include_path() .
     PATH_SEPARATOR .
     "$system_folder" .
     PATH_SEPARATOR .
-    "$system_folder/system");*/
+    "$system_folder/system");
 
 /** 
  * @todo these should be set in some class, and are scoped wrong
@@ -57,7 +57,22 @@ if (file_exists("$system_folder/configs/aiki-defs.php"))
 	/**
 	 * @see config.php
 	 */
-	require_once("$system_folder/configs/config.php");
+	require_once("configs/config.php");
+	
+    /* setting $config["log_level"] = "NONE" disables the log 
+     * or "None" and "none". Also if the log_level is not valid
+     * the log will default to disabled. */
+    /** @see Log.php */
+    require_once("libraries/Log.php");
+    $log = new Log($config["log_dir"],
+                    $config["log_file"],
+                    $config["log_level"]);
+    /* the following lines are usage examples:
+    $log->message("test message which defaults to debug level");
+    $log->message("test ERROR", Log::ERROR);
+    $log->message("test WARN", Log::WARN);
+    $log->message("test INFO", Log::INFO);
+    $log->message("test DEBUG", Log::DEBUG);*/
 }
 else {
 	/**
@@ -72,7 +87,7 @@ else {
 	 * When the MAJOR number is zero, this indicates an alpha or beta type 
      * release. Each number can, but should probably not exceed 99
 	 */
-	define('AIKI_VERSION','0.8.12');
+	define('AIKI_VERSION','0.8.13');
 }
 
 /**

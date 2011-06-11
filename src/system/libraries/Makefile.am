@@ -39,7 +39,8 @@ aiki_src_files = \
 	sql_markup.php \
 	text.php \
 	url.php \
-	wiki.php
+	wiki.php \
+	Log.php
 
 # Subdirectories to be built
 SUBDIRS =
