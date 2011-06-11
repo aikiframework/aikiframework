@@ -20,19 +20,41 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 /**
- * BriefDescription
+ * Handles the display and creation of HTML forms.
  *
  * @category    Aiki
  * @package     Library
  */
 class forms
 {
-
+	/**
+	 * keeps track of the value of the Submit button in forms
+	 * @global string $submit_button
+	 */
 	public $submit_button;
+	
+	/**
+	 * specifies the edit type of the form, e.g. 'save'
+	 * @global string $edit_type
+	 */
 	public $edit_type;
+	
+	/**
+     * Parse the text of a widget and render any forms it contains in HTML.
+     * 
+     * Matches Aiki markup of the type (#(form : action : id)#) 
+     * Looks up the form id and renders the form in HTML.
+     *
+     * @param   string $text The text from a widget
+     * @global  array $db The global database object
+     * @global  array $aiki The global aiki object
+     * @return  string
+     */
 
 	public function displayForms($text){
 		global $db, $aiki;
+		
+		//match all forms as (#(form : action : id)#)
 
 		if ( preg_match_all("/\(\#\(form\:(.*)\)\#\)/Us", $text, $forms)){
 
@@ -43,6 +65,8 @@ class forms
 					$form_output = '';
 
 					$form_sides = explode(":", $form_data);
+
+					//look up the form in the database by id or name
 
                     if ( (int) $form_sides[1] > 0 ) {
                         $s= (int) $form_sides[1];
@@ -55,10 +79,14 @@ class forms
 					if ($form){
 						$form_array = unserialize($form->form_array);
 					}
+					
+					//parse the action of the form: add, edit, auto_generate or delete
 
 					switch ($form_sides['0']){
 
 						case "add":
+
+							//a piece of Javascript to output a success message
 
 							if (isset($form_sides['2']) && $form_sides['2'] == "ajax"){
 								$form_javascript =
@@ -111,6 +139,9 @@ $("#new_record_form").ajaxForm(function() {
 
 					}
 
+					/**
+             		 * @todo this piece of form syntax is not documented
+             		 */
 
 					if (isset ($form_sides[3])){
 					 $form_static_values = explode("|", $form_sides[3]);
@@ -123,6 +154,8 @@ $("#new_record_form").ajaxForm(function() {
 					}
 
 				}
+				
+				//insert the generated HTML form back into the widget text
 
 				$text = str_replace("(#(form:$form_data)#)", $form_output, $text);
 
@@ -133,7 +166,18 @@ $("#new_record_form").ajaxForm(function() {
 		return $text;
 	}
 
-
+	/**
+     * Generate the final HTML output of a form.
+     *
+     * @param   array $form The form object from the database
+     * @param   array $form_array An unseralized form array from the $form
+     * @param   string $record_id The id of the record to use
+     * @global  array $db The global database object
+     * @global  array $membership The global membership object
+     * @global  array $aiki The global aiki object
+     * @global  array $aiki The global config object
+     * @return  string
+     */
 
 	public function createForm ($form, $form_array, $record_id=""){
 		global $db, $membership, $aiki, $config;
@@ -541,8 +585,19 @@ $(function() {
 		}
 
 	}
+	
+	/**
+     * Generate a form that will insert a new record into the database.
+	 *
+	 * @param array $form The form object from the database
+     * @param array $form_array An unseralized form array from the $form
+     * @global array $db The global database object
+     * @global array $aiki The global aiki object
+     * @global array $membership The global membership object
+	 * @return string
+	 */
 
-	public function create_insert_form(&$form, $form_array ){
+	public function create_insert_form($form, $form_array ){
 		global $db, $aiki, $membership;
 
 		$formOutput = '';
@@ -564,6 +619,16 @@ $(function() {
 		return $formOutput;
 
 	}
+	
+	/**
+     * Generate a form that will update a record in the database.
+	 *
+	 * @param array $form The form object from the database
+     * @param array $form_array An unseralized form array from the $form
+     * @param string $record_id The id of the record to update
+     * @global array $aiki The global aiki object
+	 * @return string
+	 */
 
 	public function create_update_form(&$form, $form_array, $record_id){
 		global $aiki;
@@ -606,6 +671,16 @@ $(function() {
 
 
 	}
+	
+	/**
+     * Fills the form with the specified values.
+	 *
+	 * @param html $string The HTML containing the form
+     * @param string $sql An SQL Query
+     * @global array $db The global database object
+     * @global array $aiki The global aiki object
+	 * @return string
+	 */
 
 	public function fill_form($html, $sql){
 		global $db, $aiki;
@@ -653,6 +728,14 @@ $(function() {
 
 		return $html;
 	}
+
+	/**
+     * Generates a form automatically from a given table.
+	 *
+	 * @param table $string The name of a table
+     * @global array $aiki The global aiki object
+     * @global array $db The global database object
+	 */
 
 	public function auto_generate($table){
 		global $aiki, $db;
