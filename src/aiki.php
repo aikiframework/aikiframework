@@ -35,12 +35,12 @@ define('IN_AIKI', true);
 $system_folder = realpath(dirname(__FILE__));
 
 // append to the include path while preserving existing entries
-set_include_path(
+/*set_include_path(
     get_include_path() .
     PATH_SEPARATOR .
     "$system_folder" .
     PATH_SEPARATOR .
-    "$system_folder/system");
+    "$system_folder/system");*/
 
 /** 
  * @todo these should be set in some class, and are scoped wrong
@@ -52,11 +52,11 @@ if (isset($_GET['custom_output'])){$custom_output = true;	$noheaders = true; }
 /**
  * @see aiki-defs.php
  */
-if (file_exists("configs/aiki-defs.php")) {
+if (file_exists("$system_folder/configs/aiki-defs.php")) {
 	/**
 	 * @see config.php
 	 */
-	require_once("configs/config.php");
+	require_once("$system_folder/configs/config.php");
 }
 else {
 	/**
@@ -71,7 +71,7 @@ else {
 	 * When the MAJOR number is zero, this indicates an alpha or beta type 
      * release. Each number can, but should probably not exceed 99
 	 */
-	define('AIKI_VERSION','0.8.11');
+	define('AIKI_VERSION','0.8.12');
 }
 
 /**
@@ -86,17 +86,17 @@ else {
 if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
 {
 	/* use run-time installer logic */
-	if (file_exists("config.php")) {
+	if (file_exists("$system_folder/config.php")) {
 		/**
 		 * @see config.php
 		 */
-		require_once("config.php");
+		require_once("$system_folder/config.php");
 	}
 	else {
 		/**
 		 * @see installer.php
 		 */
-		require("libraries/installer.php");
+		require("$system_folder/system/libraries/installer.php");
 		die();
 	}
 }
@@ -106,12 +106,12 @@ if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
  * 
  * @see index.php
  */
-require_once("database/index.php");
+require_once("$system_folder/system/database/index.php");
 
 /**
  * @see core.php
  */
-require_once ("core.php");
+require_once ("$system_folder/system/core.php");
 
 /**
  * Global creation of the aiki instance.
