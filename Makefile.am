@@ -71,7 +71,8 @@ aiki_doc_DATA = \
 DISTCLEANFILES = \
 	$$($(FIND) . -name $(distdir).\*) \
 	$$($(FIND) . -name $(distdir)-\*) \
-	$$($(FIND) . -maxdepth 1 -name "*.in" | sed 's/.in//')
+	$$($(FIND) . -maxdepth 1 -name "*.in" | $(SED) 's/.in//') \
+	$$($(FIND) $(abs_top_srcdir)/_build/src -type f 2>/dev/null)
 
 # Additional files and directories to remove on clean
 clean-local :
@@ -88,10 +89,6 @@ distclean-local :
 	@$(RM) -rf \
 	$(distdir)/build \
 	$(abs_top_srcdir)/build/*
-
-# Additional things to do on dist
-dist-hook:
-	$(MKDIR) -vp $(distdir)/build
 
 # Additional things to do on .htaccess for devs mostly
 install-htaccess:
@@ -223,8 +220,27 @@ uninstall-hook : uninstall-mysql-aiki
 am__tar = ${AMTAR} chf - "$$tardir"
 # previously was defined in aclocal.m4: am__tar = ${AMTAR} chof - "$$tardir"
 
+# copy the source to the build source and remove some extras
+all :
+	@$(CP) -a $(abs_top_srcdir)/src $(abs_top_srcdir)/build/ 2>/dev/null \
+	|| $(CP) -a $(abs_top_srcdir)/src $(abs_top_srcdir)/_build/
+	@for d in $$($(FIND) $(abs_top_srcdir)/_build/src -type d 2>/dev/null); do $(CHMOD) 0755 $$d; done
+	@for f in $$($(FIND) $(abs_top_srcdir)/_build/src -type f 2>/dev/null); do $(CHMOD) 0644 $$f; done
+	@$(RM) -rf \
+	$$($(FIND) $(abs_top_srcdir)/build/src -name \*\.am 2>/dev/null) \
+	$$($(FIND) $(abs_top_srcdir)/build/src -name \*\.in 2>/dev/null) \
+	$$($(FIND) $(abs_top_srcdir)/_build/src -name \*\.am 2>/dev/null) \
+	$$($(FIND) $(abs_top_srcdir)/_build/src -name \*\.in 2>/dev/null)
+
+# make the build directory
+builddir :
+	$(MKDIR) -vp $(distdir)/build
+
+# Additional things to do on dist
+dist-hook : builddir
+distall : distdevel src
+
 # generate source revision packages
-all : distdevel src
 src :
 	@$(TAR) -xpzf $(distdir).tar.gz \
 	--exclude="*.ac" \
