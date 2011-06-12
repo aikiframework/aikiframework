@@ -219,12 +219,6 @@ $config["error_404"] = "<h1>404 Page Not Found</h1>
 $config["timezone"] = '';
 
 /**
- * The default site URL
- * @global string $config["url"] 
- */
-$config["url"] = AIKI_SITE_URL;
-
-/**
  * Show admin widgets or not?
  * @global bool $config["admin_widgets_display"] 
  */
