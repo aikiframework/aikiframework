@@ -19,8 +19,8 @@
 
 # The source files
 aiki_src_files = \
-	accordeon_active.png \
-	accordeon_default.png \
+	accordion_active.png \
+	accordion_default.png \
 	aiki-icon.png \
 	input_bg.png \
 	input_button_active.png \
