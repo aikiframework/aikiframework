@@ -19,7 +19,7 @@
  * @filesource */
 
 // disable php script access
-if(!defined('IN_AIKI')) { die(); }
+if(!defined("IN_AIKI")) { die(); }
 
 class Log {
 	// these should be used to specify the log message level
@@ -33,6 +33,9 @@ class Log {
 	
     /** string $_dateFormat Used to specify format of date and time */
     private $_dateFormat = "Y m d H:i:s";
+    
+    /** string $_mode The file mode for opening a log */
+    private $_mode = "a+t";
     
     /** resource $_stream The log file handle */
     private $_stream;
@@ -58,9 +61,9 @@ class Log {
         $levelNo = $this->_getLevelNumber($level);
         // if level is NONE, disable the log
     	if ($this->_isAllowed($levelNo) and $this->_isDir($dir)) {
-	    	$this->_stream = fopen($this->_path, 'a+t');
+	    	$this->_stream = fopen($this->_path, $this->_mode);
         }
-        set_error_handler(array($this, '_handler'));
+        set_error_handler(array($this, "_handler"));
     }
     /** Class destructor which closes the log file
      * @return void */
@@ -89,13 +92,13 @@ class Log {
             case ("ERROR" === $this->_allow and $level === "ERROR"):
             	$allowed = true;
                 break;
-            case ("WARN" === $this->_allow and ($level === "ERROR" || $level === "WARN")):
+            case ("WARN" === $this->_allow and ($level === "ERROR" or $level === "WARN")):
                 $allowed = true;
                 break;
-            case ("INFO" === $this->_allow and ($level === "ERROR" || $level === "WARN" || $level === "INFO")):
+            case ("INFO" === $this->_allow and ($level === "ERROR" or $level === "WARN" or $level === "INFO")):
                 $allowed = true;
                 break;
-            case ("DEBUG" === $this->_allow and ($level === "ERROR" || $level === "WARN" || $level === "INFO" || $level === "DEBUG")):
+            case ("DEBUG" === $this->_allow and ($level === "ERROR" or $level === "WARN" or $level === "INFO" or $level === "DEBUG")):
                 $allowed = true;
                 break;
     		case ("NONE" === $this->_allow):
@@ -114,8 +117,8 @@ class Log {
         $message = "[" . date($this->_dateFormat) . "] " .
             "[". $this->_getLevelString($level) . "] " .
             $message . " " .
-            "in ". $data['file'] . " " .
-            "on line ". $data['line'] . " " .
+            "in ". $data["file"] . " " .
+            "on line ". $data["line"] . " " .
             PHP_EOL;
     	return $message;
     }
@@ -168,6 +171,10 @@ class Log {
      * error handler, they are included here for completeness.
      * @param int $errno The error number
      * @return string $level The log level */
+    /* The following error types cannot be handled with a user
+     * defined function: E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING,
+     * E_COMPILE_ERROR, E_COMPILE_WARNING, and most of E_STRICT raised
+     * in the file where set_error_handler() is called. */
     private function _getLevelString($errno) {
     	$level = "NONE";
     	switch ($errno) {
@@ -200,12 +207,12 @@ class Log {
     }
     /** Handle an error as a log message. This must be public
      * for use as a callback and is not ment to be called otherwise.
-     * @param int $errno
-     * @param string $errstr
-     * @param string $errfile
-     * @param int $errline
-     * @param array $errcontext
-     * @return boolean
+     * @param int $errno The error number
+     * @param string $errstr The error message
+     * @param string $errfile The file name in which the error occured
+     * @param int $errline The line number on which the error occured
+     * @param array $errcontext The error context such as function name
+     * @return boolean False enables the original error handler afterwards
      * @link http://www.php.net/manual/en/function.set-error-handler.php */
     public function _handler($errno, $errstr, $errfile, $errline, $errcontext) {
         $errorLevel = error_reporting();
@@ -213,19 +220,24 @@ class Log {
         if ($errorLevel and $errno) {
             $this->message($errstr,
                     $errno,
-                    array('file'=>$errfile,
-                        'line'=>$errline,
-                        'context'=>$errcontext));
+                    array("file"=>$errfile,
+                        "line"=>$errline,
+                        "context"=>$errcontext));
         }
         return false;
     }
     /** Get the contents of the log
-     * @return mixed The log file contents or FALSE on failure. */
+     * @return mixed The log file contents, NONE or FALSE on failure. */
     public function getContents() {
-    	$contents = file_get_contents($this->_path);
-    	if (false === $contents) {
-    		$contents = file_get_contents($this->_root . "/" . $this->_path);
-    	}
+    	$contents = $this->_allow;
+        $levelNo = $this->_getLevelNumber($this->_allow);
+        // if level is NONE, disable the log
+        if ($this->_isAllowed($levelNo)) {
+	    	$contents = file_get_contents($this->_path);
+	    	if (false === $contents) {
+	    		$contents = file_get_contents($this->_root . "/" . $this->_path);
+	    	}
+        }
     	return $contents;
     }
     /** Insert spans into contents and get the result
@@ -272,7 +284,8 @@ class Log {
             $markup = $this->_getInsertSpans($markup, "DEBUG", "line");
 		}
 		// the root element of this markup is pre-formated text
-		return "<pre>" . $markup . "</pre>";
+		$markup = "<pre>" . $markup . "</pre>";
+		return $markup;
     }
     /** Close the file resource.
      * @return void */
