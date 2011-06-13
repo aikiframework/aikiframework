@@ -32,7 +32,8 @@ require_once("$system_folder/system/libraries/Log.php");
  * Log $log */
 $log = new Log(AIKI_LOG_DIR,
 			AIKI_LOG_FILE,
-			AIKI_LOG_LEVEL);
+			AIKI_LOG_LEVEL,
+			$system_folder);
 $log->message("Starting run-time installation", Log::INFO);
 
 echo '

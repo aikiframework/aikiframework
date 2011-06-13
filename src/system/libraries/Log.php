@@ -1,7 +1,9 @@
 <?php
 
-/**
- * Aiki Framework (PHP)
+/** Aiki Framework (PHP)
+ *
+ * A log utility to trace errors, warnings, info and debug messages
+ * and save them into a log file readable through the admin interface.
  *
  * LICENSE
  *
@@ -14,11 +16,7 @@
  * @link        http://www.aikiframework.org
  * @category    Aiki
  * @package     Library
- * @filesource
- *
- * A log utility to trace errors, warnings, info and debug messages
- * and save them into a log file readable through the admin interface.
- */
+ * @filesource */
 
 // disable php script access
 if(!defined('IN_AIKI')) { die(); }
@@ -29,69 +27,75 @@ class Log {
 	const WARN = E_USER_WARNING;
 	const INFO = E_USER_NOTICE;
 	const DEBUG = E_USER_DEPRECATED;
-	/**
-	 * string _allow Used to specify at what level of messages to log
-	 */
+	
+	/** string $_allow Used to specify at what level of messages to log */
 	private $_allow = "NONE";
-    /**
-     * string _dateFormat Used to specify format of date and time
-     */
+	
+    /** string $_dateFormat Used to specify format of date and time */
     private $_dateFormat = "Y m d H:i:s";
-    /**
-     * resource _stream The log file handle
-     */
+    
+    /** resource $_stream The log file handle */
     private $_stream;
-    /**
-     * string _path The full path including directory and file name of the log
-     */
+    
+    /** string $_path Full path including directory and file name of the log */
     private $_path;
-    /**
-     * Class constructor which creates a new log
-     * 
-     * @param string dir The log directory
-     * @param string file The log file name
-     * @param string level Used to specify at what level of messages to log
-     * @return void
-     */
-    public function __construct($dir, $file, $level) {
+    
+    /** string $_root The root directory of this application */
+    private $_root;
+    
+    /** Class constructor which creates a new log
+     * @param string $dir The log directory
+     * @param string $file The log file name
+     * @param string $level Used to specify at what level of messages to log
+     * @param string $root The root directory of this application
+     * @return void */
+    public function __construct($dir, $file, $level, $root) {
+    	$this->_root = $root;
         $this->_path = $dir . "/" . $file;
         $this->_allow = strtoupper($level);
-        date_default_timezone_set("UTC");
+        // date_default_timezone_set requires PHP 5.1 or greater
+        date_default_timezone_set(@date_default_timezone_get());
         $levelNo = $this->_getLevelNumber($level);
         // if level is NONE, disable the log
-    	if ($this->_isAllowed($levelNo)) {
+    	if ($this->_isAllowed($levelNo) and $this->_isDir($dir)) {
 	    	$this->_stream = fopen($this->_path, 'a+t');
         }
         set_error_handler(array($this, '_handler'));
     }
-    /**
-     * Class destructor which closes the log file
-     * 
-     *  @return void
-     */
+    /** Class destructor which closes the log file
+     * @return void */
     public function __destruct() {
     	$this->_close();
     }
-    /**
-     * Allows or disallows a log message
-     * 
-     * @param int errno The current message level
-     * @return boolean allowed Whether or not to allow
-     */
+    /** Attempt to make the log directory if it does not exist
+     * @param string $dir The log directory
+     * @return boolean $result True when directory exists or is created */
+    private function _isDir($dir) {
+    	$result = true;
+    	if (!is_dir($dir)) {
+    		if (!is_dir($this->_root . "/" . $dir)) {
+                $result = mkdir($dir, 0700);
+    		}
+    	}
+    	return $result;
+    }
+    /** Allows or disallows a log message
+     * @param int $errno The current message level
+     * @return boolean $allowed Whether or not to allow */
     private function _isAllowed($errno) {
     	$allowed = false;
     	$level = $this->_getLevelString($errno);
     	switch (true) {
-            case ("ERROR" === $this->_allow && $level === "ERROR"):
+            case ("ERROR" === $this->_allow and $level === "ERROR"):
             	$allowed = true;
                 break;
-            case ("WARN" === $this->_allow && ($level === "ERROR" || $level === "WARN")):
+            case ("WARN" === $this->_allow and ($level === "ERROR" || $level === "WARN")):
                 $allowed = true;
                 break;
-            case ("INFO" === $this->_allow && ($level === "ERROR" || $level === "WARN" || $level === "INFO")):
+            case ("INFO" === $this->_allow and ($level === "ERROR" || $level === "WARN" || $level === "INFO")):
                 $allowed = true;
                 break;
-            case ("DEBUG" === $this->_allow && ($level === "ERROR" || $level === "WARN" || $level === "INFO" || $level === "DEBUG")):
+            case ("DEBUG" === $this->_allow and ($level === "ERROR" || $level === "WARN" || $level === "INFO" || $level === "DEBUG")):
                 $allowed = true;
                 break;
     		case ("NONE" === $this->_allow):
@@ -101,14 +105,11 @@ class Log {
     	}
     	return $allowed;
     }
-    /**
-     * Format a log message
-     * 
-     * @param string message The message
-     * @param array data The context of the message
-     * @param int level The message level
-     * @return string message The formated message
-     */
+    /** Format a log message
+     * @param string $message The message
+     * @param array $data The context of the message
+     * @param int $level The message level
+     * @return string $message The formated message */
     private function _format($message, $data, $level) {
         $message = "[" . date($this->_dateFormat) . "] " .
             "[". $this->_getLevelString($level) . "] " .
@@ -118,14 +119,11 @@ class Log {
             PHP_EOL;
     	return $message;
     }
-    /**
-     * Log a message
-     * 
-     * @param string message The message to log
-     * @param int level The log level to use
-     * @param array data The context data such as file and line number
-     * @return void
-     */
+    /** Log a message
+     * @param string $message The message to log
+     * @param int $level The log level to use
+     * @param array $data The context data such as file and line number
+     * @return void */
     public function message($message,
                             $level = Log::DEBUG,
                             $data = NULL) {
@@ -141,12 +139,9 @@ class Log {
 	        $this->_write($message);
         }
     }
-    /**
-     * Get a integer representation of the log level from a string.
-     * 
-     * @param string The log level as a string
-     * @return int The log level number
-     */
+    /** Get a integer representation of the log level from a string.
+     * @param string $level The log level as a string
+     * @return int $number The log level number */
     private function _getLevelNumber($level) {
     	$number = 0;
         switch (true) {
@@ -168,14 +163,11 @@ class Log {
         }
         return $number;
     }
-    /**
-     * Get a string representation of the log level. Although
+    /** Get a string representation of the log level. Although
      * Some of the errors below may never reach our custom
      * error handler, they are included here for completeness.
-     * 
-     * @param int The error number
-     * @return string The log level
-     */
+     * @param int $errno The error number
+     * @return string $level The log level */
     private function _getLevelString($errno) {
     	$level = "NONE";
     	switch ($errno) {
@@ -206,22 +198,19 @@ class Log {
     	}
     	return $level;
     }
-    /**
-     * Handle an error as a log message. This must be public
+    /** Handle an error as a log message. This must be public
      * for use as a callback and is not ment to be called otherwise.
-     *
      * @param int $errno
      * @param string $errstr
      * @param string $errfile
      * @param int $errline
      * @param array $errcontext
      * @return boolean
-     * @link http://www.php.net/manual/en/function.set-error-handler.php
-     */
+     * @link http://www.php.net/manual/en/function.set-error-handler.php */
     public function _handler($errno, $errstr, $errfile, $errline, $errcontext) {
         $errorLevel = error_reporting();
 
-        if ($errorLevel && $errno) {
+        if ($errorLevel and $errno) {
             $this->message($errstr,
                     $errno,
                     array('file'=>$errfile,
@@ -230,22 +219,20 @@ class Log {
         }
         return false;
     }
-    /**
-     * Get the contents of the log
-     * 
-     * @return mixed The log file contents or FALSE on failure.
-     */
+    /** Get the contents of the log
+     * @return mixed The log file contents or FALSE on failure. */
     public function getContents() {
-    	return file_get_contents($this->_path);
+    	$contents = file_get_contents($this->_path);
+    	if (!$contents) {
+    		$contents = file_get_contents($this->_root . "/" . $this->_path);
+    	}
+    	return $contents;
     }
-    /**
-     * Insert spans into contents and get the result
-     * 
-     * @param string contents The contents of the log
-     * @param string level The log message level
-     * @param string catagory The message element catagory
-     * @return string markup The resulting HTML markup
-     */
+    /** Insert spans into contents and get the result
+     * @param string $contents The contents of the log
+     * @param string $level The log message level
+     * @param string $catagory The message element catagory
+     * @return string $markup The resulting HTML markup */
     private function _getInsertSpans($contents, $level, $catagory) {
         $markup = $contents;
         switch (true) {
@@ -264,11 +251,8 @@ class Log {
         }
         return $markup;
     }
-    /**
-     * Get the contents of the log as HTML
-     * 
-     * @return string markup The log contents as HTML
-     */
+    /** Get the contents of the log as HTML
+     * @return string $markup The log contents as HTML */
     public function getContentsAsHtml() {
 		// get the simple text contents of the log
 		$markup = $this->getContents();
@@ -290,23 +274,17 @@ class Log {
 		// the root element of this markup is pre-formated text
 		return "<pre>" . $markup . "</pre>";
     }
-    /**
-     * Close the file resource.
-     *
-     * @return void
-     */
+    /** Close the file resource.
+     * @return void */
     private function _close()
     {
         if (is_resource($this->_stream)) {
             fclose($this->_stream);
         }
     }
-    /**
-     * Write a message to the log.
-     *
+    /** Write a message to the log.
      * @param  string $message The message to write to the log
-     * @return void
-     */
+     * @return void */
     private function _write($message)
     {
     	// do NOT suppress errors here which should

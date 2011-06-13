@@ -25,7 +25,7 @@
  * When the MAJOR number changes, the MINOR number should reset to zero.
  * When the MAJOR number is zero, this indicates an alpha or beta type 
  * release. Each number can, but should probably not exceed 99 */
-define('AIKI_VERSION','0.8.15');
+define('AIKI_VERSION','0.8.16');
 
 /**
  * Used to test for script access
@@ -91,7 +91,8 @@ require_once("$system_folder/system/libraries/Log.php");
  * @global Log $log */
 $log = new Log($config["log_dir"],
             $config["log_file"],
-            $config["log_level"]);
+            $config["log_level"],
+            $system_folder);
 
 /* the following lines are usage examples:
 $log->message("test message which defaults to debug level");
