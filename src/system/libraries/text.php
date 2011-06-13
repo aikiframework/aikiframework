@@ -25,6 +25,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  *
  * @category    Aiki
  * @package     Library
+ * @todo fix the case on this class, should be Text
  */
 class text
 {

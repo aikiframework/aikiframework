@@ -89,7 +89,7 @@ class aiki_array
 	}
 
 	/**
-	 * Converts an ojbect to array
+	 * Converts an object to array
 	 *
 	 * @param   object
 	 * @return  array
