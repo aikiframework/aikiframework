@@ -259,6 +259,8 @@ src :
 	--exclude="$(distdir)/scripts" \
 	--exclude="$(distdir)/rpm" \
 	--exclude="$(distdir)/man" \
+	--exclude="$(distdir)/src/configs/defs.inc" \
+	--exclude="$(distdir)/src/configs/aiki-defs.inc" \
 	--exclude="configure"
 	@$(MV) $(distdir)/src/* $(distdir)/ && $(RM) -rf $(distdir)/src
 	@$(RM) -rf $(abs_top_srcdir)/build/$(PACKAGE)
