@@ -545,6 +545,7 @@ AC_CONFIG_FILES([ \
   src/system/sql/DropUser.sql:src/system/sql/DropUser-in.sql \
   src/system/sql/DropDatabase.sql:src/system/sql/DropDatabase-in.sql \
   src/configs/aiki-defs.php:src/configs/aiki-defs.inc \
+  src/configs/defs.php:src/configs/defs.inc \
   src/configs/z-aiki.conf:src/configs/z-aiki.in \
   src/configs/htaccess:src/configs/htaccess.inc \
   scripts/aiki:scripts/aiki.in \

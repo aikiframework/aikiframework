@@ -19,9 +19,25 @@
 
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
+/** @see defs.inc */
+require_once("$system_folder/configs/defs.php");
+    
+/* setting $config["log_level"] = "NONE" disables the log 
+ * or "None" and "none". Also if the log_level is not valid
+ * the log will default to disabled. */
+/** @see Log.php */
+require_once("$system_folder/system/libraries/Log.php");
+    
+/** Instantiate a new log for installer use
+ * Log $log */
+$log = new Log(AIKI_LOG_DIR,
+			AIKI_LOG_FILE,
+			AIKI_LOG_LEVEL);
+$log->message("Starting run-time installation", Log::INFO);
+
 echo '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -241,7 +257,8 @@ Before we start you need the following:
 	$config_file = str_replace("DB_PASS","\"".$_POST['db_pass']."\"",$config_file);
 	$config_file = str_replace("DB_HOST","\"".$_POST['db_host']."\"",$config_file);
 	$config_file = str_replace("DB_ENCODE","\"".$_POST['db_encoding']."\"",$config_file);
-	$config_file = str_replace("\".AIKI_SITE_URL.\"",$pageURL,$config_file);
+	$config_file = str_replace("@AIKI_SITE_URL@",$pageURL,$config_file);
+	$config_file = str_replace("@AIKI_REWRITE_BASE@",$_SERVER["REQUEST_URI"],$config_file);
 
 	$config_file_html = htmlspecialchars($config_file);
 	$config_file_html = nl2br($config_file_html);
@@ -261,16 +278,16 @@ Before we start you need the following:
 		}
 	}
 
-    $htaccess_file_path = "$system_folder/configs/htaccess.inc";
-    $htaccess_file = file_get_contents($htaccess_file_path);
-    if ( false == $htaccess_file )
-        die("<br />WARN: failed to read file $htaccess_file_path<br />");
+	$htaccess_file_path = "$system_folder/configs/htaccess.inc";
+	$htaccess_file = file_get_contents($htaccess_file_path);
+	if ( false == $htaccess_file )
+		die("<br />WARN: failed to read file $htaccess_file_path<br />");
 
-    // $rewrite_base = ( AIKI_REWRITE_BASE != $_SERVER["REQUEST_URI"] ) ? 
-    //                  $_SERVER["REQUEST_URI"] : AIKI_REWRITE_BASE;
-    $htaccess_file = str_replace("@AIKI_REWRITE_BASE@", 
-                                 $_SERVER["REQUEST_URI"], 
-                                 $htaccess_file);
+	// $rewrite_base = ( AIKI_REWRITE_BASE != $_SERVER["REQUEST_URI"] ) ? 
+	//				  $_SERVER["REQUEST_URI"] : AIKI_REWRITE_BASE;
+	$htaccess_file = str_replace("@AIKI_REWRITE_BASE@", 
+								 $_SERVER["REQUEST_URI"], 
+					     		$htaccess_file);
 
 	$htaccess_file_html = nl2br($htaccess_file);
 
@@ -306,7 +323,7 @@ Before we start you need the following:
 	$sql_insert_variable = str_replace("@ADMIN_PASS@",$admin_password_md5_md5,$sql_insert_variable);
 	$sql_insert_variable = str_replace("@ADMIN_MAIL@",$email,$sql_insert_variable);
 	$sql_insert_variable = str_replace("@VERSION@",AIKI_VERSION,$sql_insert_variable);
-  $sql_insert_variable = str_replace("@REVISION@",AIKI_REVISION,$sql_insert_variable);
+	$sql_insert_variable = str_replace("@REVISION@",AIKI_REVISION,$sql_insert_variable);
 	
 	/* In MySQL, the “-- ” (double-dash) comment style requires the second
 	 * dash to be followed by at least one whitespace or control character.

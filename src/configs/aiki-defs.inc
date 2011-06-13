@@ -1,7 +1,15 @@
 <?php
 
-/**
- * Aiki Framework (PHP)
+/** Aiki Framework (PHP)
+ * 
+ * All of the values for the define statements in this file are generated
+ * automatically when the autoconf configure script is executed.
+ * These are meant to be used as a default configuration. Please,
+ * be aware that the configuration is expected change during run-time.
+ * This resulting file name will be aiki-defs.php and is NOT meant for
+ * the run-time installer distribution package. This file is included by
+ * defs.php and should NOT contain constants that are defined therein.
+ * This file is only intended to support the Automake installation distribution.
  *
  * LICENSE
  *
@@ -15,91 +23,32 @@
  * @category    Aiki
  * @package     Aiki
  * @version     @VERSION@.@REVISION@
- * @filesource
- * 
- * IMPORTANT
- * 
- * Some of the values for the define statements in this file are generated
- * automatically when the autoconf configure script is executed.
- * These are ment to be used as the default configuration. Please,
- * be aware that the configuration is expected change during run-time.
- */
+ * @filesource */
 
-/**
- * Aiki Framework Version
- */
-define("AIKI_VERSION", "@VERSION@");
-/**
- * Aiki Framework Revision
- */
-define("AIKI_REVISION", "@REVISION@");
-/**
- * At run-time, write config and database or use an install-time config and database
- * Do NOT put the following value (TRUE or FALSE) in quotes.
- */
+/** If this is NOT defined or set to TRUE, the run-time installer will run.
+ * Do NOT put the following value (TRUE or FALSE) in quotes. */
 define("ENABLE_RUNTIME_INSTALLER", @ENABLE_RUNTIME_INSTALLER@);
-/**
- * Aiki Database Type
- */
+
+/** Aiki Database Type */
 define("DB_TYPE", "@DB_TYPE@");
-/**
- * Aiki Database Name
- */
+
+/** Aiki Database Name */
 define("DB_NAME", "@DB_NAME@");
-/**
- * Aiki Database User Name
- */
+
+/** Aiki Database User Name */
 define("DB_USER", "@DB_USER@");
-/**
- * Aiki Database Password
- */
+
+/** Aiki Database Password */
 define("DB_PASS", "@DB_PASS@");
-/**
- * Aiki Database Host
- */
+
+/** Aiki Database Host */
 define("DB_HOST", "@DB_HOST@");
-/**
- * Aiki Database Encoding
- */
+
+/** Aiki Database Encoding */
 define("DB_ENCODE", "@DB_ENCODE@");
-/**
- * Aiki Site URL
- */
+
+/** Aiki Site URL */
 define("AIKI_SITE_URL", "@AIKI_SITE_URL@");
-/**
- * Aiki Rewrite Base (for htaccess)
- */
+
+/** Aiki Rewrite Base (for htaccess) */
 define("AIKI_REWRITE_BASE", "@AIKI_REWRITE_BASE@");
-/**
- * Aiki Log Directory
- */
-define("AIKI_LOG_DIR", "@AIKI_LOG_DIR@");
-/**
- * Aiki Log File Name
- */
-define("AIKI_LOG_FILE", "@AIKI_LOG_FILE@");
-/**
- * Aiki Host Profile File Name
- */
-define("AIKI_LOG_PROFILE", "@AIKI_LOG_PROFILE@");
-/**
- * Aiki Log Level
- */
-define("AIKI_LOG_LEVEL", "@AIKI_LOG_LEVEL@");
-
-// **** Begin non-generated constants **** //
-
-/* the following error related constants
- * are built-in on newer versions of PHP */
-if (!defined("E_RECOVERABLE_ERROR")) {
-	/** Define E_RECOVERABLE_ERROR if not defined */
-    define("E_RECOVERABLE_ERROR", 4096);
-}
-if (!defined("E_DEPRECATED")) {
-    /** Define E_DEPRECATED if not defined */
-    define("E_DEPRECATED", 8192);
-}
-if (!defined("E_USER_DEPRECATED")) {
-    /** Define E_USER_DEPRECATED if not defined */
-    define("E_USER_DEPRECATED", 16384);
-}

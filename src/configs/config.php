@@ -1,6 +1,8 @@
 <?php
 /**
  * Aiki Framework (PHP)
+ * 
+ * Global configuration options
  *
  * LICENSE
  *
@@ -16,11 +18,19 @@
  * @filesource
  */
 
-/**
- * @see aiki-defs.php
- */
-if (file_exists("$system_folder/configs/aiki-defs.php")){
-	require_once("$system_folder/configs/aiki-defs.php");
+/** @see defs.php */
+require_once("$system_folder/configs/defs.php");
+
+/* Do NOT remove the following constant definitions.
+ * The run-time installer should insert the correct values here.
+ * Otherwise, these will be defined in aiki-defs.php. */
+if (!defined("AIKI_REWRITE_BASE")) {
+	/** Aiki Rewrite Base (for htaccess) if NOT defined */
+    define("AIKI_REWRITE_BASE", "@AIKI_REWRITE_BASE@");
+}
+if (!defined("AIKI_SITE_URL")) {
+    /** Aiki Site URL if NOT defined */
+    define("AIKI_SITE_URL", "@AIKI_SITE_URL@");
 }
 
 /**

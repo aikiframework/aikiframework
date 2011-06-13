@@ -195,6 +195,8 @@ install-data-hook : install-desktop install-mysql-aiki
 	@for d in $$($(FIND) $(DESTDIR)$(docdir)-$(VERSION) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(DESTDIR)$(docdir)-$(VERSION) -type f); do $(CHMOD) 0644 $$f; done
 	@$(MKDIR) -p $(DESTDIR)$(pkgdatadir)/configs
+	@$(LN_S) -f $(sysconfdir)/$(PACKAGE)/defs.php \
+	$(DESTDIR)$(pkgdatadir)/configs/defs.php
 	@$(LN_S) -f $(sysconfdir)/$(PACKAGE)/aiki-defs.php \
 	$(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
 	@$(LN_S) -f $(sysconfdir)/$(PACKAGE)/config.php \
@@ -204,6 +206,7 @@ install-data-hook : install-desktop install-mysql-aiki
 # Additional things to do on uninstall
 uninstall-hook : uninstall-mysql-aiki
 	@$(RM) -f $(DESTDIR)$(AIKI_LOG_DIR)/*
+	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/defs.php
 	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
 	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/config.php
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(AIKI_LOG_DIR) -type f)"; then \
@@ -261,6 +264,7 @@ src :
 	@$(RM) -rf $(abs_top_srcdir)/build/$(PACKAGE)
 	@$(MV) $(distdir) $(PACKAGE)
 	@$(CP) -vf VERSION $(PACKAGE)/
+	@$(CP) -vf src/configs/defs.php $(PACKAGE)/configs/
 	@for d in $$($(FIND) $(PACKAGE) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
 	@$(ZIP) -rq $(PACKAGE)-$@-$(VERSION).$(REVISION).zip $(PACKAGE)

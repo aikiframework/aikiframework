@@ -1,7 +1,8 @@
 <?php
 
-/**
- * Aiki Framework (PHP)
+/** Aiki Framework (PHP)
+ * 
+ * This is the bootstrap file.
  *
  * LICENSE
  *
@@ -16,12 +17,15 @@
  * @package     Aiki
  * @filesource
  */
-
-/**
- *
- * This is the bootstrap file
- *
- */
+/** Aiki Framework Version
+ * The number left or west of the dots indicates a MAJOR production release.
+ * In between the dots indicates a significant change or MINOR changes.
+ * The number right or east of the dots indicates a bug FIX or small change.
+ * When the MINOR number changes, the FIX number should reset to zero.
+ * When the MAJOR number changes, the MINOR number should reset to zero.
+ * When the MAJOR number is zero, this indicates an alpha or beta type 
+ * release. Each number can, but should probably not exceed 99 */
+define('AIKI_VERSION','0.8.15');
 
 /**
  * Used to test for script access
@@ -49,73 +53,52 @@ if (isset($_GET['nogui'])){ $nogui = true; }
 if (isset($_GET['noheaders'])){ $noheaders = true; }
 if (isset($_GET['custom_output'])){$custom_output = true;	$noheaders = true; }
 
-/**
- * @see aiki-defs.php
- */
-if (file_exists("$system_folder/configs/aiki-defs.php")) 
-{
-	/**
-	 * @see config.php
-	 */
-	require_once("configs/config.php");
-	
-    /* setting $config["log_level"] = "NONE" disables the log 
-     * or "None" and "none". Also if the log_level is not valid
-     * the log will default to disabled. */
-    /** @see Log.php */
-    require_once("libraries/Log.php");
-    $log = new Log($config["log_dir"],
-                    $config["log_file"],
-                    $config["log_level"]);
-    /* the following lines are usage examples:
-    $log->message("test message which defaults to debug level");
-    $log->message("test ERROR", Log::ERROR);
-    $log->message("test WARN", Log::WARN);
-    $log->message("test INFO", Log::INFO);
-    $log->message("test DEBUG", Log::DEBUG);*/
-}
-else {
-	/**
-	 * Aiki Framework Version
-	 * The number left or west of the dots indicates a MAJOR production type 
-     * release.
-	 * The number in the middle of the dots indicates a significant change or 
-     * MINOR changes.
-	 * The number right or east of the dots indicates a bug FIX or small change.
-	 * When the MINOR number changes, the FIX number should reset to zero.
-	 * When the MAJOR number changes, the MINOR number should reset to zero.
-	 * When the MAJOR number is zero, this indicates an alpha or beta type 
-     * release. Each number can, but should probably not exceed 99
-	 */
-	define('AIKI_VERSION','0.8.14');
+/** The existence of aiki-defs.php indicates an Automake installation.
+ * @see aiki-defs.inc */
+if (file_exists("$system_folder/configs/aiki-defs.php")) {
+	/** @see config.php */
+	require_once("$system_folder/configs/config.php");
 }
 
-/**
- * ENABLE_RUNTIME_INSTALLER is defined by aiki-defs.php.
- *
+/** ENABLE_RUNTIME_INSTALLER is defined by aiki-defs.php which
+ * should NOT exist in a run-time installation distribution package.
  * It should be used to test for an Automake installed config and database 
  * versus a config and database which is created at run-time via a web page.
- * Basically, config is install-time or run-time generated.
+ * Basically, config is Automake or run-time generated.
  * When ENABLE_RUNTIME_INSTALLER is NOT defined or TRUE, we
- * use the run-time installer logic. Otherwise, we use the install-time logic.
- */
+ * use the run-time installer. Otherwise, we use the Automake installer. */
 if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
 {
-	/* use run-time installer logic */
+	/* use run-time installer config */
 	if (file_exists("$system_folder/config.php")) {
-		/**
-		 * @see config.php
-		 */
+		/** @see config.php */
 		require_once("$system_folder/config.php");
 	}
 	else {
-		/**
-		 * @see installer.php
-		 */
+		/** @see installer.php */
 		require("$system_folder/system/libraries/installer.php");
 		die();
 	}
 }
+    
+/* setting $config["log_level"] = "NONE" disables the log 
+ * or "None" and "none". Also if the log_level is not valid
+ * the log will default to disabled. */
+/** @see Log.php */
+require_once("$system_folder/system/libraries/Log.php");
+    
+/** Instantiate a new log for global use
+ * @global Log $log */
+$log = new Log($config["log_dir"],
+            $config["log_file"],
+            $config["log_level"]);
+
+/* the following lines are usage examples:
+$log->message("test message which defaults to debug level");
+$log->message("test ERROR", Log::ERROR);
+$log->message("test WARN", Log::WARN);
+$log->message("test INFO", Log::INFO);
+$log->message("test DEBUG", Log::DEBUG);*/
 
 /**
  * Where $db is defined as a switch in this 3rd party library.
