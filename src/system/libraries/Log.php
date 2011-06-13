@@ -223,7 +223,7 @@ class Log {
      * @return mixed The log file contents or FALSE on failure. */
     public function getContents() {
     	$contents = file_get_contents($this->_path);
-    	if (!$contents) {
+    	if (false === $contents) {
     		$contents = file_get_contents($this->_root . "/" . $this->_path);
     	}
     	return $contents;

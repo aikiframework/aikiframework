@@ -187,7 +187,7 @@ endif
 install-data-hook : install-desktop install-mysql-aiki
 	@$(MKDIR) -p $(DESTDIR)$(AIKI_LOG_DIR)
 	@$(CHMOD) 0700 $(DESTDIR)$(AIKI_LOG_DIR) 
-	@$(CHOWN) $(HTTPD_USER):$(HTTPD_USER) $(DESTDIR)$(AIKI_LOG_DIR) &> /dev/null || :
+	@$(CHOWN) $(HTTPD_USER) $(DESTDIR)$(AIKI_LOG_DIR) &> /dev/null || :
 	@for d in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
 	@for d in $$($(FIND) $(DESTDIR)$(pkgdatadir) -type d); do $(CHMOD) 0755 $$d; done
