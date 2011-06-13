@@ -44,12 +44,12 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  */
 class languages
 {
-	
+
 	public $language;
 	public $dir;
 	public $language_short_name;
 
-	/*
+	/**
 	 * construct the clase
 	 * 
 	 * Try to set the language using $_GET['language']
@@ -58,7 +58,7 @@ class languages
 	function __construct() {
 		global $config;
 
-		if( !isset($_GET['language']) || !$this->set($_GET['language'])) {			
+		if( !isset($_GET['language']) || !$this->set($_GET['language']) ) {			
 			$this->language = $config['default_language'];
 			$this->dir = $config['site_dir'];
 			$this->language_short_name  = $config['language_short_name'];
@@ -66,12 +66,12 @@ class languages
 	}
 
 
-   /*
+   /**
     * Try set the default language.
     *
-    * The language is set if it is defined in aiki_languages.
+    * The language is set if it is defined in aiki_languages table..
     * @param string $lang Default_language
-    * @return boolean true if the language is valid (exist in aiki_languages) else false.
+    * @return boolean true if the language is valid (exist in aiki_languages) else, false.
     */
 
 	private function set($lang) {
@@ -90,7 +90,7 @@ class languages
 	}
 
    
-   /*
+   /**
     * Parses a string replacing __Something__ 
     *
     * 1. searchs all ocurrences of __something__, where something is a string of characters, except space and '.
@@ -106,7 +106,7 @@ class languages
 	public function L10n($string){
 		global $db, $config;
 
-		if ( preg_match_all( "/\_\_([^ ']{1,255})\_\_/U", $string, $matches ) ){
+		if ( preg_match_all( "/__([a-z_]{1,255})__/U", $string, $matches ) ){
 		
 			$default_language = "lang_".$config['default_language'];
 			$founded= array_unique($matches[1]);
