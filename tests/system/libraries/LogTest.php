@@ -38,7 +38,7 @@ class LogTest extends PHPUnit_Framework_TestCase {
         $log = new TestLog("", "", "", "");
         $this->assertSame("NONE", $log->getContents());
         
-        $log = new TestLog(".", "test.log", "debug", ".");
+        $log = new TestLog(".", "test.log", "none", ".");
         $this->assertSame("NONE", $log->getContents());
         
         // test protected property value
