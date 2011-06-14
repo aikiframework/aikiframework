@@ -185,6 +185,20 @@ fi
 AM_CONDITIONAL(ENABLE_RUNTIME_INSTALLER, $TEST x$enable_runtime_installer = xyes)
 featurelist="$featurelist ENABLE_RUNTIME_INSTALLER=$enable_runtime_installer"
 
+AC_ARG_ENABLE([tests],
+  [AS_HELP_STRING([--enable-tests],
+    [Enable unit tests to run [default=no]])],
+  [enable_tests=$enableval],
+  [enable_tests=no])
+if $TEST "x$enable_tests" == "xyes" ; then
+
+  AC_ARG_VAR(PHPUNIT,[Set the phpunit program [default: PHPUNIT=phpunit]])
+  AC_CHECK_PROG(PHPUNIT,phpunit,phpunit,MISSING)
+  PROG_LIST_ADD PHPUNIT $PHPUNIT
+fi
+AM_CONDITIONAL(ENABLE_TESTS, $TEST x$enable_tests = xyes)
+featurelist="$featurelist ENABLE_TESTS=$enable_tests"
+
 AC_ARG_ENABLE([mysql-create],
   [AS_HELP_STRING([--enable-mysql-create],
     [Enable creation/deletion of MySQL user and database during install/uninstall [default=yes]])],
@@ -195,9 +209,9 @@ featurelist="$featurelist ENABLE_MYSQL_CREATE=$enable_mysql_create"
 
 AC_ARG_ENABLE([desktop],
   [AS_HELP_STRING([--enable-desktop],
-    [Enable desktop entry in application launch menu [default=yes]])],
+    [Enable desktop entry in application launch menu [default=no]])],
   [enable_desktop=$enableval],
-  [enable_desktop=yes])
+  [enable_desktop=no])
 if $TEST "x$enable_desktop" == "xyes" ; then
 
   AC_ARG_VAR(PKG_MENU_DIR,[Set the desktop menu directory [default: PKG_MENU_DIR=$sysconfdir/xdg/menus/applications-merged]])
@@ -561,6 +575,7 @@ AC_CONFIG_FILES([ \
   desktop/Makefile \
   src/configs/Makefile \
   scripts/Makefile \
+  tests/Makefile \
   rpm/SPECS/aiki.spec:rpm/spec.in \
   rpm/Makefile \
 ])

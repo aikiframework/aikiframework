@@ -32,7 +32,8 @@ SUBDIRS = \
 	scripts \
 	man \
 	desktop \
-	rpm
+	rpm \
+	tests
 
 # Sub directories to pass to the dist build
 DIST_SUBDIRS = \
@@ -40,7 +41,8 @@ DIST_SUBDIRS = \
 	scripts \
 	man \
 	desktop \
-	rpm
+	rpm \
+	tests
 
 # Configure flags to pass to the distcheck build
 DISTCHECK_CONFIGURE_FLAGS = \
@@ -257,6 +259,7 @@ src :
 	--exclude="$(distdir)/build-aux" \
 	--exclude="$(distdir)/desktop" \
 	--exclude="$(distdir)/scripts" \
+	--exclude="$(distdir)/tests" \
 	--exclude="$(distdir)/rpm" \
 	--exclude="$(distdir)/man" \
 	--exclude="$(distdir)/src/configs/defs.inc" \
