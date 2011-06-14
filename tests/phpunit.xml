@@ -13,7 +13,7 @@
          verbose="true">
     <testsuites>
         <testsuite name="Aiki Test Suite">
-            <file>system/libraries/LogTest.php</file>
+            <file>libs/LogTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

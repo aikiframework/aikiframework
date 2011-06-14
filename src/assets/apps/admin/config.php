@@ -28,7 +28,7 @@ header('Content-type: text/xml');
 require_once("../../../aiki.php");
 
 /**
- * @see /src/system/libraries/membership.php
+ * @see /src/libs/membership.php
  */
 if ($membership->permissions != "SystemGOD"){
 	die("You do not have permissions to access this file");
@@ -39,7 +39,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
 <root>';
 
 /**
- * @see /src/system/database/index.php
+ * @see /src/libs/database/index.php
  */
 $get_config = $db->get_results("select  config_id, config_type from aiki_config order by config_id");
 

@@ -152,7 +152,7 @@ if ($id){
 		/**
 		 * Begin constructing the URL
 		 */
-		$get_root = $system_folder."/";
+		$get_root = $AIKI_ROOT_DIR."/";
 		
 		$original_filename = $get_root.$image->full_path.$id;
 		

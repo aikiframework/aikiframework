@@ -23,13 +23,13 @@ License:   LGPL http://www.gnu.org/licenses/lgpl.html
 Link:      http://justinvincent.com/ezsql
 Download:  http://justinvincent.com/wp-content/uploads/2010/10/ez_sql_2.05.zip
 Files:
-@PKG_DATA_DIR@/system/database/index.php
-@PKG_DATA_DIR@/system/database/mssql.php
-@PKG_DATA_DIR@/system/database/mysql.php
-@PKG_DATA_DIR@/system/database/oracle8_9.php
-@PKG_DATA_DIR@/system/database/pdo.php
-@PKG_DATA_DIR@/system/database/postgresql.php
-@PKG_DATA_DIR@/system/database/sqlite.php
+@PKG_DATA_DIR@/libs/database/index.php
+@PKG_DATA_DIR@/libs/database/mssql.php
+@PKG_DATA_DIR@/libs/database/mysql.php
+@PKG_DATA_DIR@/libs/database/oracle8_9.php
+@PKG_DATA_DIR@/libs/database/pdo.php
+@PKG_DATA_DIR@/libs/database/postgresql.php
+@PKG_DATA_DIR@/libs/database/sqlite.php
 
 jQuery
 ======

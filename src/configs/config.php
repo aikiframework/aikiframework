@@ -19,7 +19,7 @@
  */
 
 /** @see defs.php */
-require_once("$system_folder/configs/defs.php");
+require_once("$AIKI_ROOT_DIR/configs/defs.php");
 
 /* Do NOT remove the following constant definitions.
  * The run-time installer should insert the correct values here.

@@ -32,7 +32,7 @@ DIST_SUBDIRS =
 EXTRA_DIST = \
 	$(aiki_test_files) \
 	assets \
-	system
+	libs
 
 # Additional things to do on dist
 dist-hook :

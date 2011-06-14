@@ -25,26 +25,23 @@
  * When the MAJOR number changes, the MINOR number should reset to zero.
  * When the MAJOR number is zero, this indicates an alpha or beta type 
  * release. Each number can, but should probably not exceed 99 */
-define('AIKI_VERSION','0.8.19');
+define('AIKI_VERSION','0.8.20');
 
 /**
  * Used to test for script access
  */
 define('IN_AIKI', true);
 
-/**
- * Determine the full-server path.
- * @global string $system_folder
+/** Determine the full path to the Aiki root directory.
+ * @global string $AIKI_ROOT_DIR
  */
-$system_folder = realpath(dirname(__FILE__));
+$AIKI_ROOT_DIR = realpath(dirname(__FILE__));
 
 // append to the include path while preserving existing entries
 set_include_path(
     get_include_path() .
     PATH_SEPARATOR .
-    "$system_folder" .
-    PATH_SEPARATOR .
-    "$system_folder/system");
+    "$AIKI_ROOT_DIR");
 
 /** 
  * @todo these should be set in some class, and are scoped wrong
@@ -55,9 +52,9 @@ if (isset($_GET['custom_output'])){$custom_output = true;	$noheaders = true; }
 
 /** The existence of aiki-defs.php indicates an Automake installation.
  * @see aiki-defs.inc */
-if (file_exists("$system_folder/configs/aiki-defs.php")) {
+if (file_exists("$AIKI_ROOT_DIR/configs/aiki-defs.php")) {
 	/** @see config.php */
-	require_once("$system_folder/configs/config.php");
+	require_once("$AIKI_ROOT_DIR/configs/config.php");
 }
 
 /** ENABLE_RUNTIME_INSTALLER is defined by aiki-defs.php which
@@ -70,13 +67,13 @@ if (file_exists("$system_folder/configs/aiki-defs.php")) {
 if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
 {
 	/* use run-time installer config */
-	if (file_exists("$system_folder/config.php")) {
+	if (file_exists("$AIKI_ROOT_DIR/config.php")) {
 		/** @see config.php */
-		require_once("$system_folder/config.php");
+		require_once("$AIKI_ROOT_DIR/config.php");
 	}
 	else {
 		/** @see installer.php */
-		require("$system_folder/system/libraries/installer.php");
+		require("$AIKI_ROOT_DIR/libs/installer.php");
 		die();
 	}
 }
@@ -85,14 +82,14 @@ if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
  * or "None" and "none". Also if the log_level is not valid
  * the log will default to disabled. */
 /** @see Log.php */
-require_once("$system_folder/system/libraries/Log.php");
+require_once("$AIKI_ROOT_DIR/libs/Log.php");
     
 /** Instantiate a new log for global use
  * @global Log $log */
 $log = new Log($config["log_dir"],
             $config["log_file"],
             $config["log_level"],
-            $system_folder);
+            $AIKI_ROOT_DIR);
 
 /* the following lines are usage examples:
 $log->message("test message which defaults to debug level");
@@ -106,12 +103,12 @@ $log->message("test DEBUG", Log::DEBUG);*/
  * 
  * @see index.php
  */
-require_once("$system_folder/system/database/index.php");
+require_once("$AIKI_ROOT_DIR/libs/database/index.php");
 
 /**
  * @see core.php
  */
-require_once ("$system_folder/system/core.php");
+require_once ("$AIKI_ROOT_DIR/libs/core.php");
 
 /**
  * Global creation of the aiki instance.

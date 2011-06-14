@@ -27,14 +27,14 @@ require_once("../../../aiki.php");
 
 
 /**
- * @see /src/system/libraries/membership.php
+ * @see /src/libs/membership.php
  */
 if ($membership->permissions != "SystemGOD"){
 	die("You do not have permissions to access this file");
 }
 
 /**
- * @see /src/system/database/index.php
+ * @see /src/libs/database/index.php
  */
 if (!isset($_GET['widget'])){
 
