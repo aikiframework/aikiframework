@@ -308,14 +308,16 @@ class CreateLayout
 				if ($this->kill_widget)
 				{
 					if ($widget->if_no_results)
-					{
+					{ 
 						$widget->if_no_results = 
 							stripcslashes($widget->if_no_results);
 						$widget->if_no_results =  
 							$aiki->processVars ($widget->if_no_results);
+							
 						$widget->if_no_results = 
 							$aiki->url->apply_url_on_query(
 								$widget->if_no_results);
+					
 						$widget->if_no_results = 
 							$aiki->input->requests($widget->if_no_results);
 
@@ -330,9 +332,12 @@ class CreateLayout
 					 * @todo looks like some text is placed into the output
 					 *		 stream and then replaced here!!! Nooo!
 					 */
+					$subpattern="[A-z0-9\-_]*\({$this->kill_widget}\)";	
 					$this->widget_html = 
-						preg_replace("/<!--start $this->kill_widget-->(.*)<!--$this->kill_widget end-->/s", $dead_widget, $this->widget_html, 1, $count);
+							preg_replace("/<!--start {$subpattern}-->(.*)<!--{$subpattern} end-->/s", 
+							               $dead_widget, $this->widget_html, 1, $count);
 					$this->kill_widget = '';
+					
 				}
 
 				if ($widget->widget_target == 'body') 
@@ -468,7 +473,7 @@ class CreateLayout
 			$widget->widget = $aiki->input->requests($widget->widget);
 
 			$widget->normal_select = $aiki->input->requests($widget->normal_select);
-			$widget->normal_select =  $this->parsDBpars($widget->normal_select);
+			$widget->normal_select = $this->parsDBpars($widget->normal_select);
 			$widget->normal_select = 
 				str_replace("[guest_session]", $membership->guest_session, 
 							$widget->normal_select);
@@ -525,7 +530,7 @@ class CreateLayout
 				preg_match('/select DISTINCT(.*)from/si', 
 						   $widget->normal_select, $get_DISTINCT);
 
-                preg_match('/select(.*) from /si', 
+				preg_match('/select(.*) from /si', 
 						   $widget->normal_select, $selectionmatch);
 
                 if ( isset($selectionmatch['1']))
