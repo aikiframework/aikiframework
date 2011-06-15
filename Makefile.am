@@ -29,6 +29,7 @@ aiki_doc_files = \
 # Subdirectories to be built
 SUBDIRS = \
 	src \
+	third-party \
 	scripts \
 	man \
 	desktop \
@@ -38,6 +39,7 @@ SUBDIRS = \
 # Sub directories to pass to the dist build
 DIST_SUBDIRS = \
 	src \
+	third-party \
 	scripts \
 	man \
 	desktop \
@@ -262,11 +264,15 @@ src :
 	--exclude="$(distdir)/tests" \
 	--exclude="$(distdir)/rpm" \
 	--exclude="$(distdir)/man" \
+	--exclude="$(distdir)/third-party" \
 	--exclude="$(distdir)/src/configs/defs.inc" \
 	--exclude="$(distdir)/src/configs/aiki-defs.inc" \
 	--exclude="configure"
+	@$(MAKE) -C third-party dist
 	@$(MV) $(distdir)/src/* $(distdir)/ && $(RM) -rf $(distdir)/src
-	@$(RM) -rf $(abs_top_srcdir)/build/$(PACKAGE)
+	@$(RM) -rf $(abs_top_srcdir)/build/$(PACKAGE) \
+	$$($(FIND) $(distdir) -name Makefile\.am) \
+	$$($(FIND) $(distdir) -name Makefile\.in)
 	@$(MV) $(distdir) $(PACKAGE)
 	@$(CP) -vf VERSION $(PACKAGE)/
 	@$(CP) -vf src/configs/defs.php $(PACKAGE)/configs/

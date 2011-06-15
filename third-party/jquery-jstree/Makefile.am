@@ -33,10 +33,72 @@ DIST_SUBDIRS = \
 EXTRA_DIST = \
 	$(aiki_src_files)
 
+# The suffix of the path to put the files
+suffix_dir = assets/javascript/jquery/plugins
+thirdlibdir = third-party/jquery-jstree
+
 # The directory to put the files
 aiki_srcdir = \
-	$(pkgdatadir)/assets/javascript/jquery/plugins
+	$(pkgdatadir)/$(suffix_dir)
 
 # The source data
 aiki_src_DATA = \
 	$(aiki_src_files)
+
+# the default make target
+all :
+# attempt to make the target directory
+# copy the source to the build source and remove some extras
+	@if $(TEST) -d $(abs_top_srcdir)/_build; then \
+		$(MKDIR) -p $(abs_top_srcdir)/_build/src/$(suffix_dir); \
+		$(CHMOD) 0755 $(abs_top_srcdir)/_build/src/$(suffix_dir); \
+    	for f in $(aiki_src_files); do \
+        	$(CP) -a $(abs_top_srcdir)/$(thirdlibdir)/$$f \
+        	$(abs_top_srcdir)/_build/src/$(suffix_dir)/; \
+    	done; \
+    	for d in $(SUBDIRS); do \
+        	$(CP) -a $(abs_top_srcdir)/$(thirdlibdir)/$$d \
+        	$(abs_top_srcdir)/_build/src/$(suffix_dir)/; \
+    	done; \
+    else \
+    	if $(TEST) -d $(abs_top_srcdir)/build; then \
+    		$(MKDIR) -p $(abs_top_srcdir)/build/src/$(suffix_dir); \
+    		$(CHMOD) 0755 $(abs_top_srcdir)/build/src/$(suffix_dir); \
+        	for f in $(aiki_src_files); do \
+            	$(CP) -a $(abs_top_srcdir)/$(thirdlibdir)/$$f \
+            	$(abs_top_srcdir)/build/src/$(suffix_dir)/; \
+        	done; \
+        	for d in $(SUBDIRS); do \
+            	$(CP) -a $(abs_top_srcdir)/$(thirdlibdir)/$$d \
+            	$(abs_top_srcdir)/build/src/$(suffix_dir)/; \
+        	done; \
+    	fi; \
+	fi
+
+# the distribution make target
+dist :
+	@if $(TEST) -d $(abs_top_srcdir)/_build; then \
+		$(MKDIR) -p $(abs_top_srcdir)/_build/$(PACKAGE)-$(VERSION)/src/$(suffix_dir); \
+		$(CHMOD) 0755 $(abs_top_srcdir)/_build/$(PACKAGE)-$(VERSION)/src/$(suffix_dir); \
+    	for f in $(aiki_src_files); do \
+        	$(CP) -a $(abs_top_srcdir)/$(thirdlibdir)/$$f \
+        	$(abs_top_srcdir)/_build/$(PACKAGE)-$(VERSION)/src/$(suffix_dir)/; \
+    	done; \
+    	for d in $(SUBDIRS); do \
+        	$(CP) -a $(abs_top_srcdir)/$(thirdlibdir)/$$d \
+        	$(abs_top_srcdir)/_build/$(PACKAGE)-$(VERSION)/src/$(suffix_dir)/; \
+    	done; \
+    else \
+    	if $(TEST) -d $(abs_top_srcdir)/build; then \
+    		$(MKDIR) -p $(abs_top_srcdir)/build/$(PACKAGE)-$(VERSION)/src/$(suffix_dir); \
+    		$(CHMOD) 0755 $(abs_top_srcdir)/build/$(PACKAGE)-$(VERSION)/src/$(suffix_dir); \
+        	for f in $(aiki_src_files); do \
+            	$(CP) -a $(abs_top_srcdir)/$(thirdlibdir)/$$f \
+            	$(abs_top_srcdir)/build/$(PACKAGE)-$(VERSION)/src/$(suffix_dir)/; \
+        	done; \
+        	for d in $(SUBDIRS); do \
+            	$(CP) -a $(abs_top_srcdir)/$(thirdlibdir)/$$d \
+            	$(abs_top_srcdir)/build/$(PACKAGE)-$(VERSION)/src/$(suffix_dir)/; \
+        	done; \
+    	fi; \
+	fi

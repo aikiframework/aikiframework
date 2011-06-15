@@ -23,17 +23,11 @@ aiki_src_files = \
 
 # Subdirectories to be built
 SUBDIRS = \
-	aiki \
-	codemirror \
-	jquery \
-	plupload
+	aiki
 
 # Subdirectories to distribute
 DIST_SUBDIRS = \
-	aiki \
-	codemirror \
-	jquery \
-	plupload
+	aiki
 
 # Additional files to distribute
 EXTRA_DIST = \

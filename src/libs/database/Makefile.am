@@ -18,14 +18,7 @@
 # Written by Steven Garcia
 
 # The source files
-aiki_src_files = \
-	index.php \
-	mssql.php \
-	mysql.php \
-	oracle8_9.php \
-	pdo.php \
-	postgresql.php \
-	sqlite.php
+aiki_src_files =
 
 # Subdirectories to be built
 SUBDIRS =

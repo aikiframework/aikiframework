@@ -25,7 +25,7 @@
  * When the MAJOR number changes, the MINOR number should reset to zero.
  * When the MAJOR number is zero, this indicates an alpha or beta type 
  * release. Each number can, but should probably not exceed 99 */
-define('AIKI_VERSION','0.8.20');
+define('AIKI_VERSION','0.8.21');
 
 /**
  * Used to test for script access

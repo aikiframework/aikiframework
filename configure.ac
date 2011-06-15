@@ -534,19 +534,6 @@ AC_CONFIG_FILES([ \
   src/assets/extensions/aiki/Makefile \
   src/assets/javascript/Makefile \
   src/assets/javascript/aiki/Makefile \
-  src/assets/javascript/codemirror/Makefile \
-  src/assets/javascript/codemirror/css/Makefile \
-  src/assets/javascript/codemirror/js/Makefile \
-  src/assets/javascript/jquery/Makefile \
-  src/assets/javascript/jquery/css/Makefile \
-  src/assets/javascript/jquery/css/smoothness/Makefile \
-  src/assets/javascript/jquery/css/smoothness/images/Makefile \
-  src/assets/javascript/jquery/plugins/Makefile \
-  src/assets/javascript/jquery/plugins/jstree/Makefile \
-  src/assets/javascript/jquery/plugins/jstree/themes/Makefile \
-  src/assets/javascript/jquery/plugins/jstree/themes/default/Makefile \
-  src/assets/javascript/plupload/Makefile \
-  src/assets/javascript/plupload/img/Makefile \
   src/assets/uploads/Makefile \
   src/libs/database/Makefile \
   src/libs/Makefile \
@@ -577,6 +564,26 @@ AC_CONFIG_FILES([ \
   tests/Makefile \
   rpm/SPECS/aiki.spec:rpm/spec.in \
   rpm/Makefile \
+  third-party/Makefile \
+  third-party/codemirror/Makefile \
+  third-party/codemirror/css/Makefile \
+  third-party/codemirror/js/Makefile \
+  third-party/ezsql/Makefile \
+  third-party/jquery/Makefile \
+  third-party/jquery-form/Makefile \
+  third-party/jquery-jstree/Makefile \
+  third-party/jquery-jstree/jstree/Makefile \
+  third-party/jquery-jstree/jstree/themes/Makefile \
+  third-party/jquery-jstree/jstree/themes/default/Makefile \
+  third-party/jquery-layout/Makefile \
+  third-party/jquery-ui/Makefile \
+  third-party/jquery-ui/css/Makefile \
+  third-party/jquery-ui/css/smoothness/Makefile \
+  third-party/jquery-ui/css/smoothness/images/Makefile \
+  third-party/jquery-xslt/Makefile \
+  third-party/plupload/Makefile \
+  third-party/plupload/img/Makefile \
+  third-party/sarissa/Makefile \
 ])
 
 # Generate config.status and launch it
