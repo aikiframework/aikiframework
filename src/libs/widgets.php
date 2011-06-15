@@ -530,7 +530,7 @@ class CreateLayout
 				preg_match('/select DISTINCT(.*)from/si', 
 						   $widget->normal_select, $get_DISTINCT);
 
-				preg_match('/select(.*) from /si', 
+				preg_match('/^select(.*) from /Usi', 
 						   $widget->normal_select, $selectionmatch);
 
                 if ( isset($selectionmatch['1']))
@@ -542,17 +542,17 @@ class CreateLayout
                         $records_num= $db->num_rows;                
                     } else {
                         if (isset ($get_DISTINCT['1'])){
-                            $mysql_count = 
-								' count(DISTINCT('.$get_DISTINCT['1'].')) ';
+                            $mysql_count = ' count(DISTINCT('.$get_DISTINCT['1'].')) ';
                         }else{  
                             $mysql_count = ' count(*) ';
                         }
-                        $records_num_query = 
-							str_replace($selectionmatch['1'], $mysql_count, 
-										$widget->normal_select);
-                        $records_num_query = 
-							preg_replace('/ORDER BY(.*)(DESC|ASC)?/i', '', 
-										 $records_num_query);
+                        $records_num_query = preg_replace (
+                            "/^select.* from /Usi",
+                            "SELECT $mysql_count FROM ",
+							$widget->normal_select);
+                        $records_num_query = preg_replace(
+							'/ORDER BY(.*)(DESC|ASC)?/i', '', 
+							 $records_num_query);
                         $records_num = $db->get_var($records_num_query);
                     }
                 }    
