@@ -21,16 +21,23 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
 /**
- * BriefDescription
+ * This class handles some security issues for aiki internals.
  *
  * @category    Aiki
  * @package     Library
+ * 
+ * @todo rename this class to Security across codebase
  */
 class security
 {
-
-	public function remove_markup($text){
-
+    /**
+     * Comb through and remove some scary markup from the fields.
+     * 
+     * @param   string  $text   text for processing
+     * @return  string
+     */
+	public function remove_markup($text)
+    {
 		$text = preg_replace("/\(\#\(form(.*)\)\#\)/Us", "", $text);
 
 		$text = preg_replace("/\<edit\>(.*)\<\/edit\>/Us", "", $text);
@@ -42,30 +49,43 @@ class security
 		return $text;
 	}
 
-
-	public function inlinePermissions($text){
+    /**
+     * Handle inline permission.
+	 *
+	 * @param	string		$text		text for processing
+	 * @global	membership	$membership	global membership instance
+	 * @global	array		$db			global db instance
+     */
+	public function inlinePermissions($text)
+    {
 		global $membership, $db;
 			
-		$inline = preg_match_all('/\(\#\(permissions\:(.*)\)\#\)/Us', $text, $matchs);
-		if ($inline > 0){
-			foreach ($matchs[1] as $inline_per){
+		$inline = preg_match_all('/\(\#\(permissions\:(.*)\)\#\)/Us', 
+								 $text, $matchs);
+		if ($inline > 0)
+		{
+			foreach ($matchs[1] as $inline_per)
+			{
 				$get_sides = explode("||", $inline_per);
                 
                 $side1=  isset($get_sides[1]) ? "||" .$get_sides[1] : "";
-				$get_group_level = $db->get_var ("SELECT group_level from aiki_users_groups where group_permissions='$get_sides[0]'");
+				$get_group_level = $db->get_var ("SELECT group_level from " .
+				"aiki_users_groups where group_permissions='$get_sides[0]'");
 
-				if ($get_sides[0] == $membership->permissions or $membership->group_level < $get_group_level){
-					$text = str_replace("(#(permissions:{$get_sides[0]}$side1)#)", $get_sides[1], $text);
+				if ($get_sides[0] == $membership->permissions or 
+					$membership->group_level < $get_group_level)
+				{
+					$text = 
+						str_replace("(#(permissions:{$get_sides[0]}$side1)#)", 
+									$get_sides[1], $text);
 				}else{            
-					$text = str_replace("(#(permissions:{$get_sides[0]}$side1)#)", '', $text);
+					$text = 
+						str_replace("(#(permissions:{$get_sides[0]}$side1)#)", 
+									'', $text);
 				}
-
 			}
 		}
-
 		return $text;
+	} // end of inlinePermissions function
 
-	}
-
-
-}
+} // end of class

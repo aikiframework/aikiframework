@@ -460,6 +460,26 @@ class bot
 		return $output;
 	}
 
+    /**
+     * This is supposed to update aiki's sql to the latest.
+     * 
+     * Upon inspection, this looks at the sql in a current site and compares
+     * it to the current sql. If problem it skips the creation of new sql.
+     *
+     * 
+     *
+     * @global  string      $system_folder  path to system folder
+     * @globa   array       $db             global db instance
+     *
+     * @todo this is what bassel called the update system, need to review it
+     * @todo if there is any problem, really shouldn't run this.
+     * @todo this should be saving the current admin widgets somewhere and
+     * installing new widgets in place IMO, but need to look into more.
+     * @todo admin widgets definitely should be replaced upon each new version
+     * @todo this function is too big, and needs to take into account changes
+     * from version to version
+     * @todo hardcoded strings need to be removed
+     */
 	function auto_update_to_latest_aiki(){
 		global $AIKI_ROOT_DIR, $db;
 

@@ -21,20 +21,27 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
 /**
- * BriefDescription
+ * Operations on aikimarkup to conver to web useful
  *
  * @category    Aiki
  * @package     Library
  * @todo fix the case on this class, should be Text
+ * @todo rethink aikimarkup
  */
 class text
 {
-
-
-	public function aiki_nl2br($text){
-
-		if ( preg_match_all( "#\[br\[(.*)\]br\]#sUi", $text, $captured) ){
-			foreach ($captured[1] as $i=>$match){
+    /**
+     * Newline to br tag aiki style.
+     *
+     * @param   string  $text   text for processing
+     * @return  string
+     */
+	public function aiki_nl2br($text)
+    {
+		if ( preg_match_all( "#\[br\[(.*)\]br\]#sUi", $text, $captured) )
+        {
+			foreach ($captured[1] as $i=>$match)
+            {
 				$replace[ $captured[0][$i]]= nl2br($match);
 			}
 			$text= strtr($text, $replace);
@@ -42,90 +49,122 @@ class text
 		return $text;
 	}
 
-	public function aiki_nl2p($text){
+    /**
+     * newline to paragraph aiki style
+     *
+     * @param   string  $text   text for processing
+     * @global  aiki    $aiki   global aiki instance
+     * @return  string
+     */
+	public function aiki_nl2p($text)
+    {
 		global $aiki;
 
-		if ( preg_match_all( "#\[p\[(.*)\]p\]#sUi", $text, $captured) ){
-
-			foreach ($captured[1] as $i=>$match){
-
+		if ( preg_match_all( "#\[p\[(.*)\]p\]#sUi", $text, $captured) )
+        {
+			foreach ($captured[1] as $i=>$match)
+            {
 				$nl2p_text = str_replace("\n\r", "</p><p>", $match);
-
 				$nl2p_text = "<p>".$nl2p_text."</p>";
-
 				$nl2p_text = nl2br($nl2p_text);
-
 				$nl2p_text = str_replace("<br />\r</p>", "</p>", $nl2p_text);
 				$nl2p_text = str_replace("<p><br />", "<p>", $nl2p_text);
-				$replace[ $captured[0][$i]] = str_replace("<p></p>", "<br />", $nl2p_text);
+				$replace[ $captured[0][$i]] = 
+                    str_replace("<p></p>", "<br />", $nl2p_text);
 			}
 			$text= strtr($text, $replace);
-
 		}
-
 		return $text;
 	}
 
-	public function is_valid($type,$var) {
+    /**
+     * Check to see if aiki variable classification is correct.
+     *
+     * @param   string  $type   type of internal variable classification
+     * @param   mixed   $var    variable for checking if its of type
+     * @return  bool
+     */
+	public function is_valid($type, $var) 
+    {
 		$valid = false;
-		switch ($type) {
+		switch ($type) 
+        {
 			case "email":
-				if (preg_match("/^[_a-z0-9-+]+(\.[_a-z0-9-+]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i", $var)) {
+				if (preg_match("/^[_a-z0-9-+]+(\.[_a-z0-9-+]+)*@[a-z0-9-]+".
+                               "(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/i", $var)) 
+				{
 					$valid = true;
 				}
 				break;
 			case "IP":
-				if (preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$var)) {
+				if (preg_match('/^([0-9]{1,3}\.){3}[0-9]{1,3}$/',$var)) 
+				{
 					$valid = true;
 				}
 				break;
 			case "url":
-				if (preg_match("/^[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|ws|biz|info)$/",$var)) {
+				if (preg_match("/^[a-zA-Z0-9\-\.]+".
+					"\.(com|org|net|mil|edu|ws|biz|info)$/",$var)) 
+				{
 					$valid = true;
 				}
 				break;
 			case "SSN":
-				if (preg_match("/^[0-9]{3}[- ][0-9]{2}[- ][0-9]{4}|[0-9]{9}$/",$var)) {
+				if (preg_match("/^[0-9]{3}[- ][0-9]{2}[- ][0-9]{4}|[0-9]{9}$/",
+					$var)) 
+				{
 					$valid = true;
 				}
 				break;
 			case "CC":
-				if (preg_match("/^([0-9]{4}[- ]){3}[0-9]{4}|[0-9]{16}$/",$var)) {
+				if (preg_match("/^([0-9]{4}[- ]){3}[0-9]{4}|[0-9]{16}$/",
+					$var)) 
+				{
 					$valid = true;
 				}
 				break;
 			case "ISBN":
-				if (preg_match("/^[0-9]{9}[[0-9]|X|x]$/",$var)) {
+				if (preg_match("/^[0-9]{9}[[0-9]|X|x]$/",$var)) 
+				{
 					$valid = true;
 				}
 				break;
 			case "Date":
-				if (preg_match("/^([0-9][0-2]|[0-9])\/([0-2][0-9]|3[01]|[0-9])\/[0-9]{4}|([0-9][0-2]|[0-9])-([0-2][0-9]|3[01]|[0-9])-[0-9]{4}$/",$var)) {
+				if (preg_match("/^([0-9][0-2]|[0-9])\/([0-2][0-9]|3[01]|[0-9])".					"\/[0-9]{4}|([0-9][0-2]|[0-9])-([0-2][0-9]|3[01]|[0-9])-".
+					"[0-9]{4}$/",$var)) 
+				{
 					$valid = true;
 				}
 				break;
 			case "Zip":
-				if (preg_match("/^[0-9]{5}(-[0-9]{4})?$/",$var)) {
+				if (preg_match("/^[0-9]{5}(-[0-9]{4})?$/",$var)) 
+				{
 					$valid = true;
 				}
 				break;
 			case "Phone":
-				if (preg_match("/^((\([0-9]{3}\) ?)|([0-9]{3}-))?[0-9]{3}-[0-9]{4}$/",$var)) {
+				if (preg_match(
+					"/^((\([0-9]{3}\) ?)|([0-9]{3}-))?[0-9]{3}-[0-9]{4}$/",
+					$var)) 
+				{
 					$valid = true;
 				}
 				break;
 			case "HexColor":
-				if (preg_match('/^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/',$var)) {
+				if (preg_match(
+					'/^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$/',
+					$var)) 
+				{
 					$valid = true;
 				}
 				break;
 			case "User":
-				if (preg_match("/^[a-zA-Z0-9_]{3,16}$/",$var)) {
+				if (preg_match("/^[a-zA-Z0-9_]{3,16}$/",$var)) 
+				{
 					$valid = true;
 				}
 				break;
 		}
 		return $valid;
-	}
-
-}
+	} // end of is_valid
+} // end of class
