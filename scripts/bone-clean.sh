@@ -58,7 +58,7 @@ else
   $(find . -name stamp-h1) \
   $(find . -name mkinstalldirs) \
   $(find . -type d | grep stage) \
-  $(find . -type d | grep \.libs) \
-  $(find . -type d | grep \.deps) \
+  $(find . -type d | grep \\.libs) \
+  $(find . -type d | grep \\.deps) \
   $(find . -type d | grep autom4te.cache)
 fi

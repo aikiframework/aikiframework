@@ -347,8 +347,8 @@ bone-clean : maintainer-clean
 	$$($(FIND) $(srcdir)/ -name stamp-h1) \
 	$$($(FIND) $(srcdir)/ -name mkinstalldirs) \
 	$$($(FIND) $(srcdir)/ -type d | $(GREP) stage) \
-	$$($(FIND) $(srcdir)/ -type d | $(GREP) \.libs) \
-	$$($(FIND) $(srcdir)/ -type d | $(GREP) \.deps) \
+	$$($(FIND) $(srcdir)/ -type d | $(GREP) \\.libs) \
+	$$($(FIND) $(srcdir)/ -type d | $(GREP) \\.deps) \
 	$$($(FIND) $(srcdir)/ -type d | $(GREP) autom4te.cache) \
 	$(abs_top_srcdir)/build/*
 
