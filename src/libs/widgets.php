@@ -525,44 +525,13 @@ class CreateLayout
 				$widget->normal_select = 
 					$aiki->processVars ($aiki->languages->L10n(
 											"$widget->normal_select"));
-
-				// Support DISTINCT selection
-				preg_match('/select DISTINCT(.*)from/si', 
-						   $widget->normal_select, $get_DISTINCT);
-
-				preg_match('/^select(.*) from /Usi', 
-						   $widget->normal_select, $selectionmatch);
-
-                if ( isset($selectionmatch['1']))
-				{
-                    if ( stripos($widget->normal_select," GROUP BY ") || 
-                         stripos($widget->normal_select," LIMIT" )) {
-                        // with GROUP or LIMIT clausule must do a query
-                        $db->get_results($widget->normal_select);
-                        $records_num= $db->num_rows;                
-                    } else {
-                        if (isset ($get_DISTINCT['1'])){
-                            $mysql_count = ' count(DISTINCT('.$get_DISTINCT['1'].')) ';
-                        }else{  
-                            $mysql_count = ' count(*) ';
-                        }
-                        $records_num_query = preg_replace (
-                            "/^select.* from /Usi",
-                            "SELECT $mysql_count FROM ",
-							$widget->normal_select);
-                        $records_num_query = preg_replace(
-							'/ORDER BY(.*)(DESC|ASC)?/i', '', 
-							 $records_num_query);
-                        $records_num = $db->get_var($records_num_query);
-                    }
-                }    
-
-				if (isset($records_num)) {
-					$widget->widget = str_replace("[records_num]", 
-					$records_num, $widget->widget);
-				} else {
-					$records_num = '';
-				}
+                
+				$records_num = $this->records_num( $widget->normal_select);  
+				if ( $records_num !== false ) {
+					$widget->widget = str_replace(
+						"[records_num]", 
+						$records_num, $widget->widget);
+				} 
 
 				// Default pages links settings.
 				$pagesgroup = 10;
@@ -1203,5 +1172,53 @@ class CreateLayout
 		}
 		return $widget;
 	} // end of inherent_widgets function
+
+
+    /*
+     * Counts number of records of a query.
+     * 
+     * Is used in pagination. Try to make a 'rapid' converting
+     * a SELECT .... FROM in a SELECT count(*) FROM..
+     * 
+     * @PARAM string $sql Query.
+     */
+
+	private function records_num($sql){
+		global $db;
+		
+		if ( !preg_match('/^select(.*) from /Usi', $sql, $select) ){
+			return false;
+		}
+						   
+		if ( stripos($sql," GROUP BY ") ||  stripos($sql," LIMIT" )) {
+			// with GROUP or LIMIT clausule must do a query 
+			$db->get_results($sql);
+			$records_num= $db->num_rows;            
+		} else {
+			// try made a substituion of all select field with count(*)
+			
+			// Support DISTINCT selection
+			if ( preg_match('/^select DISTINCT(.*) from/Usi', $sql, $distinct) ){
+				$mysql_count = ' count(DISTINCT({$distinc[1]})) ';
+			}else{  
+				$mysql_count = ' count(*) ';
+			}
+			$new_sql = preg_replace (
+				"/^select.* from /Usi",
+				"SELECT $mysql_count FROM ",
+				$sql);
+			
+			// if there is a unique ORDER BY, try remove it.	
+			if ( substr_count($new_sql,"ORDER BY")==1){	
+				$new_sql = preg_replace(
+					'/ORDER BY(.*) (DESC|ASC)$/Usi', '', 
+					$new_sql);
+			}	 
+			$records_num = $db->get_var($new_sql);
+		}
+		return $records_num;		
+	}	
+
+
 
 } // end of CreateLayout Class
