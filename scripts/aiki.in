@@ -91,14 +91,14 @@ parseargs()
       	echo "Checking existing database users"
       	echo "********************************"
         if test "$(mysql -B -u @DB_SUPER_USER@ -p \
-          < @PKG_DATA_DIR@/system/sql/UserExists.sql \
+          < @PKG_DATA_DIR@/sql/UserExists.sql \
           | grep USER_EXISTS | awk '{print $2}')" == "TRUE"; then
           echo "Failed, the user @DB_USER@ already exists."
         else
       	  echo "************************************"
       	  echo "Attempting creation of database user"
       	  echo "************************************"
-          mysql -v -u @DB_SUPER_USER@ -p < @PKG_DATA_DIR@/system/sql/CreateUser.sql
+          mysql -v -u @DB_SUPER_USER@ -p < @PKG_DATA_DIR@/sql/CreateUser.sql
         fi
         exit $?
       };;
@@ -107,7 +107,7 @@ parseargs()
       	echo "************************************"
       	echo "Attempting deletion of database user"
       	echo "************************************"
-        mysql -B -v -u @DB_SUPER_USER@ -p < @PKG_DATA_DIR@/system/sql/DropUser.sql
+        mysql -B -v -u @DB_SUPER_USER@ -p < @PKG_DATA_DIR@/sql/DropUser.sql
         exit $?
       };;
       --create-db | -C)
@@ -116,10 +116,10 @@ parseargs()
       	echo "Attempting creation of database"
       	echo "*******************************"
       	mysql -B -u @DB_USER@ -p@DB_PASS@ \
-      	  < @PKG_DATA_DIR@/system/sql/CreateDatabase.sql \
-      	  && cat @PKG_DATA_DIR@/system/sql/CreateTables.sql \
-      	  @PKG_DATA_DIR@/system/sql/InsertDefaults.sql \
-      	  @PKG_DATA_DIR@/system/sql/InsertVariable.sql \
+      	  < @PKG_DATA_DIR@/sql/CreateDatabase.sql \
+      	  && cat @PKG_DATA_DIR@/sql/CreateTables.sql \
+      	  @PKG_DATA_DIR@/sql/InsertDefaults.sql \
+      	  @PKG_DATA_DIR@/sql/InsertVariable.sql \
       	  | mysql -B -u @DB_USER@ -p@DB_PASS@ @DB_NAME@ \
       	  && echo "Success"
         exit $?
@@ -129,7 +129,7 @@ parseargs()
       	echo "*******************************"
       	echo "Attempting deletion of database"
       	echo "*******************************"
-        mysql -B -v -u @DB_SUPER_USER@ -p < @PKG_DATA_DIR@/system/sql/DropDatabase.sql
+        mysql -B -v -u @DB_SUPER_USER@ -p < @PKG_DATA_DIR@/sql/DropDatabase.sql
         exit $?
       };;
       -u)

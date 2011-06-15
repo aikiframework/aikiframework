@@ -96,7 +96,7 @@ class records
 	}
 
 	public function insert_from_form_to_db($post, $form_id, $form_posted_id){
-		global $db, $aiki, $membership, $config, $system_folder;
+		global $db, $aiki, $membership, $config, $AIKI_ROOT_DIR;
 
 		if (!$form_posted_id){
 			return '';

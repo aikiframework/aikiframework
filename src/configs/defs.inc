@@ -29,9 +29,9 @@
 
 /* the following file should NOT exist
  * in a run-time installation distribution package */
-if (file_exists("$system_folder/configs/aiki-defs.php")) {
+if (file_exists("$AIKI_ROOT_DIR/configs/aiki-defs.php")) {
     /** @see aiki-defs.php */
-    require_once("$system_folder/configs/aiki-defs.php");
+    require_once("$AIKI_ROOT_DIR/configs/aiki-defs.php");
 }
 
 /** Aiki Framework Revision */

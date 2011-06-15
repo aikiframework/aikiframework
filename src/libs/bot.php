@@ -461,13 +461,13 @@ class bot
 	}
 
 	function auto_update_to_latest_aiki(){
-		global $system_folder, $db;
+		global $AIKI_ROOT_DIR, $db;
 
 		$output = '';
 		//create tables if one doesn't exists and check structure
-		$sql_create_tables = file_get_contents("$system_folder/system/sql/CreateTables.sql");
+		$sql_create_tables = file_get_contents("$AIKI_ROOT_DIR/sql/CreateTables.sql");
 		if (false == $sql_create_tables){
-			die("<br />FATAL: failed to read file -> $system_folder/system/sql/CreateTables.sql<br />");
+			die("<br />FATAL: failed to read file -> $AIKI_ROOT_DIR/sql/CreateTables.sql<br />");
 		}
 
 		define("SQL_DELIMIT",'-- ------------------------------------------------------');
@@ -511,9 +511,9 @@ class bot
 		}
 
 		//check for default values
-		$sql_insert_defaults = file_get_contents("$system_folder/system/sql/InsertDefaults.sql");
+		$sql_insert_defaults = file_get_contents("$AIKI_ROOT_DIR/sql/InsertDefaults.sql");
 		if (false == $sql_insert_defaults){
-			die("<br />FATAL: failed to read file -> $system_folder/system/sql/InsertDefaults.sql<br />");
+			die("<br />FATAL: failed to read file -> $AIKI_ROOT_DIR/sql/InsertDefaults.sql<br />");
 		}
 
 		$output .= "your aiki installation is now up to date using version ".AIKI_VERSION . "." . AIKI_REVISION;

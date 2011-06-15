@@ -130,7 +130,7 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 # For a breakdown of the licensing, see PACKAGE-LICENSING
 %doc ChangeLog README README.fedora LICENSE AUTHORS INSTALL VERSION PACKAGE-LICENSING
 # LGPLv2+
-%{_datadir}/%{name}/system/database/
+%{_datadir}/%{name}/libs/database/
 # (MIT or GPLv2) and (MIT or BSD or GPLv2+) and (ASL 2.0 or GPLv2+ or LGPLv2+)
 %{_datadir}/%{name}/assets/javascript/jquery/
 # GPLv2 and BSD and MPLv1.1
@@ -141,10 +141,10 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %{_datadir}/%{name}/%{name}.php
 %{_datadir}/%{name}/index.php
 %{_datadir}/%{name}/style.php
-%{_datadir}/%{name}/system/core.php
-%{_datadir}/%{name}/system/widgets.php
-%{_datadir}/%{name}/system/sql/
-%{_datadir}/%{name}/system/libraries/
+%{_datadir}/%{name}/libs/core.php
+%{_datadir}/%{name}/libs/widgets.php
+%{_datadir}/%{name}/sql/
+%{_datadir}/%{name}/libs/
 %{_datadir}/%{name}/assets/apps/
 %{_datadir}/%{name}/assets/extensions/
 %{_datadir}/%{name}/assets/images/

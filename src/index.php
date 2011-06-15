@@ -45,7 +45,7 @@ $html_cache_file = $aiki->output->from_cache();
 /**
  * @see widgets.php
  */
-require_once ("system/widgets.php");
+require_once ("libs/widgets.php");
 $layout = new CreateLayout();
 
 /**

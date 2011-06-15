@@ -19,8 +19,8 @@
  * 
  * IMPORTANT in between each pair of SQL statements there must
  * exist a comment line with a precise series of dashes.
- * These are delimiters used by system/libraries/installer.php
- * For more info see SQL_DELIMIT in system/libraries/installer.php.
+ * These are delimiters used by libs/installer.php
+ * For more info see SQL_DELIMIT in libs/installer.php.
  */
 
 CREATE TABLE IF NOT EXISTS aiki_config (

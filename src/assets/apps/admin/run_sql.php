@@ -33,7 +33,7 @@ if ($membership->permissions != "SystemGOD"){
 }
 
 /**
- * @see /src/system/database/index.php
+ * @see /src/libs/database/index.php
  */
 if (isset($_POST['sql_query'])){
 	$query = stripslashes($_POST['sql_query']);

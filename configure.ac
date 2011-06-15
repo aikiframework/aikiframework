@@ -548,16 +548,15 @@ AC_CONFIG_FILES([ \
   src/assets/javascript/plupload/Makefile \
   src/assets/javascript/plupload/img/Makefile \
   src/assets/uploads/Makefile \
-  src/system/Makefile \
-  src/system/database/Makefile \
-  src/system/libraries/Makefile \
-  src/system/sql/Makefile \
-  src/system/sql/UserExists.sql:src/system/sql/UserExists-in.sql \
-  src/system/sql/CreateUser.sql:src/system/sql/CreateUser-in.sql \
-  src/system/sql/CreateDatabase.sql:src/system/sql/CreateDatabase-in.sql \
-  src/system/sql/InsertVariable.sql:src/system/sql/InsertVariable-in.sql \
-  src/system/sql/DropUser.sql:src/system/sql/DropUser-in.sql \
-  src/system/sql/DropDatabase.sql:src/system/sql/DropDatabase-in.sql \
+  src/libs/database/Makefile \
+  src/libs/Makefile \
+  src/sql/Makefile \
+  src/sql/UserExists.sql:src/sql/UserExists-in.sql \
+  src/sql/CreateUser.sql:src/sql/CreateUser-in.sql \
+  src/sql/CreateDatabase.sql:src/sql/CreateDatabase-in.sql \
+  src/sql/InsertVariable.sql:src/sql/InsertVariable-in.sql \
+  src/sql/DropUser.sql:src/sql/DropUser-in.sql \
+  src/sql/DropDatabase.sql:src/sql/DropDatabase-in.sql \
   src/configs/aiki-defs.php:src/configs/aiki-defs.inc \
   src/configs/defs.php:src/configs/defs.inc \
   src/configs/z-aiki.conf:src/configs/z-aiki.in \

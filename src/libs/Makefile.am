@@ -17,42 +17,49 @@
 
 # Written by Steven Garcia
 
-# The sql files
-aiki_sql_files = \
-	CreateDatabase.sql \
-	CreateTables.sql \
-	CreateUser.sql \
-	DropDatabase.sql \
-	DropUser.sql \
-	InsertDefaults.sql \
-	InsertVariable.sql \
-	InsertVariable-in.sql \
-	UserExists.sql
+# The source files
+aiki_src_files = \
+	aiki_array.php \
+	aiki_curl.php \
+	openid.php \
+	bot.php \
+	errors.php \
+	forms.php \
+	image.php \
+	input.php \
+	installer.php \
+	languages.php \
+	membership.php \
+	message.php \
+	output.php \
+	parser.php \
+	php.php \
+	records.php \
+	security.php \
+	sql_markup.php \
+	text.php \
+	url.php \
+	wiki.php \
+	Log.php \
+	core.php \
+	widgets.php
 
-# Additional files to remove on dist-clean
-DISTCLEANFILES = \
-	CreateDatabase.sql \
-	CreateUser.sql \
-	DropDatabase.sql \
-	DropUser.sql \
-	InsertVariable.sql \
-	UserExists.sql
+# Subdirectories to be built
+SUBDIRS = \
+	database
+
+# Subdirectories to distribute
+DIST_SUBDIRS = \
+	database
 
 # Additional files to distribute
 EXTRA_DIST = \
-	CreateDatabase-in.sql \
-	CreateTables.sql \
-	CreateUser-in.sql \
-	DropDatabase-in.sql \
-	DropUser-in.sql \
-	InsertDefaults.sql \
-	InsertVariable-in.sql \
-	UserExists-in.sql
+	$(aiki_src_files)
 
 # The directory to put the files
-aiki_sqldir = \
-	$(pkgdatadir)/system/sql
+aiki_srcdir = \
+	$(pkgdatadir)/libs
 
-# The config data
-aiki_sql_DATA = \
-	$(aiki_sql_files)
+# The source data
+aiki_src_DATA = \
+	$(aiki_src_files)

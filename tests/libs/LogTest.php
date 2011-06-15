@@ -20,7 +20,7 @@
 /** define this for script access */
 define("IN_AIKI", TRUE);
 
-require_once("system/libraries/Log.php");
+require_once("libs/Log.php");
 
 /** To test protected properties and methods */
 class TestLog extends Log {

@@ -35,29 +35,29 @@ class aiki
      * from extensions, then finally  tries classname/classname.php.
      *
      * @param   string $class name of class to be loaded
-     * @global  string $system_folder the system folder
+     * @global  string $AIKI_ROOT_DIR the full path to the Aiki root directory
      * @return  mixed
      */
     public function load($class) {
-        global $system_folder;
+        global $AIKI_ROOT_DIR;
 
         if (isset($this->$class))
             return $this->$class;
 
 
-        if (file_exists($system_folder.'/system/libraries/'.$class.'.php'))
+        if (file_exists($AIKI_ROOT_DIR.'/libs/'.$class.'.php'))
         {
-            require_once($system_folder.'/system/libraries/'.$class.'.php');
+            require_once($AIKI_ROOT_DIR.'/libs/'.$class.'.php');
         }
-        elseif(file_exists($system_folder.'/assets/extensions/'.$class.'.php'))
+        elseif(file_exists($AIKI_ROOT_DIR.'/assets/extensions/'.$class.'.php'))
         {
-            require_once($system_folder.'/assets/extensions/'.$class.'.php');
+            require_once($AIKI_ROOT_DIR.'/assets/extensions/'.$class.'.php');
         } 
         elseif(file_exists(
-                $system_folder.'/assets/extensions/'.$class.'/'.$class.'.php'))
+                $AIKI_ROOT_DIR.'/assets/extensions/'.$class.'/'.$class.'.php'))
         {
             require_once(
-                $system_folder.'/assets/extensions/'.$class.'/'.$class.'.php');
+                $AIKI_ROOT_DIR.'/assets/extensions/'.$class.'/'.$class.'.php');
         } 
         else {
             return false;

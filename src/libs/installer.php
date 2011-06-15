@@ -20,20 +20,20 @@
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 /** @see defs.inc */
-require_once("$system_folder/configs/defs.php");
+require_once("$AIKI_ROOT_DIR/configs/defs.php");
     
 /* setting $config["log_level"] = "NONE" disables the log 
  * or "None" and "none". Also if the log_level is not valid
  * the log will default to disabled. */
 /** @see Log.php */
-require_once("$system_folder/system/libraries/Log.php");
+require_once("$AIKI_ROOT_DIR/libs/Log.php");
     
 /** Instantiate a new log for installer use
  * Log $log */
 $log = new Log(AIKI_LOG_DIR,
 			AIKI_LOG_FILE,
 			AIKI_LOG_LEVEL,
-			$system_folder);
+			$AIKI_ROOT_DIR);
 $log->message("Starting run-time installation", Log::INFO);
 
 echo '
@@ -243,14 +243,14 @@ Before we start you need the following:
 
 	$pageURL = "http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 	$page_strlen =  strlen($pageURL);
-	$system_folder_strlen =  strlen($system_folder);
+	$AIKI_ROOT_DIR_strlen =  strlen($AIKI_ROOT_DIR);
 	$_SERVER["REQUEST_URI"] = str_replace("index.php", '', $_SERVER["REQUEST_URI"]);
 
 	/* Read config from file. This way the configurations can be shared with the
 	 * other installers and it's much easier to maintain one PHP configuration file */
-	$config_file = file_get_contents("$system_folder/configs/config.php");
+	$config_file = file_get_contents("$AIKI_ROOT_DIR/configs/config.php");
 	if (false == $config_file){
-		die("<br />FATAL: failed to read file -> $system_folder/configs/config.php<br />");
+		die("<br />FATAL: failed to read file -> $AIKI_ROOT_DIR/configs/config.php<br />");
 	}
 	$config_file = str_replace("DB_TYPE","\"".$_POST['db_type']."\"",$config_file);
 	$config_file = str_replace("DB_NAME","\"".$_POST['db_name']."\"",$config_file);
@@ -279,7 +279,7 @@ Before we start you need the following:
 		}
 	}
 
-	$htaccess_file_path = "$system_folder/configs/htaccess.inc";
+	$htaccess_file_path = "$AIKI_ROOT_DIR/configs/htaccess.inc";
 	$htaccess_file = file_get_contents($htaccess_file_path);
 	if ( false == $htaccess_file )
 		die("<br />WARN: failed to read file $htaccess_file_path<br />");
@@ -293,7 +293,7 @@ Before we start you need the following:
 	$htaccess_file_html = nl2br($htaccess_file);
 
 	$config_file_name = "config.php";
-	$FileHandle = fopen($config_file_name, 'w') or die("<br />Sorry, no permissions to create config.php, please create it in <b>$system_folder</b> with the following: <br /><br />$config_file_html<hr /><br />also please add the following to .htaccess to enable pretty urls:<br /><br /><small>".$htaccess_file_html."</small>");
+	$FileHandle = fopen($config_file_name, 'w') or die("<br />Sorry, no permissions to create config.php, please create it in <b>$AIKI_ROOT_DIR</b> with the following: <br /><br />$config_file_html<hr /><br />also please add the following to .htaccess to enable pretty urls:<br /><br /><small>".$htaccess_file_html."</small>");
 	fwrite($FileHandle, $config_file);
 	fclose($FileHandle);
 
@@ -303,22 +303,22 @@ Before we start you need the following:
 	/* Read SQL from files. This way the SQL statements can be shared with the
 	 * other installers and it's much easier to maintain SQL scripts separately
 	 * using a SQL supported editor rather than the PHP escaped SQL statements */
-	$sql_create_tables = file_get_contents("$system_folder/system/sql/CreateTables.sql");
+	$sql_create_tables = file_get_contents("$AIKI_ROOT_DIR/sql/CreateTables.sql");
 	if (false == $sql_create_tables){
-		die("<br />FATAL: failed to read file -> $system_folder/system/sql/CreateTables.sql<br />");
+		die("<br />FATAL: failed to read file -> $AIKI_ROOT_DIR/sql/CreateTables.sql<br />");
 	}
-	$sql_insert_defaults = file_get_contents("$system_folder/system/sql/InsertDefaults.sql");
+	$sql_insert_defaults = file_get_contents("$AIKI_ROOT_DIR/sql/InsertDefaults.sql");
 	if (false == $sql_insert_defaults){
-		die("<br />FATAL: failed to read file -> $system_folder/system/sql/InsertDefaults.sql<br />");
+		die("<br />FATAL: failed to read file -> $AIKI_ROOT_DIR/sql/InsertDefaults.sql<br />");
 	}
-	$sql_insert_variable = file_get_contents("$system_folder/system/sql/InsertVariable-in.sql");
+	$sql_insert_variable = file_get_contents("$AIKI_ROOT_DIR/sql/InsertVariable-in.sql");
 	if (false == $sql_insert_variable){
-		die("<br />FATAL: failed to read file -> $system_folder/system/sql/InsertVariable-in.sql<br />");
+		die("<br />FATAL: failed to read file -> $AIKI_ROOT_DIR/sql/InsertVariable-in.sql<br />");
 	}
 	$sql_insert_variable = str_replace("@AIKI_SITE_URL_LEN@",$page_strlen,$sql_insert_variable);
 	$sql_insert_variable = str_replace("@AIKI_SITE_URL@",$pageURL,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@PKG_DATA_DIR_LEN@",$system_folder_strlen,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@PKG_DATA_DIR@",$system_folder,$sql_insert_variable);
+	$sql_insert_variable = str_replace("@PKG_DATA_DIR_LEN@",$AIKI_ROOT_DIR_strlen,$sql_insert_variable);
+	$sql_insert_variable = str_replace("@PKG_DATA_DIR@",$AIKI_ROOT_DIR,$sql_insert_variable);
 	$sql_insert_variable = str_replace("@ADMIN_USER@",$username,$sql_insert_variable);
 	$sql_insert_variable = str_replace("@ADMIN_NAME@",$full_name,$sql_insert_variable);
 	$sql_insert_variable = str_replace("@ADMIN_PASS@",$admin_password_md5_md5,$sql_insert_variable);

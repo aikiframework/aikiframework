@@ -27,13 +27,15 @@ aiki_src_files = \
 SUBDIRS = \
 	assets \
 	configs \
-	system
+	libs \
+	sql
 
 # Subdirectories to distribute
 DIST_SUBDIRS = \
 	assets \
 	configs \
-	system
+	libs \
+	sql
 
 # Additional files to remove on dist-clean
 DISTCLEANFILES = .htaccess

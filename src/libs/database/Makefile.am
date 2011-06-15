@@ -39,7 +39,7 @@ EXTRA_DIST = \
 
 # The directory to put the files
 aiki_srcdir = \
-	$(pkgdatadir)/system/database
+	$(pkgdatadir)/libs/database
 
 # The source data
 aiki_src_DATA = \

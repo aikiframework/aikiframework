@@ -44,7 +44,7 @@ if (!$username){
 
 
 if (isset($config["plupload_path"])){
-	$targetDir = $system_folder."/";
+	$targetDir = $AIKI_ROOT_DIR."/";
 	$targetDir .= $aiki->processVars($config["plupload_path"]);
 }else{
 	die("please configure upload_path in aiki settings");
