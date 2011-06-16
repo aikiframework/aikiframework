@@ -34,8 +34,13 @@ if (file_exists("$AIKI_ROOT_DIR/configs/aiki-defs.php")) {
     require_once("$AIKI_ROOT_DIR/configs/aiki-defs.php");
 }
 
+// **** Begin Automake generated constants **** //
+
 /** Aiki Framework Revision */
 define("AIKI_REVISION", "@REVISION@");
+
+/** Aiki Authors */
+define("AIKI_AUTHORS", '@AUTHORS@');
 
 /** Aiki Log Directory */
 define("AIKI_LOG_DIR", "@AIKI_LOG_DIR@");

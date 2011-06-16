@@ -464,6 +464,11 @@ AC_SUBST(GROUP)
 URL=[http://aikiframework.org]
 AC_SUBST(URL)
 
+# Include authors substitutions
+AUTHORS=$($SED '/^\#/d; /^\n*$/d; s/\ \ .\+//; s/\ \+/\&nbsp\;/g; s/$/\<br\/\>\\r\\n/g' ../AUTHORS | $TR -d '\n')
+AUTHORS_TITLES=$($SED '/^\#/d; /^\n*$/d; s/$/\\n/g; s/\ /\\\ /g; s/\//\\\//g' ../AUTHORS | $TR -d '\n')
+AC_SUBST(AUTHORS,$AUTHORS)
+
 # list standard directories
 VAR_LIST_ADD prefix $prefix
 VAR_LIST_ADD docdir $docdir
@@ -591,3 +596,7 @@ AC_OUTPUT
 
 # print a summary of the enabled features, packages and requirements
 PRINT_CONFIG_SUMMARY
+
+# substitute the authors and title from the AUTHORS file into the man page
+$SED "s/@AUTHORS_TITLES@/$AUTHORS_TITLES/" man/aiki.1 > man/aiki.tmp \
+&& $MV man/aiki.tmp man/aiki.1
