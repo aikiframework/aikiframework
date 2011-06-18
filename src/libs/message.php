@@ -16,7 +16,7 @@
  * @package     Library
  * @filesource
  *
- * BriefDescription
+ * A class to handle formatting and output of messages.
  *
  * This small module wants to be an attempt to unify all outbound
  * messages from the application. Provides a function called 'message'
@@ -44,60 +44,84 @@
  *
  */
 
-
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
-/*
- * function message
+/**
+ *  Show or return a message.
  *
- * draft horse of module. Show or return a message.
- *
- * @param $text : text to show. Will be translated if there is a
- *                 t (translate) function or is working $aiki->languages
- * @param $attribs (optional=NULL): array of html atributes (id,class, style,onmouse)..
- * @param echo  ($option=false) true, echo the result, and false return it.
+ * @param   string  $text text to show. Will be translated if there is a
+ *                  t (translate) function or is working $aiki->languages
+ * @param	array	$attribs (optional=NULL) array of html atributes i
+ *					(id,class, style,onmouse)..
+ * @param	bool	$echo ($option=false) true, echo the result, and false 
+ *					return it.
+ * @global	aiki	$aiki	global aiki instance
  */
+function message($text, $attribs=NULL, $echo = true) 
+{
+	global $aiki;
 
-
-function message($text,$attribs=NULL, $echo = true) {
-        global $aiki;
-
-        if ( !isset($aiki) and !isset($attribs) ){
-            // when there isn't aiki object and not attributes are provides, assumes error.
-            $attribs['style']="background-color:#F8F8FF;color:#c00;font-weight:bold;padding:4px 6px;";
-        }
-
-        $tag  = ( isset($attribs["tag"]) ? $attribs["tag"] : "div");
-        $cRet = "<$tag";
-        if (is_array($attribs)) {
-           foreach ( $attribs as $k=>$v) {
-                if( $k !="tag"){
-                    $cRet .= " $k='$v' ";
-                }
-           }
-        }
-        if ( function_exists("t")) {
-           $text= t($text);
-        } elseif ( isset( $aiki->languages) ){
-           $text= $aiki->languages->L10n($text);
-        }
-        $cRet .= ">". $text. "</$tag>";
-        if ( !$echo ) {
-           return $cRet;
-        }
-        echo $cRet;
+	// when there isn't aiki object and not attributes are provides, 
+	// assumes error.
+	if ( !isset($aiki) and !isset($attribs) )
+	{
+		$attribs['style'] = 
+		"background-color:#F8F8FF;color:#c00;font-weight:bold;padding:4px 6px;";
     }
 
+	$tag  = ( isset($attribs["tag"]) ? $attribs["tag"] : "div");
+	$cRet = "<$tag";
+    if (is_array($attribs)) 
+	{
+		foreach ( $attribs as $k=>$v) 
+		{
+			if( $k !="tag")
+				$cRet .= " $k='$v' ";
+        }
+    }
+    if ( function_exists("t")) 
+	{
+		$text= t($text);
+    } elseif ( isset( $aiki->languages) )
+	{
+		$text= $aiki->languages->L10n($text);
+    }
+    $cRet .= ">". $text. "</$tag>";
 
-class message {
+    if ( !$echo )
+       return $cRet;
+    echo $cRet;
+}
+
+/**
+ * Class for handling messages storage, unstorage and some simple courtesies
+ */
+class message 
+{
+	/** 
+	 * @var	string
+	 */
     private $stored;
 
-    function __construct(){
+	/**
+	 * Constructor setup
+	 */
+    function __construct()
+	{
         $this->stored=array();
     }
 
-    function store($message, $key="", $add=true){
-        if ( $key==""){
+	/**
+	 * Store a message.
+	 *
+	 * @param	string	$message	message for output
+	 * @param	string	$key		key for storing
+	 * @return	string
+	 */
+    function store($message, $key="", $add=true)
+	{
+		if ( $key=="")
+		{
             $this->stored[]= array($message);
             return end($this->stored);
         } elseif ( $add===false ) {
@@ -106,41 +130,66 @@ class message {
         } elseif ( $add===true ) {
             $this->stored[$key][]= $message;
             return $key;
-         } else {
+        } else {
             $this->stored[$key][$add]= $message;
         }
     }
 
-    function unstore( $key="*", $echo = false, $clear= true, $glue="\n"){
+	
+	/**
+	 * Unstore a message by echoing it or returning.
+	 * 
+	 * @param	string	$key	key for storage
+	 * @param	bool	$echo	echo or do not echo
+	 * @param	bool	$clear	clear out of storage or keep stored
+	 * @param	string	$glue	glue for end of line output 
+	 * @return	mixed
+	 */
+    function unstore( $key="*", $echo = false, $clear= true, $glue="\n")
+	{
         $ret="";
-        if ( $key=="*" ) {
+        if ( $key=="*" ) 
+		{
            $ret="";
-           foreach ( $this->stored as $k=>$v){
+           foreach ( $this->stored as $k=>$v)
+		   {
                 $ret.= implode($glue,$v);
            }
-           if ( $clear) {
+           if ( $clear) 
+		   {
                $this->stored= array();
            }
         } else {
-            if ( isset($this->stored[$key]) ) {
+            if ( isset($this->stored[$key]) ) 
+			{
                 $ret= implode($glue,$this->stored[$key]);
                 if ( $clear ){
                    unset($this->stored[$key]);
                 }
             }
         }
-        if ($echo){
+        if ($echo)
            echo $ret;
-        }
+
         return $ret;
     }
 
-
-    function order($key, $order="asc"){
-        if ( !isset($this->stored[$key]) ) {
+	
+	/**
+	 * Order the stored messages and let us know if successful or failed.
+	 * 
+	 * @param	string	$key	key for stored message
+	 * @param	string	$order	the type of sort order
+	 * @return	bool
+	 */
+    function order($key, $order="asc")
+	{
+        if ( !isset($this->stored[$key]) ) 
+		{
             return false;
         }
-        switch ( strtolower($order) ){
+        switch ( strtolower($order) )
+		{
             case "asc"         : ksort($this->stored[$key])  ; break;
             case "desc"        : krsort($this->stored[$key]) ; break;
             case "asc-values"  : asort($this->stored[$key])  ; break;
@@ -151,93 +200,205 @@ class message {
         return true;
     }
 
-    function set($key,$message){
+	/**
+	 * Set and store a message
+	 * 
+	 * @param	string	$key
+	 * @param	string	$message
+	 */
+    function set($key,$message)
+	{
         return $this->store($message,$key, false);
     }
 
-    function add($key,$message,$order=false){
+	/**
+	 * Add a message to the stack
+	 * 
+	 * @param	string	$key		key for storage
+	 * @param	string	$message	message
+	 * @param	bool	$order		order or don't order the entry
+	 */
+    function add($key,$message,$order=false)
+	{
         return $this->store($message,$key, ( $order===false ? true: $order) );
     }
 
-    function get($key, $glue="ul" ){
-        if ( !isset($this->stored[$key]) ){
+	/**
+	 * Get a message by key.
+	 *
+	 * @param	string	$key	key to get message out of storage
+	 * @param	string	$glue	glue for formatting the message
+	 * @return	string
+	 */
+    function get($key, $glue="ul" )
+	{
+        if ( !isset($this->stored[$key]) )
+		{
           return ( $glue=="as array"? array() : "" );
         }
 
         $tag= array();;
-        if ( preg_match('#^<([^ />]*) ?[^>]*>$#s',$glue,$tag) ){
+        if ( preg_match('#^<([^ />]*) ?[^>]*>$#s',$glue,$tag) )
+		{
             // it's a HTML tag
             $tag= $tag[1];
             echo "*** $tag ***";
-            switch ( $tag ){
+            switch ( $tag )
+			{
                 case "ul":
-                case "ol": return "$glue<li>". implode("</li><li>", $this->stored[$key]) ."</li></$tag>";
+                case "ol": return "$glue<li>". implode("</li><li>", 
+						   $this->stored[$key]) ."</li></$tag>";
                 case "br": return implode($glue, $this->stored[$key]);
-                default  : return "$glue". implode("</$tag>$glue", $this->stored[$key]) ."</$tag>";
+                default  : return "$glue". implode("</$tag>$glue", 
+						   $this->stored[$key]) ."</$tag>";
             }
         }
 
-        switch ($glue){
+        switch ($glue)
+		{
             case "as array": return $this->stored[$key];
-            case "comment-list": return "<!-- ". implode(", ", $this->stored[$key]) ."-->";
-            case "li": return "<li>". implode("</li><li>", $this->stored[$key]) ."</li>";
+            case "comment-list": 
+				return "<!-- ". implode(", ", $this->stored[$key]) ."-->";
+            case "li": return "<li>". implode("</li><li>", 
+					   $this->stored[$key]) ."</li>";
             case "ol":
-            case "ul": return "<$glue><li>". implode("</li><li>", $this->stored[$key]) ."</li></$glue>";
+            case "ul": return "<$glue><li>". implode("</li><li>", 
+					   $this->stored[$key]) ."</li></$glue>";
             default  : return implode($glue, $this->stored[$key]);
         }
         return "";
     }
 
-    function show($key, $glue){
+	/**
+	 * Echo a stored message.
+	 *
+	 * @param	string	$key	key for storage
+	 * @param	string	$glue	your own glue
+	 */
+    function show($key, $glue)
+	{
         echo $this->get($key,$glue);
     }
 
-    function last($key){
-        if ( isset($this->stored[$key]) ){
+	/**
+	 * Return the last stored message on the stack or return false.
+	 * @param	string	$key	key for stored message
+	 * @return	mixed
+	 */
+    function last($key)
+	{
+        if ( isset($this->stored[$key]) )
+		{
             return end($this->stored[$key]);
         }
         return false;
     }
 
-    function first($key){
-        if ( isset($this->stored[$key]) ){
+	/**
+	 * Return the first stored message on the stack or return false.
+	 *
+	 * @param	string	$key	key for stored message
+	 * @return	mixed
+	 */
+    function first($key)
+	{
+        if ( isset($this->stored[$key]) )
+		{
             return reset($this->stored[$key]);
         }
         return false;
     }
 
 
-    //shortcuts for login error
-    function set_login_error($error){
-        $this->store( $this->error($error, array("id"=>"login-wrong-username"),false),"error-in-login");
+    // shortcuts for login error
+
+	/**
+	 * Set a login error
+	 * 
+	 * @param	string	$error
+	 */
+    function set_login_error($error)
+	{
+        $this->store( $this->error($error, array("id"=>"login-wrong-username"),
+			false),"error-in-login");
     }
 
-    function get_login_error(){
+	/**
+	 * Return a login error.
+	 * 
+	 * @return	mixed
+	 */
+    function get_login_error()
+	{
         return $this->unstore( "error-in-login",false,false);
     }
 
-    private function Addclass ( $default, &$attribs ){
-        return $default . (isset($attribs['class']) ? " ". $attribs['class'] : "" );
+	/**
+	 * Add a class to the message
+	 *
+	 * @param	string	$default	default class name
+	 * @param	array	$attribs	the attributes array
+	 * @return	string
+	 */
+    private function Addclass ( $default, &$attribs )
+	{
+        return $default . 
+			(isset($attribs['class']) ? " ". $attribs['class'] : "" );
     }
 
-    function error( $text, $attribs=NULL, $echo = true){
+	/**
+	 * Return an error message or output it.
+	 * 
+	 * @param	string	$text		the text of the message
+	 * @param	array	$attribs	attributes for the message
+	 * @param	bool	$echo		echo or don't echo
+	 * @return	mixed
+	 */
+    function error( $text, $attribs=NULL, $echo = true)
+	{
        $attribs['class']=  $this->addclass('message-error', $attribs );
        return message( $text,$attribs,$echo);
     }
 
-    function warning( $text, $attribs=NULL, $echo = true){
+	/**
+	 * Return a warning message or output it.
+	 *
+	 * @param	string	$text		the text of the message
+	 * @param	array	$attribs	attributes for the message
+	 * @param	bool	$echo		echo or don't echo
+	 * @return	mixed
+	 */
+    function warning( $text, $attribs=NULL, $echo = true)
+	{
        $attribs['class']=  $this->addclass('message-warning', $attribs );
        return message( $text,$attribs,$echo);
     }
 
-    function ok( $text, $attribs=NULL, $echo = true){
+	/**
+	 * Return an ok message or output it.
+	 *
+	 * @param	string	$text		the text of the message
+	 * @param	array	$attribs	attributes for the message
+	 * @param	bool	$echo		echo or don't echo
+	 * @return	mixed
+	 */
+    function ok( $text, $attribs=NULL, $echo = true)
+	{
        $attribs['class']=  $this->addclass('message-ok', $attribs );
        return message( $text,$attribs,$echo);
     }
 
+	/**
+	 * Return a general message or output it.
+	 *
+	 * @param	string	$text		the text of the message
+	 * @param	array	$attribs	attributes for the message
+	 * @param	bool	$echo		echo or don't echo
+	 * @return	mixed
+	 */
     function general($text,$attribs=NULL, $echo = true) {
        $attribs['class']=  $this->addclass('message', $attribs );
        return message( $text,$attribs,$echo);
     }
 
-}
+} // end of message class
