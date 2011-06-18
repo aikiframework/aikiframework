@@ -22,12 +22,10 @@ aiki_src_files = \
 	aiki.js
 
 # Subdirectories to be built
-SUBDIRS = \
-	aiki
+SUBDIRS = 
 
 # Subdirectories to distribute
-DIST_SUBDIRS = \
-	aiki
+DIST_SUBDIRS = 
 
 # Additional files to distribute
 EXTRA_DIST = \
