@@ -56,6 +56,36 @@ define("AIKI_LOG_LEVEL", "@AIKI_LOG_LEVEL@");
 
 // **** Begin non-generated constants **** //
 
+/** Aiki directory that stores the backup files used to revert from update */
+define("AIKI_BACKUP_DIR", "backups");
+
+/** Aiki directory that stores the update scripts */
+define("AIKI_UPDATE_DIR", "updates");
+
+/** Aiki Update URL with update information and requirements */
+define("AIKI_UPDATE_URL", "http://aikiframework.org/files/update");
+
+/** Whether or not to check for update after admin login */
+define("AIKI_UPDATE_CHECK", true);
+
+/** Aiki Update URL to the update package excluding filename */
+define("AIKI_UPDATE_PATH", "http://aikiframework.org/files/");
+
+/** First part of the update package filename excluding version and extension */
+define("AIKI_UPDATE_PREFIX", "aiki-src-");
+
+/** Last part of the update package filename indicating file format */
+define("AIKI_UPDATE_EXT", ".zip");
+
+/** Retry to download or validate the downloaded update package
+ * this number of times if failed. Do NOT put the following value in quotes. */
+define("AIKI_UPDATE_RETRY", 3);
+
+/** Whether or not this update involves changes to the Aiki
+ *  configuration (aiki_config table, config.php or .htaccess) 
+ *  Do NOT put the following value (TRUE or FALSE) in quotes. */
+define("AIKI_UPDATE_CONFIG", false);
+
 /* the following error related constants
  * are built-in on newer versions of PHP */
 if (!defined("E_RECOVERABLE_ERROR")) {
