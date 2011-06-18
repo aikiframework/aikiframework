@@ -93,7 +93,7 @@ class CreateLayout
 		global $db, $site, $aiki, $url, $errors;
 
 		// Convert global_values to an object to cache the SOL results in parsDBpars function.
-		$this->global_values=new stdClass();
+		$this->global_values = new stdClass();
 
 		if (isset($_GET["widget"])){
 

@@ -487,3 +487,5 @@ private function sql($sql)
 }
 
 } // end of class
+// need the close php tag in this class
+?>
