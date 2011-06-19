@@ -678,8 +678,8 @@ $().ready(function() {
 		   log_view();
 	   });
 	   	   
-	    $("<li><a href='#' id='open_events_listener'>Events Listener</a></li>").appendTo("#main-navigation");
-		$("<div id='events_output' title='Events Listener'></div>").appendTo("#header");
+	    $("<li><a href='#' id='open_events_listener'>Events</a></li>").appendTo("#main-navigation");
+		$("<div id='events_output' title='Events'></div>").appendTo("#header");
 		$("#events_output").load("assets/apps/admin/events.php");
 		$("#events_output").dialog({width: 420, autoOpen: false});
 		
