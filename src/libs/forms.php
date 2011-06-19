@@ -24,18 +24,21 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  *
  * @category    Aiki
  * @package     Library
+ *
+ * @todo        rename this class to Forms
+ * @todo        redo this entire class!
  */
 class forms
 {
 	/**
 	 * keeps track of the value of the Submit button in forms
-	 * @global string $submit_button
+	 * @var     string
 	 */
 	public $submit_button;
 	
 	/**
 	 * specifies the edit type of the form, e.g. 'save'
-	 * @global string $edit_type
+	 * @var      string
 	 */
 	public $edit_type;
 	
@@ -50,18 +53,18 @@ class forms
      * @global  array $aiki The global aiki object
      * @return  string
      */
-
-	public function displayForms($text){
+	public function displayForms($text)
+    {
 		global $db, $aiki;
 		
 		//match all forms as (#(form : action : id)#)
 
-		if ( preg_match_all("/\(\#\(form\:(.*)\)\#\)/Us", $text, $forms)){
-
-			foreach ($forms['1'] as $form_data){
-
-				if ($form_data){
-
+		if ( preg_match_all("/\(\#\(form\:(.*)\)\#\)/Us", $text, $forms))
+        {
+			foreach ($forms['1'] as $form_data)
+            {
+				if ($form_data)
+                {
 					$form_output = '';
 
 					$form_sides = explode(":", $form_data);
@@ -178,8 +181,8 @@ $("#new_record_form").ajaxForm(function() {
      * @global  array $aiki The global config object
      * @return  string
      */
-
-	public function createForm ($form, $form_array, $record_id=""){
+	public function createForm ($form, $form_array, $record_id="")
+    {
 		global $db, $membership, $aiki, $config;
 
 
@@ -249,10 +252,12 @@ $("#new_record_form").ajaxForm(function() {
 			$form .= "<div class='$intwalker[0] field'>";
 
 			if (isset($form_data) and isset($form_data->$intwalker[0])){
-				//To stop the L10n Function
-				//TODO: apply such function to stop other types of aiki markup check input.php line 29
-				//instead preg_matching forms
-
+				/**
+                 * To stop the L10n Function
+				 * @TODO: apply such function to stop other types of aiki 
+                 * markup check input.php line 29
+				 * instead preg_matching forms
+                 */
 				$form_data->$intwalker[0] = str_replace("_", "&#95;", $form_data->$intwalker[0]);
 			}
 
@@ -584,8 +589,9 @@ $(function() {
 			return $form;
 		}
 
-	}
+	} // end of createForm function
 	
+
 	/**
      * Generate a form that will insert a new record into the database.
 	 *
@@ -596,8 +602,8 @@ $(function() {
      * @global array $membership The global membership object
 	 * @return string
 	 */
-
-	public function create_insert_form(&$form, $form_array ){
+	public function create_insert_form(&$form, $form_array )
+    {
 		global $db, $aiki, $membership;
 
 		$formOutput = '';
@@ -615,11 +621,11 @@ $(function() {
 			
             $formOutput = $this->createForm ($form, $form_array);
 		}
-
 		return $formOutput;
 
 	}
 	
+
 	/**
      * Generate a form that will update a record in the database.
 	 *
@@ -629,8 +635,8 @@ $(function() {
      * @global array $aiki The global aiki object
 	 * @return string
 	 */
-
-	public function create_update_form(&$form, $form_array, $record_id){
+	public function create_update_form(&$form, $form_array, $record_id)
+    {
 		global $aiki;
 
 		$formOutput = '';
@@ -666,12 +672,11 @@ $(function() {
 			$formOutput = $this->createForm ($form, $form_array, $record_id);
 
 		}
-
 		return $formOutput;
-
 
 	}
 	
+
 	/**
      * Fills the form with the specified values.
 	 *
@@ -681,8 +686,8 @@ $(function() {
      * @global array $aiki The global aiki object
 	 * @return string
 	 */
-
-	public function fill_form($html, $sql){
+	public function fill_form($html, $sql)
+    {
 		global $db, $aiki;
 
 		$viewrow = $db->get_row($sql);
@@ -710,13 +715,10 @@ $(function() {
 
 		}
 
-
-
-
 		$get_text_areas = preg_match_all("|<textarea[^>]+>(.*)</textarea+>|Us",$html, $input_matchs );
 
-		foreach($input_matchs[0] as $input){
-
+		foreach($input_matchs[0] as $input)
+        {
 			$name = $aiki->get_string_between($input, 'name="', '"');
 
 			if (in_array($name, $arraykeys)){
@@ -725,9 +727,9 @@ $(function() {
 			}
 
 		}
-
 		return $html;
-	}
+	} // end of fill_form function
+
 
 	/**
      * Generates a form automatically from a given table.
@@ -736,8 +738,8 @@ $(function() {
      * @global array $aiki The global aiki object
      * @global array $db The global database object
 	 */
-
-	public function auto_generate($table){
+	public function auto_generate($table)
+    {
 		global $aiki, $db;
 
 		$table = addslashes($table);
@@ -798,7 +800,6 @@ $(function() {
 			echo "Form for db table: <b>$table</b> created successfully";
 		}
 
+	} // end of auto_generate function
 
-	}
-
-}
+} // end of Forms class

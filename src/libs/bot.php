@@ -28,11 +28,16 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  *
  * @todo        rename class to Bot
  * 
- * @todo implement these removed methods:
- *		public function import_javascript;
- *		public function import_image;
- *		public function create_mockup_from_psd;
- *		public function create_mockup_from_svg;
+ * @todo		implement these removed methods:
+ *				* public function import_javascript;
+ *				* public function import_image;
+ *				* public function create_mockup_from_psd;
+ *				* public function create_mockup_from_svg;
+ * 
+ * @todo	this code needs review, this is a misc. class, should consider
+ *			changing to import.php and split out the debug code into debug.php
+ * @todo	another consideration is that this is an extension and not in the
+ *			aiki core
  */
 class bot
 {

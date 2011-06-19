@@ -15,6 +15,8 @@
  * @category    Aiki
  * @package     Library
  * @filesource
+ *
+ * @todo        look at modularizing the installer for maintainability
  */
 
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
