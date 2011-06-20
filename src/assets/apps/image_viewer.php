@@ -15,6 +15,8 @@
  * @category    Aiki
  * @package     Apps
  * @filesource
+ *
+ * @todo		break this code into smaller pieces
  */
 
 error_reporting(0);
@@ -22,25 +24,21 @@ error_reporting(0);
 
 /**
  * @global string $id the name of the image
- * @name $id
  */
 $id = $_GET['id'];
 
 /**
  * @global int $size grabs the size of the file
- * @name $size
  */
 $size = $_GET['size'];
 
-if (isset($_GET['mode'])){
+if (isset($_GET['mode']))
 	$mode = $_GET['mode'];
-}else{
+else
 	$mode = '';
-}
 
 /**
  * @global string $ext isolates the extension of the filename
- * @name $ext 
  */
 $ext = substr($id, strrpos($id, '.') + 1);
 
@@ -49,14 +47,14 @@ $ext = substr($id, strrpos($id, '.') + 1);
  */
 $ext = strtolower($ext);
 
-if ($ext == "jpeg"){
+if ($ext == "jpeg")
 	$ext = "jpg";
-}
 
 /**
  * Compares isolated file extension & generates appropriate content-type
  */
-switch ($ext){
+switch ($ext)
+{
 	case "svg":
 		header('Content-Type: image/svg+xml');
 		break;
@@ -72,21 +70,20 @@ switch ($ext){
 	default:
 		header('content-type: image/jpeg');
 		break;
-
 }
 
 /**
  * Case to check if file is displayable, by default, or if additional processing is needed
  */
-switch ($mode){
+switch ($mode)
+{
 	case "svg_to_png":
 		$ext = "svg";
 		break;
 
 	default:
-		if ($mode){
+		if ($mode)
 			$hard_full_path = $mode;
-		}
 		break;
 }
 
@@ -107,20 +104,25 @@ $default_photo_module = $config['default_photo_module'];
 /**
  * If a filename has been pulled, process it
  */
-if ($id){
-	
-	if (!isset($hard_full_path)){
+if ($id)
+{
+	if (!isset($hard_full_path))
+	{
 		/**
 		 * Ensure the extension is a displayable file type
+		 *
+		 * @todo extract hardcoded default to the top of the document
 		 */
-		if (!preg_match('/jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG/i', $id)){
+		if (!preg_match('/jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG/i', $id))
+		{
 
 			$image = $db->get_row("SELECT filename, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where id='$id'");
 			$id = $image->filename;
 
-		}else{
+		} else {
 			$file = $id;
-			switch ($mode){
+			switch ($mode)
+			{
 				case "svg_to_png":
 					$file = str_replace(".png", ".svg", $file);
 					break;
@@ -129,12 +131,11 @@ if ($id){
 			$image = $db->get_row("SELECT id, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where filename='$file'");
 		}
 		
-	}else{
+	} else {
 		
 		$image =  new stdClass();
-		if (!isset($hard_full_path) or !$hard_full_path){
+		if (!isset($hard_full_path) or !$hard_full_path)
 			$hard_full_path = '';
-		}
 
 		$image->full_path = $hard_full_path."/";
 		$image->filename = $id;
@@ -142,13 +143,13 @@ if ($id){
 		$image->watermark = '';
 		$image->available_sizes = '';
 		$hard_image = true;
-		
 	}
 	
 	/**
 	 * If a row has been pulled from the db describing an image, handle it
 	 */
-	if ($image){
+	if ($image)
+	{
 		/**
 		 * Begin constructing the URL
 		 */
@@ -159,32 +160,31 @@ if ($id){
 		/**
 		 * Sets default size, if no size specified
 		 */
-		if ($config['max_res'] and !$size){
+		if ($config['max_res'] and !$size)
 			$size = $config['max_res'];
-		}
 
-		if ($size == '_'){
+		if ($size == '_')
 			$size = '';
-		}
 
 		/**
 		 * If file is svg, rename to png
 		 */
-		if ($ext == "svg"){
-
-			switch ($mode){
+		if ($ext == "svg")
+		{
+			switch ($mode)
+			{
 				case "svg_to_png":
-					$original_filename = str_replace(".png", ".svg", $original_filename );
+					$original_filename = 
+						str_replace(".png", ".svg", $original_filename );
 					break;
 			}
 
-
-
-			if ($size){
+			if ($size)
+			{
 				$size = str_replace('px', '', $size);
 
-
-				switch ($mode){
+				switch ($mode)
+				{
 					case "svg_to_png":
 
 						if(file_exists($get_root.$image->full_path."$size"."px-".$id)){
@@ -250,43 +250,38 @@ if ($id){
 						break;
 				}
 
-
-
-
-
-
-
 			}else{
 				echo $svgfile;
 			}
 
-		}else{
+		} else {
 			$resize_filename = $get_root.$image->full_path.$size."px-".$id;
 
+			if ($image->watermark and 
+				!$size and 
+				file_exists($original_filename))
+			{
+				$original_filename = 
+					$aiki->image->display_watermarked_image($original_filename,
+						$image->watermark, $image->no_watermark_under);
 
-
-			if ($image->watermark and !$size and file_exists($original_filename)){
-
-				$original_filename = $aiki->image->display_watermarked_image($original_filename, $image->watermark, $image->no_watermark_under);
-
-			}elseif ($image->watermark and $size and file_exists($resize_filename)){
-
-				$original_filename = $aiki->image->display_watermarked_image($resize_filename, $image->watermark, $image->no_watermark_under);
-
+			} elseif ($image->watermark and $size and 
+					  file_exists($resize_filename))
+			{
+				$original_filename = 
+					$aiki->image->display_watermarked_image($resize_filename, 
+						$image->watermark, $image->no_watermark_under);
 			}
 
-			if ($size){
+			if ($size)
 				$req_filename = $resize_filename;
-			}else{
+			else
 				$req_filename = $original_filename;
-			}
 
-
-
-			if (file_exists($req_filename)){
-
-				switch ($ext){
-
+			if (file_exists($req_filename))
+			{
+				switch ($ext)
+				{
 					case "png":
 
 						$final_image = imagecreatefrompng($req_filename);
@@ -294,7 +289,6 @@ if ($id){
 						imagealphablending($final_image, false);
 						imagesavealpha($final_image, true);
 							
-
 						imagepng($final_image);
 						imagedestroy($final_image);
 
@@ -305,24 +299,24 @@ if ($id){
 						imagejpeg($final_image);
 						imagedestroy($final_image);
 						break;
-
-
 				}
 
 
 
-			}elseif(file_exists($original_filename)){
-
+			} elseif(file_exists($original_filename))
+			{
 				$aiki->image->imageresize($get_root.$image->full_path,$id,$size,$size."px-");
 
-				if (file_exists($req_filename)){
-
+				if (file_exists($req_filename))
+				{
 					$image->available_sizes = $image->available_sizes."$size".'px|';
-					if (!isset($hard_image)){
+					if (!isset($hard_image))
+					{
 						$update_sizes = $db->query("UPDATE $default_photo_module set available_sizes = '$image->available_sizes' where id = '$image->id'");
 					}
 
-					switch ($ext){
+					switch ($ext)
+					{
 						case "png":
 							$final_image = imagecreatefrompng($req_filename);
 							imagealphablending($final_image, false);
@@ -336,10 +330,7 @@ if ($id){
 							imagejpeg($final_image);
 							imagedestroy($final_image);
 							break;
-
 					}
-
-
 
 				}
 			}

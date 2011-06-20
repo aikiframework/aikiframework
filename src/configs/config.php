@@ -14,7 +14,7 @@
  * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
  * @link        http://aikiframework.org
  * @category    Aiki
- * @package     Aiki
+ * @package     Configs
  * @filesource */
 
 /** @see defs.php */

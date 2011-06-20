@@ -13,7 +13,7 @@
  * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
  * @link        http://www.aikiframework.org
  * @category    Aiki
- * @package     System
+ * @package     Library
  * @filesource
  */
 
