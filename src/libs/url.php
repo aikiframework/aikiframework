@@ -17,6 +17,7 @@
  * @filesource
  */
 
+
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
@@ -31,15 +32,14 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 class url
 {
     /**
+     * Array in url parts (/user/details/212 will be [0]=>user,[1]=>details and [2]=>212
+     * 
      * @var string 
      * @access public
      */
 	public $url;
-    /**
-     * @var bool
-     * @access public
-     */
-	public $create_widget;
+	public $pretty;
+  
     /**
      * @var integer
      * @access public
@@ -49,25 +49,23 @@ class url
 	/**
 	 * Sets up the url for further processing.
 	 */
-	public function url()
-	{
+	public function url(){
 		/**
-		 * @todo trace to find our what happens if not pretty url
+		 * 
+		 * url procces requests transformed by .htaccess by this rule:
+		 * RewriteRule ^(.*)$ index.php?pretty=$1 [L,QSA]
+		 * 
+		 * So, in homepage (direct index.php)) 'pretty' doesn't exist, 		
+		 * 
 		 */
-		if (isset($_GET["pretty"]))
-			$this->url = $_GET["pretty"];
-
-		$this->url = str_replace("|", "/", $this->url);
-
-		$this->url = explode("/", $this->url);
-
-		/**
-		 * @todo find and remove this homepage option. if anything should
-		 * be an option acros the codebase, but consolidated into configs.
-		 */
-		if (!$this->url[0])
-			$this->url[0] = 'homepage';
-
+		if (isset($_GET["pretty"]) and $_GET["pretty"]) { 
+			$this->pretty=$_GET["pretty"];
+			$this->url = explode("/", str_replace("|", "/", $this->pretty) );
+		} else {
+			$this->url[0]="homepage";
+			$this->pretty="";
+		}	
+	
 		$this->url_count = count($this->url);
 	}
 
@@ -78,11 +76,8 @@ class url
 	 * @param array $query a constructed query
 	 * @return arry
 	 */
-	public function apply_url_on_query($query)
-	{
-		$count = preg_match_all( '/\(\!\((.*)\)\!\)/U', $query, $matches );
-
-		if ($count > 0){
+	public function apply_url_on_query($query)	{
+		if (  preg_match_all( '/\(\!\((.*)\)\!\)/U', $query, $matches ) ){
 			foreach ($matches[1] as $parsed){
 				$query = @str_replace("(!($parsed)!)", $this->url[$parsed], 
 									  $query);
@@ -109,64 +104,36 @@ class url
 		return $text;
 	}
 
-	/**
-	 * Decide if widget should be displayed if set to match a url.
-	 *
-	 * @param array $widget
-	 */
-	public function widget_if_match_url($widget)
-	{
+
+    /**
+     * match a list of displays_url against actual url.
+     * @return boolean 
+     */
+
+	public function match($displayString){
+		if ( $displayString ) {	
 			
-		$do_not_display_widget = '';
-		$display_widget = '';
+			foreach ( explode("|",$displayString) as $displayUrl) {
+				if (!$displayUrl) {
+					continue;
+				}			
+				
+				if ( $displayUrl=="*" 
+					 || ( $this->pretty =='' && $displayUrl=='homepage')
+					 || strpos($this->pretty,$displayUrl)===0 ){
+					return true;
+				} elseif ( strpos( $displayUrl, "*")!==false){
+					// now the hard work user/details/1 must match user/details/*	
+				    $temp= str_replace("*","[^/]*", $displayUrl );
+				    return preg_match ( "#^". $temp. '$#ui', $this->pretty);
+				}				
+			}	
+		}	
+		return false;			
+	}
 
-		$display_urls_array = explode("|", $widget->display_urls);
+	
+	
 
-		foreach ($display_urls_array as $display_url)
-		{
-			if ( strpos( $display_url, '/' ) !== false )
-				$match_pattern = '/'.$this->url['0'].'/D';
-			else
-				$match_pattern = '/^'.$this->url['0'].'$/D';
 
-			if (preg_match($match_pattern, $display_url))
-			{
-				$display_url = explode("/", $display_url);
-
-				$display_count = count($display_url);
-
-				if ($display_count < $this->url_count)
-				{
-					$comapre = $this->url;
-					$second_side = $display_url;
-				}else{
-					$comapre = $display_url;
-					$second_side = $this->url;
-				}
-
-				$i = 0;
-
-				foreach ($comapre as $operator)
-				{
-					if (isset ($second_side[$i]))
-					{
-						if (!preg_match("/^$operator$/D", "$second_side[$i]"))
-							$do_not_display_widget = 1;
-						else
-							$display_widget = 1;
-					}
-
-					$i++;
-				}
-
-				if ($display_widget and !$do_not_display_widget)
-					$this->create_widget = true;
-				else
-					$this->create_widget = false;
-
-				$display_widget = '';
-				$do_not_display_widget = '';
-			}
-		} // end of foreach loop
-	} // end of widget_if_match_url method
 } // end of url class
