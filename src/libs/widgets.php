@@ -225,7 +225,7 @@ class CreateLayout
 					$son_widget_group = array();
 
 					foreach ( $son_widgets as $son_widget ){
-						if ( $url->match($son_widget->display_urls) or true ) {
+						if ( $url->match($son_widget->display_urls) && !$url->match($son_widget->kill_urls) ) {
 							$son_widget_group[] = $son_widget->id;
 						}
 

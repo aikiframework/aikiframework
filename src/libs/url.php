@@ -114,22 +114,36 @@ class url
 		if ( $displayString ) {	
 			
 			foreach ( explode("|",$displayString) as $displayUrl) {
+				
 				if (!$displayUrl) {
 					continue;
 				}			
 				
+				// easy option
 				if ( $displayUrl=="*" 
 					 || ( $this->pretty =='' && $displayUrl=='homepage')
 					 || strpos($this->pretty,$displayUrl)===0 ){
 					return true;
-				} elseif ( strpos( $displayUrl, "*")!==false){
-					// now the hard work user/details/1 must match user/details/*	
-					if ( preg_match ('/^#.+#[Uims]*$/', $displayUrl)) {						
-						return preg_match ( $displayUrl, $this->pretty);
+				}
+				
+				//regular expression?
+				if ( strpos( $displayUrl, "#")===0 &&
+						preg_match ('/^#.+#[Uims]*$/', $displayUrl) ) {
+					//it's a regex, so or match or continue.		
+					if ( preg_match ( $displayUrl, $this->pretty) ) {						
+						return true;
 					} else {						
-						$temp= str_replace("*","[^/]*", $displayUrl );					
-						return preg_match ( "#^". $temp. '$#ui', $this->pretty);
-					}				    
+						continue;
+					}							
+				}	
+				
+				// can be /foo/bar/*..
+				if ( strpos( $displayUrl, "*")!==false){
+					// now the hard work user/details/1 must match user/details/*				
+					$temp= str_replace("*","[^/]*", $displayUrl );	
+					if ( preg_match ( "#^". $temp. '$#ui', $this->pretty) ) {
+						return true;
+					}						
 				}				
 			}	
 		}	
