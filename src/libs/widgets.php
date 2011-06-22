@@ -1079,13 +1079,10 @@ class CreateLayout
 		$SQL =
 			"SELECT id, display_urls,kill_urls,widget_name ".
 			" FROM aiki_widgets ".
-			" WHERE father_widget=$father and is_active=1 and ".
-			" (widget_site='$site' or widget_site ='aiki_shared' or widget_site ='default') and ".
-			" (display_urls LIKE '%$search%' OR display_urls = '*' )" .
-			   // until display_urls and kill_urls don't have | as separator
-			   // this don't work
-			   // display_urls LIKE '%|$search/%') AND ".
-			   //" kill_urls <> '|$search|'" .   
+			" WHERE father_widget=$father AND is_active=1 AND ".
+			" (widget_site='$site' OR widget_site ='aiki_shared' OR widget_site ='default') AND ".
+			" (display_urls LIKE '%$search%' OR display_urls = '*' OR display_urls LIKE '%#%#%') AND ".
+			" (kill_urls='' OR kill_urls<> '$search') ".	
 			" ORDER BY  display_order, id";
          return $db->get_results($SQL);
 	}	

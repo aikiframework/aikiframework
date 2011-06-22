@@ -124,8 +124,12 @@ class url
 					return true;
 				} elseif ( strpos( $displayUrl, "*")!==false){
 					// now the hard work user/details/1 must match user/details/*	
-				    $temp= str_replace("*","[^/]*", $displayUrl );
-				    return preg_match ( "#^". $temp. '$#ui', $this->pretty);
+					if ( preg_match ('/^#.+#[Uims]*$/', $displayUrl)) {						
+						return preg_match ( $displayUrl, $this->pretty);
+					} else {						
+						$temp= str_replace("*","[^/]*", $displayUrl );					
+						return preg_match ( "#^". $temp. '$#ui', $this->pretty);
+					}				    
 				}				
 			}	
 		}	
