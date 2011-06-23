@@ -35,31 +35,34 @@ require_once("aiki.php");
  * @global string $site
  * @todo the site var looks useless here, should trace and remove
  */
-$site = addslashes($_GET['site']);
+$site = isset($_GET['site']) ? addslashes($_GET['site']) : 'default';
 /**
  * @global string $widgets
  */
-$widgets = addslashes($_GET['widgets']);
+$widgets_list = isset($_GET['widgets']) ? addslashes($_GET['widgets']) : '';
 
-if (!$site)
-	$site = "default";
 
-if (isset($widgets) and $widgets != '')
-{
-	$widgets = str_replace('_', "' or id = '", $widgets);
 
-	$get_widgets_css = $db->get_results("SELECT css, widget_name from " . 
-        "aiki_widgets where id = '$widgets' and is_active = 1 order by id");
+if ( $widgets_list != ''){
+	
+	$where = "id='" . str_replace('_', "' or id = '", $widgets_list). "'";
+	$sql = 
+		"SELECT id, css, widget_name" . 
+        " FROM aiki_widgets".
+        " WHERE " . $where . 
+        "  AND is_active = 1".
+        " ORDER BY id";
+	$get_widgets = $db->get_results($sql);
 
-	if ($get_widgets_css)
+	if ($get_widgets)
     {
-		foreach ( $get_widgets_css as $widget_css )
+		foreach ( $get_widgets as $widget )
 		{
             /**
              * @todo need to be able to disable all output, if not in debug
              */
-			echo "\n/*Css for the widget $widgets - $widget_css->widget_name */\n";
-			echo stripcslashes($aiki->languages->L10n($widget_css->css));
+			echo "\n/*CSS for the widget {$widget->widget_name}({$widget->id}) */\n";
+			echo stripcslashes($aiki->languages->L10n($widget->css));
 		}
 	}
 }
