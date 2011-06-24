@@ -113,7 +113,15 @@ class url
 	public function match($displayString){
 		if ( $displayString ) {	
 			
-			foreach ( explode("|",$displayString) as $displayUrl) {
+			// a regular expression can containe a | character, that must be 
+			// escaped, so in this case use preg_split.
+			if ( strpos($displayString,"#") !== false ){
+				$displayUrls= preg_split('#(?<!\\\)\|#',$displayString);			
+			} else {
+				$displayUrls= explode("|",$displayString);
+			}
+						
+			foreach ( $displayUrls as $displayUrl) {
 				
 				if (!$displayUrl) {
 					continue;
@@ -128,8 +136,9 @@ class url
 				
 				//regular expression?
 				if ( strpos( $displayUrl, "#")===0 &&
-						preg_match ('/^#.+#[Uims]*$/', $displayUrl) ) {
-					//it's a regex, so or match or continue.		
+						preg_match ('/^#.+#[Uims]*$/', $displayUrl) ) {					
+					$displayUrl = str_replace( "\|","|",$displayUrl);  //unescaped
+					//it's a regex, so or match or continue.	
 					if ( preg_match ( $displayUrl, $this->pretty) ) {						
 						return true;
 					} else {						
