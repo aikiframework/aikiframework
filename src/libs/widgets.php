@@ -92,6 +92,8 @@ class CreateLayout
 	public function CreateLayout(){
 		global $db, $aiki, $url, $errors;
 
+        // Initialize
+        $this->widgets_css= array();
 
 		// Convert global_values to an object to cache the SOL results in parsDBpars function.
 		$this->global_values=new stdClass();
@@ -177,7 +179,7 @@ class CreateLayout
 		foreach ($widget_result as $widget)	{
 
 			if ($widget->css) {
-				$this->widgets_css .= $widget->id.'_';
+				$this->widgets_css[]= $widget->id ;
 			}	
 
 			if ($widget->custom_output) {

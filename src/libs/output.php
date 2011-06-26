@@ -116,7 +116,9 @@ class output
         /**
          * @todo this really needs to be abstracted? why just output xthml???
          */
-		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		return 
+'<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="'.$languages->language_short_name.'" xml:lang="'.$languages->language_short_name.'"
 	dir="'.$languages->dir.'">
 ';
@@ -150,21 +152,21 @@ class output
 
 		if (!$nogui)
         {
-			if (isset($layout->widgets_css) and $layout->widgets_css != '')
-            {
-				$layout->widgets_css = 
-                    preg_replace('/_$/i', '', $layout->widgets_css);
-
+			if ( count($layout->widgets_css) )  {
+				
                 // handle language settings
 				if(isset($_GET['language']))
 					$language=$_GET['language'];
 				else
 					$language = $config['default_language'];
 
-				$header .= 
-                    '<link rel="stylesheet" type="text/css" href="'.
-                    $config['url'].'style.php?site='.
-                    $site."&widgets=$layout->widgets_css&language=$language\" />\n";
+				$header .= sprintf(
+                    '<link rel="stylesheet" type="text/css" '.
+                    ' href="%sstyle.php?site=%s&amp;widgets=%s&amp;language=%s" />',
+                    $config['url'],
+                    $site,
+                    implode("_", $layout->widgets_css),
+                    $language);
 			}
             // set favicon, but doesn't really check to see if it exists
 			$header .= '<link rel="icon" href="'.$config['url'].
@@ -177,9 +179,6 @@ class output
 		$header .= $this->headers;
 		$header .= "</head>";
 		$header .= "\n<body>\n";
-
-		//a fix for the w3  Markup Validation Service
-		$header = str_replace("&", "&amp;", $header);
 
 		return $header;
 	} // end of write_headers function
