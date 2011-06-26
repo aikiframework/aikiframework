@@ -106,7 +106,7 @@ class url
 
 
     /**
-     * match a list of displays_url against actual url.
+     * match a list of displays_url (routes) against actual url.
      * @return boolean 
      */
 
@@ -126,6 +126,16 @@ class url
 				if (!$displayUrl) {
 					continue;
 				}			
+				
+				// exact match. Example: news$ matchs news but not news/latest
+				if ( substr($displayUrl,-1) == '$' ) {
+					if ( substr($displayUrl,0,-1) == $this->pretty ){
+						return true;
+					} else {
+						continue;
+					}
+				 
+				}
 				
 				// easy option
 				if ( $displayUrl=="*" 
