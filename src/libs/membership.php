@@ -19,6 +19,11 @@
 
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
+/** @see AikiSession.php */
+require_once("libs/AikiSession.php");
+
+/** @see DatabaseSession.php */
+require_once("libs/session/DatabaseSession.php");
 
 /**
  * BriefDescription
@@ -68,8 +73,17 @@ class membership
      */
 	public function membership()
     {
-		global $db, $config;
-
+		global $db, $config, $log;
+        
+		try {
+			/* Has user defined session handler as alternative
+			 * to the default php file based session handler */
+			$session = new AikiSession(new DatabaseSession($db));
+		}
+		catch (AikiException $e) {
+			$log->exception($e);
+		}
+		
 		if (isset ($config["allow_guest_sessions"]) and 
 			$config["allow_guest_sessions"] != false)
 		{

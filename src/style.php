@@ -27,9 +27,9 @@ header('Content-type: text/css');
 
 
 /**
- * @see aiki.php
+ * @see bootstrap.php
  */
-require_once("aiki.php");
+require_once("bootstrap.php");
 
 /**
  * @global string $site

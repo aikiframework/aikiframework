@@ -39,17 +39,36 @@ aiki_src_files = \
 	text.php \
 	url.php \
 	wiki.php \
+	aiki.php \
+	widgets.php \
 	Log.php \
-	core.php \
-	widgets.php
+	Archive.php \
+	Backup.php \
+	File.php \
+	Updater.php \
+	Upgrade.php \
+	AikiException.php \
+	AikiSession.php
 
 # Subdirectories to be built
 SUBDIRS = \
-	database
+	archive \
+	backup \
+	database \
+	file \
+	session \
+	updater \
+	upgrade
 
 # Subdirectories to distribute
 DIST_SUBDIRS = \
-	database
+	archive \
+	backup \
+	database \
+	file \
+	session \
+	updater \
+	upgrade
 
 # Additional files to distribute
 EXTRA_DIST = \

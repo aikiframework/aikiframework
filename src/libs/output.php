@@ -136,7 +136,7 @@ class output
      * @global      array           $config global config options instance
      * @return string
      * 
-     * @see aiki.php
+     * @see bootstrap.php
      * @todo this is super nasty function that pulls in globals
      * @todo the html hardcoded in here needs abstraction and shouldn't make
      * assumptions about setup

@@ -29,11 +29,13 @@ aiki_src_files = \
 
 # Subdirectories to be built
 SUBDIRS = \
-	images
+	images \
+	update
 
 # Subdirectories to distribute
 DIST_SUBDIRS = \
-	images
+	images \
+	update
 
 # Additional files to distribute
 EXTRA_DIST = \

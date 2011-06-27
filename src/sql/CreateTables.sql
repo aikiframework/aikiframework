@@ -215,6 +215,15 @@ CREATE TABLE IF NOT EXISTS aiki_users_sessions (
 
 -- ------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS aiki_sessions (
+  session_id varchar(255) NOT NULL,
+  session_data varchar(255) NOT NULL,
+  session_time int(11) NOT NULL,
+  PRIMARY KEY (session_id)
+) ENGINE=MyISAM CHARSET=utf8;
+
+-- ------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS aiki_widgets (
   id int(11) NOT NULL AUTO_INCREMENT,
   app_id int(11) NOT NULL,

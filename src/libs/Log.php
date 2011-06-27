@@ -2,7 +2,7 @@
 
 /** Aiki Framework (PHP)
  *
- * A log utility to trace errors, warnings, info and debug messages
+ * A log utility to trace errors, exceptions, warnings, info and debug messages
  * and save them into a log file readable through the admin interface.
  *
  * LICENSE
@@ -19,7 +19,7 @@
  * @filesource */
 
 // disable php script access
-if(!defined("IN_AIKI")) { die(); }
+if(!defined("IN_AIKI")) { die("No direct script access allowed"); }
 
 class Log {
 	// these should be used to specify the log message level
@@ -121,6 +121,19 @@ class Log {
             "on line ". $data["line"] . " " .
             PHP_EOL;
     	return $message;
+    }
+    /** Log an exception
+     * @param Exception $exception The exception from a try catch block
+     * @return void */
+    public function exception($exception) {
+    	$data = Array();
+        if ($exception instanceof Exception) {
+	    	$message = $exception->getMessage();
+	    	$level = $exception->getCode();
+	    	$data["file"] = $exception->getFile();
+	        $data["line"] = $exception->getLine();
+	    	$this->message($message, $level, $data);
+        }
     }
     /** Log a message
      * @param string $message The message to log
@@ -244,19 +257,19 @@ class Log {
     /** Insert spans into contents and get the result
      * @param string $contents The contents of the log
      * @param string $level The log message level
-     * @param string $catagory The message element catagory
+     * @param string $category The message element category
      * @return string $markup The resulting HTML markup */
-    protected function _getInsertSpans($contents, $level, $catagory) {
+    protected function _getInsertSpans($contents, $level, $category) {
         $markup = $contents;
         switch (true) {
-        	case ("tag" === $catagory):
+        	case ("tag" === $category):
 		        $markup = preg_replace('/(\[' . $level . '\])/',
-		            '<span class="log-content-' . $catagory .
+		            '<span class="log-content-' . $category .
 		            '-' . strtolower($level) . '">$1</span>', $markup);
         		break;
-            case ("line" === $catagory):
+            case ("line" === $category):
             	$markup = preg_replace('/(.+\[' . $level . '\].+)/',
-            	   '<span class="log-content-' . $catagory .
+            	   '<span class="log-content-' . $category .
             	   '-' . strtolower($level) . '">$1</span>', $markup);
                 break;
         	default:

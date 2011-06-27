@@ -20,7 +20,7 @@
 # The source files
 aiki_src_files = \
 	index.php \
-	aiki.php \
+	bootstrap.php \
 	style.php
 
 # Subdirectories to be built
@@ -42,7 +42,7 @@ DISTCLEANFILES = .htaccess
 
 # Additional files to distribute
 EXTRA_DIST = \
-	aiki.php \
+	bootstrap.php \
 	index.php \
 	style.php
 

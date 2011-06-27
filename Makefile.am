@@ -189,9 +189,18 @@ endif
 
 # Additional things to do on install
 install-data-hook : install-desktop install-mysql-aiki
-	@$(MKDIR) -p $(DESTDIR)$(AIKI_LOG_DIR)
-	@$(CHMOD) 0700 $(DESTDIR)$(AIKI_LOG_DIR) 
-	@$(CHOWN) $(HTTPD_USER) $(DESTDIR)$(AIKI_LOG_DIR) &> /dev/null || :
+	@$(MKDIR) -p $(DESTDIR)$(AIKI_LOG_DIR) $(DESTDIR)$(AIKI_SAVE_DIR) \
+	$(DESTDIR)$(AIKI_SAVE_DIR)/$(AIKI_DOWNLOAD_DIR) \
+	$(DESTDIR)$(AIKI_SAVE_DIR)/$(AIKI_BACKUP_DIR) \
+	$(DESTDIR)$(AIKI_SAVE_DIR)/$(AIKI_UPDATE_DIR)
+	@$(CHMOD) 0700 $(DESTDIR)$(AIKI_LOG_DIR) \
+	$(DESTDIR)$(AIKI_SAVE_DIR)/$(AIKI_DOWNLOAD_DIR) \
+	$(DESTDIR)$(AIKI_SAVE_DIR)/$(AIKI_BACKUP_DIR) \
+	$(DESTDIR)$(AIKI_SAVE_DIR)/$(AIKI_UPDATE_DIR)
+	@$(CHOWN) $(HTTPD_USER) $(DESTDIR)$(AIKI_LOG_DIR) \
+	$(DESTDIR)$(AIKI_SAVE_DIR)/$(AIKI_DOWNLOAD_DIR) \
+	$(DESTDIR)$(AIKI_SAVE_DIR)/$(AIKI_BACKUP_DIR) \
+	$(DESTDIR)$(AIKI_SAVE_DIR)/$(AIKI_UPDATE_DIR) &> /dev/null || :
 	@for d in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type d); do $(CHMOD) 0755 $$d; done
 	@for f in $$($(FIND) $(DESTDIR)$(sysconfdir)/$(PACKAGE) -type f); do $(CHMOD) 0644 $$f; done
 	@for d in $$($(FIND) $(DESTDIR)$(pkgdatadir) -type d); do $(CHMOD) 0755 $$d; done
@@ -209,12 +218,16 @@ install-data-hook : install-desktop install-mysql-aiki
 
 # Additional things to do on uninstall
 uninstall-hook : uninstall-mysql-aiki
-	@$(RM) -f $(DESTDIR)$(AIKI_LOG_DIR)/*
-	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/defs.php
-	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php
-	@$(RM) -f $(DESTDIR)$(pkgdatadir)/configs/config.php
+	@$(RM) -f \
+	$(DESTDIR)$(AIKI_LOG_DIR)/* \
+	$$($(FIND) $(DESTDIR)$(AIKI_SAVE_DIR) -type f) \
+	$(DESTDIR)$(pkgdatadir)/configs/defs.php \
+	$(DESTDIR)$(pkgdatadir)/configs/aiki-defs.php \
+	$(DESTDIR)$(pkgdatadir)/configs/config.php
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(AIKI_LOG_DIR) -type f)"; then \
 	$(RM) -rf $(DESTDIR)$(AIKI_LOG_DIR); fi
+	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(AIKI_SAVE_DIR) -type f)"; then \
+	$(RM) -rf $(DESTDIR)$(AIKI_SAVE_DIR); fi
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(pkgdatadir) -type f)"; then \
 	$(RM) -rf $(DESTDIR)$(pkgdatadir); fi
 	@if $(TEST) -z "$$($(FIND) $(DESTDIR)$(docdir)-$(VERSION) -type f)"; then \

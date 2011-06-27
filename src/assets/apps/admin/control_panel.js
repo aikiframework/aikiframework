@@ -670,6 +670,9 @@ $().ready(function() {
 		   return false;
 	   });
 	   
+	   // The following line is autoconf generated
+	   @AIKI_UPDATE_JS@
+	   
 	   // append the log button to the main navigation
 	    $("<li><a href='#' id='log-button'>Log</a></li>").appendTo("#main-navigation");
 	   // when the log button is clicked,

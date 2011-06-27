@@ -23,10 +23,8 @@ AC_PREREQ(2.59)
 
 # Parse the package version as defined in the source code
 m4_define([pkgversion],
-  [m4_esyscmd(printf %s $(grep 'define.\+AIKI_VERSION' src/aiki.php \
+  [m4_esyscmd(printf %s $(grep 'define.\+AIKI_VERSION' src/bootstrap.php \
     | sed s/.*,// | sed s/\'//g | sed s/\(*\).*\;// | sed 's/\t*\ *//g'))])
-
-#  [m4_esyscmd(printf %s $(sed -n 's/.*define.\+AIKI_VERSION[[^0-9]]\+\([[0-9.]]\+\)[[^0-9]]\+/\1/p' src/aiki.php))])
 
 # Initialize autoconf, set the name of this package and version
 AC_INIT([aiki], [pkgversion], [https://bugs.launchpad.net/aikiframework],,[http://aikiframework.org])
@@ -199,6 +197,21 @@ fi
 AM_CONDITIONAL(ENABLE_TESTS, $TEST x$enable_tests = xyes)
 featurelist="$featurelist ENABLE_TESTS=$enable_tests"
 
+AIKI_UPDATE_JS=
+AC_ARG_ENABLE([update],
+  [AS_HELP_STRING([--enable-update],
+    [Enable the update feature in the admin interface [default=no]])],
+  [enable_update=$enableval],
+  [enable_update=no])
+if $TEST "x$enable_update" == "xyes" ; then
+  AC_SUBST(SUPHP_ENGINE,[on])
+  AIKI_UPDATE_JS=[\$\(\'head\'\).append\("'<script type=\"text/javascript\" src=\"assets/apps/admin/update/update.js\"></script>'"\)\;]
+else
+  AC_SUBST(SUPHP_ENGINE,[off])
+fi
+AM_CONDITIONAL(ENABLE_UPDATE, $TEST x$enable_update = xyes)
+featurelist="$featurelist ENABLE_UPDATE=$enable_update"
+
 AC_ARG_ENABLE([mysql-create],
   [AS_HELP_STRING([--enable-mysql-create],
     [Enable creation/deletion of MySQL user and database during install/uninstall [default=yes]])],
@@ -327,10 +340,13 @@ if $TEST -z $DB_USER; then AC_SUBST(DB_USER,[aiki])
 fi
 VAR_LIST_ADD DB_USER $DB_USER
 
+AIKI_RANDOM=
 DEFAULT_DB_PASS=
 if $TEST -e /dev/urandom; then
+  AIKI_RANDOM=$(< /dev/urandom $TR -dc _A-Z-a-z-0-9 | $HEAD -c8)
   DEFAULT_DB_PASS=$(< /dev/urandom $TR -dc _A-Z-a-z-0-9 | $HEAD -c8)
 else
+  AIKI_RANDOM=$($DATE +%s%N | $SHASUM -a $ALGORITHM | $HEAD -c8)
   DEFAULT_DB_PASS=$($DATE +%s%N | $SHASUM -a $ALGORITHM | $HEAD -c8)
 fi
 AC_ARG_VAR(DB_PASS,[Set the database password [default: DB_PASS=/dev/urandom]])
@@ -414,10 +430,41 @@ if $TEST -z $AIKI_LOG_LEVEL; then AC_SUBST(AIKI_LOG_LEVEL,[ERROR])
 fi
 VAR_LIST_ADD AIKI_LOG_LEVEL $AIKI_LOG_LEVEL
 
+AC_ARG_VAR(AIKI_SAVE_DIR,[Set the directory to contain saved files such as backups and downloads [default: AIKI_SAVE_DIR=$localstatedir/lib/$PACKAGE]])
+if $TEST -z $AIKI_SAVE_DIR; then
+  AIKI_SAVE_DIR=$(EXPAND_VAR $localstatedir/lib/$PACKAGE)
+  AC_SUBST(AIKI_SAVE_DIR,[$AIKI_SAVE_DIR])
+fi
+VAR_LIST_ADD AIKI_SAVE_DIR $AIKI_SAVE_DIR
+
+AC_ARG_VAR(AIKI_DOWNLOAD_DIR,[Set the directory to contain saved downloads. This must be relative to the aiki save directory. [default: AIKI_DOWNLOAD_DIR=downloads]])
+if $TEST -z $AIKI_DOWNLOAD_DIR; then
+  AIKI_DOWNLOAD_DIR=downloads
+  AC_SUBST(AIKI_DOWNLOAD_DIR,[$AIKI_DOWNLOAD_DIR])
+fi
+VAR_LIST_ADD AIKI_DOWNLOAD_DIR $AIKI_DOWNLOAD_DIR
+
+AC_ARG_VAR(AIKI_BACKUP_DIR,[Set the directory to contain saved backups. This must be relative to the aiki save directory. [default: AIKI_BACKUP_DIR=backups]])
+if $TEST -z $AIKI_BACKUP_DIR; then
+  AIKI_BACKUP_DIR=backups
+  AC_SUBST(AIKI_BACKUP_DIR,[$AIKI_BACKUP_DIR])
+fi
+VAR_LIST_ADD AIKI_BACKUP_DIR $AIKI_BACKUP_DIR
+
+AC_ARG_VAR(AIKI_UPDATE_DIR,[Set the directory to contain update scripts. This must be relative to the aiki save directory. [default: AIKI_UPDATE_DIR=updates]])
+if $TEST -z $AIKI_UPDATE_DIR; then
+  AIKI_UPDATE_DIR=updates
+  AC_SUBST(AIKI_UPDATE_DIR,[$AIKI_UPDATE_DIR])
+fi
+VAR_LIST_ADD AIKI_UPDATE_DIR $AIKI_UPDATE_DIR
+
 # use eval to force variable substitution/expansion
 PKG_DATA_DIR=$(EXPAND_VAR $datadir/$PACKAGE)
 AC_SUBST(PKG_DATA_DIR,$PKG_DATA_DIR)
 VAR_LIST_ADD PKG_DATA_DIR $PKG_DATA_DIR
+
+AC_SUBST(AIKI_RANDOM,[$AIKI_RANDOM])
+VAR_LIST_ADD AIKI_RANDOM $AIKI_RANDOM
 
 PKG_DATA_DIR_LEN=$($ECHO $PKG_DATA_DIR | $AWK '{print length}')
 AC_SUBST(PKG_DATA_DIR_LEN,$PKG_DATA_DIR_LEN)
@@ -463,6 +510,7 @@ GROUP=[Applications/Internet]
 AC_SUBST(GROUP)
 URL=[http://aikiframework.org]
 AC_SUBST(URL)
+AC_SUBST(AIKI_UPDATE_JS,$AIKI_UPDATE_JS)
 
 # Include authors substitutions
 AUTHORS=$($SED '/^\#/d; /^\n*$/d; s/\ \ .\+//; s/\ \+/\&nbsp\;/g; s/$/\<br\/\>\\r\\n/g' ../AUTHORS | $TR -d '\n')
@@ -529,14 +577,23 @@ AC_CONFIG_FILES([ \
   src/Makefile \
   src/assets/Makefile \
   src/assets/apps/Makefile \
+  src/assets/apps/captcha/Makefile \
   src/assets/apps/admin/Makefile \
+  src/assets/apps/admin/control_panel.js:src/assets/apps/admin/control_panel.js \
+  src/assets/apps/admin/update/Makefile \
   src/assets/apps/admin/images/Makefile \
   src/assets/apps/admin/images/icons/Makefile \
   src/assets/images/Makefile \
   src/assets/extensions/Makefile \
   src/assets/javascript/Makefile \
   src/assets/uploads/Makefile \
+  src/libs/archive/Makefile \
+  src/libs/backup/Makefile \
   src/libs/database/Makefile \
+  src/libs/file/Makefile \
+  src/libs/session/Makefile \
+  src/libs/updater/Makefile \
+  src/libs/upgrade/Makefile \
   src/libs/Makefile \
   src/sql/Makefile \
   src/sql/UserExists.sql:src/sql/UserExists-in.sql \

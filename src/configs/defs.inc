@@ -32,6 +32,10 @@
 if (file_exists("$AIKI_ROOT_DIR/configs/aiki-defs.php")) {
     /** @see aiki-defs.php */
     require_once("$AIKI_ROOT_DIR/configs/aiki-defs.php");
+    define("AIKI_INSTALLED_BY_MAKE", TRUE);
+}
+else {
+    define("AIKI_INSTALLED_BY_MAKE", FALSE);
 }
 
 // **** Begin Automake generated constants **** //
@@ -54,13 +58,31 @@ define("AIKI_LOG_PROFILE", "@AIKI_LOG_PROFILE@");
 /** Aiki Log Level */
 define("AIKI_LOG_LEVEL", "@AIKI_LOG_LEVEL@");
 
+/** Aiki directory that stores downloads and
+ *  backup files used to revert from update */
+define("AIKI_SAVE_DIR", "@AIKI_SAVE_DIR@");
+
+/** Aiki directory that stores downloads.
+ * This must be relative to the aiki save directory */
+define("AIKI_DOWNLOAD_DIR", "@AIKI_DOWNLOAD_DIR@");
+
+/** Aiki directory that stores backups.
+ * This must be relative to the aiki save directory */
+define("AIKI_BACKUP_DIR", "@AIKI_BACKUP_DIR@");
+
+/** Aiki directory that stores updates.
+ * This must be relative to the aiki save directory */
+define("AIKI_UPDATE_DIR", "@AIKI_UPDATE_DIR@");
+
+/** Whether suPHP is turned on or off. Default is off.
+ * When --enable-update is given, then it is on. */
+define("SUPHP_ENGINE", "@SUPHP_ENGINE@");
+
+/** Aiki Random string should be different everytime
+ * a distribution package is configured and built */
+define("AIKI_RANDOM", "@AIKI_RANDOM@");
+
 // **** Begin non-generated constants **** //
-
-/** Aiki directory that stores the backup files used to revert from update */
-define("AIKI_BACKUP_DIR", "backups");
-
-/** Aiki directory that stores the update scripts */
-define("AIKI_UPDATE_DIR", "updates");
 
 /** Aiki Update URL with update information and requirements */
 define("AIKI_UPDATE_URL", "http://aikiframework.org/files/update");
@@ -76,6 +98,9 @@ define("AIKI_UPDATE_PREFIX", "aiki-src-");
 
 /** Last part of the update package filename indicating file format */
 define("AIKI_UPDATE_EXT", ".zip");
+
+/** Last part of the sum filename indicating file format */
+define("AIKI_SUM_EXT", ".shasum-256.txt");
 
 /** Retry to download or validate the downloaded update package
  * this number of times if failed. Do NOT put the following value in quotes. */

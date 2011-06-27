@@ -21,9 +21,9 @@
 error_reporting(0);
 
 /**
- * @see aiki.php
+ * @see bootstrap.php
  */
-require_once("../../../aiki.php");
+require_once("../../../bootstrap.php");
 
 /**
  * Checks to ensure user has appropriate permissions

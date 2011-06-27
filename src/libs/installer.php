@@ -29,6 +29,9 @@ require_once("$AIKI_ROOT_DIR/configs/defs.php");
  * the log will default to disabled. */
 /** @see Log.php */
 require_once("$AIKI_ROOT_DIR/libs/Log.php");
+
+/** @see File.php */
+require_once("$AIKI_ROOT_DIR/libs/File.php");
     
 /** Instantiate a new log for installer use
  * Log $log */
@@ -187,7 +190,7 @@ Before we start you need the following:
 1- An empty database, with collation set to utf8_general_ci.
 <br />
 <br />
-2- PHP 5.1 or above and apache2.
+2- PHP 5.2 or above and apache2.
 <br />
 <br />
 3- mod_rewrite must be enabled inside apache2 httpd.conf  
@@ -298,6 +301,9 @@ Before we start you need the following:
 	$FileHandle = fopen($config_file_name, 'w') or die("<br />Sorry, no permissions to create config.php, please create it in <b>$AIKI_ROOT_DIR</b> with the following: <br /><br />$config_file_html<hr /><br />also please add the following to .htaccess to enable pretty urls:<br /><br /><small>".$htaccess_file_html."</small>");
 	fwrite($FileHandle, $config_file);
 	fclose($FileHandle);
+    /* This is needed in the case where the 
+     * default file mode is too restrictive. */
+    chmod($config_file_name, 0644);
 
 	$admin_password = substr(md5(uniqid(rand(),true)),1,8);
 	$admin_password_md5_md5 = md5(md5($admin_password));
@@ -365,12 +371,14 @@ Password: $admin_password
 
 		mail($email,'Your new Aiki installation',$message,$headers);
 	}
-
+    
 	$htaccess_file_name = ".htaccess";
 	$FileHandle = fopen($htaccess_file_name, 'w') or die("<br />Sorry, no permissions to create .htaccess file<br /> please add the following to .htaccess to enable pretty urls:<br /><br /><small>".$htaccess_file_html."</small>");
 	fwrite($FileHandle, $htaccess_file);
 	fclose($FileHandle);
-
+	/* This is needed in the case where the 
+	 * default file mode is too restrictive. */
+    chmod($htaccess_file_name, 0644);
 }
 echo '</div>
 </div>

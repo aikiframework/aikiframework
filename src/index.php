@@ -32,9 +32,9 @@ $start_time = (float) array_sum(explode(' ',microtime()));
 $html_output = '';
 
 /**
- * @see aiki.php
+ * @see bootstrap.php
  */
-require_once("aiki.php");
+require_once("bootstrap.php");
 
 /**
  * Creates a container that holds cached data

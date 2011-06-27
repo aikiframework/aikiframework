@@ -24,9 +24,9 @@ if (!isset($_GET['key'])){
 define('IN_AIKI', true);
 
 /**
- * @see aiki.php
+ * @see bootstrap.php
  */
-require_once("../../../aiki.php");
+require_once("../../../bootstrap.php");
 
 //TODO store authorization key in db and check it
 if (!isset($_SESSION['aikiuser'])){

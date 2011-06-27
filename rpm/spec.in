@@ -141,7 +141,7 @@ DB_SUPER_USER_PASS=@DB_SUPER_USER_PASS@ \
 %{_datadir}/%{name}/%{name}.php
 %{_datadir}/%{name}/index.php
 %{_datadir}/%{name}/style.php
-%{_datadir}/%{name}/libs/core.php
+%{_datadir}/%{name}/libs/aiki.php
 %{_datadir}/%{name}/libs/widgets.php
 %{_datadir}/%{name}/sql/
 %{_datadir}/%{name}/libs/

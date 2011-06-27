@@ -23,9 +23,9 @@ header('Content-type: text/xml');
 
 
 /**
- * @see aiki.php
+ * @see bootstrap.php
  */
-require_once("../../../aiki.php");
+require_once("../../../bootstrap.php");
 
 /**
  * @see /src/libs/membership.php

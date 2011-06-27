@@ -36,4 +36,10 @@ Alias @AIKI_REWRITE_BASE@ @PKG_DATA_DIR@
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f
     RewriteRule ^(.*)$ index.php?pretty=$1 [L,QSA]
+    <IfModule mod_suphp.c>
+        suPHP_AddHandler php5-script
+        suPHP_Engine @SUPHP_ENGINE@
+        # Directory php.ini is in
+        suPHP_ConfigPath /etc
+    </IfModule>
 </Directory>

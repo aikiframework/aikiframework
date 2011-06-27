@@ -43,6 +43,9 @@ set_include_path(
     PATH_SEPARATOR .
     "$AIKI_ROOT_DIR");
 
+/** @see AikiException.php */
+require_once("$AIKI_ROOT_DIR/libs/AikiException.php");
+
 /** 
  * @todo these should be set in some class, and are scoped wrong
  */
@@ -106,9 +109,9 @@ $log->message("test DEBUG", Log::DEBUG);*/
 require_once("$AIKI_ROOT_DIR/libs/database/index.php");
 
 /**
- * @see core.php
+ * @see aiki.php
  */
-require_once ("$AIKI_ROOT_DIR/libs/core.php");
+require_once ("$AIKI_ROOT_DIR/libs/aiki.php");
 
 /**
  * Global creation of the aiki instance.
@@ -132,7 +135,7 @@ $membership = $aiki->load("membership");
 
 /**
  * @todo: scoping is wrong here, need solution on these.
- * @see aiki.php
+ * @see bootstrap.php
  */
 if (isset($_GET['site']))
 	$site=addslashes($_GET['site']);

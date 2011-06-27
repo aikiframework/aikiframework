@@ -27,9 +27,9 @@ error_reporting(0);
 define('IN_AIKI', true);
 
 /**
- * @see aiki.php
+ * @see bootstrap.php
  */
-require_once("../../../aiki.php");
+require_once("../../../bootstrap.php");
 
 if ($membership->permissions != "SystemGOD"){
 	die("You do not have permissions to access this file");
