@@ -111,7 +111,7 @@ class CreateLayout
 		$unique_widget_exists= false;		
 		if ($module_widgets){				
 			foreach($module_widgets as $tested_widget){
-				if ($tested_widget->display_urls != "|*|"){
+				if ($tested_widget->display_urls != "*"){
 					$unique_widget_exists = true;
 					break;
 				}
@@ -120,10 +120,10 @@ class CreateLayout
 
 		// ..page not found..
 		if ( !$unique_widget_exists ){
-			$this->html_output .= $errors->page_not_found();
+			$this->html_output .= $errors->page_not_found();			
 			return;
 		}
-		
+	
 		// now filter canditate widgets, before create content
 		$widget_group = array();
 		foreach ( $module_widgets as $widget ) {
@@ -307,7 +307,10 @@ class CreateLayout
 	 *
 	 * @todo needless to say, this has to be refactored or redone. 
      */
-	private function createWidgetContent($widget,  $normal_select=false )
+	
+	
+	
+	private function createWidgetContent($widget, $normal_select=false )
 	{
 		global $aiki, $db, $url, $membership, $nogui, $custom_output, $config;
 
@@ -373,145 +376,104 @@ class CreateLayout
 				unlink($widget_file);
 		}
 
-		// Kill the query if it is not select.
-		if (preg_match("/TRUNCATE|UPDATE|DELETE(.*)from/i", $widget->normal_select)){
-			$widget->normal_select = "";
-		} else { 
-			$widget->normal_select = strtr( 
-				$widget->normal_select,
-				array ("\n"=> " ", "\r"=>"") );
-		}
-
+	
 		if ($is_inline)
 			$widget->pagetitle = '';
 
 		if ($widget->nogui_widget and isset($nogui))
-			$widget->widget = $widget->nogui_widget;
+			$widget->widget = $widget->nogui_widget;		
 		
-		$widget->widget = $aiki->input->requests($widget->widget);
-
-		$widget->normal_select = $aiki->input->requests($widget->normal_select);
-		$widget->normal_select = $this->parsDBpars($widget->normal_select);
-		$widget->normal_select = str_replace(
-			"[guest_session]", 
-			$membership->guest_session, 
-			$widget->normal_select);
-		$widget->normal_select = str_replace(
-			"[user_session]", 
-			$membership->user_session, 
-			$widget->normal_select);
-
 		/**
 		 * @TODO why is this commented out? if no takers, delete!
 		 */
 		//$widget->widget = htmlspecialchars_decode($widget->widget);
 
+		$widget->widget = $aiki->input->requests($widget->widget);
 		$widget->widget = $aiki->processVars($widget->widget);
 
-		$no_loop_part = 
-			$aiki->get_string_between ($widget->widget, 
-									   '(noloop(', ')noloop)');
 
-		$widget->widget = 
-			str_replace('(noloop('.$no_loop_part.')noloop)', '', 
-						$widget->widget);
+        // noloop part are extracted and deleted.
+		$no_loop_part = $aiki->get_string_between (
+			$widget->widget, 
+			'(noloop(', ')noloop)');
 
-		$no_loop_bottom_part = 
-			$aiki->get_string_between ($widget->widget, 
-									  '(noloop_bottom(', ')noloop_bottom)');
+		$widget->widget = str_replace(
+			'(noloop('.$no_loop_part.')noloop)', '', 
+			$widget->widget);
+
+		$no_loop_bottom_part = $aiki->get_string_between (
+			$widget->widget, 
+			'(noloop_bottom(', ')noloop_bottom)');
 
 		$widget->widget = str_replace(
 			'(noloop_bottom('.$no_loop_bottom_part.')noloop_bottom)', '', 
 			$widget->widget);
 
-		if (isset($normal_select) and $normal_select)
-			$widget->normal_select = trim($normal_select);
-		else
-			$widget->normal_select = trim($widget->normal_select);
-
-		$widget->normal_select = 
-			str_replace("\'", "'", $widget->normal_select);
-		$widget->normal_select = 
-			str_replace('\"', '"', $widget->normal_select);
-
-		if ($widget->normal_select)
-		{
-			$normal_selects = explode("|OR|", $widget->normal_select);
-			$widget->normal_select = $normal_selects[0];
-
-			$widget->normal_select = 
-				$aiki->url->apply_url_on_query($widget->normal_select);
-
-			$widget->normal_select = 
-				$aiki->processVars ($aiki->languages->L10n(
-										"$widget->normal_select"));
-			
-			$records_num = $this->records_num( $widget->normal_select);  
+		$widget->normal_select = $this->parse_select(
+			$widget->normal_select,
+			$normal_select);
+		
+		
+		if (!$widget->normal_select) {
+			$processed_widget = $this->parse_widget_without_data($widget->widget);
+		} else {				
+			$selects = explode("|OR|", $widget->normal_select);
+            foreach ( $selects as $select ){								
+				$widget->normal_select= $select;
+				
+				$records_num = $this->records_num($widget->normal_select);  				
+				// pagination change normal_select adding limit.
+				$pagination = $this->pagination($widget, $records_num);
+				$widget_select = $db->get_results($widget->normal_select);
+				if ( $widget_select ){
+					break;
+				}	
+			}		
+				
 			if ( $records_num !== false ) {
-				$widget->widget = str_replace(
-					"[records_num]", 
-					$records_num, $widget->widget);
-			} 
-
-			// Default pages links settings. 
-			// pagination change normal_select adding limit.
-			$pagination = $this->pagination($widget,$records_num);			
-			$newwidget = $widget->widget;
-
-			$widget_select = $db->get_results($widget->normal_select);			
-			if (!$widget_select and isset($normal_selects['1'])){
-				$widget_select = $db->get_results($normal_selects['1']);
-			}						
-			$num_results = $db->num_rows;
+				$widget->widget = str_replace("[records_num]", $records_num, $widget->widget);
+				$template = $widget->widget;
+				$num_results = $db->num_rows;
+			} 						
 			
-			if ($widget_select and $num_results and $num_results > 0)
+			if ($widget_select and isset($num_results) and $num_results > 0)
 			{
 				$widgetContents = '';
-				foreach ( $widget_select as $widget_value )
-				{
+				foreach ( $widget_select as $widget_value )	{
 					/**
 					 * @todo put this behind debug time option
 					 */
-					if (!$custom_output)
+					if (!$custom_output) {
 						$widgetContents .= 
 							"\n<!-- The Beginning of a Record -->\n";
-					$widget->widget = $newwidget;
-					$widget->widget = 
-						$aiki->parser->datetime(
-							$widget->widget, $widget_value);
-					$widget->widget = 
-						$aiki->parser->tags($widget->widget, $widget_value);
-					$widget->widget = $this->noaiki($widget->widget);
-					$widget->widget = 
-						$this->parsDBpars($widget->widget, $widget_value);
-					$widget->widget = 
-						$aiki->records->edit_in_place($widget->widget, 
-													  $widget_value);
-					$widget->widget = 
-						$aiki->text->aiki_nl2br($widget->widget);
-					$widget->widget = 
-						$aiki->text->aiki_nl2p($widget->widget);
-
-					$widgetContents .= $widget->widget;
+					}							
+					$widgetContents .=  $this->parse_widget_with_data(
+						$template,
+						$widget_value);
 					if (!$custom_output){
 						$widgetContents .= 
 							"\n<!-- The End of a Record -->\n";
 					}
 				} // end of foreach
 
-				if ($widget->display_in_row_of > 0)
-					$widgetContents = 
-						$aiki->output->displayInTable($widgetContents, 
-							$widget->display_in_row_of);
-
+				// puts records in row
+				if ($widget->display_in_row_of > 0) {
+					$widgetContents = $aiki->output->displayInTable(
+						$widgetContents, 
+						$widget->display_in_row_of);
+				}
+				
+				// more parser..
 				$widgetContents = $this->noaiki($widgetContents);
 				$widgetContents = $aiki->url->apply_url_on_query($widgetContents);
 				$widgetContents = $aiki->security->inlinePermissions($widgetContents);
-
-				$no_loop_part        =  $this->parsDBpars($no_loop_part, $widget_value);
-				$no_loop_bottom_part = 	$this->parsDBpars($no_loop_bottom_part, $widget_value);
-				$widgetContents = $no_loop_part.$widgetContents;
-				$widgetContents = $widgetContents.$no_loop_bottom_part;
+			
+				$widgetContents =
+					$this->parsDBpars($no_loop_part, $widget_value).
+				    $widgetContents.
+					$this->parsDBpars($no_loop_bottom_part, $widget_value);
+				
+				// now widget is complete other parser can aplied.
 				$widgetContents = $aiki->php->parser($widgetContents);
 				$widgetContents = $this->inline_widgets($widgetContents);
 				$widgetContents = $this->inherent_widgets($widgetContents);
@@ -548,29 +510,28 @@ class CreateLayout
 			} else {
 				$this->kill_widget = $widget->id;
 			}
-		} else {
-			$widget->widget = $this->parsDBpars($widget->widget, '');
-			$widget->widget = $this->noaiki($widget->widget);
-			$widget->widget = $aiki->url->apply_url_on_query(
-								  $widget->widget);
-			$widget->widget = $aiki->security->inlinePermissions(
-								  $widget->widget);
-			$widget->widget = $this->inline_widgets($widget->widget);
-			$widget->widget = $this->inherent_widgets($widget->widget);
-			$widget->widget = $aiki->sql_markup->sql($widget->widget);
+		} 
 
-			$processed_widget =  $widget->widget;
-		}
 
-		if (!isset($processed_widget))
+		if (!isset($processed_widget)){
 			$processed_widget = '';
-
-		$processed_widget = $this->parsDBpars($processed_widget, '');
-		$processed_widget = $aiki->processVars ($processed_widget);
-		$processed_widget = 
-			$aiki->url->apply_url_on_query($processed_widget);
-		$processed_widget = $aiki->text->aiki_nl2br($processed_widget);
-		$processed_widget = $aiki->text->aiki_nl2p($processed_widget);
+		} else {	
+			$processed_widget = $this->parsDBpars($processed_widget, '');
+			$processed_widget = $aiki->processVars ($processed_widget);
+			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
+			$processed_widget = $aiki->text->aiki_nl2br($processed_widget);
+			$processed_widget = $aiki->text->aiki_nl2p($processed_widget);
+			
+			$processed_widget = $aiki->processVars ($processed_widget);
+			$processed_widget = $aiki->parser->process($processed_widget);
+			$processed_widget = $aiki->aiki_array->displayArrayEditor($processed_widget);
+			$processed_widget = $aiki->forms->displayForms($processed_widget);
+			$processed_widget = $aiki->input->requests($processed_widget);
+			$processed_widget = $aiki->php->parser($processed_widget);
+			$processed_widget = stripslashes($processed_widget);
+		}
+		
+		
 
 		// Apply (#(header:...
 		$processed_widget= $this->parse_header($processed_widget);
@@ -587,8 +548,7 @@ class CreateLayout
 		if ($widget->pagetitle)
 		{
 			$widget->pagetitle = $aiki->processVars($widget->pagetitle);
-			$widget->pagetitle = 
-				$aiki->url->apply_url_on_query($widget->pagetitle);
+			$widget->pagetitle = $aiki->url->apply_url_on_query($widget->pagetitle);
 
 			if (!isset($widget_value))
 				$widget_value = '';
@@ -598,14 +558,7 @@ class CreateLayout
 			$aiki->output->set_title($title);
 		}
 
-		$processed_widget = $aiki->processVars ($processed_widget);
-		$processed_widget = $aiki->parser->process($processed_widget);
-		$processed_widget = 
-			$aiki->aiki_array->displayArrayEditor($processed_widget);
-		$processed_widget = $aiki->forms->displayForms($processed_widget);
-		$processed_widget = $aiki->input->requests($processed_widget);
-		$processed_widget = $aiki->php->parser($processed_widget);
-		$processed_widget = stripslashes($processed_widget);
+		
 
 		if (isset($widgetContents) and 
 			$widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n")
@@ -884,6 +837,33 @@ class CreateLayout
 		return $text;
 	}
 
+    private function parse_widget_with_data( $template, $values){
+		global $aiki;
+		$template = $aiki->parser->datetime( $template, $values);			
+		$template = $aiki->parser->tags( $template, $values);
+		$template = $this->noaiki($template);
+		$template = $this->parsDBpars($template, $values);
+		$template = $aiki->records->edit_in_place( $template, $values);
+		$template = $aiki->text->aiki_nl2br($template);
+		$template = $aiki->text->aiki_nl2p($template);
+		return $template;
+	}
+
+
+    private function parse_widget_without_data( $template ){
+		global $aiki;
+		$template = $this->parsDBpars($template, '');
+		$template = $this->noaiki($template);
+		$template = $aiki->url->apply_url_on_query($template);
+		$template = $aiki->security->inlinePermissions($template);								  
+		$template = $this->inline_widgets($template);
+		$template = $this->inherent_widgets($template);
+		$template = $aiki->sql_markup->sql($template);
+		return $template;
+    }
+
+
+
 
 	/**
 	 * @param	string	$text			text for processing
@@ -1034,6 +1014,40 @@ class CreateLayout
 		return $text;		
 	}	
 		
+		
+	private function parse_select( $select, $inline_select) {
+		global $aiki, $url, $membership;
+		
+		if ( $inline_select ) {
+			$select= trim($inline_select);
+		} else {
+			// Kill the query if it is not select.
+			// roger: this filter is not aplied over $inline_select
+			if (preg_match("/TRUNCATE|UPDATE|DELETE(.*)from/i", $select)){
+				return "";
+			} else { 
+				// roger: i don't know why this parse is applie only on normal_select 
+				// and no over inline..Perhaps must remove it.
+				$select = strtr( $select, array ("\n"=> " ", "\r"=>"") ); // delete line-feed
+				$select = $aiki->input->requests($select); // replace GET[] and POST[]
+				$select = $this->parsDBpars($select);
+				$select = strtr( 
+					$select,
+					array ( "[guest_session]"=>	$membership->guest_session, 
+							"[user_session]" =>	$membership->user_session));
+			}
+		}
+		
+		// more parse
+		$select= strtr( trim($select), array ("\'" => "'", '\"'=>'"'));
+		$select = $aiki->url->apply_url_on_query($select);
+		$select = $aiki->languages->L10n( $select);
+		$select = $aiki->processVars ($select);
+			
+		return $select;	
+	}	
+		
+		
     /**
      * Proccesed all (#(header:..)#) in widget content.
      *
@@ -1141,6 +1155,7 @@ class CreateLayout
 	 *
 	 * @todo fix the spelling of inherent to inherit and keep backwards compat
 	 */
+	 
 	private function inherent_widgets($widget)
 	{
 		global $db;

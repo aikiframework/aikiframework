@@ -162,7 +162,7 @@ class output
 
 				$header .= sprintf(
                     '<link rel="stylesheet" type="text/css" '.
-                    ' href="%sstyle.php?site=%s&amp;widgets=%s&amp;language=%s" />',
+                    ' href="%sstyle.php?site=%s&widgets=%s&language=%s" />',
                     $config['url'],
                     $site,
                     implode("_", $layout->widgets_css),
@@ -173,9 +173,10 @@ class output
                        'assets/images/favicon.ico" type="image/x-icon" />';
 		}
 
-		if (isset ($layout->head_output))
+		if (isset ($layout->head_output)){
 			$header .= $layout->head_output;
-
+		}	
+		
 		$header .= $this->headers;
 		$header .= "</head>";
 		$header .= "\n<body>\n";
@@ -216,7 +217,7 @@ class output
 		 */
 		$widgetExploded = explode("<!-- The End of a Record -->", $widget);
 		if ( !$columns )
-			$columns = 1; // to avaid %i % 0 error.
+			$columns = 1; // to avoid $i % 0 error.
 
 		$i = 0;
 		foreach ($widgetExploded as $cell)
@@ -288,9 +289,7 @@ class output
 				}
 				else
 				{
-					/**
-					 * @todo why is html being output here???
-					 */
+
 					$full_html_output = file_get_contents($html_cache_file);
 					echo $full_html_output;
 
