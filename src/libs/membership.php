@@ -36,7 +36,7 @@ require_once("libs/session/DatabaseSession.php");
 class membership
 {
     /**
-     * @var string  permissions for auser
+     * @var string  permissions for a user
      */
 	public $permissions;
     /**
@@ -78,45 +78,44 @@ class membership
 		try {
 			/* Has user defined session handler as alternative
 			 * to the default php file based session handler */
-			$session = new AikiSession(new DatabaseSession($db));
+			$session = new AikiSession(new DatabaseSession($db));			
 		}
 		catch (AikiException $e) {
-			$log->exception($e);
+			$log->exception($e);		
+		}
+			
+		$allowGuestSessions = isset ($config["allow_guest_sessions"]) && 
+                              $config["allow_guest_sessions"] ;
+				
+		if ( $allowGuestSessions || @$_COOKIE["PHPSESSID"] ){
+			session_start();
 		}
 		
-		if (isset ($config["allow_guest_sessions"]) and 
-			$config["allow_guest_sessions"] != false)
-		{
-			session_start();
-		}elseif (@$_COOKIE["PHPSESSID"]){
-			session_start();
-		}
-
-		if (!isset($username) and 
-			isset($_SESSION['aikiuser']))
-		{
+		if ( isset($_SESSION['aikiuser']) )	{			
 			$username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aikiuser']."'");
 		}
 
 		if (isset($username))
 		{
 			$this->getUserPermissions($username);
-		} else {
+			
+		} else {			
 			$this->group_level = '1000000000';
 			$this->permissions = '';
 		}
 
 		$time_now = time();
 
-		if (isset ($config["allow_guest_sessions"]) and 
-			$config["allow_guest_sessions"])
+		if ( $allowGuestSessions )
 		{
 			if (!isset($_SESSION['aikiuser']) and !isset($_SESSION['guest']))
 			{
 				$user_ip = $this->get_ip();
 
 				$_SESSION['guest'] = $this->generate_session(100);
-				$insert_session = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '', 'guest' , '$time_now', '$time_now' , '".$_SESSION['guest']."', '1', '$user_ip', '$user_ip')");
+				$insert_session = $db->query(
+					"INSERT INTO aiki_users_sessions".
+					" VALUES ('', '', 'guest' , '$time_now', '$time_now' , '".$_SESSION['guest']."', '1', '$user_ip', '$user_ip')");
 
 			} else {
 				$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' WHERE `user_session`='".$_SESSION['guest']."' LIMIT 1");
@@ -146,7 +145,7 @@ class membership
 
 
     /**
-     * Handles the login or a user.
+     * Handles the login of a user.
      * 
      * @param	string			$username	name of user
 	 * @param	string			$password	a user's password
@@ -158,44 +157,36 @@ class membership
 	public function login ($username, $password)
 	{
 		global $db, $layout, $config, $aiki;
-
+         
 		$password = stripslashes($password);
 		$password = md5(md5($password));
 
 		$time_now = time();
-
+		
+		
 		if (!isset($_SESSION['aikiuser']) and 
 			!isset($_SESSION['guest']) and 
 			!isset($_COOKIE["PHPSESSID"]))
 		{
 			session_start();
 		}
-			
-		$get_user = $db->get_row("SELECT * FROM aiki_users where username='$username' and password='$password' limit 1");
-
-		if($get_user and $get_user->username == $username and 
-			$get_user->password == $password)
-		{
+		
+		$get_user = $db->get_row("SELECT * FROM aiki_users WHERE username='$username' AND password='$password' LIMIT 1");        
+		if($get_user){
 			$host_name = $_SERVER['HTTP_HOST'];
-			$user_ip = $this->get_ip();
+			$user_ip   = $this->get_ip();
 
 			if (isset ($config["allow_guest_sessions"]) and 
 				$config["allow_guest_sessions"])
 			{
 				$_SESSION['aikiuser'] = $_SESSION['guest'];
-			} else {
-				$_SESSION['aikiuser'] = $this->generate_session(100);
-			}
-
-			if (isset ($config["allow_guest_sessions"]) and 
-				$config["allow_guest_sessions"])
-			{
 				$register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='".$get_user->userid."', `user_name` = '".$get_user->username."', `user_ip`='$user_ip' WHERE `user_session`='".$_SESSION['aikiuser']."' LIMIT 1");
 			} else {
+				$_SESSION['aikiuser'] = $this->generate_session(100);
 				$register_user = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '".$get_user->userid."', '".$get_user->username."' , '$time_now', '$time_now' ,'".$_SESSION['aikiuser']."', '1', '$user_ip', '$user_ip')");
 			}
 
-			if ($config["allow_multiple_sessions"] == false)
+			if (!isset($config["allow_multiple_sessions"]) || $config["allow_multiple_sessions"] == false)
 			{
 				$delete_previous_open_sessions =$db->query("DELETE FROM `aiki_users_sessions` WHERE `user_session`!='".$_SESSION['aikiuser']."' and `user_name` = '".$get_user->username."' and `user_id`='".$get_user->userid."'");
 			}
@@ -206,8 +197,8 @@ class membership
 			if ($get_user->logins_number == 0)
 			{
 				$update_acces = $db->query("UPDATE `aiki_users` SET `first_login`= NOW(),`first_ip`='$user_ip' WHERE `userid`='".$get_user->userid."' LIMIT 1");
-			}
-
+			}			
+            
 		} else {
 		    $aiki->message->set_login_error("Wrong username or password.");
 		}
@@ -277,14 +268,11 @@ class membership
      */
 	public function get_ip()
 	{
-		if ( isset($_SERVER["REMOTE_ADDR"]) )    
-		{
+		if ( isset($_SERVER["REMOTE_ADDR"]) ) {
 			return $_SERVER["REMOTE_ADDR"];
-		} else if ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )    
-		{
+		} elseif ( isset($_SERVER["HTTP_X_FORWARDED_FOR"]) )  	{
 			return $_SERVER["HTTP_X_FORWARDED_FOR"];
-		} else if ( isset($_SERVER["HTTP_CLIENT_IP"]) )    
-		{
+		} elseif ( isset($_SERVER["HTTP_CLIENT_IP"]) ) {
 			return $_SERVER["HTTP_CLIENT_IP"];
 		}
 	}
@@ -480,6 +468,45 @@ class membership
             return $aiki->message->warning("You are already logged out.", NULL, false);
 		}
 	} // end of logOut function
+
+    
+    /*
+     * return number of registered user online.
+     *
+     *
+     */
+    
+    function how_many_are_online(){
+		global $db;
+		return $db->get_var("SELECT count(DISTINCT user_id) FROM aiki_users_sessions");
+	}	
+		
+    /*
+     * Give a list (ul/li) of online users
+     *
+     *  format is the  sprintf format used for generate each line, between li.
+     *  examples:  
+     *   '%s' (default) display username
+     *   '<a href='user-detail/%$s'>%1$s</a>'  a link to user page.
+     *  $format receives two arguments in this order: user_name, user_id.
+     */
+    
+    function who_is_online( $format = '%s'){
+		global $db;
+		$users= $db->get_results("SELECT user_id, user_name FROM aiki_users_sessions");
+	 
+		$output="<ul>";
+		foreach ($users as $user){		
+			$output .= sprintf("<li>{$format}</li>", $user->user_name, $user->user_id );
+		}
+		if ( $output=="<ul>" ){
+		    $output .= "<li>Nobody is online</li>";
+		}
+		$output .= "</ul>";
+		return $output;		
+	}
+
+
 
 } // end of membership class
 
