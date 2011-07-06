@@ -493,13 +493,14 @@ class membership
     
     function who_is_online( $format = '%s'){
 		global $db;
-		$users= $db->get_results("SELECT user_id, user_name FROM aiki_users_sessions");
-	 
+		
 		$output="<ul>";
-		foreach ($users as $user){		
-			$output .= sprintf("<li>{$format}</li>", $user->user_name, $user->user_id );
-		}
-		if ( $output=="<ul>" ){
+		$users= $db->get_results("SELECT user_id, user_name FROM aiki_users_sessions");		
+		if ( !is_null($users) ){
+			foreach ($users as $user){		
+				$output .= sprintf("<li>{$format}</li>", $user->user_name, $user->user_id );
+			}
+		} else {
 		    $output .= "<li>Nobody is online</li>";
 		}
 		$output .= "</ul>";
