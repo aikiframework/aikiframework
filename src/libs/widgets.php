@@ -176,7 +176,8 @@ class CreateLayout
 		 *		 outside this block to be proper!
 		 * @TODO This is totally too long iteration to create $widget
 		 */
-		foreach ($widget_result as $widget)	{
+    
+        foreach ($widget_result as $widget)	{
 
 			if ($widget->css) {
 				$this->widgets_css[]= $widget->id ;

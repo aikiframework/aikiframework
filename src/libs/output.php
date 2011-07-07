@@ -243,10 +243,11 @@ class output
 
 
 	/**
-	 * Checks if cache setup and if have permissions, if so, then returns path
+	 * Checks if cache setup and user don't have special permissions (for security
+     * reason this pages will not be cached),if so, then returns path
 	 * to cache file.
 	 *
-	 * Returns false if no cache configuration or nor had permissions.
+	 * Returns false if no cache configuration or had permissions.
 	 * If exist fresh file ( no time-out) it is served and application dies.
 	 * In other case, return the name (including path) of cache file that must 
 	 * be created and if exist, delete the obsolete cache file.
@@ -260,12 +261,15 @@ class output
 	 * @todo this function has side effect to output HTML
 	 * @todo think good to rename this function too
 	 */
-	public function from_cache()
+	public function cache_file()
 	{
 		global $config, $membership;
 
-		if ($config['html_cache'] != false and !$membership->permissions)
-		{
+		if ( isset($config['html_cache']) 
+              && $config['html_cache'] 
+              && is_dir( $config['html_cache'] ) 
+              && !$membership->permissions ){
+                  
 			$start = (float) array_sum(explode(' ',microtime()));
 
 			$html_cache_file = 
@@ -308,5 +312,36 @@ class output
 
 		return $html_cache_file;
 	} // end of from_cache function
+    
+    
+    /**
+     * Compress HTML, deleting line space, doble spaces, space in tags..
+     * and HTML coments
+     * 
+     * @param  $string $input String to be cleaned
+     * @return $string Cleaned input
+     */
+    
+    function compress( &$input){
+        $output = preg_replace("/\<\!\-\-(.*)\-\-\>/U", "", $input);
+
+		$search = array(
+            '/\n/',			// replace end of line by a space
+            '/\>[^\S ]+/s',	// strip whitespaces after tags, except space
+            '/[^\S ]+\</s',	// strip whitespaces before tags, except space
+            '/(\s)+/s'		// shorten multiple whitespace sequences
+            );
+
+        $replace = array(
+            ' ',
+            '>',
+            '<',
+            '\\1'
+            );
+
+        $output  = preg_replace($search, $replace, $output );
+      return $output;
+    }
+    
 
 } // end of Output class
