@@ -162,7 +162,7 @@ class output
 
 				$header .= sprintf(
                     '<link rel="stylesheet" type="text/css" '.
-                    ' href="%sstyle.php?site=%s&widgets=%s&language=%s" />',
+                    ' href="%sstyle.php?site=%s&amp;widgets=%s&amp;language=%s" />',
                     $config['url'],
                     $site,
                     implode("_", $layout->widgets_css),

@@ -63,7 +63,7 @@ class CreateLayout
      * Stores a string with a the "list" of widget included in widget. 
      * 
      * it will be used for loading style as  as 
-     * <link rel='stylesheet' .. href="style.php?site=default&widgets=14_21_16_595_17....
+     * <link rel='stylesheet' .. href="style.php?site=default&amp;widgets=14_21_16_595_17....
      */
 	public $widgets_css;
 
