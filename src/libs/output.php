@@ -80,8 +80,7 @@ class output
     {
 		global $site_info;
 		$header = '
-		<meta http-equiv="Content-Type" content="text/html; charset=__encoding__" />
-		<meta http-equiv="Content-Style-Type" content="text/css" />
+		<meta charset="__encoding__"/>
 		<title>' . ( $this->title ? "$this->title - " : "" ) . 
         $site_info->site_name . '</title>
         <meta name="generator" content="Aikiframework '.
@@ -117,10 +116,8 @@ class output
          * @todo this really needs to be abstracted? why just output xthml???
          */
 		return 
-'<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="'.$languages->language_short_name.'" xml:lang="'.$languages->language_short_name.'"
-	dir="'.$languages->dir.'">
+'<!doctype html>
+<html lang="'.$languages->language_short_name.'" dir="'.$languages->dir.'">
 ';
 	} // end of write_doctype function
 
