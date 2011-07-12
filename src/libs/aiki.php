@@ -41,25 +41,19 @@ class aiki
     public function load($class) {
         global $AIKI_ROOT_DIR;
 
+      
         if (isset($this->$class))
             return $this->$class;
 
-
-        if (file_exists($AIKI_ROOT_DIR.'/libs/'.$class.'.php'))
-        {
+        // Try to load the class file in /libs, assets/extensions and
+        // assets/extension/$class/$class.php
+        if (file_exists($AIKI_ROOT_DIR.'/libs/'.$class.'.php'))     {
             require_once($AIKI_ROOT_DIR.'/libs/'.$class.'.php');
-        }
-        elseif(file_exists($AIKI_ROOT_DIR.'/assets/extensions/'.$class.'.php'))
-        {
+        } elseif(file_exists($AIKI_ROOT_DIR.'/assets/extensions/'.$class.'.php')) {
             require_once($AIKI_ROOT_DIR.'/assets/extensions/'.$class.'.php');
-        } 
-        elseif(file_exists(
-                $AIKI_ROOT_DIR.'/assets/extensions/'.$class.'/'.$class.'.php'))
-        {
-            require_once(
-                $AIKI_ROOT_DIR.'/assets/extensions/'.$class.'/'.$class.'.php');
-        } 
-        else {
+        } elseif(file_exists( $AIKI_ROOT_DIR.'/assets/extensions/'.$class.'/'.$class.'.php')) {
+            require_once($AIKI_ROOT_DIR.'/assets/extensions/'.$class.'/'.$class.'.php');
+        } else {
             return false;
         }
 
@@ -81,12 +75,10 @@ class aiki
      * @global array $db The global database object
 	 * @return array     The global configuration array
 	 */
+     
 	public function get_config($config) {
 		global $db;
-
-		// get an array of all the existing keys in the config array
-		$preserve_keys = array_keys($config);
-
+        
 		// get the config data stored in the database
 		$settings = $db->get_results("SELECT config_data FROM aiki_config");
 
@@ -100,18 +92,12 @@ class aiki
 			$temp = @unserialize($setting_group->config_data);
 
 			if (is_array($temp)) {
-
-				// remove/unset all the duplicate config
-				// elements we want to preserve
-				foreach ($preserve_keys as $duplicate) {
-					unset($temp[$duplicate]);
-				}
-
-				// merging the arrays overwrites the first parameter/array with
+				// adding arrays doesn't overwrite the first parameter/array with
 				// the values of the second parameter/array when the keys match
-				$config = array_merge($config, $temp);
+				$config = $config + $temp;
 			}
 		}
+        
 		return $config;
 	}
 
@@ -171,7 +157,7 @@ class aiki
         /**
          * @todo Setting variables really doesn't have a place in this function
          */
-        if ( function_exists('date_default_timezone_set') and
+        if ( function_exists('date_default_timezone_set') &&
              function_exists('date_default_timezone_get') ) 
         {
             if ( isset($config['timezone']) and !empty($config['timezone']) )
@@ -181,24 +167,24 @@ class aiki
         }
         
         $current_month = date("n");
-        $current_year = date("Y");
-        $current_day = date("j");
+        $current_year  = date("Y");
+        $current_day   = date("j");
 
         $aReplace = array (
-        "[userid]"      => $membership->userid,
-        "[full_name]" => $membership->full_name,
-        "[language]" => $languages->language,
-        "[username]" => $membership->username,
-        "[page]" => $page,
-        "[site_name]" => $site_info->site_name,
-        "[site]" => $config['site'],
-        "[direction]" => $languages->dir,
-        "insertedby_username" => $membership->username,
-        "insertedby_userid" => $membership->userid,
-        "current_month" => $current_month,
-        "current_year" => $current_year,
-        "current_day" => $current_day
-        );
+            "[userid]"      => $membership->userid,
+            "[full_name]" => $membership->full_name,
+            "[language]" => $languages->language,
+            "[username]" => $membership->username,
+            "[page]" => $page,
+            "[site_name]" => $site_info->site_name,
+            "[site]" => $config['site'],
+            "[direction]" => $languages->dir,
+            "insertedby_username" => $membership->username,
+            "insertedby_userid" => $membership->userid,
+            "current_month" => $current_month,
+            "current_year" => $current_year,
+            "current_day" => $current_day
+            );
 
         $text= strtr ( $text, $aReplace );
 
