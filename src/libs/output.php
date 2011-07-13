@@ -70,7 +70,6 @@ class output
     /**
      * Returns the title and default meta tags as html
      * 
-     * @global  array   $site_info
      * @return  string
      * 
      * @todo title has a hardcoded default here, need to remove
@@ -78,11 +77,11 @@ class output
      */
 	public function write_title_and_metas()
     {
-		global $site_info;
+		global $site;
 		$header = '
 		<meta charset="__encoding__"/>
 		<title>' . ( $this->title ? "$this->title - " : "" ) . 
-        $site_info->site_name . '</title>
+        $site->site_name() . '</title>
         <meta name="generator" content="Aikiframework '.
         AIKI_VERSION.'.'.AIKI_REVISION.'" />
 		';
@@ -161,7 +160,7 @@ class output
                     '<link rel="stylesheet" type="text/css" '.
                     ' href="%sstyle.php?site=%s&amp;widgets=%s&amp;language=%s" />',
                     $config['url'],
-                    $site,
+                    $site->get_site(),
                     implode("_", $layout->widgets_css),
                     $language);
 			}

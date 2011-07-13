@@ -152,7 +152,7 @@ class aiki
      */
     public function processVars($text) 
     {
-        global $aiki, $page, $membership, $config, $languages, $site_info;
+        global $aiki, $page, $membership, $config, $languages, $site;
 
         /**
          * @todo Setting variables really doesn't have a place in this function
@@ -176,8 +176,8 @@ class aiki
             "[language]" => $languages->language,
             "[username]" => $membership->username,
             "[page]" => $page,
-            "[site_name]" => $site_info->site_name,
-            "[site]" => $config['site'],
+            "[site_name]" => $site->site_name(),
+            "[site]" => $site,
             "[direction]" => $languages->dir,
             "insertedby_username" => $membership->username,
             "insertedby_userid" => $membership->userid,

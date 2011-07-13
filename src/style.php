@@ -31,11 +31,7 @@ header('Content-type: text/css');
  */
 require_once("bootstrap.php");
 
-/**
- * @global string $site
- * @todo the site var looks useless here, should trace and remove
- */
-$site = isset($_GET['site']) ? addslashes($_GET['site']) : 'default';
+
 /**
  * @global string $widgets
  */

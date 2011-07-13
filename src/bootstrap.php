@@ -128,37 +128,16 @@ $config = $aiki->get_config($config);
 $aiki->load("message");
 
 /**
+ * Get the site information 
+ */ 
+$site = $aiki->load("site"); 
+
+/**
  * Load membership class for global use.
  * @global membership $membership
  */ 
 $membership = $aiki->load("membership");
 
-/**
- * @todo: scoping is wrong here, need solution on these.
- * @see bootstrap.php
- */
-if (isset($_GET['site']))
-	$site=addslashes($_GET['site']);
-else
-	$site = $config['site'];
-
-/**
- * Get the site information for determining installer setup.
- * @global array $site_info
- */ 
-$site_info = $db->get_row("SELECT * from aiki_sites where site_shortcut='$site' limit 1");
-if (!$site_info)
-{
-    /** 
-     * @todo: this needs translation. Its a hardcoded string!
-     */
-	die("Fatal Error: Wrong site name provided. " .
-	  (( ENABLE_RUNTIME_INSTALLER == FALSE ) ?
-           "ENABLE_RUNTIME_INSTALLER is set to FALSE." : ""));
-}
-
-if ($site_info and $site_info->is_active != 1)
-	die($site_info->if_closed_output);
 
 // load rest of classes
 $aiki->load("text");
