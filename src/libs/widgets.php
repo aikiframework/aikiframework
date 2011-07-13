@@ -143,14 +143,13 @@ class CreateLayout
      * @global array  $db global database object
      * @global aiki   $aiki glboal aiki object
      * @global string $url 
-     * @global string $site
      * @global string $custom_output
      *
      * @todo this all need to be broken down into helper functions, too big!
      */
 	private function createWidget ( $widget_group )
     {
-		global $db, $aiki,$url, $site, $custom_output;
+		global $db, $aiki,$url, $custom_output;
 
 		/**
 		 * Daddy this is where widgets come from...

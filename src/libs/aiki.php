@@ -177,7 +177,7 @@ class aiki
             "[username]" => $membership->username,
             "[page]" => $page,
             "[site_name]" => $site->site_name(),
-            "[site]" => $site,
+            "[site]" => $site->get_site(),
             "[direction]" => $languages->dir,
             "insertedby_username" => $membership->username,
             "insertedby_userid" => $membership->userid,
