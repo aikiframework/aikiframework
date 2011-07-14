@@ -87,10 +87,9 @@ class CreateLayout
      * @global array  $db
      * @global aiki   $aiki
      * @global string $url
-     * @global errors $errors
      */
 	public function CreateLayout(){
-		global $db, $aiki, $url, $errors;
+		global $db, $aiki, $url;
 
         // Initialize
         $this->widgets_css= array();
@@ -120,7 +119,7 @@ class CreateLayout
 
 		// ..page not found..
 		if ( !$unique_widget_exists ){
-			$this->html_output .= $errors->page_not_found();			
+			$this->html_output .= $aiki->errors->page_not_found();			
 			return;
 		}
 	

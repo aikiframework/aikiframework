@@ -155,13 +155,9 @@ $aiki->load("sql_markup");
  * @global language $language
  */ 
 $languages = $aiki->load("languages");
-$aiki->load("image");
 
-/**
- * Global error object for use in runtime.
- * @global errors $errors
- */ 
-$errors = $aiki->load("errors");
+$aiki->load("image");
+$aiki->load("errors");
 
 /**
  * Global object for handling urls.
