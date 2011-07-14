@@ -120,7 +120,8 @@ CREATE TABLE IF NOT EXISTS aiki_redirects (
   url varchar(255) NOT NULL,
   redirect varchar(255) NOT NULL,
   hits int(11) NOT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE KEY url (url)
 ) ENGINE=MyISAM CHARSET=utf8;
 
 -- ------------------------------------------------------
