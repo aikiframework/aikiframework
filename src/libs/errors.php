@@ -48,50 +48,32 @@ class errors
     {
 		global $db, $aiki, $config;
 
-		Header("HTTP/1.1 404 Not Found");
+		if (isset($config["register_errors"]) )
+        {
+            
+			$request = urldecode ($_SERVER['REQUEST_URI']);
+			
+			$check_request =  $db->get_row(
+                "SELECT * FROM aiki_redirects where url='$request'");
 
+			if (isset($check_request->url))  {				
+                $db->query("update aiki_redirects set hits=hits+1 where url='$request'");
+				if ($check_request->redirect) {					
+					Header("Location: ". $check_request->redirect, false, 301);
+					die();
+				}
+
+			} else {
+				$db->query(	"insert into aiki_redirects values ('$request', '', '1')");
+			}
+		}
+                
+        Header("HTTP/1.1 404 Not Found");
         /**
          * @todo actually handle translating the page name
          */
 		$aiki->output->set_title("404 Page Not Found");
-
-		if (isset($config["register_errors"]))
-        {
-			$request = $_SERVER['REQUEST_URI'];
-			$request = urldecode($request);
-
-			$check_request = 
-            $db->get_row("SELECT * FROM aiki_redirects where url='$request'");
-
-			if (isset($check_request->url))
-            {
-				$update_hits = 
-                $db->query(
-                "update aiki_redirects set hits=hits+1 where url='$request'");
-
-				if ($check_request->redirect)
-                {
-					$catch_patterns[$check_request->url] = 
-                        $check_request->redirect;
-					$catch_regex = 
-                    '#((' . implode('|', array_keys($catch_patterns)) . '))#i';
-
-					if ( preg_match($catch_regex, 
-                                    urldecode($_SERVER['REQUEST_URI']), 
-                                    $caught) ) 
-					{
-						$redir = $catch_patterns[$caught[1]];
-
-						Header("Location: $redir", false, 301);
-						exit;
-					}
-				}
-
-			} else {
-				$add_e = $db->query(
-					"insert into aiki_redirects values ('$request', '', '1')");
-			}
-		}
+        // return page because it would be handle by cache..
 		return $config['error_404'];
 
 	} // end of page_not_found function
