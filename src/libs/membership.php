@@ -267,6 +267,37 @@ class membership
 
 
     /**
+     * check is user is systemgod
+     *  
+     * @return boolean 
+     */
+    
+    public function is_systemgod(){
+        return $this->permissions=="SystemGod";
+    }
+
+    /**
+     * check permissions (permission or group_level)
+	 * 
+     * @return boolean 
+     */
+        
+    public function have_permission( $permission="SystemGOD"){
+        global $db;
+        if ( $permission=="SystemGOD" ){
+            return $this->permissions== "SystemGOD";
+        } elseif ( $permission== $this->permissions ){
+            return true;
+        }
+        
+        // permissions don't match. Try group level.
+        $get_group_level = 	$db->get_var(
+			"SELECT group_level from aiki_users_groups where group_permissions='$permission'");
+        
+        return ( !is_null($get_group_level) && $this->group_level < $get_group_level);
+    }
+
+    /**
      * Attempt to get a user's ip address.
 	 *
      * @return string
