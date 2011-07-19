@@ -171,7 +171,12 @@ class membership
 			session_start();
 		}
 		
-		$get_user = $db->get_row("SELECT * FROM aiki_users WHERE username='$username' AND password='$password' LIMIT 1");        
+		$get_user = $db->get_row(
+            "SELECT * FROM aiki_users".
+            " WHERE username='$username' ".
+            "  AND password='$password' ".
+            "  AND is_active=1" .          
+            " LIMIT 1");        
 		if($get_user){
 			$host_name = $_SERVER['HTTP_HOST'];
 			$user_ip   = $this->get_ip();

@@ -183,7 +183,7 @@ CREATE TABLE IF NOT EXISTS aiki_users (
   maillist int(1) NOT NULL,
   logins_number int(11) NOT NULL,
   randkey varchar(255) NOT NULL,
-  is_active int(5) NOT NULL,
+  is_active int(5) NOT NULL default '1',
   PRIMARY KEY (userid),
   UNIQUE KEY username (username)
 ) ENGINE=MyISAM CHARSET=utf8;
