@@ -299,7 +299,7 @@ class bot
 					sha1_file($config['top_folder'].'/'.$path.$photo->filename);
 				$md5 = 
 					md5_file($config['top_folder'].'/'.$path.$photo->filename);
-				$filesize = i
+				$filesize = 
 					filesize($config['top_folder'].'/'.$path.$photo->filename);
 				$size = 
 				getimagesize($config['top_folder'].'/'.$path.$photo->filename);
@@ -513,9 +513,8 @@ class bot
 
 		$data = $db->get_results("select * from $tablename $orderby");
 
-		$form_fields = mysql_query(
-			'SHOW COLUMNS FROM '.$tablename) or '.
-			'die('cannot show columns from '.$tablename);
+		$form_fields = mysql_query('SHOW COLUMNS FROM '.$tablename) 
+            or die('cannot show columns from '.$tablename);
 
 		if(mysql_num_rows($form_fields)) 
 		{
