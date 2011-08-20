@@ -39,6 +39,7 @@ class membership
      * @var string  permissions for a user
      */
 	public $permissions;
+    
     /**
      * @var string a user's fullname
      */
@@ -48,7 +49,7 @@ class membership
      */
 	public $username;
     /**
-     * @var intege  the unique id of a user
+     * @var integer  the unique id of a user
      */
 	public $userid;
     /**
@@ -121,16 +122,13 @@ class membership
 				$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' WHERE `user_session`='".$_SESSION['guest']."' LIMIT 1");
 			}
 
-		}elseif(isset($_SESSION['aikiuser']))
+		} elseif ( isset($_SESSION['aikiuser']) )
 		{
 			$update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` = '$time_now' WHERE `user_session`='".$_SESSION['aikiuser']."' LIMIT 1");
 		}
 
-		if (isset($config["session_timeout"]))
-			$timeout = $config["session_timeout"];
-		else
-			$timeout = 7200;
-
+        $timeout =  isset($config["session_timeout"]) ? $config["session_timeout"] :7200 ;
+		
 		$last_hour = time()."-$timeout";
 		$make_offline = $db->query(
 			"DELETE FROM `aiki_users_sessions` WHERE last_hit < $last_hour");
@@ -205,7 +203,7 @@ class membership
 			}			
             
 		} else {
-		    $aiki->message->set_login_error("Wrong username or password.");
+		    $aiki->message->set_login_error(__("Wrong username or password.") );
 		}
 
 	} // handle login function
@@ -267,14 +265,25 @@ class membership
 
 
     /**
-     * check is user is systemgod
+     * check is user is root (systemgod)
      *  
      * @return boolean 
      */
     
-    public function is_systemgod(){
+    public function is_root(){
         return $this->permissions=="SystemGod";
     }
+
+    /**
+     * check is user is root (systemgod)= is_root.
+     *  
+     * @return boolean 
+     */
+
+    public function is_admin(){
+        return $this->permissions=="SystemGod";
+    }
+
 
     /**
      * check permissions (permission or group_level)
@@ -353,19 +362,19 @@ class membership
 
   <fieldset class="fields">
     <div class="password field">
-      <label for="password">New Password</label>
+      <label for="password">'. __("New Password") . '</label>
       <input class="input" type="password" dir="" name="password">
      </div>
      
      <div class="password_confirm field">
-        <label for="password_confirm">Confirm New Password</label>
+        <label for="password_confirm">'. __("Confirm New Password") .'</label>
         <input class="input" type="password" dir="" name="password_confirm">
      </div>
    </fieldset>
 
    <fieldset class="buttons">
       <input type="hidden" value="'.$key.'" name="key">
-      <input class="button" type="submit" name="submit" value="Set Password">
+      <input class="button" type="submit" name="submit" value="' . __("Set Password") .'">
     </fieldset>
 <form>
 </div>
@@ -445,9 +454,9 @@ class membership
 			$is_user = $db->get_var("select userid from aiki_users where username = '$username'");
 			if (!$is_user)
 			{
-				return $aiki->message->error("The user $username doesn't exist. Make sure you typed the name correctly.", NULL, false);
+				return $aiki->message->error( __sprintf("The user %s doesn't exist. Make sure you typed the name correctly.",$username), NULL, false);
 			} else {
-				return $aiki->message->error("The email address and username do not match what we have on file.", NULL, false);
+				return $aiki->message->error( __("The email address and username do not match what we have on file."), NULL, false);
 			}
 
 		} else {
@@ -465,12 +474,12 @@ class membership
 			$headers .= "From: $emailfrom\r\n";
 
 			$message = $message."\n\r".
-			"To reset your password please click this link: 
-			<a href='".$config['url']."secure?key=".$randkey."'>".
+			__("To reset your password please click this link:"). " ".
+			"<a href='".$config['url']."secure?key=".$randkey."'>".
 			$config['url']."secure?key=".$randkey."</a>";
 
 			mail($email,$subject,$message,$headers);
-			return $aiki->message->ok("An email has been sent to your address. Please follow the link to reset your password.", NULL, false);
+			return $aiki->message->ok( __("An email has been sent to your address. Please follow the link to reset your password."), NULL, false);
 
 		}
 
@@ -499,9 +508,9 @@ class membership
 			session_destroy();
 			session_unset();
 
-            return $aiki->message->ok("Logged out.", NULL, false);
+            return $aiki->message->ok( __("Logged out."), NULL, false);
 		} else {
-            return $aiki->message->warning("You are already logged out.", NULL, false);
+            return $aiki->message->warning( __("You are already logged out."), NULL, false);
 		}
 	} // end of logOut function
 
@@ -537,7 +546,7 @@ class membership
 				$output .= sprintf("<li>{$format}</li>", $user->user_name, $user->user_id );
 			}
 		} else {
-		    $output .= "<li>Nobody is online</li>";
+		    $output .= "<li>". __("Nobody is online"). "</li>";
 		}
 		$output .= "</ul>";
 		return $output;		

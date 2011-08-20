@@ -89,10 +89,10 @@ private
 			//evaluate each case..
 			switch ($word) 
 			{				
-				case "";
+				case "":
 					break;
 				// 'if' is a very special case
-				case "if";			
+				case "if":			
 					$php_output= $this->php_ifelse($php_function);					
 					break;					
 				// counters and odds
@@ -146,6 +146,11 @@ private
 				case "sql":													  
 					$php_output= $this->sql($rest);
 					break;
+				case "sql_rows":													  
+					$php_output= $this->sql_rows($rest);
+					break;    
+                case "echo".
+                	$php_output= $this->evalNeg($rest);
 
 				default :
 					if ( isset($config['debug']) )
@@ -475,16 +480,59 @@ private function sql($sql)
 {
 	global $db;
 	
+    // remove, if exists initial and final ' "
 	$sql= preg_replace( array('/^"(.*)"$/', '/^\'(.*)\'$/'),'$1',$sql);
-	/** 
-	 * @todo bare string must be managed or removed
-	 */
-	if (!$this->is_sql_select_statement($sql) ) 
-	{
+	
+	if (!$this->is_sql_select_statement($sql) ) {
 		return "invalid SQL SELECT";
 	}		
 	return $db->get_var($sql,0,0);
 }
+
+
+private function sql_rows($sql)
+{
+	global $db;
+	
+    // remove, if exists initial and final ' "
+	$sql= preg_replace( array('/^"(.*)"$/', '/^\'(.*)\'$/'),'$1',$sql);
+	if (!$this->is_sql_select_statement($sql) ) {
+		return "invalid SQL SELECT";
+	}		
+	$rows = $db->get_results($sql);
+    if ( is_null($rows)) {
+        return "ERROR in SQL statements";
+    }
+    
+    $output="";
+    $cont=1;
+    $max =3;
+
+    foreach ($rows as $i=>$row) {
+        if ($cont ==1 ){
+            $output="<thead>\n</tr>";
+            foreach($row as $field=>$value) {
+                $output .= "<th>$field</th>";
+            }
+            $output .= "</tr>\n</thead>";
+        }    
+                
+        $output .="\n<tr class='". ( $cont %2 ? 'even' : 'odd' ) . "'>";
+        foreach($row as $field) {
+            $output .= "<td>$field</td>";
+        }
+        $output .="</tr>";
+        
+        // to avoid a unlimited query
+        $cont++ ;
+        if ( $cont>$max ) {
+            break;
+        }
+    }
+    return "<table class='sql-select-result'>$output</table>";
+
+}
+
 
 } // end of class
 // need the close php tag in this class

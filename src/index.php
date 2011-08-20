@@ -41,7 +41,7 @@ require_once("bootstrap.php");
  * cache_file have tree result:
  *  false: if no cache file must be created
  *  string: cache file that must be created
- *  die, after echo a previous a fresh cache file.
+ *  die, after echo a previous fresh cache file.
  * @global string $html_cache_file
  */
 $html_cache_file = $aiki->output->cache_file();
@@ -56,10 +56,8 @@ $layout = new CreateLayout();
  * @todo need to define these before use + integrate into @see widgets.php
  */
 
-
 $noheaders = false;
-if (isset($global_widget)) 
-{
+if (isset($global_widget) ) {
 	$noheaders = true;
 	$nogui = true;
 }
@@ -68,15 +66,14 @@ if (isset($global_widget))
  * @todo fix the misspelling
  */
 
-
-if ($layout->widget_custom_output)
+if ($layout->widget_custom_output) {
 	$noheaders = true;
-
+}
 
 if ( $noheaders) {
     $html_output = $layout->html_output;
 } else {   
-	$html_output = $aiki->output->write_headers();
+	$html_output = $aiki->output->headers();
     if (isset($aiki->output->title)) {
         $layout->html_output =  str_replace(
             '[page_title]', 
@@ -84,7 +81,7 @@ if ( $noheaders) {
             $layout->html_output);
     } 
     $html_output .= $layout->html_output;
-    $html_output .= $aiki->output->write_footer();
+    $html_output .= $aiki->output->footer();
 } 
 
 $html_output = $aiki->languages->L10n($html_output);
@@ -93,9 +90,9 @@ $html_output = $aiki->languages->L10n($html_output);
  * Tidy html using libtidy
  * @todo abstract this use of libtidy here
  */
-if ( extension_loaded('tidy' ) and 
-     function_exists('tidy_parse_string') and 
-     $config["html_tidy"]) 
+if ( extension_loaded('tidy' ) 
+     && function_exists('tidy_parse_string')
+     && $config["html_tidy"]) 
 {
 	$tidy = new tidy();
 	$tidy->parseString($html_output, $config["html_tidy_config"], 'utf8');

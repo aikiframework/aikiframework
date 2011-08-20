@@ -152,7 +152,7 @@ class aiki
      */
     public function processVars($text) 
     {
-        global $aiki, $page, $membership, $config, $languages, $site;
+        global $aiki, $page, $membership, $config;
 
         /**
          * @todo Setting variables really doesn't have a place in this function
@@ -173,32 +173,51 @@ class aiki
         $aReplace = array (
             "[userid]"      => $membership->userid,
             "[full_name]" => $membership->full_name,
-            "[language]" => $languages->language,
+            "[language]" => $aiki->site->language(),
             "[username]" => $membership->username,
             "[page]" => $page,
-            "[site_name]" => $site->site_name(),
-            "[site]" => $site->get_site(),
-            "[direction]" => $languages->dir,
+            "[site_name]" => $aiki->site->site_name(),
+            "[site]" => $aiki->site->get_site(),
+            "[direction]" => $aiki->languages->dir,
             "insertedby_username" => $membership->username,
             "insertedby_userid" => $membership->userid,
             "current_month" => $current_month,
             "current_year" => $current_year,
             "current_day" => $current_day
             );
-
         $text= strtr ( $text, $aReplace );
 
         if ($config['pretty_urls'] == 0){
             $text = preg_replace('/href\=\"\[root\](.*)\"/U', 
                                  'href="[root]?pretty=\\1"', $text);
             $text = str_replace('[root]', $config['url'], $text);
+            $text = str_replace('[root-language]', $config['url']."/". $aiki->site->language(), $text);
             $text = str_replace('=/', '=', $text);
         }else{
             $text = str_replace('[root]', $config['url'], $text);
+            $text = str_replace('[root-language]', $config['url']."/". $aiki->site->language(), $text);
         }
-
         $text = str_replace($config['url'].'/', $config['url'], $text);
 
-        return $text;
+        // substitute all [POST[key]] and [GET[key]] 
+        $matches= array();
+        if ( preg_match_all("/\[(POST|GET)\[(.*)\]\]/U", $text, $matches)){
+        
+            foreach ($matches[0] as $i => $match) {
+                $method= $matches[1][$i];
+                $key   = $matches[2][$i];            
+                if ( $method=="GET" && isset($_GET[$key])) {
+                    $value = $_GET[$key];
+                } elseif ($method=="POST" && isset($_POST[$key])) {
+                    $value = $_POST[$key];
+                } else {
+                    $value="";
+                }
+                $replace[$match] = $value;
+            }
+            $text = strtr( $text, $replace);
+       }   
+    
+    return $text;
     } // end of processVars method
 } // end of aiki class

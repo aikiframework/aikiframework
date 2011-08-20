@@ -73,15 +73,14 @@ class output
      * @return  string
      * 
      * @todo title has a hardcoded default here, need to remove
-	 * @todo rename this because its not writing, its returning output
      */
-	public function write_title_and_metas()
+	public function title_and_metas()
     {
-		global $site;
+		global $aiki;
 		$header = '
 		<meta charset="__encoding__"/>
 		<title>' . ( $this->title ? "$this->title - " : "" ) . 
-        $site->site_name() . '</title>
+        $aiki->site->site_name() . '</title>
         <meta name="generator" content="Aikiframework '.
         AIKI_VERSION.'.'.AIKI_REVISION.'" />
 		';
@@ -91,34 +90,33 @@ class output
     /**
      * Returns the doctype
      * 
-     * @global  languages   $languages  global languages instance
+     * @global  $aiki
      * @return  string
      * 
      * @todo we really should have a default template for pages somewhere and
      * NOT have default doctype written directly inside of aiki! 
-	 * @todo rename this because its not writing, its returning output
      */
-	public function write_doctype()
+	public function doctype()
     {
-		global $languages;
+		global $aiki;
 
 		/**
          * don't change the direction if the page is the admin panel on /admin
          * @todo instance of where admin and rest of code needs separation
          */
-		if (isset($_GET["pretty"]) and $_GET["pretty"] == 'admin')
+		if (isset($_GET["pretty"]) && $_GET["pretty"] == 'admin')
         {
-			$languages->language_short_name = "en";
-			$languages->dir = "ltr";
+			$aiki->languages->language = "en";
+			$aiki->languages->dir = "ltr";
 		}
         /**
          * @todo this really needs to be abstracted? why just output xthml???
          */
 		return 
 '<!doctype html>
-<html lang="'.$languages->language_short_name.'" dir="'.$languages->dir.'">
+<html lang="'.$aiki->languages->language.'" dir="'.$aiki->languages->dir.'">
 ';
-	} // end of write_doctype function
+	} // end of doctype function
 
 
     /**
@@ -128,7 +126,6 @@ class output
      * @global      array           $db     global db instance 
      * @global      CreateLayout    $layout global layout object
      * @global      bool            $nogui  global yes or no about gui
-     * @global      string          $site   site name 
      * @global      array           $config global config options instance
      * @return string
      * 
@@ -136,15 +133,14 @@ class output
      * @todo this is super nasty function that pulls in globals
      * @todo the html hardcoded in here needs abstraction and shouldn't make
      * assumptions about setup
-	 * @todo rename this because its not writing, its returning output
      */
-	public function write_headers()
+	public function headers()
     {
-		global $aiki, $db, $layout, $nogui, $site, $config;
+		global $aiki, $db, $layout, $nogui, $config;
 
-		$header = $this->write_doctype();
+		$header = $this->doctype();
 		$header .= '<head>';
-		$header .= $this->write_title_and_metas();
+		$header .= $this->title_and_metas();
 
 		if (!$nogui)
         {
@@ -160,7 +156,7 @@ class output
                     '<link rel="stylesheet" type="text/css" '.
                     ' href="%sstyle.php?site=%s&amp;widgets=%s&amp;language=%s" />',
                     $config['url'],
-                    $site->get_site(),
+                    $aiki->site->get_site(),
                     implode("_", $layout->widgets_css),
                     $language);
 			}
@@ -178,7 +174,7 @@ class output
 		$header .= "\n<body>\n";
 
 		return $header;
-	} // end of write_headers function
+	} // end of headers function
 
 
 	/**
@@ -186,9 +182,8 @@ class output
 	 * 
 	 * @return	string
 	 * 
-	 * @todo rename this because its not writing, its returning output
 	 */
-	public function write_footer()
+	public function footer()
 	{
 		return "\n</body>\n</html>";
 	}

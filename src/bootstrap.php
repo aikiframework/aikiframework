@@ -125,18 +125,30 @@ $aiki = new aiki();
  */ 
 $config = $aiki->get_config($config);
 
+/*
+ * Load some auxiliary classes
+ */
+
 $aiki->load("message");
+$aiki->load("dictionary");
+
 
 /**
- * Get the site information 
- */ 
-$site = $aiki->load("site"); 
-
-/**
- * Load membership class for global use.
+ * Load basic class: site, membership (permission), language, url(user requests)
  * @global membership $membership
+ * @todo replace global membership by $aiki->membership
  */ 
+
+$aiki->load("site"); 
 $membership = $aiki->load("membership");
+$aiki->load("languages");
+$aiki->load("url");
+
+if ($aiki->site->language()!="en"){
+    include_once ("$AIKI_ROOT_DIR/libs/classes/dictionaryTableClass.php");
+    $aiki->dictionary->add("core", new dictionaryTable($aiki->site->language() ) );
+}
+
 
 
 // load rest of classes
@@ -150,17 +162,5 @@ $aiki->load("security");
 $aiki->load("parser");
 $aiki->load("php");
 $aiki->load("sql_markup");
-/**
- * Global language object for use at runtime.
- * @global language $language
- */ 
-$languages = $aiki->load("languages");
-
 $aiki->load("image");
 $aiki->load("errors");
-
-/**
- * Global object for handling urls.
- * @global url $url 
- */ 
-$url = $aiki->load("url");

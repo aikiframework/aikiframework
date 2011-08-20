@@ -115,6 +115,19 @@ CREATE TABLE IF NOT EXISTS aiki_languages (
 
 -- ------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS aiki_dictionaries (
+  app_id int(11) NOT NULL,
+  term varchar(120) NOT NULL,
+  translatefrom varchar(5) NOT NULL,
+  translateto varchar(5) NOT NULL,
+  translation varchar(120) NOT NULL,
+  PRIMARY KEY (term),
+  KEY translatefrom (translatefrom),
+  KEY translateto (translateto)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS aiki_redirects (
   id int(11) NOT NULL AUTO_INCREMENT,
   url varchar(255) NOT NULL,
@@ -132,6 +145,9 @@ CREATE TABLE IF NOT EXISTS aiki_sites (
   site_shortcut varchar(255) NOT NULL,
   is_active int(1) NOT NULL,
   if_closed_output text NOT NULL,
+  site_default_language varchar(5) NOT NULL DEFAULT '',
+  site_languages text NOT NULL,
+  widget_language varchar(5) NOT NULL,
   PRIMARY KEY (site_id)
 ) ENGINE=MyISAM CHARSET=utf8;
 

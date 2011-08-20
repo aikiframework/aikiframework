@@ -86,10 +86,9 @@ class CreateLayout
      * This is the basic Layout Creation method.
      * @global array  $db
      * @global aiki   $aiki
-     * @global string $url
      */
 	public function CreateLayout(){
-		global $db, $aiki, $url;
+		global $db, $aiki;
 
         // Initialize
         $this->widgets_css= array();
@@ -126,7 +125,7 @@ class CreateLayout
 		// now filter canditate widgets, before create content
 		$widget_group = array();
 		foreach ( $module_widgets as $widget ) {
-			if (  $url->match($widget->display_urls) && !$url->match($widget->kill_urls) ){
+			if (  $aiki->url->match($widget->display_urls) && !$aiki->url->match($widget->kill_urls) ){
 				$widget_group[] = $widget->id;			
 			}            
 		}	
@@ -148,7 +147,7 @@ class CreateLayout
      */
 	private function createWidget ( $widget_group )
     {
-		global $db, $aiki,$url, $custom_output;
+		global $db, $aiki, $custom_output;
 
 		/**
 		 * Daddy this is where widgets come from...
@@ -226,7 +225,7 @@ class CreateLayout
 					$son_widget_group = array();
 
 					foreach ( $son_widgets as $son_widget ){
-						if ( $url->match($son_widget->display_urls) && !$url->match($son_widget->kill_urls) ) {
+						if ( $aiki->url->match($son_widget->display_urls) && !$aiki->url->match($son_widget->kill_urls) ) {
 							$son_widget_group[] = $son_widget->id;
 						}
 
@@ -297,7 +296,6 @@ class CreateLayout
 	 *                                          normal_select.
 	 * @global	aiki		$aiki				global object
 	 * @global	array		$db					global db object
-	 * @global	string		$url				the url
 	 * @global	membership	$membership			global membership object
 	 * @global	bool		$nogui				
 	 * @global	string		$custom_output
@@ -311,7 +309,7 @@ class CreateLayout
 	
 	private function createWidgetContent($widget, $normal_select=false )
 	{
-		global $aiki, $db, $url, $membership, $nogui, $custom_output, $config;
+		global $aiki, $db, $membership, $nogui, $custom_output, $config;
 
 		$is_inline = ( $normal_select ? true :  false );
 
@@ -1011,7 +1009,7 @@ class CreateLayout
 		
 		
 	private function parse_select( $select, $inline_select) {
-		global $aiki, $url, $membership;
+		global $aiki, $membership;
 		
 		if ( $inline_select ) {
 			$select= trim($inline_select);
@@ -1084,14 +1082,14 @@ class CreateLayout
      */
     
     function get_candidate_widgets($father=0){
-		global $db, $url, $site;
+		global $db, $aiki;
 		
-		$search = $url->url[0];
+		$search = $aiki->url->url[0];
 		$SQL =
 			"SELECT id, display_urls,kill_urls,widget_name ".
 			" FROM aiki_widgets ".
 			" WHERE father_widget=$father AND is_active=1 AND ".
-			" (widget_site='$site' OR widget_site ='aiki_shared' OR widget_site ='default') AND ".
+			" (widget_site='{$aiki->site}' OR widget_site ='aiki_shared' OR widget_site ='default') AND ".
 			" (display_urls LIKE '%$search%' OR display_urls = '*' OR display_urls LIKE '%#%#%') AND ".
 			" (kill_urls='' OR kill_urls<> '$search') ".	
 			" ORDER BY  display_order, id";

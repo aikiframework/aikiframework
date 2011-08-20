@@ -35,7 +35,7 @@
  *
  *
  * Examples:
- * if (!$site_info){
+ * if (!something_info){
  *	die( message("Fatal Error: Wrong site name provided",NULL, false) );
  *
  * $aiki->message->warning("No clipart's found");
@@ -79,10 +79,8 @@ function message($text, $attribs=NULL, $echo = true)
 				$cRet .= " $k='$v' ";
         }
     }
-    if ( function_exists("t")) 
-	{
-		$text= t($text);
-    } elseif ( isset( $aiki->languages) )
+    
+    if ( isset( $aiki->languages) )
 	{
 		$text= $aiki->languages->L10n($text);
     }

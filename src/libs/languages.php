@@ -17,6 +17,8 @@
  * @filesource
  */
 
+require_once("dictionary.php");
+
 if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 /**
@@ -35,39 +37,34 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * will work fine, if code used in aiki_languages, aiki_dictionary, 
  * and $config are coherent.
  * 
- * @todo
- *    1 aiki_dictionary must have a column for every language.
- *    
- * 
- * @category    Aiki
- * @package     Library
  */
+
 class languages
 {
 
 	public $language;
 	public $dir;
-	public $language_short_name;
 
 	/**
 	 * construct the clase
 	 * 
-	 * Try to set the language using $_GET['language']
+	 * Try to set the language using $aiki->site
 	 */
 
 	function __construct() {
-		global $config;
+		global $config, $aiki;
 
-		if( !isset($_GET['language']) || !$this->set($_GET['language']) ) {			
-			$this->language = $config['default_language'];
-			$this->dir = $config['site_dir'];
-			$this->language_short_name  = $config['language_short_name'];
+		if ( isset($aiki->site) ) {			
+			$this->set($aiki->site->language());			
 		}
+        
+       
+        
 	}
 
 
    /**
-    * Try set the default language.
+    * set the language.
     *
     * The language is set if it is defined in aiki_languages table..
     * @param string $lang Default_language
@@ -77,12 +74,11 @@ class languages
 	private function set($lang) {
 		global $db, $config;
 
-		$is_real_language = $db->get_row("SELECT sys_name,dir, short_name from aiki_languages where sys_name='$lang'");
+		$is_real_language = $db->get_row("SELECT sys_name,dir, short_name from aiki_languages where short_name='$lang'");
 		if (isset($is_real_language->sys_name)) {
 			$this->language= $lang;
 			$config['default_language']= $lang;
 			$this->dir = $is_real_language->dir;
-			$this->language_short_name= $is_real_language->short_name;
 			return true;
 		}
 
@@ -95,7 +91,7 @@ class languages
     *
     * 1. searchs all ocurrences of __something__, where something is a string of characters, except space and '.
     * for example: __encoding__  __Error_adding_database__. 
-    * not validd: __error during__ (contains space) __Joe's_netbook__ (contains ')
+    * not valid: __error during__ (contains space) __Joe's_netbook__ (contains ')
     * 2. Searchs ocurrence in aiki_dictionary, and replace that founded.
     * A not founded string will not replaced.
     * 

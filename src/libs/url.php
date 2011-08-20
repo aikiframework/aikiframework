@@ -50,6 +50,7 @@ class url
 	 * Sets up the url for further processing.
 	 */
 	public function url(){
+        global $aiki;
 		/**
 		 * 
 		 * url procces requests transformed by .htaccess by this rule:
@@ -61,6 +62,21 @@ class url
 		if (isset($_GET["pretty"]) and $_GET["pretty"]) { 
 			$this->pretty=$_GET["pretty"];
 			$this->url = explode("/", str_replace("|", "/", $this->pretty) );
+            
+            // check if url begins with a valid language.
+            if ( in_array( $this->url[0], $aiki->site->languages() ) ) {            
+                $aiki->site->language($this->url[0]);
+                if ( count($this->url) > 1) {
+                    $this->pretty = substr($this->pretty, strlen($this->url[0])+1) ;
+                    array_shift( $this->url );                    
+                } else {
+                    $this->url = array ("homepage");
+                    $this->pretty="";
+                }
+                
+            }
+            
+            
 		} else {
 			$this->url[0]="homepage";
 			$this->pretty="";
