@@ -186,16 +186,27 @@ class aiki
             "current_day" => $current_day
             );
         $text= strtr ( $text, $aReplace );
+        
+        
+        // calculate route, including if need, language.
+        if ( count($aiki->site->languages()) > 1 ){
+            $route= $config['url'] . '/' . $aiki->site->language();
+        } else {
+            $route= $config['url'];
+        }
+        
+        $routes= array(
+            '[root]'          => $config['url'], 
+            '[root-language]' => $config['url']."/". $aiki->site->language(),
+            '[route]'         => $route );        
 
         if ($config['pretty_urls'] == 0){
             $text = preg_replace('/href\=\"\[root\](.*)\"/U', 
                                  'href="[root]?pretty=\\1"', $text);
-            $text = str_replace('[root]', $config['url'], $text);
-            $text = str_replace('[root-language]', $config['url']."/". $aiki->site->language(), $text);
-            $text = str_replace('=/', '=', $text);
+            $text = strtr( $text, $routes);
+            $text = str_replace( '=/' , '=', $text);
         }else{
-            $text = str_replace('[root]', $config['url'], $text);
-            $text = str_replace('[root-language]', $config['url']."/". $aiki->site->language(), $text);
+            $text = strtr( $text, $routes);          
         }
         $text = str_replace($config['url'].'/', $config['url'], $text);
 
