@@ -22,6 +22,7 @@ aiki_src_files = \
 	aiki_array.php \
 	aiki_curl.php \
 	bot.php \
+	dictionary.php \
 	errors.php \
 	forms.php \
 	image.php \
@@ -35,6 +36,7 @@ aiki_src_files = \
 	php.php \
 	records.php \
 	security.php \
+	site.php \
 	sql_markup.php \
 	text.php \
 	url.php \
