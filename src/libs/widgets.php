@@ -113,7 +113,8 @@ class CreateLayout
 					$unique_widget_exists = true;
 					break;
 				}
-			}							
+			}		
+            					
 		}
 
 		// ..page not found..
@@ -1089,7 +1090,7 @@ class CreateLayout
 			"SELECT id, display_urls,kill_urls,widget_name ".
 			" FROM aiki_widgets ".
 			" WHERE father_widget=$father AND is_active=1 AND ".
-			" (widget_site='{$aiki->site}' OR widget_site ='aiki_shared' OR widget_site ='default') AND ".
+			" (widget_site='{$aiki->site}' OR widget_site ='aiki_shared') AND ". // default.
 			" (display_urls LIKE '%$search%' OR display_urls = '*' OR display_urls LIKE '%#%#%') AND ".
 			" (kill_urls='' OR kill_urls<> '$search') ".	
 			" ORDER BY  display_order, id";

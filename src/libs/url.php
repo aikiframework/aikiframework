@@ -59,8 +59,8 @@ class url
 		 * So, in homepage (direct index.php)) 'pretty' doesn't exist, 		
 		 * 
 		 */
-		if (isset($_GET["pretty"]) and $_GET["pretty"]) { 
-			$this->pretty=$_GET["pretty"];
+		if ( $aiki->site->pretty_url() ) { 
+			$this->pretty= $aiki->site->pretty_url();
 			$this->url = explode("/", str_replace("|", "/", $this->pretty) );
             
             // check if url begins with a valid language.

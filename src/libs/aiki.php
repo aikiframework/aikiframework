@@ -27,6 +27,24 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  */
 class aiki
 {
+ 
+    private $pretty_url; // aiki store the pretty_url because some lib, need access / modify this url
+    
+    /**
+     * return pretty url (path of url request)
+     * Example www.foo.com/bar/something bar/something is the pretty url.
+     * @return string 
+     */
+    
+    function pretty_url(){
+        return $this->pretty_url;
+    }
+    
+            
+    public function __construct(){        
+        $this->pretty_url = isset($_GET["pretty"]) ?  $_GET["pretty"] : "" ; 
+    }
+    
 
     /**
      * Loads an aiki library.
@@ -189,15 +207,16 @@ class aiki
         
         
         // calculate route, including if need, language.
-        if ( count($aiki->site->languages()) > 1 ){
-            $route= $config['url'] . '/' . $aiki->site->language();
+        $prefix = $aiki->site->prefix();
+        if ( count($aiki->site->languages()) > 1 ){                        
+            $route= $config['url']  .  ($prefix ? "/$prefix" : "" ) . '/' . $aiki->site->language();
         } else {
-            $route= $config['url'];
+            $route= $config['url'] . ($prefix ? "/$prefix" : "" ) ;
         }
-        
         $routes= array(
             '[root]'          => $config['url'], 
-            '[root-language]' => $config['url']."/". $aiki->site->language(),
+            '[root-language]' => $config['url'].  "/" . $aiki->site->language(),
+            '[site_prefix]'   => $prefix ,
             '[route]'         => $route );        
 
         if ($config['pretty_urls'] == 0){

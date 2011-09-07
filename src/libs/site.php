@@ -30,7 +30,27 @@ class Site {
     private $languages; // a array like [0]=>'en',[1]=>'fr'...
     private $need_translation;
     private $default_language;
+    private $pretty_url;
+    private $site_prefix; // 
 
+
+    /**
+     * return site prefix (beginin with "/" or blank space)
+     * @return string 
+     */      
+
+    function prefix(){
+        return $this->site_prefix;        
+    }
+
+    /**
+     * return the pretty url ( with site path removed )
+     * @return string 
+     */      
+
+    function pretty_url(){
+        return $this->pretty_url;        
+    }
     
      /**
      * return the default language of a site.
@@ -112,6 +132,21 @@ class Site {
         } elseif ( !isset( $config['site'] )) {
             $config['site'] = 'default';
         }  
+        
+        // determine site by url (for multisite and apps)
+        $this->site_prefix = "";                    
+        $this->pretty_url= $aiki->pretty_url();        
+        if ( $this->pretty_url ){
+            $paths = explode("/", str_replace("|", "/", $this->pretty_url));
+            if ( $paths[0] ) {                
+                $site= $db->get_var("SELECT site_shortcut from aiki_sites where site_prefix='{$paths[0]}'" );
+                if ( $site ){
+                    $config['site'] = $site;                    
+                    $this->pretty_url = count($paths)==1 ? "" : substr( $this->pretty_url, strpos($this->pretty_url,"/")+1);
+                    $this->site_prefix = "{$paths[0]}";                    
+                }    
+            }                
+        } 
         
         // try read site information and test if is_active.
         $info = $db->get_row("SELECT * from aiki_sites where site_shortcut='{$config['site']}' limit 1");

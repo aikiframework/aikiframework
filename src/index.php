@@ -62,6 +62,7 @@ if (isset($global_widget) ) {
 	$nogui = true;
 }
 
+
 /**
  * @todo fix the misspelling
  */

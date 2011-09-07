@@ -148,7 +148,9 @@ CREATE TABLE IF NOT EXISTS aiki_sites (
   site_default_language varchar(5) NOT NULL DEFAULT '',
   site_languages text NOT NULL,
   widget_language varchar(5) NOT NULL,
-  PRIMARY KEY (site_id)
+  site_prefix varchar(80) NOT NULL DEFAULT '',
+  PRIMARY KEY (`site_id`),
+  KEY `site_prefix` (`site_prefix`)
 ) ENGINE=MyISAM CHARSET=utf8;
 
 -- ------------------------------------------------------
