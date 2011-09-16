@@ -139,6 +139,23 @@ CREATE TABLE IF NOT EXISTS aiki_redirects (
 
 -- ------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS aiki_views (
+  view_id int(11) NOT NULL AUTO_INCREMENT,
+  view_name varchar(32) NOT NULL,
+  view_site varchar(32) NOT NULL,
+  view_active int(11) NOT NULL,
+  view_prefix varchar(32) NOT NULL,
+  view_use_prefix int(11) NOT NULL,
+  view_url varchar(255) NOT NULL,
+  view_short_description text NOT NULL,
+  view_description text NOT NULL,
+  PRIMARY KEY (view_id),
+  KEY view_prefix (view_prefix),
+  KEY view_site (view_site`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- ------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS aiki_sites (
   site_id int(11) NOT NULL AUTO_INCREMENT,
   site_name varchar(255) NOT NULL,
@@ -149,8 +166,9 @@ CREATE TABLE IF NOT EXISTS aiki_sites (
   site_languages text NOT NULL,
   widget_language varchar(5) NOT NULL,
   site_prefix varchar(80) NOT NULL DEFAULT '',
-  PRIMARY KEY (`site_id`),
-  KEY `site_prefix` (`site_prefix`)
+  site_default_view varchar(32) NOT NULL,
+  PRIMARY KEY (site_id),
+  KEY site_prefix (site_prefix)
 ) ENGINE=MyISAM CHARSET=utf8;
 
 -- ------------------------------------------------------

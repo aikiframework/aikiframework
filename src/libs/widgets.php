@@ -382,6 +382,11 @@ class CreateLayout
 		 */
 		//$widget->widget = htmlspecialchars_decode($widget->widget);
 
+        $widget->widget = $aiki->view_parser->parse(
+            $widget->widget, 
+            $aiki->site->view(),
+            $aiki->site->language() );
+
 		$widget->widget = $aiki->input->requests($widget->widget);
 		$widget->widget = $aiki->processVars($widget->widget);
 

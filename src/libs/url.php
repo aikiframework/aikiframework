@@ -37,6 +37,8 @@ class url
      * @var string 
      * @access public
      */
+     
+     
 	public $url;
 	public $pretty;
   
@@ -46,11 +48,34 @@ class url
      */
 	public $url_count;
 
+
+    /**
+	 * return first route of url 
+     * example: with foo/bar  -> return foo. In index return "homepage"
+     * @return string First part of url, or "homepage".
+     * 
+	 */
+    public function first_url(){
+        return current( $this->url);
+    }
+
+	/**
+	 * remove first route of url ( /foo/bar to /bar) .
+	 */
+    public function shift_url(){
+        if ( count($this->url) > 1) {
+             $this->pretty = substr($this->pretty, strlen($this->url[0])+1) ;
+             array_shift( $this->url );   
+        } else {
+            $this->url = array ("homepage");
+            $this->pretty="";            
+        }            
+    }
+
 	/**
 	 * Sets up the url for further processing.
 	 */
-	public function url(){
-        global $aiki;
+	public function url(){        
 		/**
 		 * 
 		 * url procces requests transformed by .htaccess by this rule:
@@ -59,24 +84,10 @@ class url
 		 * So, in homepage (direct index.php)) 'pretty' doesn't exist, 		
 		 * 
 		 */
-		if ( $aiki->site->pretty_url() ) { 
-			$this->pretty= $aiki->site->pretty_url();
-			$this->url = explode("/", str_replace("|", "/", $this->pretty) );
-            
-            // check if url begins with a valid language.
-            if ( in_array( $this->url[0], $aiki->site->languages() ) ) {            
-                $aiki->site->language($this->url[0]);
-                if ( count($this->url) > 1) {
-                    $this->pretty = substr($this->pretty, strlen($this->url[0])+1) ;
-                    array_shift( $this->url );                    
-                } else {
-                    $this->url = array ("homepage");
-                    $this->pretty="";
-                }
-                
-            }
-            
-            
+                 
+		if ( isset($_GET['pretty']) )  { 
+			$this->pretty= $_GET['pretty'];
+			$this->url = explode("/", str_replace("|", "/", $this->pretty) );             
 		} else {
 			$this->url[0]="homepage";
 			$this->pretty="";

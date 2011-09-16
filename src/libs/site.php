@@ -30,27 +30,38 @@ class Site {
     private $languages; // a array like [0]=>'en',[1]=>'fr'...
     private $need_translation;
     private $default_language;
-    private $pretty_url;
-    private $site_prefix; // 
-
+    private $site_prefix; 
+    private $site_view;
+    private $site_view_prefix;
 
     /**
-     * return site prefix (beginin with "/" or blank space)
+     * return site view 
+     * @return string 
+     */      
+
+    function view(){
+        return $this->site_view;        
+    }
+    
+     /**
+     * return site view prefix
+     * @return string 
+     */      
+
+    function view_prefix(){
+        return $this->site_view_prefix;        
+    }
+    
+    
+    /**
+     * return site prefix
      * @return string 
      */      
 
     function prefix(){
         return $this->site_prefix;        
     }
-
-    /**
-     * return the pretty url ( with site path removed )
-     * @return string 
-     */      
-
-    function pretty_url(){
-        return $this->pretty_url;        
-    }
+    
     
      /**
      * return the default language of a site.
@@ -129,49 +140,59 @@ class Site {
         // determine site name
         if (isset($_GET['site'])) {
             $config['site'] = addslashes($_GET['site']);
-        } elseif ( !isset( $config['site'] )) {
-            $config['site'] = 'default';
-        }  
-        
-        // determine site by url (for multisite and apps)
-        $this->site_prefix = "";                    
-        $this->pretty_url= $aiki->pretty_url();        
-        if ( $this->pretty_url ){
-            $paths = explode("/", str_replace("|", "/", $this->pretty_url));
-            if ( $paths[0] ) {                
-                $site= $db->get_var("SELECT site_shortcut from aiki_sites where site_prefix='{$paths[0]}'" );
-                if ( $site ){
-                    $config['site'] = $site;                    
-                    $this->pretty_url = count($paths)==1 ? "" : substr( $this->pretty_url, strpos($this->pretty_url,"/")+1);
-                    $this->site_prefix = "{$paths[0]}";                    
-                }    
-            }                
-        } 
+        } else {
+            if ( !isset( $config['site'] )) {
+                $config['site'] = 'default';
+            }    
+         
+            // determine site by url (for multisite and apps)
+            $this->site_prefix = "";                            
+            $path = $aiki->url->first_url();
+            if ( $path != "homepage" ) {                
+                    $site= $db->get_var("SELECT site_shortcut from aiki_sites where site_prefix='$path'" );
+                    if ( $site ){
+                        $config['site'] = $site;                    
+                        $aiki->url->shift_url();
+                        $this->site_prefix = $path;                  
+                    }    
+            }                        
+        }
         
         // try read site information and test if is_active.
-        $info = $db->get_row("SELECT * from aiki_sites where site_shortcut='{$config['site']}' limit 1");
-        $error = false;
+        $info = $db->get_row("SELECT * from aiki_sites where site_shortcut='{$config['site']}' limit 1");        
         if ( is_null($info) ) {        
-            $error =  "Fatal Error: Wrong site name provided. " .
+            die( $aiki->message->error ( "Fatal Error: Wrong site name provided. " .
                       (defined('ENABLE_RUNTIME_INSTALLER') && ENABLE_RUNTIME_INSTALLER == FALSE ?
-                      "ENABLE_RUNTIME_INSTALLER is set to FALSE." : "");      
+                      "ENABLE_RUNTIME_INSTALLER is set to FALSE." : ""),
+                NULL, false) );      
         } elseif ( $info->is_active != 1) {
-            $error = $info->if_closed_output ? 
-                $info->if_closed_output : 
-                "Site {$config['site']} is closed.";
-            
+            die( $aiki->messgae->error($info->if_closed_output ?  $info->if_closed_output :  "Site {$config['site']} is closed.",
+                NULL,
+                false) );
         }
-        if ( $error ){
-            die( $aiki->message->error( $error, NULL, false) ); 
-        }    
-        
-        // language settings.
+            
+        // determine view
+        if (isset($_GET['view'])) {
+            $this->site_view= addslashes($_GET['view']);             
+        } else {
+            $prefix = $aiki->url->first_url();
+            $view = $db->get_var("SELECT view_name, view_prefix FROM aiki_views ".
+                    " WHERE view_site='{$config['site']}' AND view_active='1' AND view_prefix='$prefix'");
+            if ( $view ){
+                $aiki->url->shift_url();            
+                $this->site_view = $view;
+                $this->site_view_prefix= $prefix;                        
+            }
+        }     
+                                
+        // define default language, list of allowed languages
         $this->default_language = ( $info->site_default_language ? 
             $info->site_default_language :
             "en");
         $this->languages        = ( $info->site_languages ? 
             explode(",",$info->site_languages) : 
-            array("en") );
+            array($this->default_language) );
+            
         $this->widget_language  = ( $info->widget_language ? 
             $info->widget_language : 
             $this->default_language );
@@ -180,8 +201,15 @@ class Site {
             // correction: include default in allowed languages.
             $this->languages[]= $this->default_language;
         }                
-        $this->need_translation = ( $this->default_language != $this->widget_language);
         
+        // determine language 
+        if (isset($_GET['language'])) {            
+            $this->language(addslashes($_GET['language']));
+        } elseif ( $this->language( $aiki->url->first_url()) ) {            
+            $aiki->url->shift_url();
+        }
+        $this->need_translation = ( $this->default_language != $this->widget_language);
+                
         // site names
         $this->site      = $config['site'];
         $this->site_name = $info->site_name;

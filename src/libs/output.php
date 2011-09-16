@@ -152,11 +152,13 @@ class output
 				else
 					$language = $config['default_language'];
 
+                $view=$aiki->site->view();// comodity
 				$header .= sprintf(
                     '<link rel="stylesheet" type="text/css" '.
-                    ' href="%sstyle.php?site=%s&amp;widgets=%s&amp;language=%s" />',
+                    ' href="%sstyle.php?site=%s&amp;%swidgets=%s&amp;language=%s" />',
                     $config['url'],
                     $aiki->site->get_site(),
+                    ( $view ?  "view={$view}&amp;" : ""),
                     implode("_", $layout->widgets_css),
                     $language);
 			}

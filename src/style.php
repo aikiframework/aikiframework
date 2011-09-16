@@ -37,8 +37,6 @@ require_once("bootstrap.php");
  */
 $widgets_list = isset($_GET['widgets']) ? addslashes($_GET['widgets']) : '';
 
-
-
 if ( $widgets_list != ''){
 	
 	$where = "id='" . str_replace('_', "' or id = '", $widgets_list). "'";
@@ -52,13 +50,28 @@ if ( $widgets_list != ''){
 
 	if ($get_widgets)
     {
+        
+        $style="";
 		foreach ( $get_widgets as $widget )
 		{
             /**
              * @todo need to be able to disable all output, if not in debug
              */
-			echo "\n/*CSS for the widget {$widget->widget_name}({$widget->id}) */\n";
-			echo stripcslashes($aiki->languages->L10n($widget->css));
+            if ( $widget->css != "" ) {
+                $style .="\n/*CSS for the widget {$widget->widget_name} (id {$widget->id}) */\n".
+                          stripcslashes($aiki->languages->L10n($widget->css));
+            }                                  
 		}
+        if ( $style ){            
+            // predefined vars.
+            $vars  = array (
+                "view"     => $aiki->site->view(),
+                "language" => $aiki->site->language(),
+                "site"     => $aiki->site->get_site());
+                            
+            $style = $aiki->css_parser->parse( $style, $vars );            
+        }   
+        echo $style;
+        
 	}
 }

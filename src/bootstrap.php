@@ -139,10 +139,10 @@ $aiki->load("dictionary");
  * @todo replace global membership by $aiki->membership
  */ 
 
+$aiki->load('url');
 $aiki->load("site"); 
 $membership = $aiki->load("membership");
 $aiki->load("languages");
-$aiki->load("url");
 
 if ($aiki->site->language()!="en"){
     include_once ("$AIKI_ROOT_DIR/libs/classes/dictionaryTableClass.php");
@@ -161,6 +161,8 @@ $aiki->load("aiki_array");
 $aiki->load("security");
 $aiki->load("parser");
 $aiki->load("php");
+$aiki->load("css_parser");
 $aiki->load("sql_markup");
+$aiki->load("view_parser");
 $aiki->load("image");
 $aiki->load("errors");
