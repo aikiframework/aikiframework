@@ -140,7 +140,7 @@ $aiki->load("dictionary");
  */ 
 
 $aiki->load('url');
-$aiki->load("site"); 
+$aiki->load('site'); 
 $membership = $aiki->load("membership");
 $aiki->load("languages");
 
@@ -166,3 +166,5 @@ $aiki->load("sql_markup");
 $aiki->load("view_parser");
 $aiki->load("image");
 $aiki->load("errors");
+
+$aiki->load("plugins");

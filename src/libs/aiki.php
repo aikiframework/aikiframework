@@ -184,7 +184,7 @@ class aiki
      * @return boolean
      */
 
-    function match_pair( $condition,$first, $second) {
+    function match_pair( $condition,$first, $second="*", $third ="*") {
         //clean conditions,
         $condition= strtr(
                         $condition,
@@ -197,9 +197,10 @@ class aiki
         $matches = explode (" ",$condition);
 
         foreach ( $matches as $match) {
-            $pair = explode("/", $match,2);
-            if ( $this->match_pair_one($pair[0],$first ) &&
-                 ( !isset($pair[1]) || $this->match_pair_one($pair[1],$second) ) ){
+            $pair = explode("/", $match,3)+ array("*","*","*");
+            if ( $this->match_pair_one($pair[0],$first) &&
+                 $this->match_pair_one($pair[1],$second) &&
+                 $this->match_pair_one($pair[2],$third) ) {
                 return true;
             }
         }

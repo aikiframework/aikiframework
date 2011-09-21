@@ -84,6 +84,7 @@ class output
         <meta name="generator" content="Aikiframework '.
         AIKI_VERSION.'.'.AIKI_REVISION.'" />
 		';
+            
 		return $header;
 	}
 
@@ -186,8 +187,10 @@ class output
 	 * 
 	 */
 	public function footer()
-	{
-		return "\n</body>\n</html>";
+	{   global $aiki;
+		$footer = "\n</body>\n</html>";
+        $aiki->plugins->do_action("output_html", &$footer);
+        return $footer;
 	}
 
 
