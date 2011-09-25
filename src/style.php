@@ -31,6 +31,9 @@ header('Content-type: text/css');
  */
 require_once("bootstrap.php");
 
+$config["css_cache"]= "/var/www/aiki/cache";
+// if a previous valid css file, exists, cache_file, outputs it, and aiki dies.
+$cached_file = $aiki->output->cache_file("css");
 
 /**
  * @global string $widgets
@@ -38,7 +41,6 @@ require_once("bootstrap.php");
 $widgets_list = isset($_GET['widgets']) ? addslashes($_GET['widgets']) : '';
 
 if ( $widgets_list != ''){
-	
 	$where = "id='" . str_replace('_', "' or id = '", $widgets_list). "'";
 	$sql = 
 		"SELECT id, css, widget_name" . 
@@ -70,8 +72,13 @@ if ( $widgets_list != ''){
                 "site"     => $aiki->site->get_site());
                             
             $style = $aiki->css_parser->parse( $style, $vars );            
-        }   
+        }           
         echo $style;
         
-	}
+        if ($cached_file){            
+            //write the cache file
+            error_log ( $style, 3, $cached_file);
+        }
+        
+	} 
 }

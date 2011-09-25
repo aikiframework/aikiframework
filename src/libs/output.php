@@ -8,7 +8,7 @@
  * This source file is subject to the AGPL-3.0 license that is bundled
  * with this package in the file LICENSE.
  *
- * @author      Aikilab http://www.aikilab.com 
+ * @author      Aikilab http://www.aikilab.com
  * @copyright   (c) 2008-2011 Aiki Lab Pte Ltd
  * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
  * @link        http://www.aikiframework.org
@@ -33,12 +33,12 @@ class output
 
     /**
      * storage tank for html output
-     * @var string  
+     * @var string
      */
 	public $html;
     /**
      * storage tank for output
-     * @var string  
+     * @var string
      */
 	public $title;
     /**
@@ -69,9 +69,9 @@ class output
 
     /**
      * Returns the title and default meta tags as html
-     * 
+     *
      * @return  string
-     * 
+     *
      * @todo title has a hardcoded default here, need to remove
      */
 	public function title_and_metas()
@@ -79,23 +79,23 @@ class output
 		global $aiki;
 		$header = '
 		<meta charset="__encoding__"/>
-		<title>' . ( $this->title ? "$this->title - " : "" ) . 
+		<title>' . ( $this->title ? "$this->title - " : "" ) .
         $aiki->site->site_name() . '</title>
         <meta name="generator" content="Aikiframework '.
         AIKI_VERSION.'.'.AIKI_REVISION.'" />
 		';
-            
+
 		return $header;
 	}
 
     /**
      * Returns the doctype
-     * 
+     *
      * @global  $aiki
      * @return  string
-     * 
+     *
      * @todo we really should have a default template for pages somewhere and
-     * NOT have default doctype written directly inside of aiki! 
+     * NOT have default doctype written directly inside of aiki!
      */
 	public function doctype()
     {
@@ -113,7 +113,7 @@ class output
         /**
          * @todo this really needs to be abstracted? why just output xthml???
          */
-		return 
+		return
 '<!doctype html>
 <html lang="'.$aiki->languages->language.'" dir="'.$aiki->languages->dir.'">
 ';
@@ -124,12 +124,12 @@ class output
      * This returns header content for output.
      *
      * @global      aiki            $aiki   main obj manipulating configs + urls
-     * @global      array           $db     global db instance 
+     * @global      array           $db     global db instance
      * @global      CreateLayout    $layout global layout object
      * @global      bool            $nogui  global yes or no about gui
      * @global      array           $config global config options instance
      * @return string
-     * 
+     *
      * @see bootstrap.php
      * @todo this is super nasty function that pulls in globals
      * @todo the html hardcoded in here needs abstraction and shouldn't make
@@ -146,7 +146,7 @@ class output
 		if (!$nogui)
         {
 			if ( count($layout->widgets_css) )  {
-				
+
                 // handle language settings
 				if(isset($_GET['language']))
 					$language=$_GET['language'];
@@ -170,8 +170,8 @@ class output
 
 		if (isset ($layout->head_output)){
 			$header .= $layout->head_output;
-		}	
-		
+		}
+
 		$header .= $this->headers;
 		$header .= "</head>";
 		$header .= "\n<body>\n";
@@ -182,9 +182,9 @@ class output
 
 	/**
 	 * Returns a footer for output.
-	 * 
+	 *
 	 * @return	string
-	 * 
+	 *
 	 */
 	public function footer()
 	{   global $aiki;
@@ -196,11 +196,11 @@ class output
 
 	/**
 	 * Returns an formatted table from a widget. An autoformatted widget.
-	 * 
+	 *
 	 * This is useful for debugging a widget.
 	 *
 	 * @param	array	$widget		a widget with its data
-	 * @param	integer	$columns	number of columns	
+	 * @param	integer	$columns	number of columns
 	 * @return	string
 	 *
 	 * @todo remove hardcoded html
@@ -227,7 +227,7 @@ class output
 		}
 
 		// add remaining columns and close table
-		if ( $i % $columns ) 
+		if ( $i % $columns )
 		{
 			for ( ;$i % $columns; $i++)
 			{
@@ -248,79 +248,85 @@ class output
 	 *
 	 * Returns false if no cache configuration or had permissions.
 	 * If exist fresh file ( no time-out) it is served and application dies.
-	 * In other case, return the name (including path) of cache file that must 
+	 * In other case, return the name (including path) of cache file that must
 	 * be created and if exist, delete the obsolete cache file.
 	 *
 	 * @global	array	$config			global configuration options
 	 * @global	membership	$membership	global membership instance
 	 * @return	mixed
 	 *
-	 * @todo this function abuses php and has too many functions, simplify 
+	 * @todo this function abuses php and has too many functions, simplify
 	 * and break this function apart
 	 * @todo this function has side effect to output HTML
 	 * @todo think good to rename this function too
 	 */
-	public function cache_file()
+	public function cache_file( $type="html" )
 	{
 		global $config, $membership;
 
-		if ( isset($config['html_cache']) 
-              && $config['html_cache'] 
-              && is_dir( $config['html_cache'] ) 
+		if ( isset($config[$type.'_cache'])
+              && $config[$type.'_cache']
+              && is_dir( $config[$type.'_cache'] )
               && !$membership->permissions ){
-                  
-			$start = (float) array_sum(explode(' ',microtime()));
 
-			$html_cache_file = 
-				$config['html_cache'].'/'.md5($_SERVER['PHP_SELF']."?".
+			$start = microtime(true); // require PHP5.
+
+			$cached_file =
+				$config[$type.'_cache'].'/'.md5($_SERVER['PHP_SELF']."?".
 				$_SERVER['QUERY_STRING']);
 
-			$html_cache_file = str_replace("//", "/", $html_cache_file);
+			$cached_file = str_replace("//", "/", $cached_file);
 
-			if (file_exists($html_cache_file) )
+            $timeout = ( isset($config[$type.'_cache_timeout'])?
+                    $config[$type.'_cache_timeout']:
+                    5000 ); // in MS.
+
+			if (file_exists($cached_file) )
 			{
 				// Only use this cache file if less than 'cache_timeout' (MS)
-				if ( (time() - filemtime($html_cache_file)) > 
-					($config["cache_timeout"]) )
+				if ( (time() - filemtime($cached_file)) > $timeout)
 				{
-					// remove cache file, means on next attempt, creates
+					// remove cache file, because aiki means on next attempt, creates
 					// new cache
-					unlink($html_cache_file);
+					unlink($cached_file);
 				}
 				else
 				{
 
-					$full_html_output = file_get_contents($html_cache_file);
-					echo $full_html_output;
+					readfile($cached_file);
 
 					/**
 					 * @todo this server speed test should ONLY be shown
 					 * if in debug mode
-					 * @todo this server speed test should be factored out
-					 * to a separate function to for use even inside aiki
 					 */
-					$end = (float) array_sum(explode(' ',microtime()));
-					$end_time = sprintf("%.4f", ($end-$start));
-					die("\n<!--Served From Cache in $end_time seconds-->");
+                    $time= sprintf("%4.f seconds", microtime(true)-$start);
+                    switch ($type){
+                        case "html":
+                            $message= "\n<!--Served From HTML Cache in $time";
+                            break;
+                        case "css" :
+                            $message= "\n/* Served From CSS Cache in $time";
+                            break;
+                        default:
+                            $message="";
+                    }
+					die( $message );
 				}
 			}
-
-		} else {
-			$html_cache_file = false;
-		}
-
-		return $html_cache_file;
+            return $cached_file;
+        }
+		return false;
 	} // end of from_cache function
-    
-    
+
+
     /**
      * Compress HTML, deleting line space, doble spaces, space in tags..
      * and HTML coments
-     * 
+     *
      * @param  $string $input String to be cleaned
      * @return $string Cleaned input
      */
-    
+
     function compress( &$input){
         $output = preg_replace("/\<\!\-\-(.*)\-\-\>/U", "", $input);
 
@@ -341,6 +347,6 @@ class output
         $output  = preg_replace($search, $replace, $output );
       return $output;
     }
-    
+
 
 } // end of Output class
