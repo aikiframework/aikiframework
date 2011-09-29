@@ -33,6 +33,34 @@ CREATE TABLE IF NOT EXISTS aiki_config (
 
 -- ------------------------------------------------------
 
+CREATE TABLE IF NOT EXISTS aiki_settings (
+  setting_id int(11) NOT NULL AUTO_INCREMENT,
+  setting_name varchar(32) NOT NULL,
+  setting_description text NOT NULL,
+  setting_group text NOT NULL,
+  setting_edit text NOT NULL,
+  setting_autoload int(11) NOT NULL,
+  PRIMARY KEY (setting_id),
+  KEY setting_name (setting_name)
+) ENGINE=MyISAM CHARSET=utf8;
+
+-- ------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS aiki_configs (
+  config_id int(11) NOT NULL AUTO_INCREMENT,
+  config_name varchar(32) NOT NULL,
+  config_value text NOT NULL,
+  config_selector varchar(94) NOT NULL,
+  config_important int(11) NOT NULL,
+  config_weight int(11) NOT NULL,
+  PRIMARY KEY (config_id),
+  KEY config_name (config_name),
+  KEY config_important (config_important),
+  KEY config_weight (config_weight)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+
+-- ------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS aiki_dictionary (
   term_id int(11) NOT NULL AUTO_INCREMENT,
   app_id int(11) NOT NULL,
@@ -151,36 +179,36 @@ CREATE TABLE IF NOT EXISTS aiki_views (
   view_description text NOT NULL,
   PRIMARY KEY (view_id),
   KEY view_prefix (view_prefix),
-  KEY view_site (view_site`)
+  KEY view_site (view_site)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `aiki_plugins` (
-  `plugin_id` int(11) NOT NULL AUTO_INCREMENT,
-  `plugin_name` varchar(64) NOT NULL,
-  `plugin_class_name` varchar(64) NOT NULL,
-  `plugin_short_description` text NOT NULL,
-  `plugin_description` text NOT NULL,
-  `plugin_author` varchar(64) NOT NULL,
-  `plugin_version` varchar(32) NOT NULL,
-  `plugin_file` varchar(96) NOT NULL,
-  `plugin_state` varchar(12) NOT NULL,
-  `plugin_default_values` text NOT NULL,
-  PRIMARY KEY (`plugin_id`)
+CREATE TABLE IF NOT EXISTS aiki_plugins (
+  plugin_id int(11) NOT NULL AUTO_INCREMENT,
+  plugin_name varchar(64) NOT NULL,
+  plugin_class_name varchar(64) NOT NULL,
+  plugin_short_description text NOT NULL,
+  plugin_description text NOT NULL,
+  plugin_author varchar(64) NOT NULL,
+  plugin_version varchar(32) NOT NULL,
+  plugin_file varchar(96) NOT NULL,
+  plugin_state varchar(12) NOT NULL,
+  plugin_default_values text NOT NULL,
+  PRIMARY KEY (plugin_id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS `aiki_plugin_configurations` (
-  `plconf_id` int(11) NOT NULL AUTO_INCREMENT,
-  `plconf_active` varchar(11) NOT NULL,
-  `plconf_plugin_id` int(11) NOT NULL,
-  `plconf_routes` text NOT NULL,
-  `plconf_priority` int(11) NOT NULL,
-  `plconf_values` text NOT NULL,
-  PRIMARY KEY (`plconf_id`),
-  KEY `plconf_plugin_id` (`plconf_plugin_id`)
+CREATE TABLE IF NOT EXISTS aiki_plugin_configurations (
+  plconf_id int(11) NOT NULL AUTO_INCREMENT,
+  plconf_active varchar(11) NOT NULL,
+  plconf_plugin_id int(11) NOT NULL,
+  plconf_routes text NOT NULL,
+  plconf_priority int(11) NOT NULL,
+  plconf_values text NOT NULL,
+  PRIMARY KEY (plconf_id),
+  KEY plconf_plugin_id (plconf_plugin_id)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------

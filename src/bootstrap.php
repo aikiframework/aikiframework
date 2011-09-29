@@ -141,6 +141,8 @@ $aiki->load("dictionary");
 
 $aiki->load('url');
 $aiki->load('site'); 
+$aiki->load('config');
+
 $membership = $aiki->load("membership");
 $aiki->load("languages");
 
