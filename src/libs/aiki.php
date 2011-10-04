@@ -47,6 +47,16 @@ class aiki
 
 
     /**
+     * return pretty url (path of url request)
+     * Example www.foo.com/bar/something bar/something is the pretty url.
+     * @return string
+     */
+
+    public function __get ($what) {        
+        return $this->load($what);
+    }
+
+    /**
      * Loads an aiki library.
      *
      * Attempts to load from class first *.php, then tries to load *.php

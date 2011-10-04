@@ -153,7 +153,8 @@ if ($aiki->site->language()!="en"){
 
 
 
-// load rest of classes
+// this class will be loaded by demand 
+/*
 $aiki->load("text");
 $aiki->load("records");
 $aiki->load("input");
@@ -167,6 +168,6 @@ $aiki->load("css_parser");
 $aiki->load("sql_markup");
 $aiki->load("view_parser");
 $aiki->load("image");
-$aiki->load("errors");
+$aiki->load("errors");*/
 
 $aiki->load("plugins");
