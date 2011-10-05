@@ -31,7 +31,7 @@ header('Content-type: text/css');
  */
 require_once("bootstrap.php");
 
-$config["css_cache"]= "/var/www/aiki/cache";
+
 // if a previous valid css file, exists, cache_file, outputs it, and aiki dies.
 $cached_file = $aiki->output->cache_file("css");
 
