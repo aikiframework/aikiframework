@@ -45,11 +45,11 @@ class aiki
         $this->pretty_url = isset($_GET["pretty"]) ?  $_GET["pretty"] : "" ;
     }
 
-
+   
     /**
-     * return pretty url (path of url request)
-     * Example www.foo.com/bar/something bar/something is the pretty url.
-     * @return string
+     * magic method that allowed on demand libs and extensions
+     *
+     * @return object loaded class or false
      */
 
     public function __get ($what) {        
@@ -69,7 +69,6 @@ class aiki
     public function load($class) {
         global $AIKI_ROOT_DIR;
 
-
         if (isset($this->$class))
             return $this->$class;
 
@@ -77,12 +76,26 @@ class aiki
         // assets/extension/$class/$class.php
         if (file_exists($AIKI_ROOT_DIR.'/libs/'.$class.'.php'))     {
             require_once($AIKI_ROOT_DIR.'/libs/'.$class.'.php');
-        } elseif(file_exists($AIKI_ROOT_DIR.'/assets/extensions/'.$class.'.php')) {
-            require_once($AIKI_ROOT_DIR.'/assets/extensions/'.$class.'.php');
-        } elseif(file_exists( $AIKI_ROOT_DIR.'/assets/extensions/'.$class.'/'.$class.'.php')) {
-            require_once($AIKI_ROOT_DIR.'/assets/extensions/'.$class.'/'.$class.'.php');
         } else {
-            return false;
+            
+            // filter extensions..
+            $allowed = ",". $this->config->get("extensions-allowed","ALL").",";   
+            // a tip..be sure "web" doesn't match "web2date".
+                    
+            if ( $allowed != ",ALL,"){        
+                if ($allowed ==",NONE," or strpos($allowed,$class)===false){
+                    return false;   
+                }                
+            }
+                    
+            if(file_exists($AIKI_ROOT_DIR."/assets/extensions/{$class}.php")) {
+                require_once($AIKI_ROOT_DIR."/assets/extensions/{$class}.php");
+            } elseif (file_exists( $AIKI_ROOT_DIR.'/assets/extensions/{$class}/{$class}.php')) {
+                require_once($AIKI_ROOT_DIR."/assets/extensions/{$class}/{$class}.php");
+            } else {
+                return false;
+            }
+                        
         }
 
         $object = new $class();
