@@ -52,15 +52,12 @@ if ( $widgets_list != ''){
 
 	if ($get_widgets)
     {
-        
+        $debugOn = is_debug_on();
         $style="";
 		foreach ( $get_widgets as $widget )
 		{
-            /**
-             * @todo need to be able to disable all output, if not in debug
-             */
-            if ( $widget->css != "" ) {
-                $style .="\n/*CSS for the widget {$widget->widget_name} (id {$widget->id}) */\n".
+            if (  $widget->css != "" ) {
+                $style .= ( $debugOn ? "\n/*CSS for the widget {$widget->widget_name} (id {$widget->id}) */\n" : "") .
                           stripcslashes($aiki->languages->L10n($widget->css));
             }                                  
 		}

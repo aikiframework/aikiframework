@@ -336,3 +336,23 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 	 global $aiki;
 	 return $aiki->config->set($setting, $value, $selector="CURRENT");
  }
+
+
+function is_debug_on(){
+	global $aiki;
+	$debug= $aiki->config->get("debug",false);
+	
+	if ( $debug=== false || $debug === true ){
+		// boolean. Backwark compatibility
+		return $debug;
+	}
+	
+	if ( $debug == 1 ||
+		($debug ==2 &&  isset($aiki->membership) &&
+			     ( $aiki->membership->permissions =="SystemGOD" ||
+			       $aiki->membership->permissions =="ModulesGOD" ))	){					   
+		return true;
+	}
+	return false;
+		
+}
