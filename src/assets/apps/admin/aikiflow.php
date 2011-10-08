@@ -30,6 +30,7 @@ define('IN_AIKI', true);
  * @see bootstrap.php
  */
 require_once("../../../bootstrap.php");
+config_error_reporting(0);
 
 if ($membership->permissions != "SystemGOD"){
 	die("You do not have permissions to access this file");

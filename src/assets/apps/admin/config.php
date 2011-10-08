@@ -26,6 +26,7 @@ header('Content-type: text/xml');
  * @see bootstrap.php
  */
 require_once("../../../bootstrap.php");
+config_error_reporting(0);
 
 /**
  * @see /src/libs/membership.php
