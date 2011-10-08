@@ -87,15 +87,26 @@ class aiki
                     return false;   
                 }                
             }
-                    
-            if(file_exists($AIKI_ROOT_DIR."/assets/extensions/{$class}.php")) {
-                require_once($AIKI_ROOT_DIR."/assets/extensions/{$class}.php");
-            } elseif (file_exists( $AIKI_ROOT_DIR.'/assets/extensions/{$class}/{$class}.php')) {
-                require_once($AIKI_ROOT_DIR."/assets/extensions/{$class}/{$class}.php");
-            } else {
-                return false;
-            }
-                        
+             
+            // search in dirs       
+            $SearchIn =  $this->config->get("extensions-dir","assets/extensions");
+            $loaded   = false;
+            foreach ( explode(",", $SearchIn) as $dir ) {							
+				if(file_exists($AIKI_ROOT_DIR. "/$dir/$class.php")) {
+					require_once($AIKI_ROOT_DIR."/$dir/$class.php");
+					$loaded= true;
+					break;
+				} 
+				if(file_exists($AIKI_ROOT_DIR. "/$dir/$class/$class.php")) {
+					require_once($AIKI_ROOT_DIR."/$dir/$class/$class.php");
+					$loaded= true;
+					break;
+				} 
+			
+			}
+			if (!$loaded){
+				return false;
+			}                            
         }
 
         $object = new $class();
