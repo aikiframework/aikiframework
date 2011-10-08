@@ -122,7 +122,10 @@ $aiki = new aiki();
 /**
  * Get and store the configuration options.
  * @global array $config
+ * @todo place by new config class.
+ * 
  */ 
+  
 $config = $aiki->get_config($config);
 
 /*
@@ -144,12 +147,16 @@ $aiki->load('site');
 $aiki->load('config');
 
 $membership = $aiki->load("membership");
+
+
+
 $aiki->load("languages");
 
 if ($aiki->site->language()!="en"){
     include_once ("$AIKI_ROOT_DIR/libs/classes/dictionaryTableClass.php");
     $aiki->dictionary->add("core", new dictionaryTable($aiki->site->language() ) );
 }
+
 
 
 

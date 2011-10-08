@@ -102,7 +102,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 	 */
 
 	function __construct(){
-		$this->load_configuration();
+		$this->load_configuration();		
 	}
 
 	/**
@@ -337,6 +337,46 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 	 return $aiki->config->set($setting, $value, $selector="CURRENT");
  }
 
+
+
+/**
+ * Set error level depending of config debug options
+ *
+ * Call this function after aiki load "config" and "membership" class.
+ * 
+ * @param integer $newLevel (optional) the new level if debug if off.
+ * @return integer previous error level
+ * 
+ * @global $aiki
+ */
+
+function config_error_reporting($newLevel=false){
+	global $aiki;
+	if ( is_debug_on() ) {
+		$oldLevel = error_reporting ( E_ALL | E_STRICT );
+	} else {		
+		if ( $newLevel===false ){
+			$newLevel = $aiki->config->get("error_level", E_ALL | E_STRICT);
+		}
+		$oldLevel = error_reporting ( $newLevel );
+	}
+	return $oldLevel;
+}
+
+
+/**
+ * return debug mode.
+ *
+ * config["debug"] can be have this values:
+ * false / true  (depreceated)
+ * 0 : show no debug)
+ * 1 : show debug always)
+ * 2 : show debug if current user is SystemGOD or ModulesGod
+ *
+ * @return boolean true is setting has been saved in database
+ * 
+ * @global $aiki
+ */
 
 function is_debug_on(){
 	global $aiki;

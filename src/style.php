@@ -21,18 +21,15 @@
  * File for outputting CSS for a rendered page.
  */
 
-error_reporting(0);
-
 header('Content-type: text/css');
-
 
 /**
  * @see bootstrap.php
  */
 require_once("bootstrap.php");
+config_error_reporting(0);
 
-
-// if a previous valid css file, exists, cache_file, outputs it, and aiki dies.
+// if a previous valid css file exists, cache_fileoutputs it and dies.
 $cached_file = $aiki->output->cache_file("css");
 
 /**
