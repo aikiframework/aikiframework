@@ -79,7 +79,7 @@ class aiki
         } else {
             
             // filter extensions..
-            $allowed = ",". $this->config->get("extensions-allowed","ALL").",";   
+            $allowed = ",". $this->config->get("extensions_allowed","ALL").",";   
             // a tip..be sure "web" doesn't match "web2date".
                     
             if ( $allowed != ",ALL,"){        
@@ -89,7 +89,7 @@ class aiki
             }
              
             // search in dirs       
-            $SearchIn =  $this->config->get("extensions-dir","assets/extensions");
+            $SearchIn =  $this->config->get("extensions_dir","assets/extensions");
             $loaded   = false;
             foreach ( explode(",", $SearchIn) as $dir ) {							
 				if(file_exists($AIKI_ROOT_DIR. "/$dir/$class.php")) {
