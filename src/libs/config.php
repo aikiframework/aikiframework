@@ -44,6 +44,30 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 
 
 	/**
+	 * set timezone calling date_default_timezone_set
+	 * 
+	 * @return void 
+	 * 
+	 */
+
+	function set_timezone(){
+				
+		if ( function_exists('date_default_timezone_set') &&
+             function_exists('date_default_timezone_get') )
+        {
+			$timezone= $this->get("timezone", false);
+            if ( $timezone ) {
+                date_default_timezone_set($timezone);
+            } else {
+				// see http://php.net/manual/en/function.date-default-timezone-get.php to understand this				
+                date_default_timezone_set( @date_default_timezone_get());
+            }
+        }
+		
+	}
+
+
+	/**
 	 * Load configuration for actual site/view/language
 	 * 
 	 * The constructor calls this methods, so use this method 
@@ -90,6 +114,10 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 				$count++;
 			}
 		}		
+		
+		// special config values
+		$this->set_timezone();
+		
 		return $count;		    
 	}
 

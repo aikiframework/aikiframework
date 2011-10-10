@@ -332,88 +332,91 @@ class aiki
      *
      * @param  string   $text before processing
      * @return string
+     * 
+     * @global $aiki
+     * @global $page
+     * 
      * @todo this function is seriously overloaded and needs to be rethought
      */
     public function processVars($text)
     {
-        global $aiki, $page, $membership, $config;
+		static $bufferReplace;
+        global $aiki, $page ;
 
-        /**
-         * @todo Setting variables really doesn't have a place in this function
-         */
-        if ( function_exists('date_default_timezone_set') &&
-             function_exists('date_default_timezone_get') )
-        {
-            if ( isset($config['timezone']) and !empty($config['timezone']) )
-                date_default_timezone_set($config['timezone']);
-            else
-                date_default_timezone_set(@date_default_timezone_get());
-        }
+        $pretty = $aiki->config->get('pretty_urls',1);
+		$url    = $aiki->config->get('url');
+                              
+		if ($bufferReplace== NULL) {
+			
+			$current_month = date("n");
+			$current_year  = date("Y");
+			$current_day   = date("j");
 
-        $current_month = date("n");
-        $current_year  = date("Y");
-        $current_day   = date("j");
+			// calculate view, prefix, route
+			$view       = $aiki->site->view();
+			$language   = $aiki->site->language();
+			$prefix     = $aiki->site->prefix();
+			$view_prefix= $aiki->site->view_prefix();
+			$paths[]    = $url;
 
-        // calculate view, prefix, route
-        $view       = $aiki->site->view();
-        $language   = $aiki->site->language();
-        $prefix     = $aiki->site->prefix();
-        $view_prefix= $aiki->site->view_prefix();
-        $paths[]= $config['url'];
+			if ( $prefix )      { $paths[] = $prefix; }
+			if ( $view_prefix)  { $paths[] = $view_prefix; }
+			if ( count($aiki->site->languages()) > 1 ){ $paths[] = $language; }
 
-        if ( $prefix )      { $paths[] = $prefix; }
-        if ( $view_prefix)  { $paths[] = $view_prefix; }
-        if ( count($aiki->site->languages()) > 1 ){ $paths[] = $language; }
+			$bufferReplace = array (
+				'[userid]'    => $aiki->membership->userid,
+				'[full_name]' => $aiki->membership->full_name,
+				'[username]'  => $aiki->membership->username,
+				'[user_group_level]' => $aiki->membership->group_level,
+				'[user_permissions]' => $aiki->membership->permissions,            
+				'[language]'  => $aiki->site->language(),           
+				'[page]'      => $page,
+				'[site_name]' => $aiki->site->site_name(),
+				'[site]'      => $aiki->site->get_site(),
+				'[view]'      => $aiki->site->view(),
+				'[direction]' => $aiki->languages->dir,
+				'insertedby_username' => $aiki->membership->username,
+				'insertedby_userid' => $aiki->membership->userid,
+				'current_month' => $current_month,
+				'current_year' => $current_year,
+				'current_day' => $current_day,
+				'[root]'          => $url,
+				'[root-language]' => $url .  "/" . $aiki->site->language(),
+				'[site_prefix]'   => $prefix ,
+				'[view_prefix]'   => $view_prefix ,
+				'[route]'         => implode("/",$paths) );
+		
+			// substitute all [POST[key]] and [GET[key]]
+			if ( $aiki->config->get("show_gets", true) ){
+				foreach ($_GET as $key=>$value){
+					$bufferReplace[ "[GET[$key]]" ] = $value;				
+				}			
+			}	
+			
+			if ( $aiki->config->get("show_posts", true) ){
+				foreach ($_POST as $key=>$value){
+					$bufferReplace[ "[POST[$key]]" ] = $value;				
+				}		            
+			}	
+				
+		}
+				
+        if ( $pretty){
+			/* TODO improve this*/		
+			$text = preg_replace(
+				'/href\=\"\[root\](.*)\"/U',
+				'href="[root]?pretty=\\1"', 
+				$text);
+		}
+		
+		$text = strtr( $text, $bufferReplace);
+		
+		// remove all [GET[foo]] or [POST[bar]]
+		$text = preg_replace ( '#\[(GET|POST)\[.*\]\]#U', "", $text );
+				
+		//@TODO by rg1024, this hack is necesary...
+		$text = str_replace($url.'/', $url, $text);
+		return $text;
 
-        if ($config['pretty_urls'] == 0){
-            $text = preg_replace('/href\=\"\[root\](.*)\"/U',
-                                 'href="[root]?pretty=\\1"', $text);
-        }
-
-        $aReplace = array (
-            '[userid]'    => $membership->userid,
-            '[full_name]' => $membership->full_name,
-            '[language]'  => $aiki->site->language(),
-            '[username]'  => $membership->username,
-            '[page]'      => $page,
-            '[site_name]' => $aiki->site->site_name(),
-            '[site]'      => $aiki->site->get_site(),
-            '[view]'      => $aiki->site->view(),
-            '[direction]' => $aiki->languages->dir,
-            'insertedby_username' => $membership->username,
-            'insertedby_userid' => $membership->userid,
-            'current_month' => $current_month,
-            'current_year' => $current_year,
-            'current_day' => $current_day,
-            '[root]'          => $config['url'],
-            '[root-language]' => $config['url'].  "/" . $aiki->site->language(),
-            '[site_prefix]'   => $prefix ,
-            '[view_prefix]'   => $view_prefix ,
-            '[route]'         => implode("/",$paths) );
-        $text= strtr ( $text, $aReplace );
-
-        //@TODO by rg1024, this hack is necesary...
-        $text = str_replace($config['url'].'/', $config['url'], $text);
-
-        // substitute all [POST[key]] and [GET[key]]
-        $matches= array();
-        if ( preg_match_all("/\[(POST|GET)\[(.*)\]\]/U", $text, $matches)){
-
-            foreach ($matches[0] as $i => $match) {
-                $method= $matches[1][$i];
-                $key   = $matches[2][$i];
-                if ( $method=="GET" && isset($_GET[$key])) {
-                    $value = $_GET[$key];
-                } elseif ($method=="POST" && isset($_POST[$key])) {
-                    $value = $_POST[$key];
-                } else {
-                    $value="";
-                }
-                $replace[$match] = $value;
-            }
-            $text = strtr( $text, $replace);
-       }
-
-    return $text;
     } // end of processVars method
 } // end of aiki class
