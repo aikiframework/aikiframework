@@ -73,17 +73,17 @@ if ($layout->widget_custom_output) {
 }
 
 if ( $noheaders) {
-    $html_output = $layout->html_output;
+	$html_output = $layout->html_output;
 } else {   
 	$html_output = $aiki->output->headers();
-    if (isset($aiki->output->title)) {
-        $layout->html_output =  str_replace(
-            '[page_title]', 
-            $aiki->output->title, 
-            $layout->html_output);
-    } 
-    $html_output .= $layout->html_output;
-    $html_output .= $aiki->output->footer();
+	if (isset($aiki->output->title)) {
+		$layout->html_output =  str_replace(
+			'[page_title]', 
+			$aiki->output->title, 
+			$layout->html_output);
+	} 
+	$html_output .= $layout->html_output;
+	$html_output .= $aiki->output->footer();
 } 
 
 $html_output = $aiki->languages->L10n($html_output);
@@ -93,8 +93,8 @@ $html_output = $aiki->languages->L10n($html_output);
  * @todo abstract this use of libtidy here
  */
 if ( extension_loaded('tidy' ) 
-     && function_exists('tidy_parse_string')
-     && $config["html_tidy"]) 
+	 && function_exists('tidy_parse_string')
+	 && $config["html_tidy"]) 
 {
 	$tidy = new tidy();
 	$tidy->parseString($html_output, $config["html_tidy_config"], 'utf8');
@@ -107,19 +107,19 @@ if ( extension_loaded('tidy' )
 } else {
 
 	if (isset($_REQUEST['compress_output']) || 
-        (isset($config["compress_output"]) && $config["compress_output"]))  {
+		(isset($config["compress_output"]) && $config["compress_output"]))  {
 		$html_output = $aiki->output->compress( $html_output);
 	}
 
 	if (!isset($_GET['no_output']))  {
-        $aiki->plugins->do_action("output_html", &$html_output);   
+		$aiki->plugins->do_action("output_html", &$html_output);   
 		print $html_output;
 	}
 } // end of using tidy
 
 
 if ( $html_cache_file ) {
-    //write the cache file
+	//write the cache file
 	error_log ( $html_output, 3, $html_cache_file);
 }
 

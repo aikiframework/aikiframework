@@ -17,58 +17,55 @@
  * @filesource
  */
 
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if (!defined('IN_AIKI')) {
+	die('No direct script access allowed');
+}
 
 
 /**
  * Handle sql inside of aiki. 
  *
- * @category    Aiki
- * @package     Library
+ * @category	Aiki
+ * @package	 Library
  *
  * @todo this entire class needs a code review
  */
-class sql_markup
-{
-    /**
-     * Handle Aiki sql.
-     * 
-     * @param   string  $text   text for processing
-     * @global  aiki    $aiki   global aiki instance
-     * @global  array   $db     global db instance
-     * @return  string 
-     *
-     * @todo need a serious security review
-     */
-	public function sql($text)
-    {
+class sql_markup {
+	/**
+	 * Handle Aiki sql.
+	 * 
+	 * @param   string  $text   text for processing
+	 * @global  aiki	$aiki   global aiki instance
+	 * @global  array   $db	 global db instance
+	 * @return  string 
+	 *
+	 * @todo need a serious security review
+	 */
+	public function sql($text) {
 		global $aiki, $db;
 
 		$count_innersql = preg_match_all('/\(sql\((.*)\)sql\)/Us', $text, 
-                                         $sqlmatches);
-		if ($count_innersql > 0)
-        {
-			foreach ($sqlmatches[1] as $match)
-			{
+					$sqlmatches);
+		if ( $count_innersql > 0 ) {
+			foreach ( $sqlmatches[1] as $match ) {
 				$html_output = $this->sql_query($match);
 
 				$text = preg_replace('/\(sql\('.
-                        preg_quote($match, '/').'\)sql\)/Us', 
-                        $html_output, $text);
+						preg_quote($match, '/').'\)sql\)/Us', 
+						$html_output, $text);
 			}
 		}
 		$text = preg_replace('/\(select(.*)\)/Us', '', $text);
 		return $text;
 	}
 
-    /**
-     * Another form of aiki sql query
-     * @param   string  $match  a string to match
-     * @global  aiki    $aiki   global aiki instance
-     * @global  array   $db     global db instance
-     */
-	public function sql_query($match)
-    {
+	/**
+	 * Another form of aiki sql query
+	 * @param   string  $match  a string to match
+	 * @global  aiki	$aiki   global aiki instance
+	 * @global  array   $db	 global db instance
+	 */
+	public function sql_query($match) {
 		global $aiki, $db;
 
 		$match = $aiki->url->apply_url_on_query($match);
@@ -78,8 +75,7 @@ class sql_markup
 
 		$match = '';
 
-		foreach ($matches[1] as $sql)
-		{
+		foreach ( $matches[1] as $sql ) {
 
 			$sql_html = explode("||", trim($sql));
 
@@ -87,38 +83,33 @@ class sql_markup
 
 			$sql_query = $sql_html[0];
 
-			if ($sql_query)
-            {
+			if ($sql_query) {
 				$sql_query = str_replace("\'", "'", $sql_query);
 				$sql_query = str_replace('\"', '"', $sql_query);
 
 				$results = $db->get_results($sql_query);
 
-				if ($results)
-                {
-					foreach ($results as $result)
-                    {
+				if ($results) {
+					foreach ( $results as $result ) {
 						$html = trim($sql_html[1]);
-						if (!preg_match('/\(select(.*)/', $html))
+						if (!preg_match('/\(select(.*)/', $html)) {
 							$html = substr($html,0,-1);
-
+						}
 						$result = $aiki->aiki_array->object2array($result);
 						$result_key = @array_flip($result);
 
-						foreach ($result as $field)
-                        {
-							if (isset($result_key[$field]))
-                            {
+						foreach ( $result as $field ) {
+							if (isset($result_key[$field])) {
 								$html = str_replace("[-[".$result_key[$field].
-                                                    "]-]", $field,  $html);
+											"]-]", $field,  $html);
 							}
 						}
 
 						$match .= $html;
-                        
-                        /**
-                         * @todo investigate why these are hidden, kill or keep
-                         */
+						
+						/**
+						 * @todo investigate why these are hidden, kill or keep
+						 */
 						//$match = str_replace("\r", ' ', $match);
 						//$match = str_replace("\n", ' ', $match);
 						$match = preg_replace("/\)\s\s+\(/", '(', $match);
@@ -131,3 +122,5 @@ class sql_markup
 		return $match;
 	} // end of function
 } // end of class
+
+?>

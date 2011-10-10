@@ -16,157 +16,157 @@
  * @package     System
  * @filesource
  */
+	
 
 
 
-
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if(!defined('IN_AIKI')){
+	die('No direct script access allowed');
+}
 
 
 /**
  * Creates the Aiki page layout.
  *
- * @category    Aiki
- * @package     System
+ * @category	Aiki
+ * @package	 System
  *
  * @todo refactor this all, or else!
  */
-class CreateLayout
-{
+class CreateLayout {
 	/**
-     * The full HTML output of all the widgets.
-     */
+	 * The full HTML output of all the widgets.
+	 */
 	public $html_output;
 
 	/**
-     * Widgets that need to be killed.
-     */
+	 * Widgets that need to be killed.
+	 */
 	public $kill_widget;
 
 	/**
-     * Stores the output of one widget at a time.
-     */
+	 * Stores the output of one widget at a time.
+	 */
 	public $widget_html;
 
-    /**
-     * An empty variable for storing forms?
-     * @todo trace this and see if it used. If not, delete it.
-     */ 
+	/**
+	 * An empty variable for storing forms?
+	 * @todo trace this and see if it used. If not, delete it.
+	 */ 
 	public $forms;
 
 	/**
-     * Boolean: to create a cache for this widget.
-     */
+	 * Boolean: to create a cache for this widget.
+	 */
 	public $create_widget_cache;
 
 	/**
-     * Stores a string with a the "list" of widget included in widget. 
-     * 
-     * it will be used for loading style as  as 
-     * <link rel='stylesheet' .. href="style.php?site=default&amp;widgets=14_21_16_595_17....
-     */
+	 * Stores a string with a the "list" of widget included in widget. 
+	 * 
+	 * it will be used for loading style as  as 
+	 * <link rel='stylesheet' .. href="style.php?site=default&amp;widgets=14_21_16_595_17....
+	 */
 	public $widgets_css;
 
 	/**
-     * Boolean: is the widget require custom output.
-     */
+	 * Boolean: is the widget require custom output.
+	 */
 	public $widget_custom_output;
 
 	/**
-     * Stores the head output of a widget.
-     */
+	 * Stores the head output of a widget.
+	 */
 	public $head_output;
 
 	/**
-     * Stores the values of SQL results of the current selected widgets.
-     */
+	 * Stores the values of SQL results of the current selected widgets.
+	 */
 	private $global_values = null;
 
-    /**
-     * This is the basic Layout Creation method.
-     * @global array  $db
-     * @global aiki   $aiki
-     */
-	public function CreateLayout(){
+	/**
+	 * This is the basic Layout Creation method.
+	 * @global array  $db
+	 * @global aiki   $aiki
+	 */
+	public function CreateLayout() {
 		global $db, $aiki;
 
-        // Initialize
-        $this->widgets_css= array();
+		// Initialize
+		$this->widgets_css= array();
 
 		// Convert global_values to an object to cache the SOL results in parsDBpars function.
 		$this->global_values=new stdClass();
 
-        // the widget is given directly or
-		if ( isset($_GET["widget"]) ){
-			if ( $getWidgetId = $this->get_widget_id($_GET['widget']) ) {
+		// the widget is given directly or
+		if (isset($_GET["widget"])) {
+			if ($getWidgetId = $this->get_widget_id($_GET['widget'])) {
 				$this->createWidget($getWidgetId);				
-			} 
+			}
 			return;//all work is done
 		}		
 		
 		// or in url, search widget and test there is a unique response
 		$module_widgets = $this->get_candidate_widgets();
 		$unique_widget_exists= false;		
-		if ($module_widgets){				
+		if ($module_widgets) {				
 			foreach($module_widgets as $tested_widget){
 				if ($tested_widget->display_urls != "*"){
 					$unique_widget_exists = true;
 					break;
 				}
 			}		
-            					
+								
 		}
 
 		// ..page not found..
-		if ( !$unique_widget_exists ){
+		if (!$unique_widget_exists) {
 			$this->html_output .= $aiki->errors->page_not_found();			
 			return;
 		}
 	
 		// now filter canditate widgets, before create content
 		$widget_group = array();
-		foreach ( $module_widgets as $widget ) {
-			if (  $aiki->url->match($widget->display_urls) && !$aiki->url->match($widget->kill_urls) ){
+		foreach ($module_widgets as $widget) {
+			if ($aiki->url->match($widget->display_urls) && !$aiki->url->match($widget->kill_urls)){
 				$widget_group[] = $widget->id;			
-			}            
+			}			
 		}	
 		$this->createWidget($widget_group);			
 	}
 
 
-    /**
-     * Creates a widget internal to this class.
-     * 
-     * @param integer $widget_id id of a widget
-     * @param string  $widget_group the group of the widget
-     * @global array  $db global database object
-     * @global aiki   $aiki glboal aiki object
-     * @global string $url 
-     * @global string $custom_output
-     *
-     * @todo this all need to be broken down into helper functions, too big!
-     */
-	private function createWidget ( $widget_group )
-    {
+	/**
+	 * Creates a widget internal to this class.
+	 * 
+	 * @param integer $widget_id id of a widget
+	 * @param string  $widget_group the group of the widget
+	 * @global array  $db global database object
+	 * @global aiki   $aiki glboal aiki object
+	 * @global string $url 
+	 * @global string $custom_output
+	 *
+	 * @todo this all need to be broken down into helper functions, too big!
+	 */
+	private function createWidget($widget_group) {
 		global $db, $aiki, $custom_output;
 
 		/**
 		 * Daddy this is where widgets come from...
 		 *
 		 */
-		if ( is_array($widget_group) && count($widget_group)>0  )	{
-			$widgets_list  = "id='". implode("' or id='",$widget_group) . "'";
+		if ( is_array($widget_group) && count($widget_group) > 0 ) {
+			$widgets_list  = "id='" . implode("' or id='", $widget_group) . "'";
 			$widgets_query = "SELECT * FROM aiki_widgets WHERE $widgets_list ORDER BY display_order, id";
 		} elseif ($widget_group) {
 			$widgets_query = "SELECT * FROM aiki_widgets WHERE id='{$widget_group}' LIMIT 1";
 		} 
 
-        if ( isset($widgets_query) ){
-			$widget_result = $db->get_results( $widgets_query );
+		if (isset($widgets_query)) {
+			$widget_result = $db->get_results($widgets_query);
 		}
 		if ( !isset($widgets_query) || is_null($widget_result) ){
 			return ; // @TODO debug error
-		} 
+		}
 		   
 		/**
 		 * Where the search for widgets, gets put into a widget
@@ -174,8 +174,8 @@ class CreateLayout
 		 *		 outside this block to be proper!
 		 * @TODO This is totally too long iteration to create $widget
 		 */
-    
-        foreach ($widget_result as $widget)	{
+	
+		foreach ($widget_result as $widget) {
 
 			if ($widget->css) {
 				$this->widgets_css[]= $widget->id ;
@@ -186,28 +186,28 @@ class CreateLayout
 				$this->widget_custom_output = true;
 			}
 
-			if ($widget->custom_header and $widget->custom_header != ''){
+			if ( $widget->custom_header && $widget->custom_header != '' ) {
 				$custom_headers = explode("\n", $widget->custom_header);
-				foreach ($custom_headers as $custom_header){
-					if ($custom_header != ""){
+				foreach ($custom_headers as $custom_header) {
+					if ( $custom_header != "" ) {
 						header($custom_header);
 					}
 				}
 			}
 
-			if (!$custom_output &&
+			if ( !$custom_output &&
 				 $widget->widget_type &&
-				 $widget->remove_container != 1) {
+				 $widget->remove_container != 1 ) {
 				/**
 				 * @todo all output of comments needs to be an option, since
 				 *		 it makes output pages bigger by default.
 				 *		 Should only turn on for debug mode IMO.
 				 */
 				$this->widget_html .= 
-				"\n <!--start {$widget->widget_name}({$widget->id})--> \n";
+					"\n <!--start {$widget->widget_name}({$widget->id})--> \n";
 
 				$this->widget_html .= 
-				"<$widget->widget_type id=\"$widget->widget_name\"";
+					"<$widget->widget_type id=\"$widget->widget_name\"";
 
 				if ($widget->style_id){
 					$this->widget_html .= " class=\"$widget->style_id\"";
@@ -219,14 +219,15 @@ class CreateLayout
 
 			if ($widget->is_father)	{
 								
-                $son_widgets = $this->get_candidate_widgets($widget->id);					
-                        
+				$son_widgets = $this->get_candidate_widgets($widget->id);					
+						
 				if ($son_widgets) {
 			
 					$son_widget_group = array();
 
-					foreach ( $son_widgets as $son_widget ){
-						if ( $aiki->url->match($son_widget->display_urls) && !$aiki->url->match($son_widget->kill_urls) ) {
+					foreach ($son_widgets as $son_widget) {
+						if ( $aiki->url->match($son_widget->display_urls) &&
+							!$aiki->url->match($son_widget->kill_urls) ) {
 							$son_widget_group[] = $son_widget->id;
 						}
 
@@ -238,8 +239,7 @@ class CreateLayout
 
 			if (!$custom_output and 
 				$widget->widget_type and 
-				$widget->remove_container != 1)
-			{
+				$widget->remove_container != 1) {
 				$this->widget_html .= "\n</$widget->widget_type>\n";
 				/**
 				 * @todo all output of comments needs to be an option, since
@@ -247,16 +247,15 @@ class CreateLayout
 				 *		 Should only turn on for debug mode IMO.
 				 */
 				$this->widget_html .= 
-				"\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
+					"\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
 			}
 
-			if ($this->kill_widget)
-			{
+			if ($this->kill_widget) {
 				if ($widget->if_no_results) { 
 					
 					$dead_widget = 
 						'<'.$widget->widget_type.' id="'.
-						$widget->widget_name.'">'. $this->parse_no_results($widget->if_no_results) .
+						$widget->widget_name.'">' . $this->parse_no_results($widget->if_no_results) .
 						'</'.$widget->widget_type.'>';
 				} else {
 					$dead_widget = "";
@@ -273,8 +272,8 @@ class CreateLayout
 				
 			}
 
-			switch ( $widget->widget_target ){
-				case "body"  : 
+			switch ($widget->widget_target){
+				case "body": 
 					$this->html_output .= $this->widget_html;
 					break;
 				case "header": 
@@ -288,13 +287,13 @@ class CreateLayout
 	} // end of createWidget method
 
 
-    /** 
-     * Creates Widget Content
-     *
-     * @todo keep going
+	/** 
+	 * Creates Widget Content
+	 *
+	 * @todo keep going
 	 * @param	array		$widget				the widget to create
 	 * @param	string		$normal_select		inline widget can define the 
-	 *                                          normal_select.
+	 *										  normal_select.
 	 * @global	aiki		$aiki				global object
 	 * @global	array		$db					global db object
 	 * @global	membership	$membership			global membership object
@@ -304,30 +303,30 @@ class CreateLayout
 	 * @return	mixed
 	 *
 	 * @todo needless to say, this has to be refactored or redone. 
-     */
+	 */
 	
 	
 	
-	private function createWidgetContent($widget, $normal_select=false )
-	{
+	private function createWidgetContent($widget, $normal_select=false) {
 		global $aiki, $db, $membership, $nogui, $custom_output, $config;
 
-		$is_inline = ( $normal_select ? true :  false );
+		$is_inline = ( $normal_select ? true : false );
 
 		$stopcaching = false;
-		if (isset($config["widget_cache"]) and 
-			$config["widget_cache"] and 
-			isset($config["widget_cache_dir"]) and 
-			$widget->widget_cache_timeout) {
+		if ( isset($config["widget_cache"]) && 
+			$config["widget_cache"] &&
+			isset($config["widget_cache_dir"]) &&
+			$widget->widget_cache_timeout ) {
 			
 			// Get widget ready for cache.
-			if ($widget->normal_select)
-				$widget_cache_id = $widget->id."_".$_SERVER['QUERY_STRING'];
-			else
+			if ($widget->normal_select) {
+				$widget_cache_id = $widget->id . "_" . $_SERVER['QUERY_STRING'];
+			} else {
 				$widget_cache_id = $widget->id;
+			}
 
 			$widget_file = 
-				$config["widget_cache_dir"].'/'.md5($widget_cache_id);
+				$config["widget_cache_dir"] . '/' . md5($widget_cache_id);
 
 			$widget_cache_timeout = $widget->widget_cache_timeout;
 		} else {
@@ -335,11 +334,11 @@ class CreateLayout
 		}
 
 		// Security check to determine which widget content to display.		
-		if ($widget->is_admin 
+		if ( $widget->is_admin 
 			&& $membership->permissions 
-            && $widget->if_authorized 
-            && $membership->have_permission($widget->permissions) ) {
-                $widget->widget = $widget->if_authorized;
+			&& $widget->if_authorized 
+			&& $membership->have_permission($widget->permissions) ) {
+				$widget->widget = $widget->if_authorized;
 				$widget->normal_select = $widget->authorized_select;
 				$stopcaching = true;			
 		}
@@ -347,7 +346,7 @@ class CreateLayout
 		if ( !$stopcaching and 
 			 $widget_cache_timeout > 0 and 
 			 file_exists($widget_file) and 
-			 ((time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and
+			 ( (time() - filemtime($widget_file)) < ($widget_cache_timeout) ) and
 			 $membership->permissions != "SystemGOD" and 
 			 $membership->permissions != "ModulesGOD" ) {
 			
@@ -355,57 +354,60 @@ class CreateLayout
 			$widget_html_output = file_get_contents($widget_file);
 			$this->widget_html .= $widget_html_output;
 			$this->create_widget_cache = false;
-			return ;
+			return;
 		} 
 		
 		
 		// Widget can't be rendered from cache.
 		// Flag the widget as cachable, and try to delete the old cache file
 		$this->create_widget_cache = true;
-		if ( isset ($widget_file) and 
+		if ( isset($widget_file) and 
 			 $membership->permissions != "SystemGOD" and 
 			 $membership->permissions != "ModulesGOD" and 
-			 !$stopcaching ){
-			if (file_exists($widget_file))
+			 !$stopcaching ) {
+			if (file_exists($widget_file)) {
 				unlink($widget_file);
+			}
 		}
 
 	
-		if ($is_inline)
+		if ($is_inline) {
 			$widget->pagetitle = '';
+		}
 
-		if ($widget->nogui_widget and isset($nogui))
-			$widget->widget = $widget->nogui_widget;		
+		if ( $widget->nogui_widget && isset($nogui) ) {
+			$widget->widget = $widget->nogui_widget;
+		}
 		
 		/**
 		 * @TODO why is this commented out? if no takers, delete!
 		 */
 		//$widget->widget = htmlspecialchars_decode($widget->widget);
 
-        $widget->widget = $aiki->view_parser->parse(
-            $widget->widget, 
-            $aiki->site->view(),
-            $aiki->site->language() );
+		$widget->widget = $aiki->view_parser->parse(
+			$widget->widget, 
+			$aiki->site->view(),
+			$aiki->site->language());
 
 		$widget->widget = $aiki->input->requests($widget->widget);
 		$widget->widget = $aiki->processVars($widget->widget);
 
 
-        // noloop part are extracted and deleted.
-		$no_loop_part = $aiki->get_string_between (
+		// noloop part are extracted and deleted.
+		$no_loop_part = $aiki->get_string_between(
 			$widget->widget, 
 			'(noloop(', ')noloop)');
 
 		$widget->widget = str_replace(
-			'(noloop('.$no_loop_part.')noloop)', '', 
+			'(noloop(' . $no_loop_part . ')noloop)', '', 
 			$widget->widget);
 
-		$no_loop_bottom_part = $aiki->get_string_between (
+		$no_loop_bottom_part = $aiki->get_string_between(
 			$widget->widget, 
 			'(noloop_bottom(', ')noloop_bottom)');
 
 		$widget->widget = str_replace(
-			'(noloop_bottom('.$no_loop_bottom_part.')noloop_bottom)', '', 
+			'(noloop_bottom(' . $no_loop_bottom_part . ')noloop_bottom)', '', 
 			$widget->widget);
 
 		$widget->normal_select = $this->parse_select(
@@ -417,14 +419,14 @@ class CreateLayout
 			$processed_widget = $this->parse_widget_without_data($widget->widget);
 		} else {				
 			$selects = explode("|OR|", $widget->normal_select);
-            foreach ( $selects as $select ){								
+			foreach ($selects as $select) {								
 				$widget->normal_select= $select;
 				
 				$records_num = $this->records_num($widget->normal_select);  				
 				// pagination change normal_select adding limit.
 				$pagination = $this->pagination($widget, $records_num);
 				$widget_select = $db->get_results($widget->normal_select);
-				if ( $widget_select ){
+				if ($widget_select) {
 					break;
 				}	
 			}		
@@ -435,10 +437,9 @@ class CreateLayout
 				$num_results = $db->num_rows;
 			} 						
 			
-			if ($widget_select and isset($num_results) and $num_results > 0)
-			{
+			if ( $widget_select && isset($num_results) && $num_results > 0 ) {
 				$widgetContents = '';
-				foreach ( $widget_select as $widget_value )	{
+				foreach ($widget_select as $widget_value) {
 					/**
 					 * @todo put this behind debug time option
 					 */
@@ -449,14 +450,14 @@ class CreateLayout
 					$widgetContents .=  $this->parse_widget_with_data(
 						$template,
 						$widget_value);
-					if (!$custom_output){
+					if (!$custom_output) {
 						$widgetContents .= 
 							"\n<!-- The End of a Record -->\n";
 					}
 				} // end of foreach
 
 				// puts records in row
-				if ($widget->display_in_row_of > 0) {
+				if ( $widget->display_in_row_of > 0 ) {
 					$widgetContents = $aiki->output->displayInTable(
 						$widgetContents, 
 						$widget->display_in_row_of);
@@ -469,7 +470,7 @@ class CreateLayout
 			
 				$widgetContents =
 					$this->parsDBpars($no_loop_part, $widget_value).
-				    $widgetContents.
+					$widgetContents.
 					$this->parsDBpars($no_loop_bottom_part, $widget_value);
 				
 				// now widget is complete other parser can aplied.
@@ -483,9 +484,9 @@ class CreateLayout
 				$widgetContents = $this->parse_hits($widgetContents);			
 				
 				// insert pagination.
-				if ( $pagination and strpos($widgetContents,"[no_pagination]")===false ){
-					if ( strpos($widgetContents,"[pagination]")) {
-					$widgetContents = str_replace (
+				if ( $pagination && strpos($widgetContents, "[no_pagination]") === false ){
+					if (strpos($widgetContents, "[pagination]")) {
+					$widgetContents = str_replace(
 						"[pagination]", 
 						$pagination, 
 						$widgetContents);
@@ -504,7 +505,7 @@ class CreateLayout
 					"\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
 					$this->kill_widget = $widget->id;
 				} else {
-					$processed_widget =  $widgetContents;
+					$processed_widget = $widgetContents;
 				}
 			} else {
 				$this->kill_widget = $widget->id;
@@ -512,7 +513,7 @@ class CreateLayout
 		} 
 
 
-		if (!isset($processed_widget)){
+		if (!isset($processed_widget)) {
 			$processed_widget = '';
 		} else {	
 			$processed_widget = $this->parsDBpars($processed_widget, '');
@@ -535,22 +536,21 @@ class CreateLayout
 		// Apply (#(header:...
 		$processed_widget= $this->parse_header($processed_widget);
 			
-		if (isset($widget_cache_id))
-		{
+		if (isset($widget_cache_id)) {
 			$widget_cache_id_hash = md5($widget_cache_id);
 			$processed_widget = 
-				str_replace("(#(cache_file_name)#)",$widget_cache_id_hash, 
+				str_replace("(#(cache_file_name)#)", $widget_cache_id_hash, 
 							$processed_widget);
 		}
 
 		// Set page title.
-		if ($widget->pagetitle)
-		{
+		if ($widget->pagetitle) {
 			$widget->pagetitle = $aiki->processVars($widget->pagetitle);
 			$widget->pagetitle = $aiki->url->apply_url_on_query($widget->pagetitle);
 
-			if (!isset($widget_value))
+			if (!isset($widget_value)) {
 				$widget_value = '';
+			}
 
 			$title = $this->parsDBpars($widget->pagetitle, $widget_value);
 			$title = $aiki->input->requests($title);
@@ -560,8 +560,7 @@ class CreateLayout
 		
 
 		if (isset($widgetContents) and 
-			$widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n")
-		{
+			$widgetContents == "\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n") {
 			$this->kill_widget = $widget->id;
 		} else {
 			if (isset($config["widget_cache"]) and 
@@ -570,8 +569,7 @@ class CreateLayout
 				$config["widget_cache_dir"] and 
 				is_dir($config["widget_cache_dir"]) and 
 				!$membership->permissions and 
-				$widget->widget_cache_timeout > 0)
-			{
+				$widget->widget_cache_timeout > 0) {
 				$processed_widget_cach = 
 					$processed_widget."\n\n<!-- Served From Cache -->\n\n";
 				$processed_widget_cach = 
@@ -581,13 +579,12 @@ class CreateLayout
 			}
 		}
 
-		if ($membership->permissions == "SystemGOD" and 
+		if ( $membership->permissions == "SystemGOD" and 
 			$widget->widget and 
 			$config['show_edit_widgets'] == 1 and 
 			$widget->widget_target == 'body' and 
 			!preg_match("/admin/", $widget->display_urls) and 
-			$widget->custom_output == 0)
-		{
+			$widget->custom_output == 0 ) {
 			$processed_widget = 
 				$processed_widget."<a href='".$config['url'].
 				"admin_tools/edit/20/".$widget->id.
@@ -599,10 +596,8 @@ class CreateLayout
 		}
 		
 		// yes or no to output, and howto return
-		if ($is_inline)
-		{
-			if (!$processed_widget and $widget->if_no_results)
-			{
+		if ($is_inline) {
+			if ( !$processed_widget and $widget->if_no_results ) {
 				$widget->if_no_results = 
 					$aiki->processVars ($widget->if_no_results);
 				return stripslashes($widget->if_no_results);
@@ -615,30 +610,30 @@ class CreateLayout
 	} // end of createWidgetContent() 
 
 
-   private function pagination ( $widget, $records_num ){
-	    global $db, $aiki;
+	private function pagination($widget, $records_num) {
+		global $db, $aiki;
 		$pagesgroup = 10;
 		$group_pages = false;
 
 		$pagination = "";
 
-		$page = isset($_GET['page']) ? addslashes($_GET['page']): 0;
-		if ($page > 0){
+		$page = isset($_GET['page']) ? addslashes($_GET['page']) : 0;
+		if ( $page > 0 ) {
 			$page = $page - 1;
 		}	
 
-		if ($widget->records_in_page and !$widget->link_example) {
+		if ( $widget->records_in_page and !$widget->link_example ) {
 			$widget->link_example = "?page=[page]";
-        }
+		}
 		
 		// Custom pages links setting from link_example.
 		if (isset($widget->link_example)){
-			$link_config = 	preg_match(
+			$link_config = preg_match(
 				'/config\[(.+)\]/U', 
 				$widget->link_example, 
 				$link_config_data);
-			if ($link_config ){
-				if (preg_match('/group\_by\:/',$link_config_data[1])){
+			if ($link_config) {
+				if (preg_match('/group\_by\:/',$link_config_data[1])) {
 					$group_pages = true;
 					$pagesgroup = 
 						str_replace('group_by:', '', 
@@ -652,13 +647,13 @@ class CreateLayout
 			}
 		}
 		
-        // calculate the number of pages and prepare the sql 
-        // to extract this rows
-        $numpages=0;
-		if ($widget->link_example and 
+		// calculate the number of pages and prepare the sql 
+		// to extract this rows
+		$numpages=0;
+		if ( $widget->link_example and 
 			$widget->records_in_page and 
-			$widget->normal_select)	{
-			if ($records_num >= $widget->records_in_page) {
+			$widget->normal_select )	{
+			if ( $records_num >= $widget->records_in_page ) {
 				$numpages = ceil($records_num / $widget->records_in_page);
 			} else {
 				$numpages = 1;
@@ -674,7 +669,7 @@ class CreateLayout
 				$widget->records_in_page;
 		}
 
-		if ( $numpages <= 1) {
+		if ( $numpages <= 1 ) {
 			return "";
 		}
 			
@@ -698,8 +693,7 @@ class CreateLayout
 			"<span class='pagination_move_to_page'>" . 
 			"__move_to_page__</span><br />";
 
-		if ($page)
-		{
+		if ($page) {
 			$previous = 
 				str_replace("[page]", $page, 
 							$widget->link_example);
@@ -716,7 +710,7 @@ class CreateLayout
 			$numpages = $pagesgroup;
 			$numpages = $numpages + $page + 1;
 
-			if ($page > ($pagesgroup / 2))
+			if ( $page > ($pagesgroup / 2) )
 			{
 				$pages_to_display = $page - (int)($pagesgroup / 2);
 				$numpages =  $numpages - (int)($pagesgroup / 2);
@@ -724,19 +718,17 @@ class CreateLayout
 				$pages_to_display = 0;
 			}
 
-			if ($numpages > $full_numb_of_pages)
+			if ( $numpages > $full_numb_of_pages )
 				$numpages = $full_numb_of_pages;
 
-			for ($i=$pages_to_display +1 ; $i <$numpages; $i++)
-			{
+			for ($i = $pages_to_display +1; $i < $numpages; $i++) {
 				/**
 				 * @todo more hardcoded html
 				 */
-				if ($i == $page + 1 )
-				{
+				if ( $i == $page + 1 ) {
 					$pagination .= 
-					"<span class='pagination_notactive'>" . 
-					" $i </span>";
+						"<span class='pagination_notactive'>" . 
+						" $i </span>";
 				} else {
 					$next_link = 
 						str_replace("[page]", $i, 
@@ -749,10 +741,8 @@ class CreateLayout
 
 		} else {
 
-			for ($i=1; $i <$numpages; $i++)
-			{
-				if ($i == $page + 1)
-				{
+			for ($i = 1; $i < $numpages; $i++) {
+				if ( $i == $page + 1 ) {
 					$pagination .= 
 						"<span class='pagination_notactive'>".
 						" $i </span>";
@@ -766,8 +756,7 @@ class CreateLayout
 			}
 		}
 
-		if( $page+2 != ($numpages)) 
-		{
+		if ( $page+2 != ($numpages) ) {
 			$next = str_replace("[page]", $page + 2, 
 								$widget->link_example);
 			$pagination .= 
@@ -775,10 +764,9 @@ class CreateLayout
 				"<a href=\"$next\">__next__</a></span>";
 		}
 
-		if( $page ) 
-		{
+		if($page) {
 			$first_page = str_replace("[page]", '1', 
-									  $widget->link_example);
+				$widget->link_example);
 			$pagination .= 
 				"<span class='pagination_first'>" . 
 				" <a href=\"$first_page\">__first_page__</a>" .
@@ -795,11 +783,11 @@ class CreateLayout
 				"</span>";
 		}
 		
-		if ( isset($next) ) {					
+		if (isset($next)) {					
 			$pagination = str_replace("[next]", $next, $pagination);
 		}	
 
-		if ( isset($previous)) {
+		if (isset($previous)) {
 			$pagination = str_replace("[previous]", $previous, $widgetContents);
 		}	
 		
@@ -817,15 +805,13 @@ class CreateLayout
 	 * @global	aiki	$aiki	global aiki object
 	 * @return	string
 	 */
-	public function noaiki($text)
-	{
+	public function noaiki($text) {
 		global $aiki;
 
 		$widget_no_aiki = 
 			$aiki->get_string_between($text, "<noaiki>", "</noaiki>");
 
-		if ($widget_no_aiki)
-		{
+		if ($widget_no_aiki) {
 			$html_widget = 
 				$aiki->convert_to_specialchars($widget_no_aiki);
 
@@ -836,20 +822,20 @@ class CreateLayout
 		return $text;
 	}
 
-    private function parse_widget_with_data( $template, $values){
+	private function parse_widget_with_data($template, $values) {
 		global $aiki;
-		$template = $aiki->parser->datetime( $template, $values);			
-		$template = $aiki->parser->tags( $template, $values);
+		$template = $aiki->parser->datetime($template, $values);			
+		$template = $aiki->parser->tags($template, $values);
 		$template = $this->noaiki($template);
 		$template = $this->parsDBpars($template, $values);
-		$template = $aiki->records->edit_in_place( $template, $values);
+		$template = $aiki->records->edit_in_place($template, $values);
 		$template = $aiki->text->aiki_nl2br($template);
 		$template = $aiki->text->aiki_nl2p($template);
 		return $template;
 	}
 
 
-    private function parse_widget_without_data( $template ){
+	private function parse_widget_without_data($template) {
 		global $aiki;
 		$template = $this->parsDBpars($template, '');
 		$template = $this->noaiki($template);
@@ -859,7 +845,7 @@ class CreateLayout
 		$template = $this->inherent_widgets($template);
 		$template = $aiki->sql_markup->sql($template);
 		return $template;
-    }
+	}
 
 
 
@@ -870,33 +856,29 @@ class CreateLayout
 	 * @global	aiki	$aiki			global aiki object
 	 * @return	string
 	 */
-	private function parsDBpars($text, $widget_value = '')
-	{
+	private function parsDBpars($text, $widget_value = '') {
 		global $aiki;
 
-		$count = preg_match_all( '/\({2,}(.*?)\){2,}/', $text, $matches );
+		$count = preg_match_all('/\({2,}(.*?)\){2,}/', $text, $matches);
 
-		if (!$widget_value)
-		{
+		if (!$widget_value) {
 			$widget_value = $this->global_values;
 			$cached_values = true; //so it don't cache them again
 		} else {
 			$cached_values = false;
 		}
 
-		foreach ($matches['1'] as $parsed)
-		{
-			if ($parsed)
-			{
+		foreach ($matches['1'] as $parsed) {
+			if ($parsed) {
 				$is_array = $aiki->get_string_between($parsed, "[", "]");
-				if ($is_array) 
-				{
+				if ($is_array) {
 					$parsed_array = str_replace("[$is_array]", "", $parsed);
 					$array = @unserialize($widget_value->$parsed_array);
-					if (isset($array["$is_array"]))
+					if (isset($array["$is_array"])) {
 						$widget_value->$parsed = $array["$is_array"];
-					else
+					} else {
 						$widget_value->$parsed = '';
+					}
 				}
 
 				/**
@@ -906,57 +888,53 @@ class CreateLayout
 
 				$parsedExplode = explode("||", $parsed);
 
-				if (isset($parsedExplode['1']) and $parsedExplode[0] == "if")
-				{
+				if ( isset($parsedExplode['1']) and $parsedExplode[0] == "if" ) {
 					$cached_values = true;
 
-					if (isset($widget_value->$parsedExplode['1']))
+					if (isset($widget_value->$parsedExplode['1'])) {
 						$parsedValue = $widget_value->$parsedExplode['1'];
-
-					if (isset($parsedValue) and $parsedValue)
-					{
-						$parsedExplode[2] = 
+					}
+					if ( isset($parsedValue) and $parsedValue ) {
+						$parsedExplode[2] =
 							str_replace("_self", $parsedValue, 
 										$parsedExplode[2]);
 						$widget_value->$parsed = $parsedExplode[2];
-					}elseif (isset($parsedExplode[4]) and 
+					} elseif (isset($parsedExplode[4]) and 
 							 $parsedExplode[4] and 
-							 $parsedExplode[3] == "else")
-					{
+							 $parsedExplode[3] == "else") {
 						$else_stetment = explode(":", $parsedExplode[4]);
 
-						if ($else_stetment[0] == "redirect" and 
-							$else_stetment['1'])
-						{
+						if ( $else_stetment[0] == "redirect" and 
+							$else_stetment['1'] ) {
 							/**
 							 * @todo don't we have a tag builder?
 							 */
 							$text_values .= 
 								"<meta HTTP-EQUIV=\"REFRESH\" " . 
 								"content=\"0; url=".$else_stetment['1']."\">";
-							if (!$widget_value->$parsed)
+							if (!$widget_value->$parsed) {
 								$widget_value->$parsed = $text_values;
+							}
 						}
 					}
 				}
 
 				if (!isset($widget_value->$parsed) and 
-					isset($this->global_values->$parsed))
-				{
+					isset($this->global_values->$parsed)) {
 					$widget_value->$parsed = $this->global_values->$parsed;
 				}
 
-				if (!isset($widget_value->$parsed))
+				if (!isset($widget_value->$parsed)) {
 					$widget_value->$parsed = '';
-
+				}
 				$widget_value->$parsed = 
 					$aiki->security->remove_markup($widget_value->$parsed);
 
 				// If there are results and the results are not from cache 
 				// then cache them.
-				if ($widget_value->$parsed and !$cached_values)
+				if ( $widget_value->$parsed and !$cached_values ) {
 					$this->global_values->$parsed = $widget_value->$parsed;
-
+				}
 				$text = str_replace("(($parsed))", $widget_value->$parsed, 
 									$text);
 			} // end of if ($parsed)
@@ -965,22 +943,22 @@ class CreateLayout
 	}
 
 
-    /**
-     * Proccesed all (#(hits:..)#) in widget content.
-     *
-     * @PARAM  string $widget_content widget with (#(hit..
-     * @RETUN string widget parsed. (his have been count)
+	/**
+	 * Proccesed all (#(hits:..)#) in widget content.
+	 *
+	 * @PARAM  string $widget_content widget with (#(hit..
+	 * @RETUN string widget parsed. (his have been count)
 	 */
 
-    private function parse_hits(&$widgetContents){		
+	private function parse_hits(&$widgetContents) {		
 		global $db;
 		$hits_counter = preg_match_all(
 			"/\(\#\(hits\:(.*)\)\#\)/U",
 			$widgetContents,
 			$matchs);
 		
-		if ($hits_counter > 0)	{
-			foreach ( $matchs[1] as $hitData ){			
+		if ( $hits_counter > 0 ) {
+			foreach ($matchs[1] as $hitData) {
 				$hit = explode("|", $hitData);
 				$db->query(
 					"UPDATE {$hit[0]}".
@@ -997,75 +975,75 @@ class CreateLayout
 		
 	
 	/**
-     * Parsed a if_no_result.
-     *
-     * @PARAM  string $widget_content widget with (#(header..
-     * @RETUN string widget parsed. (header is sent)
+	 * Parsed a if_no_result.
+	 *
+	 * @PARAM  string $widget_content widget with (#(header..
+	 * @RETUN string widget parsed. (header is sent)
 	 */	
 		
 		
-	private function parse_no_results( $text){
+	private function parse_no_results($text) {
 		global $aiki;
 		$text = stripcslashes($text);
-		$text = $aiki->processVars ($text);
-		$text = $aiki->url->apply_url_on_query( $text);
+		$text = $aiki->processVars($text);
+		$text = $aiki->url->apply_url_on_query($text);
 		$text = $aiki->input->requests($text);
 		return $text;		
 	}	
 		
 		
-	private function parse_select( $select, $inline_select) {
+	private function parse_select($select, $inline_select) {
 		global $aiki, $membership;
 		
-		if ( $inline_select ) {
-			$select= trim($inline_select);
+		if ($inline_select) {
+			$select = trim($inline_select);
 		} else {
 			// Kill the query if it is not select.
 			// roger: this filter is not aplied over $inline_select
-			if (preg_match("/TRUNCATE|UPDATE|DELETE(.*)from/i", $select)){
+			if (preg_match("/TRUNCATE|UPDATE|DELETE(.*)from/i", $select)) {
 				return "";
 			} else { 
 				// roger: i don't know why this parse is applie only on normal_select 
 				// and no over inline..Perhaps must remove it.
-				$select = strtr( $select, array ("\n"=> " ", "\r"=>"") ); // delete line-feed
+				$select = strtr($select, array("\n"=> " ", "\r"=>"")); // delete line-feed
 				$select = $aiki->input->requests($select); // replace GET[] and POST[]
 				$select = $this->parsDBpars($select);
 				$select = strtr( 
 					$select,
-					array ( "[guest_session]"=>	$membership->guest_session, 
-							"[user_session]" =>	$membership->user_session));
+					array("[guest_session]" => $membership->guest_session, 
+						"[user_session]" => $membership->user_session));
 			}
 		}
 		
 		// more parse
-		$select= strtr( trim($select), array ("\'" => "'", '\"'=>'"'));
+		$select= strtr(trim($select), array ("\'" => "'", '\"' => '"'));
 		$select = $aiki->url->apply_url_on_query($select);
-		$select = $aiki->languages->L10n( $select);
-		$select = $aiki->processVars ($select);
+		$select = $aiki->languages->L10n($select);
+		$select = $aiki->processVars($select);
 			
 		return $select;	
 	}	
 		
 		
-    /**
-     * Proccesed all (#(header:..)#) in widget content.
-     *
-     * @PARAM  string $widget_content widget with (#(header..
-     * @RETUN string widget parsed. (header is sent)
+	/**
+	 * Proccesed all (#(header:..)#) in widget content.
+	 *
+	 * @PARAM  string $widget_content widget with (#(header..
+	 * @RETUN string widget parsed. (header is sent)
 	 */
 
-    private function parse_header(&$widgetContents){		
+	private function parse_header(&$widgetContents) {		
 		$is_header = preg_match_all(
 			"/\(\#\(header\:(.+)\)\#\)/U",
 			$widgetContents,
 			$match);
 
-		if ( $is_header ) {
-			foreach ($match[1] as $header){
+		if ($is_header) {
+			foreach ($match[1] as $header) {
 				$para = explode("|", $header);
-				switch ( substr_count($header,"|") ) {
-					case 0 : header($para[0])                    ; break;					
-					case 1 : header($para[0], $para[1])          ; break;
+				switch ( substr_count($header, "|") ) {
+					case 0 : header($para[0]); break;					
+					case 1 : header($para[0], $para[1]); break;
 					default: header($para[0], $para[1], $para[2]); break;					
 				}
 			}
@@ -1077,50 +1055,51 @@ class CreateLayout
 		return $widgetContents;
 	}
 
-    
-    /**
-     * get a group of widget
-     *    
-     * If no parameters is given search for layout widgets.
-     * 
-     * @param  integer 
-     * @return array  widgets with id,display_urls,kill_urls,
-     */
-    
-    function get_candidate_widgets($father=0){
+	
+	/**
+	 * get a group of widget
+	 *	
+	 * If no parameters is given search for layout widgets.
+	 * 
+	 * @param  integer 
+	 * @return array  widgets with id,display_urls,kill_urls,
+	 */
+	
+	function get_candidate_widgets($father=0) {
 		global $db, $aiki;
 		
 		$search = $aiki->url->url[0];
 		$SQL =
-			"SELECT id, display_urls,kill_urls,widget_name ".
-			" FROM aiki_widgets ".
-			" WHERE father_widget=$father AND is_active=1 AND ".
-			" (widget_site='{$aiki->site}' OR widget_site ='aiki_shared') AND ". // default.
-			" (display_urls LIKE '%$search%' OR display_urls = '*' OR display_urls LIKE '%#%#%') AND ".
-			" (kill_urls='' OR kill_urls<> '$search') ".	
+			"SELECT id, display_urls,kill_urls,widget_name " .
+			" FROM aiki_widgets " .
+			" WHERE father_widget=$father AND is_active=1 AND " .
+			" (widget_site='{$aiki->site}' OR widget_site ='aiki_shared') AND " . // default.
+			" (display_urls LIKE '%$search%' OR display_urls = '*' OR display_urls LIKE '%#%#%') AND " .
+			" (kill_urls='' OR kill_urls<> '$search') " .	
 			" ORDER BY  display_order, id";
-         return $db->get_results($SQL);
+		 return $db->get_results($SQL);
 	}	
-    
-    
-    /**
-     * lookup a widget_id.
-     *    
-     * @param  mixed  v$widgetNameOrId Widget name or id.
-     * @return integer widget_ir
-     */
-      
-    private function get_widget_id($widgetNameOrId){
+	
+	
+	/**
+	 * lookup a widget_id.
+	 *	
+	 * @param  mixed  v$widgetNameOrId Widget name or id.
+	 * @return integer widget_ir
+	 */
+	  
+	private function get_widget_id($widgetNameOrId) {
 		global $db;
-		if ( (int) $widgetNameOrId > 0 ){
+		if ( (int)$widgetNameOrId > 0 ) {
 			$fieldTest= "id='$widgetNameOrId'";
 		} else {
 			//sql injection test or '		
-			$fieldTest= "widget_name='" .str_replace("'","",$widgetNameOrId) ."'"; 
+			$fieldTest = "widget_name='" . str_replace("'", "", $widgetNameOrId) . "'"; 
 		}	
 	
-		$searchSQL=	"SELECT id FROM aiki_widgets ".
-					"WHERE {$fieldTest} AND is_active='1' LIMIT 1" ;	
+		$searchSQL =
+			"SELECT id FROM aiki_widgets ".
+			"WHERE {$fieldTest} AND is_active='1' LIMIT 1" ;	
 		return $db->get_var($searchSQL);			
 	}
 
@@ -1131,15 +1110,15 @@ class CreateLayout
 	 * @param	string	$widget	.Input widget
 	 * @return	string Output widget.
 	 *
-     * @TODO: replace widget with the markup
-     */
-      
+	 * @TODO: replace widget with the markup
+	 */
+	  
 	private function inline_widgets($widget){ 
-		$matches="";
-		if ( preg_match_all( '/\(\#\(widget\:(.*)\)\#\)/Us',  $widget, $matches) ){
+		$matches = "";
+		if (preg_match_all('/\(\#\(widget\:(.*)\)\#\)/Us', $widget, $matches)){
 			foreach ($matches[1] as $widget_id) {
 				$widget_id= $this->get_widget_id($widget_id);	
-				$this->createWidget( array($widget_id) );
+				$this->createWidget(array($widget_id) );
 			}
 			$widget = preg_replace('/\(\#\(widget\:(.*)\)\#\)/Us', '', $widget);
 		}
@@ -1155,25 +1134,24 @@ class CreateLayout
 	 * @todo fix the spelling of inherent to inherit and keep backwards compat
 	 */
 	 
-	private function inherent_widgets($widget)
-	{
+	private function inherent_widgets($widget) {
 		global $db;
 
 		// Fix a typo that was in the first version inherit was called inherent.
 		$widget = str_replace("(#(inherit", "(#(inherent", $widget);
 
-		if ( preg_match_all( '/\(\#\(inherent\:(.*)\)\#\)/Us', $widget,$matches) ) {
+		if (preg_match_all('/\(\#\(inherent\:(.*)\)\#\)/Us', $widget, $matches)) {
 		
 			foreach ($matches['1'] as $i=>$widget_info) {
-				$widget_para   = explode("|", $widget_info);
-				$widget_id     = $this->get_widget_id($widget_para[0]);
-				$normal_select = ( isset($widget_para[1]) ? $widget_para[1] :"");
+				$widget_para = explode("|", $widget_info);
+				$widget_id  = $this->get_widget_id($widget_para[0]);
+				$normal_select = ( isset($widget_para[1]) ? $widget_para[1] :"" );
 														
 				$widget_data = $db->get_row(
 					"SELECT * FROM aiki_widgets WHERE id='{$widget_id}' LIMIT 1");
-				$widget_html = 	$this->createWidgetContent($widget_data, $normal_select);
+				$widget_html = $this->createWidgetContent($widget_data, $normal_select);
 
-                // if the same widget appears two times..it will be replaced.
+				// if the same widget appears two times..it will be replaced.
 				$widget = str_replace($matches[0][$i], $widget_html, $widget);
 			}
 		}
@@ -1181,43 +1159,43 @@ class CreateLayout
 	} // end of inherent_widgets function
 
 
-    /*
-     * Counts number of records of a query.
-     * 
-     * Is used in pagination. Try to make a 'rapid' converting
-     * a SELECT .... FROM in a SELECT count(*) FROM..
-     * 
-     * @PARAM  string $sql Query.
-     * @RETURN mixed  number of records, or false if is not select.
-     */
+	/*
+	 * Counts number of records of a query.
+	 * 
+	 * Is used in pagination. Try to make a 'rapid' converting
+	 * a SELECT .... FROM in a SELECT count(*) FROM..
+	 * 
+	 * @PARAM  string $sql Query.
+	 * @RETURN mixed  number of records, or false if is not select.
+	 */
 
-	private function records_num($sql){
+	private function records_num($sql) {
 		global $db;
 		
-		if ( !preg_match('/^select(.*) from /Usi', $sql, $select) ){
+		if (!preg_match('/^select(.*) from /Usi', $sql, $select)){
 			return false;
 		}
 						   
-		if ( stripos($sql," GROUP BY ") ||  stripos($sql," LIMIT" )) {
+		if (stripos($sql, " GROUP BY ") || stripos($sql, " LIMIT")) {
 			// with GROUP or LIMIT clausule must do a query 
 			$db->get_results($sql);
-			$records_num= $db->num_rows;            
+			$records_num= $db->num_rows;			
 		} else {
 			// try made a substituion of all select field with count(*)
 			
 			// Support DISTINCT selection
-			if ( preg_match('/^select DISTINCT(.*) from/Usi', $sql, $distinct) ){
+			if (preg_match('/^select DISTINCT(.*) from/Usi', $sql, $distinct)){
 				$mysql_count = ' count(DISTINCT({$distinc[1]})) ';
-			}else{  
+			} else {  
 				$mysql_count = ' count(*) ';
 			}
-			$new_sql = preg_replace (
+			$new_sql = preg_replace(
 				"/^select.* from /Usi",
 				"SELECT $mysql_count FROM ",
 				$sql);
 			
 			// if there is a unique 'ORDER BY', try remove it.	
-			if ( substr_count($new_sql,"ORDER BY")==1){	
+			if ( substr_count($new_sql, "ORDER BY") == 1 ){	
 				$new_sql = preg_replace(
 					'/ORDER BY(.*) (DESC|ASC)$/Usi', '', 
 					$new_sql);
@@ -1228,3 +1206,5 @@ class CreateLayout
 	}	
 
 } // end of CreateLayout Class
+
+?>

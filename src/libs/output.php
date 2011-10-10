@@ -17,7 +17,9 @@
  * @filesource
  */
 
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if(!defined('IN_AIKI')) {
+	die('No direct script access allowed');
+}
 
 
 /**
@@ -28,8 +30,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  *
  * @todo rename class to Output
  */
-class output
-{
+class output {
 
 	/**
 	 * storage tank for html output
@@ -74,17 +75,16 @@ class output
 	 *
 	 * @todo title has a hardcoded default here, need to remove
 	 */
-	public function title_and_metas()
-	{
+	public function title_and_metas() {
 		global $aiki;
-        $title = '<title>' . ( $this->title ? "$this->title - " : "" ) .
-				$aiki->site->site_name() . '</title>';
-        $aiki->plugins->do_action("output_title", &$title);                        
+		$title = '<title>' . ( $this->title ? "$this->title - " : "" ) .
+			$aiki->site->site_name() . '</title>';
+		$aiki->plugins->do_action("output_title", &$title);						
 		
-        $header = "\n".        
-			'<meta charset="__encoding__"/>'. "\n" .			
-			'<meta name="generator" content="Aikiframework '.
-			AIKI_VERSION.'.'.AIKI_REVISION.'" />';
+		$header = "\n".
+			'<meta charset="__encoding__"/>' . "\n" .
+			'<meta name="generator" content="Aikiframework ' .
+			AIKI_VERSION . '.' . AIKI_REVISION . '" />';
 		$aiki->plugins->do_action("output_meta", &$header);
 
 		return $header.$title;
@@ -99,37 +99,33 @@ class output
 	 * @todo we really should have a default template for pages somewhere and
 	 * NOT have default doctype written directly inside of aiki!
 	 */
-	public function doctype()
-	{
+	public function doctype() {
 		global $aiki;
 
 		/**
 		 * don't change the direction if the page is the admin panel on /admin
 		 * @todo instance of where admin and rest of code needs separation
 		 */
-		if (isset($_GET["pretty"]) && $_GET["pretty"] == 'admin')
-		{
+		if ( isset($_GET["pretty"]) && $_GET["pretty"] == 'admin' ) {
 			$aiki->languages->language = "en";
 			$aiki->languages->dir = "ltr";
 		}
 		/**
 		 * @todo this really needs to be abstracted? why just output xthml???
 		 */
-		return
-'<!doctype html>
-<html lang="'.$aiki->languages->language.'" dir="'.$aiki->languages->dir.'">
-';
+		return '<!doctype html>' .
+			'<html lang="'.$aiki->languages->language.'" dir="'.$aiki->languages->dir.'">' . "\n";
 	} // end of doctype function
 
 
 	/**
 	 * This returns header content for output.
 	 *
-	 * @global	  aiki			$aiki   main obj manipulating configs + urls
-	 * @global	  array		   $db	 global db instance
-	 * @global	  CreateLayout	$layout global layout object
-	 * @global	  bool			$nogui  global yes or no about gui
-	 * @global	  array		   $config global config options instance
+	 * @global      aiki            $aiki   main obj manipulating configs + urls
+	 * @global      array           $db     global db instance
+	 * @global      CreateLayout	$layout global layout object
+	 * @global      bool            $nogui  global yes or no about gui
+	 * @global      array           $config global config options instance
 	 * @return string
 	 *
 	 * @see bootstrap.php
@@ -137,40 +133,39 @@ class output
 	 * @todo the html hardcoded in here needs abstraction and shouldn't make
 	 * assumptions about setup
 	 */
-	public function headers()
-	{
+	public function headers() {
 		global $aiki, $db, $layout, $nogui, $config;
 
 		$header = $this->doctype();
 		$header .= '<head>';
 		$header .= $this->title_and_metas();
 
-		if (!$nogui)
-		{
-			if ( count($layout->widgets_css) )  {
+		if (!$nogui) {
+			if (count($layout->widgets_css)) {
 
 				// handle language settings
-				if(isset($_GET['language']))
+				if(isset($_GET['language'])) {
 					$language=$_GET['language'];
-				else
+				} else {
 					$language = $config['default_language'];
-
-				$view=$aiki->site->view();// comodity
+				}
+				$view = $aiki->site->view();// comodity
 				$header .= sprintf(
-					'<link rel="stylesheet" type="text/css" '.
+					'<link rel="stylesheet" type="text/css" ' .
 					' href="%sstyle.php?site=%s&amp;%swidgets=%s&amp;language=%s" />',
 					$config['url'],
 					$aiki->site->get_site(),
-					( $view ?  "view={$view}&amp;" : ""),
+					( $view ? "view={$view}&amp;" : ""),
 					implode("_", $layout->widgets_css),
 					$language);
 			}
 			// set favicon, but doesn't really check to see if it exists
-			$header .= '<link rel="icon" href="'.$config['url'].
-					   'assets/images/favicon.ico" type="image/x-icon" />';
+			$header .=
+				'<link rel="icon" href="' . $config['url'] .
+				'assets/images/favicon.ico" type="image/x-icon" />';
 		}
 
-		if (isset ($layout->head_output)){
+		if (isset($layout->head_output)){
 			$header .= $layout->head_output;
 		}
 
@@ -191,8 +186,8 @@ class output
 	 * @return	string
 	 *
 	 */
-	public function footer()
-	{   global $aiki;
+	public function footer() {
+		global $aiki;
 		$footer = "\n</body>";
 		$aiki->plugins->do_action("output_body_end", &$footer);
 		$html= "</html>";
@@ -206,38 +201,36 @@ class output
 	 *
 	 * This is useful for debugging a widget.
 	 *
-	 * @param	array	$widget		a widget with its data
-	 * @param	integer	$columns	number of columns
-	 * @return	string
+	 * @param     array    $widget      a widget with its data
+	 * @param     integer  $columns     number of columns
+	 * @return    string
 	 *
 	 * @todo remove hardcoded html
 	 */
-	public function displayInTable($widget, $columns)
-	{
+	public function displayInTable($widget, $columns) {
 		$widgetTabled = "<table width='100%'>";
 		/**
 		 * @todo this looks a bit buggy
 		 */
 		$widgetExploded = explode("<!-- The End of a Record -->", $widget);
-		if ( !$columns )
+		if (!$columns) {
 			$columns = 1; // to avoid $i % 0 error.
-
+		}
 		$i = 0;
-		foreach ($widgetExploded as $cell)
-		{
-			if ($i % $columns == 0)
+		foreach ($widgetExploded as $cell) {
+			if ( $i % $columns == 0 ) {
 				$widgetTabled .= "<tr>";
+			}
 			$widgetTabled .= "<td>$cell</td>";
 			$i++;
-			if ($i % $columns == 0)
+			if ($i % $columns == 0) {
 				$widgetTabled .= "</tr>\n";	//add a \n line.
+			}
 		}
 
 		// add remaining columns and close table
-		if ( $i % $columns )
-		{
-			for ( ;$i % $columns; $i++)
-			{
+		if ( $i % $columns ) {
+			for ( ;$i % $columns; $i++) {
 				$widgetTabled.= "<td></td>";
 			}
 			$widgetTabled.= "</tr>\n";
@@ -258,47 +251,42 @@ class output
 	 * In other case, return the name (including path) of cache file that must
 	 * be created and if exist, delete the obsolete cache file.
 	 *
-	 * @global	array	$config			global configuration options
-	 * @global	membership	$membership	global membership instance
-	 * @return	mixed
+	 * @global    array         $config       global configuration options
+	 * @global    membership    $membership   global membership instance
+	 * @return    mixed
 	 *
 	 * @todo this function abuses php and has too many functions, simplify
 	 * and break this function apart
 	 * @todo this function has side effect to output HTML
 	 * @todo think good to rename this function too
 	 */
-	public function cache_file( $type="html" )
-	{
+	public function cache_file($type="html") {
 		global $config, $membership;
 
-		if ( isset($config[$type.'_cache'])
-			  && $config[$type.'_cache']
-			  && is_dir( $config[$type.'_cache'] )
-			  && !$membership->permissions ){
+		if (isset($config[$type . '_cache'])
+			  && $config[$type . '_cache']
+			  && is_dir($config[$type . '_cache'])
+			  && !$membership->permissions) {
 
 			$start = microtime(true); // require PHP5.
 
 			$cached_file =
-				$config[$type.'_cache'].'/'.md5($_SERVER['PHP_SELF']."?".
+				$config[$type . '_cache']. '/' . md5($_SERVER['PHP_SELF'] . "?".
 				$_SERVER['QUERY_STRING']);
 
 			$cached_file = str_replace("//", "/", $cached_file);
 
-			$timeout = ( isset($config[$type.'_cache_timeout'])?
-					$config[$type.'_cache_timeout']:
-					5000 ); // in MS.
+			$timeout = (isset($config[$type . '_cache_timeout'])?
+					$config[$type . '_cache_timeout']:
+					5000); // in MS.
 
-			if (file_exists($cached_file) )
-			{
+			if (file_exists($cached_file)) {
 				// Only use this cache file if less than 'cache_timeout' (MS)
-				if ( (time() - filemtime($cached_file)) > $timeout)
-				{
+				if ((time() - filemtime($cached_file)) > $timeout) {
 					// remove cache file, because aiki means on next attempt, creates
 					// new cache
 					unlink($cached_file);
-				}
-				else
-				{
+				} else {
 
 					readfile($cached_file);
 
@@ -307,7 +295,7 @@ class output
 					 * if in debug mode
 					 */
 					$time= sprintf("%4.f seconds", microtime(true)-$start);
-					switch ($type){
+					switch ($type) {
 						case "html":
 							$message= "\n<!--Served From HTML Cache in $time";
 							break;
@@ -317,7 +305,7 @@ class output
 						default:
 							$message="";
 					}
-					die( $message );
+					die($message);
 				}
 			}
 			return $cached_file;
@@ -334,7 +322,7 @@ class output
 	 * @return $string Cleaned input
 	 */
 
-	function compress( &$input){
+	function compress(&$input) {
 		$output = preg_replace("/\<\!\-\-(.*)\-\-\>/U", "", $input);
 
 		$search = array(
@@ -357,3 +345,5 @@ class output
 
 
 } // end of Output class
+
+?>

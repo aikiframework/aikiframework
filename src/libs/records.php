@@ -17,128 +17,129 @@
  * @filesource
  */
 
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if (!defined('IN_AIKI')) {
+	die('No direct script access allowed');
+}
 
 
 /**
  * BriefDescription
  *
- * @category    Aiki
- * @package     Library
+ * @category	Aiki
+ * @package	 Library
  * 
  * @todo rename class Records
  * @todo this class and its functions need serious refactoring 
  * @todo there is massive code that is used in multiple places that can
  * be extracted and abstracted
  */
-class records
-{
-    /**
-     * @var		bool		???
+class records {
+	/**
+	 * @var		bool		???
 	 * @todo	needs to be traced, no idea what it does
-     */
+	 */
 	public $stop;
 
-    /**
-     * @var		string		???
-     */
+	/**
+	 * @var		string		???
+	 */
 	public $file_name;
 
-    /**
-     * @var     integer		???	
-     */
+	/**
+	 * @var	 integer		???	
+	 */
 	public $file_size;
 
-    /**
-     * @var     string		???
-     */
+	/**
+	 * @var	 string		???
+	 */
 	public $checksum_sha1;
 
-    /**
-     * @var     string		???
-     */
+	/**
+	 * @var	 string		???
+	 */
 	public $checksum_md5;
 
-    /**
-     * @var     integer		???
-     */
+	/**
+	 * @var	 integer		???
+	 */
 	public $width;
 
-    /**
-     * @var		integer		???
-     */
+	/**
+	 * @var		integer		???
+	 */
 	public $height;
 
-    /**
-     * @var     string		???
-     */
+	/**
+	 * @var	 string		???
+	 */
 	public $rand;
 
-    /**
-     * @var     string		???
-     */
+	/**
+	 * @var	 string		???
+	 */
 	public $mime_type;
 
-    /**
-     * @var		bool
-     */
+	/**
+	 * @var		bool
+	 */
 	public $form_insert_success;
 
-    /**
-     * @var		string		defines allowed_extensions if not in the configs
+	/**
+	 * @var		string		defines allowed_extensions if not in the configs
 	 * @access	private
 	 *
 	 * @todo looks like aiki harcodes allowed extensions. This is really a 
 	 * define and should be moved out of here.
-     */
+	 */
 	private $allowed_extensions = "jpg|gif|png|jpeg|svg|pdf"; 
 
 
-    /**
-     * Does a record exist.
+	/**
+	 * Does a record exist.
 	 *
 	 * @param	string	$value		a generic value to check the db for
 	 * @param	string	$tablename	name of a table to check value against
 	 * @param	sting	$field		fielname as a type of key
 	 * @global	array	$db			global db instance
 	 * @return	bool
-     */
-	public function record_exists($value, $tablename, $field)
-	{
+	 */
+	public function record_exists($value, $tablename, $field) {
 		global $db;
 
 		$get_value = $db->get_var("SELECT $field from " . 
-								  "$tablename where $field='$value'");
+					"$tablename where $field='$value'");
 
-		if ($get_value and $get_value == $value)
+		if ( $get_value and $get_value == $value ) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
 
-    /**
-     * Checks if a file exists by its sha1 hash
+	/**
+	 * Checks if a file exists by its sha1 hash
 	 * 
 	 * @param	string	$tablename	tablename to check if file exists in
 	 * @param	string	$sha1		sha1 of a file to test against stored value
 	 * @global	array	$db			global db instance
 	 * @return	bool
-     */
-	public function file_exists_sha1($tablename, $sha1)
-	{
+	 */
+	public function file_exists_sha1($tablename, $sha1) {
 		global $db;
 
 		$get_value = $db->get_var("SELECT filename from " . 
-								  "$tablename where sha1='$sha1'");
-		if ($get_value)
+					 "$tablename where sha1='$sha1'");
+		if ($get_value) {
 			return $get_value;
-		else
+		} else {
 			return false;
+		}
 	}
 
-    /**
-     *  Locks a document.
+	/**
+	 *  Locks a document.
 	 * 
 	 * @param	string	$pkey		name of a db table's field
 	 * @param	mixed	$pkey_value	
@@ -147,19 +148,16 @@ class records
 	 *
 	 * @todo rip out the output html and put the new message class in itsplace!
 	 * and test it well!
-     */
-	public function lockdocument($pkey, $pkey_value, $tablename)
-	{
+	 */
+	public function lockdocument($pkey, $pkey_value, $tablename) {
 		global $db, $membership;
 
-		if ($pkey and $tablename)
-		{
+		if ( $pkey and $tablename ) {
 
 			$not_editable = $db->get_var("select is_editable from " . 
 				"$tablename where $pkey='$pkey_value' limit 1");
 
-			if (!$not_editable)
-			{
+			if (!$not_editable) {
 				$currentdatetime = time();
 
 				/** 
@@ -177,32 +175,33 @@ class records
 				$lockdocument = $db->query("update $tablename " . 
 				"set is_editable = '$is_editable' where $pkey='$pkey_value'");
 			} else {
-				return "<br />".$not_editable."<br /><br />";
+				return "<br />" . $not_editable . "<br /><br />";
 			}
 		}
 	} // end of function
 
 
-    /**
-     * Unlocks a document, which is a database setting.
+	/**
+	 * Unlocks a document, which is a database setting.
 	 *
 	 * @param	string		$pkey		database table field name
 	 * @param	mixed		$pkey_value	various values to search against
 	 * @param	string		$tablename	name of table to look in
 	 * @global	array		$db			global db instance
 	 * @global	membership	$membership	global membership instance
-     */
+	 */
 	public function unlockdocument($pkey, $pkey_value, $tablename)
 	{
 		global $db, $membership;
-		if ($pkey and $tablename)
+		if ( $pkey and $tablename ) {
 			$lockdocument = $db->query("update $tablename " . 
 				"set is_editable = null where $pkey='$pkey_value'");
+		}
 	}
 
 
-    /**
-     * Inserts content from a form to the database.
+	/**
+	 * Inserts content from a form to the database.
 	 *
 	 * @param	array		$post
 	 * @param	integer		$form_id
@@ -213,35 +212,32 @@ class records
 	 * @global	array		$config			global config options
 	 * @global	string		$AIKI_ROOT_DIR	path to system folder
 	 * @return	string
-     */
-	public function insert_from_form_to_db($post, $form_id, $form_posted_id)
-	{
+	 */
+	public function insert_from_form_to_db($post, $form_id, $form_posted_id) {
 		global $db, $aiki, $membership, $config, $AIKI_ROOT_DIR;
 
-		if (!$form_posted_id)
+		if (!$form_posted_id) {
 			return '';
-
-		if (!$post)
-		{
+		}
+		if (!$post) {
 			return '';
 		} else {
 			$post = unserialize($post);
 
-			if (empty($post))
-			{
+			if (empty($post)) {
 				return '';
 			} else {
-				foreach ($post as $post_value)
-				{
-					if ($post_value and $post_value != '')
+				foreach ( $post as $post_value ) {
+					if ( $post_value and $post_value != '' ) {
 						$found_a_value = true;
+					}
 				}
 			}
 		}
 
-		if (!isset($found_a_value))
+		if (!isset($found_a_value)) {
 			return '';
-
+		}
 		$output_result = "";
 		$insert_values = "";
 		$tableFields = "";
@@ -255,40 +251,39 @@ class records
 
 		$arraykeys = array_keys($form_array);
 
-		if (in_array("tablename", $arraykeys))
+		if (in_array("tablename", $arraykeys)) {
 			$tablename = $form_array["tablename"];
-
-		if (in_array("submit", $arraykeys))
+		}
+		if (in_array("submit", $arraykeys)) {
 			$submit = $form_array["submit"];
-
-		if (in_array("permission", $arraykeys))
+		}
+		if (in_array("permission", $arraykeys)) {
 			$permission = $form_array["permission"];
-		else
+		} else {
 			$permission = '';
-
-		if (in_array("send_email", $arraykeys))
+		}
+		if (in_array("send_email", $arraykeys)) {
 			$send_email = $form_array["send_email"];
-
-		if (in_array("events", $arraykeys))
+		}
+		if (in_array("events", $arraykeys)) {
 			$events = $form_array["events"];
-
-		if (in_array("pkey", $arraykeys))
+		}
+		if (in_array("pkey", $arraykeys)) {
 			$pkey = $form_array["pkey"];
-		else
+		} else {
 			$pkey = 'id';
-
-		if (isset($_POST['unique_filename']))
+		}
+		if (isset($_POST['unique_filename'])) {
 			$unique_filename = $_REQUEST['unique_filename'];
-
-		if (isset($_POST['multifiles_plupload']))
+		}
+		if (isset($_POST['multifiles_plupload'])) {
 			$multifiles_plupload = $_POST['multifiles_plupload'];
-
+		}
 		$insertQuery = "insert into $tablename ";
 		$i = 0;
 		$insertCount = count($form_array);
 
-		foreach($form_array as $field)
-		{
+		foreach( $form_array as $field ) {
 
 			$field = $aiki->url->apply_url_on_query($field);
 			$field = $aiki->sql_markup->sql($field);
@@ -297,8 +292,7 @@ class records
 
 			$get_permission_and_man_info = explode("|", $intwalker[0]);
 
-			if (isset($get_permission_and_man_info[1]))
-			{
+			if (isset($get_permission_and_man_info[1])) {
 				$get_group_level = $db->get_var ("SELECT group_level from ".
 					"aiki_users_groups where group_permissions='".
 					"$get_permission_and_man_info[1]'");
@@ -307,25 +301,21 @@ class records
 			$intwalker[0] = $get_permission_and_man_info[0];
 
 			// Security Check to remove unauthorized POST data
-			if (isset($get_group_level))
-			{
-				if (isset($get_permission_and_man_info['1']) and 
+			if (isset($get_group_level)) {
+				if ( isset($get_permission_and_man_info['1']) and 
 					$get_permission_and_man_info[1]==$membership->permissions or
-					$membership->group_level < $get_group_level)
-				{
+					$membership->group_level < $get_group_level ) {
 					/**
 					 * @todo uh, there is nothing here, can this be reversed?
 					 */
-				} elseif (isset($get_permission_and_man_info[1]))
-				{
+				} elseif (isset($get_permission_and_man_info[1])) {
 					$_POST[$intwalker[0]] = '';
 				}
 			}
 
-			if (isset($get_permission_and_man_info[2]) and 
+			if ( isset($get_permission_and_man_info[2]) and 
 				$get_permission_and_man_info[2] == "true" and 
-				!$_POST[$intwalker[0]])
-			{
+				!$_POST[$intwalker[0]] ) {
 				/**
 				 * @todo trace this down and integrate bare html into messages
 				 */
@@ -334,20 +324,17 @@ class records
 				$this->stop = true;
 			}
 
-			if ($insertCount == $i+1)
-				$insert_values .= "'".$intwalker[0]."'";
-			else
-				$insert_values .= "'".$intwalker[0]."', ";
-
-			if (isset($intwalker['2']))
-			{
-				switch ($intwalker['2'])
-				{
+			if ( $insertCount == $i+1 ) {
+				$insert_values .= "'" . $intwalker[0] . "'";
+			} else {
+				$insert_values .= "'" . $intwalker[0] . "', ";
+			}
+			if (isset($intwalker['2'])) {
+				switch ($intwalker['2']) {
 					case "full_path":
 						//get full path dir value from post
 						$full_path = $_POST[$intwalker[0]];
-						if (!$full_path and isset($config["upload_path"]))
-						{
+						if (!$full_path and isset($config["upload_path"])) {
 							$full_path = 
 								$aiki->processVars($config["upload_path"]);
 							$_POST[$intwalker[0]] = $full_path;
@@ -358,17 +345,14 @@ class records
 						/**
 						 * @todo need to handle bar output
 						 */
-						if (!$_POST[$intwalker[0]])
-						{
+						if (!$_POST[$intwalker[0]]) {
 							$output_result .= "__please_enter_a_password__";
 							$this->stop = true;
 						}
 
-						if ($intwalker[3] and $_POST[$intwalker[0]])
-						{
+						if ($intwalker[3] and $_POST[$intwalker[0]]) {
 							$num_levels = explode("|", $intwalker[3]);
-							foreach ($num_levels as $crypt_level)
-							{
+							foreach ( $num_levels as $crypt_level ) {
 								$_POST[$intwalker[0]] = 
 									md5(stripcslashes($_POST[$intwalker[0]]));
 							}
@@ -401,8 +385,7 @@ class records
 						 * @todo need to rip out this string
 						 */
 						if (!$aiki->text->is_valid("email",
-								$_POST[$intwalker[0]]))
-						{
+								$_POST[$intwalker[0]])) {
 							$output_result .= 
 								"__the_email_address_is_not_valid__";
 							$this->stop = true;
@@ -418,8 +401,7 @@ class records
 						 * @todo ripout this string
 						 */
 						if ($this->record_exists($_POST[$intwalker[0]], 
-								$tablename, $intwalker[0]))
-						{
+								$tablename, $intwalker[0])) {
 							$output_result .= 
 								"__this_value_is_already_in_use__";
 							$this->stop = true;
@@ -433,65 +415,60 @@ class records
 						break;
 
 					case "mime_type":
-						if (isset($this->mime_type))
+						if (isset($this->mime_type)) {
 							$_POST[$intwalker[0]] = $this->mime_type;
-
+						}
 						break;
 
 					case "upload_file_name":
-						if (isset($this->file_name))
+						if (isset($this->file_name)) {
 							$_POST[$intwalker[0]] = $this->file_name;
-
+						}
 						break;
 
 					case "upload_file_size":
-						if (isset($this->file_size))
+						if (isset($this->file_size)) {
 							$_POST[$intwalker[0]] = $this->file_size;
-
+						}
 						break;
 
 					case "width":
-						if (isset($this->width))
+						if (isset($this->width)) {
 							$_POST[$intwalker[0]] = $this->width;
-
+						}
 						break;
 
 					case "height":
-						if (isset($this->hight))
+						if (isset($this->hight)) {
 							$_POST[$intwalker[0]] = $this->hight;
-
+						}
 						break;
 
 					case "checksum_sha1":
-						if (isset($this->checksum_sha1))
+						if (isset($this->checksum_sha1)) {
 							$_POST[$intwalker[0]] = $this->checksum_sha1;
-
+						}
 						break;
 
 					case "checksum_md5":
-						if (isset($this->checksum_md5))
+						if (isset($this->checksum_md5)) {
 							$_POST[$intwalker[0]] = $this->checksum_md5;
-
+						}
 						break;
 
 					case "plupload":
 
 						$plupload_files = array();
 
-						if (isset($_POST['multifiles_plupload']) and 
+						if ( isset($_POST['multifiles_plupload']) and 
 							isset($_POST[$intwalker[0].'_count']) and 
-							$_POST[$intwalker[0].'_count'] > 0)
-						{
+							$_POST[$intwalker[0].'_count'] > 0 ) {
 							$total_uploaded_files = 
 								$_POST[$intwalker[0].'_count'];
 
-							for ($i=0; $i<$_POST[$intwalker[0].'_count']; $i++)
-							{
-								if (isset(
-									$_POST[$intwalker[0]."_".$i."_status"]) and
-									$_POST[$intwalker[0]."_".$i."_status"] == 
-									"done")
-								{
+							for ( $i = 0; $i < $_POST[$intwalker[0] . '_count']; $i++ ) {
+								if (isset($_POST[$intwalker[0] . "_" . $i . "_status"]) and
+									$_POST[$intwalker[0] . "_" . $i."_status"] ==  "done" ) {
 									$plupload_files[$i] = 
 										$_POST[$intwalker[0]."_".$i."_name"];
 								}
@@ -503,17 +480,16 @@ class records
 			} // end of foreach loop
 
 
-			if (!isset($full_path) and isset($config["upload_path"]))
+			if ( !isset($full_path) and isset($config["upload_path"]) ) {
 				$full_path = $aiki->processVars($config["upload_path"]);
-			else
+			} else {
 				$full_path = $aiki->processVars($full_path);
-			
+			}
 			// need a unique filename for processing
-			if (isset($unique_filename) and 
+			if ( isset($unique_filename) and 
 				isset($intwalker[2]) and 
 				$unique_filename == $intwalker[2] and 
-				$full_path)
-			{
+				$full_path ) {
 				$uploadexploded = explode(":", $intwalker[0]);
 
 				$filename = $_FILES[$uploadexploded[0]];
@@ -524,37 +500,34 @@ class records
 
 				$this->file_name = $name;
 
-				$path = $config['top_folder']."/".$full_path."";
+				$path = $config['top_folder'] . "/" . $full_path . "";
 
 				$tmp_filename = $filename['tmp_name'];
 
 				$this->file_size = filesize($tmp_filename);
 
-				if (function_exists("mime_content_type"))
+				if (function_exists("mime_content_type")) {
 					$this->mime_type = @mime_content_type($tmp_filename);
-
+				}
 				$this->checksum_sha1 = @sha1_file($tmp_filename);
 				$this->checksum_md5 = @md5_file($tmp_filename);
 				$size = @getimagesize($tmp_filename);
-				if ($size)
-				{
+				if ($size) {
 					$this->width = $size["0"];
 					$this->hight = $size["1"];
 				}
 
-				if ($tmp_filename)
-				{
+				if ($tmp_filename) {
 					$tmp_filesize = filesize($tmp_filename);
-					if ($tmp_filesize == 0)
+					if ( $tmp_filesize == 0 ) {
 						return "__error_while_uploading__";
-
-					if (!isset($config['allowed_extensions']))
+					}
+					if (!isset($config['allowed_extensions'])) {
 						$config['allowed_extensions'] = 
 							$this->allowed_extensions;
-
+					}
 					if (!preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".
-						$config['allowed_extensions'].")$/i",$name))
-					{
+						$config['allowed_extensions'].")$/i",$name)) {
 						return "__not_valid_filename__";
 					}
 
@@ -562,8 +535,7 @@ class records
 					/**
 					 * @todo there must be a better way to loop to find var
 					 */
-					foreach ($filename_array as $type_value)
-					{
+					foreach ( $filename_array as $type_value ) {
 						//just an empty loop to get the latest match
 					}
 					$type = $type_value;
@@ -573,13 +545,12 @@ class records
 					/**
 					 * @todo rip out this bare string
 					 */
-					if ($exists_filename)
+					if ($exists_filename) {
 						return "__file_is_already_uploaded__ $exists_filename";
-
+					}
 					//check if filename already exists
-					if (!file_exists($path.$name) and 
-						!$this->record_exists($name, $tablename,$intwalker[0]))
-					{
+					if ( !file_exists($path.$name) and 
+						!$this->record_exists($name, $tablename,$intwalker[0]) ) {
 						$newfile = $path.$name;
 					} else {
 						$current_time = time();
@@ -587,21 +558,18 @@ class records
 						$newfile = $path.$name;
 					}
 
-					if (!file_exists($newfile))
-					{
-						@$result = move_uploaded_file($tmp_filename,$newfile);
-						if (!$result) 
-						{
-							if (@mkdir($path,0775,true))
-							{
+					if (!file_exists($newfile)) {
+						@$result = move_uploaded_file($tmp_filename, $newfile);
+						if (!$result)  {
+							if (@mkdir($path, 0775, true)) {
 								/**
 								 * @todo ripout strings~
 								 */
 								$output_result .= 
 									"__new_directory_created__ $path";
 								@$result = move_uploaded_file($tmp_filename,
-															  $newfile);
-							}else{
+											  $newfile);
+							} else {
 								return "__folder_not_found__";
 							}
 						}
@@ -614,10 +582,10 @@ class records
 						/**
 						 * @todo ripout this string
 						 */
-						$output_result .=( "__sorry__ __the_file__ '" . 
-										   "$newfile' __already_exists__");
+						$output_result .= ("__sorry__ __the_file__ '" . 
+									"$newfile' __already_exists__");
 					}
-				}else{
+				} else {
 					/**
 					 * @todo ripout this string
 					 */
@@ -628,23 +596,20 @@ class records
 
 			} // end of long if to handle unique filename
 
-			if (!isset($send_email))
+			if (!isset($send_email)) {
 				$send_email = '';
-
-			if (!isset($submit))
+			}
+			if (!isset($submit)) {
 				$submit = '';
-
-			if (!preg_match("/\-\>/Us", $intwalker[0]))
-			{
-				if ($field != $tablename and 
+			}
+			if (!preg_match("/\-\>/Us", $intwalker[0])) {
+				if ( $field != $tablename and 
 					$field != $permission and 
 					$field != $send_email and 
 					$field != $submit and 
 					isset($_POST[$intwalker[0]]) and 
-					$_POST[$intwalker[0]])
-				{
-					if ($insertCount == $i+1)
-					{
+					$_POST[$intwalker[0]] ) {
+					if ( $insertCount == $i+1 ) {
 						$tableFields .=$intwalker[0];
 						$preinsertQuery .= "'".$_POST[$intwalker[0]]."'";
 					} else {
@@ -665,18 +630,15 @@ class records
 		 * verify captcha
 		 * @todo rip out this captcha stuff!
 		 */
-		if (isset($form_array["captcha"]))
-		{
-			switch ($form_array["captcha"])
-			{
+		if (isset($form_array["captcha"])) {
+			switch ($form_array["captcha"]) {
 				case "default":
-					if ($_POST['default_captcha'])
+					if ($_POST['default_captcha']) {
 						$captcha_input = md5($_POST['default_captcha']);
-
-					if (!isset($captcha_input) or 
+					}
+					if ( !isset($captcha_input) or 
 						!$captcha_input or 
-						$captcha_input != $_SESSION['captcha_key'])
-					{
+						$captcha_input != $_SESSION['captcha_key'] ) {
 						/** 
 						 * @todo ripout bare strings."
 						 */
@@ -690,8 +652,7 @@ class records
 		/**
 		 * @todo need to track down what this $stop variable does
 		 */
-		if (!$this->stop)
-		{
+		if (!$this->stop) {
 			$insertQuery .= "($tableFields) values ($preinsertQuery)";
 			$insertQuery = str_replace(', )', ')', $insertQuery);
 			$insertQuery = str_replace("'NOW()'", 'NOW()', $insertQuery);
@@ -701,15 +662,13 @@ class records
 			//die("$insertQuery");
 
 			//handle multi files insert query
-			if (isset($_POST['multifiles_plupload']) and 
+			if ( isset($_POST['multifiles_plupload']) and 
 				isset($_POST[$intwalker[0].'_count']) and 
-				$_POST[$intwalker[0].'_count'] > 0)
-			{
+				$_POST[$intwalker[0].'_count'] > 0 ) {
 				$num_of_uploaded_files = 0;
 				$files_names_output = "";
 				$not_uploaded_output = "";
-				for ($i=0; $i<$_POST[$intwalker[0].'_count']; $i++)
-				{
+				for ( $i=0; $i<$_POST[$intwalker[0].'_count']; $i++ ) {
 					$plupload_files[$i] = str_replace(" ", "_", 
 						$plupload_files[$i]);
 
@@ -723,16 +682,13 @@ class records
 					$multi_files_query = str_replace('plupload_filename', 
 						$plupload_filename, $multi_files_query);
 
-					if (isset($_POST[$intwalker[0]."_".$i."_status"]) and 
-						$_POST[$intwalker[0]."_".$i."_status"] == "done")
-					{
+					if ( isset($_POST[$intwalker[0]."_".$i."_status"]) and 
+						$_POST[$intwalker[0]."_".$i."_status"] == "done" ) {
 						if (preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".
 							$config['allowed_extensions'].")$/i",
-							$plupload_files[$i]))
-						{
+							$plupload_files[$i])) {
 							if (!$this->record_exists($plupload_files[$i], 
-								$tablename, $intwalker[0]))
-							{
+								$tablename, $intwalker[0])) {
 								$files_names_output .= 
 									"$plupload_files[$i] <br />";
 								$insertResult = $db->query($multi_files_query);
@@ -763,17 +719,14 @@ class records
 				$insertResult = $db->query($insertQuery);
 				$this_pkey =  mysql_insert_id();
 
-				if (isset($secondery_queries) and 
-					is_array($secondery_queries))
-				{
-					foreach($secondery_queries as $table => $secondery_query)
-					{
+				if ( isset($secondery_queries) and 
+					is_array($secondery_queries) ) {
+					foreach ( $secondery_queries as $table => $secondery_query ) {
 						$secondery_insert_query = "";
 						$secondery_insert_query .= "INSERT into $table (";
 
-						foreach ($secondery_query as 
-								 $field_name => $field_value)
-						{
+						foreach ( $secondery_query as 
+								 $field_name => $field_value ) {
 							$secondery_insert_query .= "$field_name, ";
 						}
 						$secondery_insert_query = 
@@ -781,18 +734,16 @@ class records
 
 						$secondery_insert_query .= ") values (";
 
-						foreach ($secondery_query as 
-								 $field_name => $field_value)
-						{
+						foreach ( $secondery_query as 
+								 $field_name => $field_value ) {
 							$field_value = str_replace("this_pkey", 
-													  $this_pkey, $field_value);
+										  $this_pkey, $field_value);
 							$field_value = $aiki->sql_markup->sql($field_value);
 
 							$field_value_var = 
 								$aiki->get_string_between($field_value, 
-														  '[', ']');
-							if ($field_value_var)
-							{
+											 '[', ']');
+							if ($field_value_var) {
 								$field_value = 
 									str_replace('['.$field_value_var.']', 
 									$_POST["$field_value_var"], $field_value);
@@ -814,17 +765,15 @@ class records
 				}
 			} // end of else statement
 
-			if (isset($insertResult))
-			{
+			if (isset($insertResult)) {
 				/**
 				 * @todo rip out hardcoded strings
 				 */
 				$output_result .= "__added_successfully__";
 				$this->form_insert_success = true;
 
-				if (isset($num_of_uploaded_files) and 
-					$num_of_uploaded_files)
-				{
+				if ( isset($num_of_uploaded_files) and 
+					$num_of_uploaded_files ) {
 					/**
 					 * @todo rip out hardcoded strings
 					 */
@@ -836,16 +785,15 @@ class records
 				/** 
 				 * @todo rip out hardcoded strings
 				 */
-				if (isset($not_uploaded_output) and $not_uploaded_output)
+				if (isset($not_uploaded_output) and $not_uploaded_output) {
 					$output_result .= 
 						"__not_uploaded_files__".$not_uploaded_output;
-
+				}
 				/**
 				 * @todo this should be a config option and a global way of
 				 * handlign email.
 				 */
-				if ($send_email)
-				{
+				if ($send_email) {
 					$send_email = explode("|", $send_email);
 
 					$get_email = 
@@ -861,11 +809,11 @@ class records
 
 					$message = $send_email[3];
 					$count = preg_match_all( '/\[(.*)\]/U', $message, $matches );
-					foreach ($matches[1] as $parsed)
-					{
-						if (isset($_POST[$parsed]))
+					foreach ( $matches[1] as $parsed ) {
+						if (isset($_POST[$parsed])) {
 							$message = str_replace("[$parsed]", 
-												   $_POST[$parsed], $message);
+									$_POST[$parsed], $message);
+						}
 					}
 
 					$from = $send_email[1];
@@ -884,8 +832,7 @@ class records
 				/**
 				 * @todo rip out hardcoded strings and html
 				 */
-				if (isset($filename))
-				{
+				if (isset($filename)) {
 					$output_result .= "__filename__";
 					$output_result .= "<p dir='ltr'>".$name."</p>";
 				}
@@ -897,14 +844,11 @@ class records
 						"__not_uploaded_files__".$not_uploaded_output;
 			}
 
-			if (isset($events))
-			{
+			if (isset($events)) {
 				$events_loop = explode("|", $events);
-				foreach ($events_loop as $event)
-				{
+				foreach ( $events_loop as $event ) {
 					preg_match_all( '/\[(.*)\]/U', $event, $matches );
-					foreach ($matches[1] as $parsed)
-					{
+					foreach ( $matches[1] as $parsed ) {
 						$event = str_replace("[$parsed]", 
 									$values_array["$parsed"], $event);
 					}
@@ -913,16 +857,14 @@ class records
 
 					$event = explode(":", $event);
 
-					switch ($event[0])
-					{
+					switch ($event[0]) {
 						case "upload_success":
-							if (isset($filename) and isset($name))
-							{
+							if ( isset($filename) and isset($name) ) {
 								$event[1] = $config['url'].$event[1];
 
 								$ch = curl_init();
-								curl_setopt ($ch, CURLOPT_URL, $event[1]);
-								curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 0);
+								curl_setopt($ch, CURLOPT_URL, $event[1]);
+								curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
 
 								ob_start();
 								curl_exec($ch);
@@ -930,17 +872,18 @@ class records
 								$content = ob_get_contents();
 								ob_end_clean();
 
-								if ($content !== false)
+								if ( $content !== false ) {
 									echo $content;
+								}
 							}
 							break;
 
 						case "on_submit":
-							switch ($event[1])
-							{
+							switch ($event[1]) {
 								case "redirect":
-									if (isset ($event[2]))
+									if (isset ($event[2])) {
 										header("Location: $event[2]");
+									}
 									break;
 
 								default:
@@ -955,8 +898,9 @@ class records
 									$content = ob_get_contents();
 									ob_end_clean();
 
-									if ($content !== false)
+									if ($content !== false) {
 										echo $content;
+									}
 									break;
 
 							}
@@ -969,17 +913,16 @@ class records
 	} // end of function insert_from_form_to_db
 
 
-    /**
-     * Delete a record
+	/**
+	 * Delete a record
 	 *
 	 * @param	string	$tablename	name of a table to delete from
 	 * @param	integer	$recordid	id of record to delete
 	 * @param	string	$confirm	string based boolean to do or not
 	 * @param	string	$pkey		field name
 	 * @global	array	$db			global db instance
-     */
-	public function delete_record($tablename, $recordid, $confirm, $pkey)
-	{
+	 */
+	public function delete_record($tablename, $recordid, $confirm, $pkey) {
 		global $db;
 
 		/** 
@@ -991,31 +934,31 @@ class records
 		/**
 		 * @todo rip out hardcoded html
 		 */
-		if (!isset($confirm) or $confirm != "yes")
-		{
+		if ( !isset($confirm) or $confirm != "yes" ) {
 			$result = ("<div id='delete_confirm_box'>Delete record #");
 			$result .= ("<b>$recordid</b>");
 			$result .= (" From: ");
 			$result .= ("<b>$tablename</b> ?");
 			$result .= ("<br />");
-			$result .= ("<a href=\"".$_GET["pretty"].
-				":yes\" rel=\"delete_record\" ".
-				"rev=\"#table_information_container\">__yes__</a> | ".
+			$result .= ("<a href=\"" . $_GET["pretty"] .
+				":yes\" rel=\"delete_record\" " .
+				"rev=\"#table_information_container\">__yes__</a> | " .
 				"<a href=\"\" id=\"delete_confirm_no\">__no__</a></div>");
 		} else {
 			$delete = $db->query("delete from $tablename where $pkey=".
 								 $recordid);
-			if ($tablename)
+			if ($tablename) {
 				$result = ("__record__ <b>#$recordid</b> __deleted_from__ ".
 						   "<b>$tablename</b>");
+			}
 		}
 		return $result;
 	} // end of function delete_record
 
 
 
-    /**
-     *  Edit a record in the database by form post.
+	/**
+	 *  Edit a record in the database by form post.
 	 * 
 	 * @param	array		$post		the post for editing
 	 * @param	integer		$form_id	id of form for use
@@ -1027,44 +970,41 @@ class records
 	 * @todo this code awefully looks similar to
 	 *
 	 * <code>
-	 *     $layout->forms = $aiki->sql_markup->sql($module_form);
-	 *     $layout->forms = $this->fill_form($layout->forms, 
-	 *         "select * from $tablename where $pkey='$postedpkey' limit 1");
-	 *     $dolock = $this->lockdocument($pkey, $postedpkey, $tablename);
-	 *     $layout->forms .= $dolock;
+	 *	 $layout->forms = $aiki->sql_markup->sql($module_form);
+	 *	 $layout->forms = $this->fill_form($layout->forms, 
+	 *		 "select * from $tablename where $pkey='$postedpkey' limit 1");
+	 *	 $dolock = $this->lockdocument($pkey, $postedpkey, $tablename);
+	 *	 $layout->forms .= $dolock;
 	 * </code>
 	 * @example of how to handle forms and layout code in api form
-     */
-	public function edit_db_record_by_form_post($post, $form_id, $record_id)
-	{
+	 */
+	public function edit_db_record_by_form_post($post, $form_id, $record_id) {
 		global $db, $aiki, $membership, $config;
 
-		if (!$post)
-		{
+		if (!$post) {
 			return '';
 		} else {
 
 			$post = unserialize($post);
 
-			if (empty($post))
-			{
+			if (empty($post)) {
 				return '';
 			} else {
 
-				foreach ($post as $post_value)
-				{
-					if ($post_value and $post_value != '')
+				foreach ($post as $post_value) {
+					if ( $post_value and $post_value != '' ) {
 						$found_a_value = true;
+					}
 				}
 			}
 		}
 
-		if (!isset($found_a_value))
+		if (!isset($found_a_value)) {
 			return '';
-
-		if (!isset($post['form_post_type']))
+		}
+		if (!isset($post['form_post_type'])) {
 			$post['form_post_type'] = "save";
-
+		}
 		$output_result = '';
 
 		$form = $db->get_row("SELECT * from aiki_forms where ".
@@ -1074,31 +1014,30 @@ class records
 
 		$arraykeys = array_keys($form_array);
 
-		if (in_array("tablename", $arraykeys))
+		if (in_array("tablename", $arraykeys)) {
 			$tablename = $form_array["tablename"];
-
-		if (in_array("submit", $arraykeys))
+		}
+		if (in_array("submit", $arraykeys)) {
 			$submit = $form_array["submit"];
-
-		if (in_array("permission", $arraykeys))
+		}
+		if (in_array("permission", $arraykeys)) {
 			$special_permission = $form_array["permission"];
-
-		if (in_array("send_email", $arraykeys))
+		}
+		if (in_array("send_email", $arraykeys)) {
 			$send_email = $form_array["send_email"];
-
-		if (in_array("pkey", $arraykeys)) 
+		}
+		if (in_array("pkey", $arraykeys))  {
 			$pkey = $form_array["pkey"];
-		else
+		} else {
 			$pkey = 'id';
-
-		if (isset($post['unique_filename']))
+		}
+		if (isset($post['unique_filename'])) {
 			$unique_filename = $_REQUEST['unique_filename'];
-
-		if (!isset($submit))
+		}
+		if (!isset($submit)) {
 			$submit = '';
-
-		switch ($post['form_post_type'])
-		{
+		}
+		switch ($post['form_post_type']) {
 			case "save":
 				$editQuery = "update $tablename set ";
 				break;
@@ -1113,22 +1052,18 @@ class records
 
 		$i = 0;
 		$viewCount = count($form_array);
-		foreach($form_array as $field)
-		{
+		foreach ( $form_array as $field ) {
 
-			if ($field != $tablename and 
+			if ( $field != $tablename and 
 				$field != $pkey and 
-				$field != $submit)
-			{
+				$field != $submit ) {
 				$intwalker = explode(":", $field);
 
 				$get_permission_and_man_info = explode("|", $intwalker[0]);
 				$intwalker[0] = $get_permission_and_man_info[0];
 
-				if (isset($intwalker['2']))
-				{
-					switch ($intwalker['2'])
-					{
+				if (isset($intwalker['2'])) {
+					switch ($intwalker['2']) {
 						case "orderby":
 							//$post[$intwalker[0]] = $post['editpkey'];
 							$post[$intwalker[0]] = ($post['publish_date'] * 
@@ -1136,8 +1071,7 @@ class records
 							break;
 
 						case "password":
-							if (!$post[$intwalker[0]])
-							{
+							if (!$post[$intwalker[0]]) {
 								/** 
 								 * @todo ripout hardcoded string
 								 */
@@ -1148,14 +1082,12 @@ class records
 										"$tablename where $pkey=$record_id");
 							} else {
 
-								if(!$intwalker['3'])
+								if(!$intwalker['3']) {
 									$intwalker['3'] = "md5|md5";
-
-								if ($intwalker['3'] and $post[$intwalker['0']])
-								{
+								}
+								if ( $intwalker['3'] and $post[$intwalker['0']] ) {
 									$num_levels = explode("|", $intwalker['3']);
-									foreach ($num_levels as $crypt_level)
-									{
+									foreach ( $num_levels as $crypt_level ) {
 										$post[$intwalker[0]] = 
 											md5(stripcslashes(
 												$post[$intwalker[0]]));
@@ -1165,15 +1097,13 @@ class records
 							break;
 
 						case "value":
-							if (!isset($post[$intwalker[0]]) or 
-								!$post[$intwalker[0]])
-							{
+							if ( !isset($post[$intwalker[0]]) or 
+								!$post[$intwalker[0]] ) {
 								//if this is not secondery query
-								if (!preg_match("/\-\>/Us", $intwalker[0]))
-								{
+								if (!preg_match("/\-\>/Us", $intwalker[0])) {
 									$post[$intwalker[0]] = 
-										$db->get_var("select $intwalker[0] ".
-										"from $tablename where ".
+										$db->get_var("select $intwalker[0] " .
+										"from $tablename where " .
 										"$pkey=$record_id");
 								} else {
 									$post[$intwalker[0]] = 
@@ -1199,8 +1129,7 @@ class records
 
 						case "email":
 							if (!$aiki->text->is_valid("email",
-								$post[$intwalker[0]]))
-							{
+								$post[$intwalker[0]])) {
 								/**
 								 * @todo rip out hardcoded string
 								 */
@@ -1214,23 +1143,20 @@ class records
 					} // end of switch statement
 				}
 
-				if (isset($get_permission_and_man_info[1]))
-				{
+				if (isset($get_permission_and_man_info[1])) {
 					$get_group_level = 
 						$db->get_var ("SELECT group_level from ".
 							"aiki_users_groups where ".
 							"group_permissions='".
 							"$get_permission_and_man_info[1]'");
 				}
-				if (!preg_match("/\-\>/Us", $intwalker[0]))
-				{
-					if ((!isset($get_permission_and_man_info[1]) or 
+				if (!preg_match("/\-\>/Us", $intwalker[0])) {
+					if ( ( !isset($get_permission_and_man_info[1]) or 
 						!$get_permission_and_man_info[1] or 
 						$get_permission_and_man_info[1] == 
 							$membership->permissions or 
-							$membership->group_level < $get_group_level) and 
-							isset($post[$intwalker[0]]))
-					{
+							$membership->group_level < $get_group_level ) and 
+							isset($post[$intwalker[0]]) ) {
 						$post[$intwalker[0]] = 
 							@str_replace('&lt;', '<' , $post[$intwalker[0]]);
 						$post[$intwalker[0]] = 
@@ -1239,9 +1165,10 @@ class records
 						$insert_query_fields .= "$intwalker[0], ";
 						$insert_query_values .= "'".$post[$intwalker[0]]."', ";
 
-						if ($post['form_post_type'] == "save")
+						if ($post['form_post_type'] == "save") {
 							$editQuery .= ", ".$intwalker[0]."='".
 											$post[$intwalker[0]]."'";
+						}
 					}
 				} else {
 					$delimitered_field = explode("->", $intwalker[0]);
@@ -1257,8 +1184,7 @@ class records
 		$insert_query_fields = preg_replace("/\, $/", "", $insert_query_fields);
 		$insert_query_values = preg_replace("/\, $/", "", $insert_query_values);
 
-		switch ($post['form_post_type'])
-		{
+		switch ($post['form_post_type']) {
 			case "save":
 				$editQuery .= " where ".$pkey."=".$record_id;
 				$editQuery = str_replace("set ,", "set", $editQuery);
@@ -1270,42 +1196,38 @@ class records
 				break;
 		}
 
-		if (isset($special_permission))
-		{
+		if (isset($special_permission)) {
 			$special_permission = explode("|", $special_permission);
 
-			if ($special_permission[1])
+			if ($special_permission[1]) {
 				$special_group = $special_permission[1];
-
-			if ($special_permission[0])
+			}
+			if ($special_permission[0]) {
 				$normal_accounts = $special_permission[0];
-
-			if (isset($normal_accounts))
+			}
+			if (isset($normal_accounts)) {
 				$get_user_name = 
 					$db->get_var("select $normal_accounts from ".
 						"$tablename where $pkey = $record_id");
-
-			if (isset($normal_accounts) and 
+			}
+			if ( isset($normal_accounts) and 
 				isset($get_user_name) and 
-				$get_user_name == $membership->username)
-			{
+				$get_user_name == $membership->username ) {
 				$editResult = $db->query($editQuery);
-			} elseif (isset($special_group) and 
-					  $special_group == $membership->permissions)
-			{
+			} elseif ( isset($special_group) and 
+					  $special_group == $membership->permissions ) {
 				$editResult = $db->query($editQuery);
 			}
 
-		}else{
+		} else {
 			$editResult = $db->query($editQuery);
 		}
 
 		/** 
 		 * @todo saving revision history needs to be abstracted
 		 */
-		if (isset($config["save_revision_history"]) and 
-			$config["save_revision_history"] != false)
-		{
+		if ( isset($config["save_revision_history"]) and 
+			$config["save_revision_history"] != false ) {
 			$original_revision = 
 				$db->get_row("select data, revision from aiki_revisions ".
 					"where table_name = '$tablename' and ".
@@ -1317,8 +1239,7 @@ class records
 			$revision_data = 
 				"($insert_query_fields) VALUES ($insert_query_values)";
 
-			if ($original_revision->data != $revision_data)
-			{
+			if ( $original_revision->data != $revision_data ) {
 				$revision_data = addslashes($revision_data);
 
 				/**
@@ -1335,15 +1256,12 @@ class records
 		/**
 		 * @todo handling secondary queries here, means what?
 		 */
-		if (isset($secondery_queries) and is_array($secondery_queries))
-		{
-			foreach($secondery_queries as $table => $secondery_query)
-			{
+		if ( isset($secondery_queries) and is_array($secondery_queries) ) {
+			foreach ( $secondery_queries as $table => $secondery_query ) {
 				$secondery_insert_query = "";
 				$secondery_insert_query .= "INSERT into $table (";
 
-				foreach ($secondery_query as $field_name => $field_value)
-				{
+				foreach ( $secondery_query as $field_name => $field_value ) {
 					$secondery_insert_query .= "$field_name, ";
 				}
 				$secondery_insert_query = 
@@ -1351,15 +1269,13 @@ class records
 
 				$secondery_insert_query .= ") values (";
 
-				foreach ($secondery_query as $field_name => $field_value)
-				{
+				foreach ($secondery_query as $field_name => $field_value) {
 					$field_value = 
 						str_replace("this_pkey", $record_id, $field_value);
 
 					$field_value_var = 
 						$aiki->get_string_between($field_value, '[', ']');
-					if ($field_value_var)
-					{
+					if ($field_value_var) {
 						$field_value = 
 							str_replace('['.$field_value_var.']', 
 										$post["$field_value_var"], 
@@ -1379,10 +1295,8 @@ class records
 			}
 		}
 
-		if (isset($editResult))
-		{
-			switch ($post['form_post_type'])
-			{
+		if (isset($editResult)) {
+			switch ($post['form_post_type']) {
 				/**
 				 * @todo ripout hardcoded strings
 				 */
@@ -1412,8 +1326,8 @@ class records
 	} // end of function edit_db_record_by_form_post
 
 
-    /**
-     * Edit a record in place on the site.
+	/**
+	 * Edit a record in place on the site.
 	 *
 	 * @param	string			$text			text for processing
 	 * @param	string			$widget_value	widget content for insertion
@@ -1424,15 +1338,13 @@ class records
 	 * @return	string
 	 *
 	 * @todo why is layout being handled in a handling function?
-     */
-	public function edit_in_place($text, $widget_value)
-	{
+	 */
+	public function edit_in_place($text, $widget_value) {
 		global $aiki,$db, $membership, $layout;
 
-		if (isset($post['edit_form']) and 
+		if ( isset($post['edit_form']) and 
 			isset($post['form_id']) and 
-			isset($post['record_id']))
-		{
+			isset($post['record_id']) ) {
 			$serial_post = serialize($post);
 
 			/** 
@@ -1445,10 +1357,8 @@ class records
 		$edit_matchs = 
 			preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
 
-		if ($edit_matchs > 0)
-		{
-			foreach ($matchs[1] as $edit)
-			{
+		if ( $edit_matchs > 0 ) {
+			foreach ( $matchs[1] as $edit ) {
 				$select_menu = false;
 				$table = 
 					$aiki->get_string_between($edit , "<table>", "</table>");
@@ -1473,22 +1383,21 @@ class records
 				$primary = 
 				$aiki->get_string_between($edit , "<primary>", "</primary>");
 
-				if (!$primary)
+				if (!$primary) {
 					$primary = 'id';
+				}
 				$primary = trim($primary);
 				$primary_value = $widget_value->$primary;
 
 				$type = $aiki->get_string_between($edit , "<type>", "</type>");
 
-				if (preg_match("/select\:(.*)/Us", $type))
-				{
+				if (preg_match("/select\:(.*)/Us", $type)) {
 					$select_menu = true;
 					$select_output = '<select>';
 					$select_elements = explode(":", $type);
 
 					$explodeStaticSelect = explode("&", $select_elements[1]);
-					foreach ($explodeStaticSelect as $option)
-					{
+					foreach ($explodeStaticSelect as $option) {
 						$optionsieds = explode(">", $option);
 						$select_output .= 
 							'<option value="'.$optionsieds['1'].'"';
@@ -1497,29 +1406,27 @@ class records
 					$select_output .= '</select>';
 				}
 
-				if (!$type)
+				if (!$type) {
 					$type = 'textarea';
+				}
 				$type = trim($type);
 
-				if ($form_num)
-				{
+				if ($form_num) {
 					$user = $aiki->get_string_between($edit , 
-													  "<user>", "</user>");
-					if ($user)
+								  "<user>", "</user>");
+					if ($user) {
 						$user = $widget_value->$user;
-					else
+					} else {
 						$user = '';
-
+					}
 					$permissions = $aiki->get_string_between($edit , 
 						"<permissions>", "</permissions>");
 					$permissions = trim($permissions);
 
-					if (($permissions and 
-						$permissions != $membership->permissions) and 
-						($user and $user != $membership->username))
-					{
-						if (!isset($output) or !$output)
-						{
+					if ( ( $permissions and 
+						$permissions != $membership->permissions ) and 
+						( $user and $user != $membership->username ) ) {
+						if ( !isset($output) or !$output ) {
 							/**
 							 * @todo why is this code commented out?
 							 */
@@ -1530,10 +1437,11 @@ class records
 					} else {
 						if (!$widget_value->$field)
 						{
-							if ($label)
+							if ($label) {
 								$widget_value->$field = trim($label);
-							else
+							} else {
 								$widget_value->$field = 'Click here to edit';
+							}
 						} else {
 							$widget_value->$field = $aiki->convert_to_specialchars($widget_value->$field);
 						}
@@ -1542,8 +1450,7 @@ class records
 						 * @todo this is bare layout code, right directly in
 						 * the file seems bad, should review for extraction
 						 */
-						if ($select_menu)
-						{
+						if ($select_menu) {
 							$output = '
 <script type="text/javascript">
 $(function () { 
@@ -1631,3 +1538,5 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 	} // end of edit_in_place function
 
 } // end of class records
+
+?>

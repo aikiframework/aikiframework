@@ -18,7 +18,9 @@
  */
 
 
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if(!defined('IN_AIKI')){
+	die('No direct script access allowed');
+}
 
 
 /**
@@ -29,53 +31,51 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * @package     Library
  * @todo fix the class name to be Url
  */
-class url
-{
-    /**
-     * Array in url parts (/user/details/212 will be [0]=>user,[1]=>details and [2]=>212
-     * 
-     * @var string 
-     * @access public
-     */
-     
-     
+class url {
+	/**
+	 * Array in url parts (/user/details/212 will be [0]=>user,[1]=>details and [2]=>212
+	 * 
+	 * @var string 
+	 * @access public
+	 */
+	
 	public $url;
 	public $pretty;
   
-    /**
-     * @var integer
-     * @access public
-     */
+	/**
+	 * @var integer
+	 * @access public
+	 */
 	public $url_count;
 
 
-    /**
+	/**
 	 * return first route of url 
-     * example: with foo/bar  -> return foo. In index return "homepage"
-     * @return string First part of url, or "homepage".
-     * 
+	 * example: with foo/bar  -> return foo. In index return "homepage"
+	 * @return string First part of url, or "homepage".
+	 * 
 	 */
-    public function first_url(){
-        return current( $this->url);
-    }
+	public function first_url(){
+		return current( $this->url);
+	}
 
 	/**
 	 * remove first route of url ( /foo/bar to /bar) .
 	 */
-    public function shift_url(){
-        if ( count($this->url) > 1) {
-             $this->pretty = substr($this->pretty, strlen($this->url[0])+1) ;
-             array_shift( $this->url );   
-        } else {
-            $this->url = array ("homepage");
-            $this->pretty="";            
-        }            
-    }
+	public function shift_url(){
+		if ( count($this->url) > 1 ) {
+			 $this->pretty = substr($this->pretty, strlen($this->url[0])+1) ;
+			 array_shift($this->url);
+		} else {
+			$this->url = array("homepage");
+			$this->pretty = "";
+		}			
+	}
 
 	/**
 	 * Sets up the url for further processing.
 	 */
-	public function url(){        
+	public function url() {		
 		/**
 		 * 
 		 * url procces requests transformed by .htaccess by this rule:
@@ -84,10 +84,10 @@ class url
 		 * So, in homepage (direct index.php)) 'pretty' doesn't exist, 		
 		 * 
 		 */
-                 
-		if ( isset($_GET['pretty']) )  { 
+				 
+		if (isset($_GET['pretty'])) {
 			$this->pretty= $_GET['pretty'];
-			$this->url = explode("/", str_replace("|", "/", $this->pretty) );             
+			$this->url = explode("/", str_replace("|", "/", $this->pretty));			 
 		} else {
 			$this->url[0]="homepage";
 			$this->pretty="";
@@ -104,8 +104,8 @@ class url
 	 * @return arry
 	 */
 	public function apply_url_on_query($query)	{
-		if (  preg_match_all( '/\(\!\((.*)\)\!\)/U', $query, $matches ) ){
-			foreach ($matches[1] as $parsed){
+		if (preg_match_all('/\(\!\((.*)\)\!\)/U', $query, $matches)) {
+			foreach ($matches[1] as $parsed) {
 				$query = @str_replace("(!($parsed)!)", $this->url[$parsed], 
 									  $query);
 			}
@@ -122,41 +122,41 @@ class url
 	public function fix_url($text)
 	{
 		$text = trim($text);
-		$text = strtr ( $text, array (
-                      " " =>"_",
-                      "'" =>"" ,
-                      '"' =>""));
+		$text = strtr($text, array(
+					  " " =>"_",
+					  "'" =>"" ,
+					  '"' =>""));
 		$text = strtolower($text);
 
 		return $text;
 	}
 
 
-    /**
-     * match a list of displays_url (routes) against actual url.
-     * @return boolean 
-     */
+	/**
+	 * match a list of displays_url (routes) against actual url.
+	 * @return boolean 
+	 */
 
 	public function match($displayString){
-		if ( $displayString ) {	
+		if ($displayString) {
 			
 			// a regular expression can containe a | character, that must be 
 			// escaped, so in this case use preg_split.
-			if ( strpos($displayString,"#") !== false ){
-				$displayUrls= preg_split('#(?<!\\\)\|#',$displayString);			
+			if ( strpos($displayString,"#") !== false ) {
+				$displayUrls= preg_split('#(?<!\\\)\|#', $displayString);			
 			} else {
-				$displayUrls= explode("|",$displayString);
+				$displayUrls= explode("|", $displayString);
 			}
 						
-			foreach ( $displayUrls as $displayUrl) {
+			foreach ($displayUrls as $displayUrl) {
 				
 				if (!$displayUrl) {
 					continue;
 				}			
 				
 				// exact match. Example: news$ matchs news but not news/latest
-				if ( substr($displayUrl,-1) == '$' ) {
-					if ( substr($displayUrl,0,-1) == $this->pretty ){
+				if ( substr($displayUrl, -1) == '$' ) {
+					if (substr($displayUrl,0,-1) == $this->pretty) {
 						return true;
 					} else {
 						continue;
@@ -165,18 +165,18 @@ class url
 				}
 				
 				// easy option
-				if ( $displayUrl=="*" 
-					 || ( $this->pretty =='' && $displayUrl=='homepage')
-					 || strpos($this->pretty,$displayUrl)===0 ){
+				if ( $displayUrl == "*" 
+					 || ( $this->pretty == '' && $displayUrl == 'homepage' )
+					 || strpos($this->pretty,$displayUrl) === 0 ) {
 					return true;
 				}
 				
 				//regular expression?
-				if ( strpos( $displayUrl, "#")===0 &&
-						preg_match ('/^#.+#[Uims]*$/', $displayUrl) ) {					
-					$displayUrl = str_replace( "\|","|",$displayUrl);  //unescaped
+				if ( strpos($displayUrl, "#") === 0 &&
+						preg_match('/^#.+#[Uims]*$/', $displayUrl) ) {					
+					$displayUrl = str_replace( "\|", "|", $displayUrl);  //unescaped
 					//it's a regex, so or match or continue.	
-					if ( preg_match ( $displayUrl, $this->pretty) ) {						
+					if (preg_match($displayUrl, $this->pretty)) {
 						return true;
 					} else {						
 						continue;
@@ -184,10 +184,10 @@ class url
 				}	
 				
 				// can be /foo/bar/*..
-				if ( strpos( $displayUrl, "*")!==false){
+				if ( strpos($displayUrl, "*") !== false ) {
 					// now the hard work user/details/1 must match user/details/*				
-					$temp= str_replace("*","[^/]*", $displayUrl );	
-					if ( preg_match ( "#^". $temp. '$#ui', $this->pretty) ) {
+					$temp = str_replace("*","[^/]*", $displayUrl);	
+					if (preg_match("#^" . $temp . '$#ui', $this->pretty)) {
 						return true;
 					}						
 				}				
@@ -201,3 +201,5 @@ class url
 
 
 } // end of url class
+
+?>

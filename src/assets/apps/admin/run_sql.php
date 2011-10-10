@@ -18,12 +18,12 @@
  */
 
 
-error_reporting(0);
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
 /**
  * @see bootstrap.php
  */
-require_once("../../../bootstrap.php");
+require_once("../../../aiki.php");
 
 /**
  * Checks to ensure user has appropriate permissions
@@ -37,10 +37,20 @@ if ($membership->permissions != "SystemGOD"){
  */
 if (isset($_POST['sql_query'])){
 	$query = stripslashes($_POST['sql_query']);
-	if ($query){
-		$result = $db->query($query);
-		$db->debug();		 
-	}else{
-		echo "Empty Query";
+	if ($query) {
+		$result = array('result' => array());
+
+		if ($res = mysql_query($query)) {
+    			if (mysql_num_rows($res) == 0) {
+				$result['result'] = array(array());
+			} else {
+				while ($row = mysql_fetch_row($res)) {
+  					$result['result'][] = $row;
+				}
+			}
+		} else {
+			$result['error'] = mysql_error();
+		}
+		echo json_encode($result);
 	}
 }

@@ -37,42 +37,39 @@ $cached_file = $aiki->output->cache_file("css");
  */
 $widgets_list = isset($_GET['widgets']) ? addslashes($_GET['widgets']) : '';
 
-if ( $widgets_list != ''){
-	$where = "id='" . str_replace('_', "' or id = '", $widgets_list). "'";
-	$sql = 
-		"SELECT id, css, widget_name" . 
-        " FROM aiki_widgets".
-        " WHERE " . $where . 
-        "  AND is_active = 1".
-        " ORDER BY id";
+if ($widgets_list != '') {
+	$where = "id='" . str_replace('_', "' or id = '", $widgets_list) . "'";
+	$sql =  "SELECT id, css, widget_name" . 
+		" FROM aiki_widgets".
+		" WHERE " . $where . 
+		"  AND is_active = 1".
+		" ORDER BY id";
 	$get_widgets = $db->get_results($sql);
 
-	if ($get_widgets)
-    {
-        $debugOn = is_debug_on();
-        $style="";
-		foreach ( $get_widgets as $widget )
-		{
-            if (  $widget->css != "" ) {
-                $style .= ( $debugOn ? "\n/*CSS for the widget {$widget->widget_name} (id {$widget->id}) */\n" : "") .
-                          stripcslashes($aiki->languages->L10n($widget->css));
-            }                                  
+	if ($get_widgets) {
+		$debugOn = is_debug_on();
+		$style="";
+		foreach ($get_widgets as $widget) {
+			if ( $widget->css != "" ) {
+				$style .= ($debugOn ? "\n/*CSS for the widget {$widget->widget_name} (id {$widget->id}) */\n" : "") .
+						  stripcslashes($aiki->languages->L10n($widget->css));
+			}								  
 		}
-        if ( $style ){            
-            // predefined vars.
-            $vars  = array (
-                "view"     => $aiki->site->view(),
-                "language" => $aiki->site->language(),
-                "site"     => $aiki->site->get_site());
-                            
-            $style = $aiki->css_parser->parse( $style, $vars );            
-        }           
-        echo $style;
-        
-        if ($cached_file){            
-            //write the cache file
-            error_log ( $style, 3, $cached_file);
-        }
-        
+		if ($style ){			
+			// predefined vars.
+			$vars  = array (
+				"view"	   => $aiki->site->view(),
+				"language" => $aiki->site->language(),
+				"site"	   => $aiki->site->get_site());
+							
+			$style = $aiki->css_parser->parse($style, $vars );			
+		}		   
+		echo $style;
+		
+		if ($cached_file){			
+			//write the cache file
+			error_log ($style, 3, $cached_file);
+		}
+		
 	} 
 }

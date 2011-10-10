@@ -39,9 +39,9 @@ $AIKI_ROOT_DIR = realpath(dirname(__FILE__));
 
 // append to the include path while preserving existing entries
 set_include_path(
-    get_include_path() .
-    PATH_SEPARATOR .
-    "$AIKI_ROOT_DIR");
+	get_include_path() .
+	PATH_SEPARATOR .
+	"$AIKI_ROOT_DIR");
 
 /** @see AikiException.php */
 require_once("$AIKI_ROOT_DIR/libs/AikiException.php");
@@ -80,19 +80,19 @@ if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
 		die();
 	}
 }
-    
+	
 /* setting $config["log_level"] = "NONE" disables the log 
  * or "None" and "none". Also if the log_level is not valid
  * the log will default to disabled. */
 /** @see Log.php */
 require_once("$AIKI_ROOT_DIR/libs/Log.php");
-    
+	
 /** Instantiate a new log for global use
  * @global Log $log */
 $log = new Log($config["log_dir"],
-            $config["log_file"],
-            $config["log_level"],
-            $AIKI_ROOT_DIR);
+			$config["log_file"],
+			$config["log_level"],
+			$AIKI_ROOT_DIR);
 
 /* the following lines are usage examples:
 $log->message("test message which defaults to debug level");
@@ -153,8 +153,8 @@ $membership = $aiki->load("membership");
 $aiki->load("languages");
 
 if ($aiki->site->language()!="en"){
-    include_once ("$AIKI_ROOT_DIR/libs/classes/dictionaryTableClass.php");
-    $aiki->dictionary->add("core", new dictionaryTable($aiki->site->language() ) );
+	include_once ("$AIKI_ROOT_DIR/libs/classes/dictionaryTableClass.php");
+	$aiki->dictionary->add("core", new dictionaryTable($aiki->site->language() ) );
 }
 
 
