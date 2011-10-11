@@ -79,13 +79,13 @@ class output {
 		global $aiki;
 		$title = '<title>' . ( $this->title ? "$this->title - " : "" ) .
 			$aiki->site->site_name() . '</title>';
-		$aiki->plugins->do_action("output_title", &$title);						
+		$aiki->plugins->do_action("output_title", $title);						
 		
 		$header = "\n".
 			'<meta charset="__encoding__"/>' . "\n" .
 			'<meta name="generator" content="Aikiframework ' .
 			AIKI_VERSION . '.' . AIKI_REVISION . '" />';
-		$aiki->plugins->do_action("output_meta", &$header);
+		$aiki->plugins->do_action("output_meta", $header);
 
 		return $header.$title;
 	}
@@ -171,10 +171,10 @@ class output {
 
 		$header .= $this->headers;
 		$header .= "</head>";
-		$aiki->plugins->do_action("output_head", &$header);
+		$aiki->plugins->do_action("output_head", $header);
 				
 		$bodybegin = "\n<body>\n";
-		$aiki->plugins->do_action("output_body_begin", &$bodybegin);
+		$aiki->plugins->do_action("output_body_begin", $bodybegin);
 		$header .= $bodybegin;
 		return $header;
 	} // end of headers function
