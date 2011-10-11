@@ -20,7 +20,7 @@
  *
  */
 
-if(!defined('IN_AIKI')) {
+if (!defined('IN_AIKI')) {
 	die('No direct script access allowed');
 }
 
@@ -383,7 +383,7 @@ function config_error_reporting($newLevel=false) {
 		$oldLevel = error_reporting( E_ALL | E_STRICT );
 	} else {		
 		if ( $newLevel === false ) {
-			$newLevel = $aiki->config->get("error_level", E_ALL | E_STRICT);
+			$newLevel = $aiki->config->get("error_level", E_ALL | E_STRICT );
 		}
 		$oldLevel = error_reporting($newLevel);
 	}

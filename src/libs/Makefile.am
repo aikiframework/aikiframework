@@ -21,36 +21,41 @@
 aiki_src_files = \
 	aiki_array.php \
 	aiki_curl.php \
+	AikiException.php \
+	aiki.php \
+	AikiSession.php \
+	Archive.php \
+	Backup.php \
 	bot.php \
+	config.php \
+	css_parser.php \
 	dictionary.php \
 	errors.php \
+	File.php \
 	forms.php \
 	image.php \
 	input.php \
 	installer.php \
 	languages.php \
+	Log.php \
 	membership.php \
 	message.php \
 	output.php \
 	parser.php \
 	php.php \
+	plugins.php \
 	records.php \
 	security.php \
 	site.php \
 	sql_markup.php \
 	text.php \
-	url.php \
-	wiki.php \
-	aiki.php \
-	widgets.php \
-	Log.php \
-	Archive.php \
-	Backup.php \
-	File.php \
 	Updater.php \
 	Upgrade.php \
-	AikiException.php \
-	AikiSession.php
+	url.php \
+	view_parser.php \
+	widgets.php \
+	wiki.php
+
 
 # Subdirectories to be built
 SUBDIRS = \

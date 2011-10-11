@@ -78,32 +78,32 @@ class aiki {
 		} else {
 			
 			// filter extensions..
-			$allowed = "," . $this->config->get("extensions_allowed","ALL") . ",";   
+			$allowed = "," . $this->config->get("extensions_allowed", "ALL") . ",";   
 			// a tip..be sure "web" doesn't match "web2date".
 					
 			if ( $allowed != ",ALL," ) {		
-				if ( $allowed == ",NONE," or strpos($allowed,$class)===false ) {
+				if ( $allowed == ",NONE," or strpos($allowed, $class)===false ) {
 					return false;   
 				}				
 			}
 			 
 			// search in dirs	   
-			$SearchIn = $this->config->get("extensions_dir","assets/extensions");
+			$SearchIn = $this->config->get("extensions_dir", "assets/extensions");
 			$loaded = false;
 			foreach (explode(",", $SearchIn) as $dir) {
-				if(file_exists($AIKI_ROOT_DIR. "/$dir/$class.php")) {
+				if (file_exists($AIKI_ROOT_DIR . "/$dir/$class.php")) {
 					require_once($AIKI_ROOT_DIR . "/$dir/$class.php");
 					$loaded= true;
 					break;
 				} 
-				if(file_exists($AIKI_ROOT_DIR . "/$dir/$class/$class.php")) {
+				if (file_exists($AIKI_ROOT_DIR . "/$dir/$class/$class.php")) {
 					require_once($AIKI_ROOT_DIR . "/$dir/$class/$class.php");
 					$loaded= true;
 					break;
 				} 
 			
 			}
-			if (!$loaded){
+			if (!$loaded) {
 				return false;
 			}							
 		}

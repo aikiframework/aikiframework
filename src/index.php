@@ -17,7 +17,6 @@
  * @filesource
  */
 
-error_reporting(E_STRICT | E_ALL);
 
 /**
  * Starts the clock so we can measure loading time of the site
