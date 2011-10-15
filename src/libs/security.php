@@ -62,8 +62,8 @@ class security {
 	public function inlinePermissions($text) {
 		global $aiki, $db;
 			
-		if (preg_match_all('/\(\#\(permissions\:(.*)\)\#\)/Us', $text, $matchs)){
-			foreach ($matchs[1] as $i=>$inline_per) {
+		if (preg_match_all('/\(\#\(permissions\:(.*)\)\#\)/Us', $text, $matchs)) {
+			foreach ( $matchs[1] as $i => $inline_per ) {
 				// tip to capture always two elements.
 				$get_sides = explode("||", $inline_per . "||", 2);
 								

@@ -17,7 +17,9 @@
  * @filesource
  */
 
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if (!defined('IN_AIKI')) {
+	die('No direct script access allowed');
+}
 
 
 /**
@@ -33,25 +35,23 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * handling parsing for aiki in addition to loading external feeds. need
  * to strip this back to its singular function
  */
-class parser extends aiki
-{
+class parser extends aiki {
 
-    /**
+	/**
 	 * Curl timeout. set to zero for no timeout
 	 * @todo add timeout here and other places to config editor
-     */
+	 */
 	private $timeout = 2;
 
-    /**
-     * Process some text that is marked up with aikimarkup and then output
+	/**
+	 * Process some text that is marked up with aikimarkup and then output
 	 * the html version of it. This is supposed to be a general aikimarkup
 	 * parser, except so much aikimarkup is sprinkled throughout the codebase.
-     *
-     * @param	string	$text	text for processing
-     * @return	string
-     */
-	public function process($text)
-    {
+	 *
+	 * @param	string	$text	text for processing
+	 * @return	string
+	 */
+	public function process($text) {
 		$text = $this->markup_ajax($text);
 		$text = $this->images($text);
 		$text = $this->inline($text);
@@ -112,8 +112,7 @@ class parser extends aiki
 	 * @param   string $text text to process from aiki.
 	 * @return  mixed processed output.
 	 */
-	public function feed_parser($text) 
-    {
+	public function feed_parser($text) {
 		return $this->rss_parser($text);
 	}
 
@@ -123,7 +122,7 @@ class parser extends aiki
 	 * aikimarkup way to read feeds in.
 	 *
 	 * @todo should move this function to feed_parser and deprecate this
-	 *       as an interface.
+	 *	   as an interface.
 	 * @todo this function should ONLY parse a feed, and then use output
 	 * in another function! This is way too overloaded!!!
 	 * @todo replace with magpierss
@@ -133,8 +132,7 @@ class parser extends aiki
 	 * @param   string $text text to process from aiki.
 	 * @return  mixed processed output.
 	 */
-	public function rss_parser($text)
-    {
+	public function rss_parser($text) {
 		global $aiki;
 
 		/**
@@ -146,10 +144,8 @@ class parser extends aiki
 			preg_match_all('/\<rss\>(.*)\<\/rss\>/Us', $text, $matchs);
 
 		// if more than one rss section found
-		if ($feed_matchs > 0)
-		{
-			foreach ($matchs[1] as $feed)
-			{
+		if ( $feed_matchs > 0 ) {
+			foreach ( $matchs[1] as $feed ) {
 				$feed_url = 
 					$aiki->get_string_between($feed , "<url>", "</url>");
 				$feed_url = trim($feed_url);
@@ -167,14 +163,13 @@ class parser extends aiki
 				 * this makes it much harder to replace aikimarkup with plugin
 				 * diff. language.
 				 */
-				if(!$output)
-				{
-					$output = "<div class='news'>
-						<h4>[[title]]</h4>
-						<p>[[pubDate]]</p>
-						<p><a href='[[link]]'>[[guid]]</a></p>
-						<div class='description'>[[description]]</div>
-						</div>";
+				if (!$output) {
+					$output = "<div class='news'>" .
+						"<h4>[[title]]</h4>" .
+						"<p>[[pubDate]]</p>" .
+						"<p><a href='[[link]]'>[[guid]]</a></p>" .
+						"<div class='description'>[[description]]</div>" .
+						"</div>";
 				}
 
 				/**
@@ -182,8 +177,7 @@ class parser extends aiki
 				 *
 				 * @todo the variables here are not scoped properly
 				 */
-				if ( function_exists( "curl_init" )) 
-				{
+				if (function_exists("curl_init")) {
 					$ch = curl_init();
 					curl_setopt ($ch, CURLOPT_URL, $feed_url);
 					curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
@@ -196,17 +190,14 @@ class parser extends aiki
 				}
 
 				// parse the grabbed content
-				if (isset($content) && $content !== false)
-				{
+				if ( isset($content) && $content !== false ) {
 					$xml = @simplexml_load_string($content);
 
 					$i = 1;
 
 					$html_output = '';
-					if ($xml)
-					{
-						switch ($type)
-						{
+					if ($xml) {
+						switch ($type) {
 							/**
 							 * @todo uhhh, atom is supported, but hidden!
 							 */
@@ -219,45 +210,38 @@ class parser extends aiki
 								break;
 						}
 
-						if ($xml_items)
-						{
-							foreach ($xml_items as $item)
-							{
+						if ($xml_items) {
+							foreach ( $xml_items as $item ) {
 								$items_matchs = 
 									preg_match_all('/\[\[(.*)\]\]/Us', 
 												   $output, $elements);
 
-								if ($items_matchs > 0)
-								{
+								if ( $items_matchs > 0 ) {
 									$processed_output = $output;
 
-									foreach ($elements[1] as $element)
-									{
+									foreach ( $elements[1] as $element ) {
 										$element = trim($element);
 
-										if (preg_match('/\-\>/', $element))
-										{
+										if (preg_match('/\-\>/', $element)) {
 											$element = explode("->", $element);
 											$element_sides = 
 												$item->$element[0]->$element[1];
 											$processed_output = 
-												str_replace("[[".$element[0].
-												"->".$element[1]."]]", 
+												str_replace("[[" . $element[0] .
+												"->" . $element[1] . "]]", 
 												$element_sides, 
 												$processed_output);
 
-										} elseif (preg_match('/\:/', $element))
-										{
+										} elseif (preg_match('/\:/', $element)) {
 											$element = explode(":", $element);
 											$element_sides = 
 												$item->$element[0]->attributes()->$element[1];
 											$processed_output = 
-												str_replace("[[".$element[0].
-												":".$element[1]."]]", 
+												str_replace("[[" . $element[0] .
+												":" . $element[1] . "]]", 
 												$element_sides, 
 												$processed_output);
-										} else 
-										{
+										} else {
 											$processed_output = 
 											str_replace("[[".$element."]]", 
 											$item->$element, $processed_output);
@@ -267,8 +251,7 @@ class parser extends aiki
 									$processed_output = '';
 								}
 
-								if (isset($limit) and $limit == $i)
-								{
+								if ( isset($limit) and $limit == $i ) {
 									break;
 								}
 								$i++;
@@ -276,10 +259,8 @@ class parser extends aiki
 						}
 					}
 				}
-				if ( isset($html_output)) 
-				{
-					$text = str_replace("<rss>$feed</rss>", 
-										$html_output , $text);
+				if (isset($html_output)) {
+					$text = str_replace("<rss>$feed</rss>", $html_output , $text);
 				}
 			} // end of foreach loop
 		} // end of if > 0 feeds
@@ -287,22 +268,21 @@ class parser extends aiki
 	} // end of rss_parser
 
 
-    /**
-     * This is a generic way to make a tag cloud with aiki markup.
+	/**
+	 * This is a generic way to make a tag cloud with aiki markup.
 	 *
 	 * This is how you make a tag cloud:
 	 * <code>
 	 * (#(tags: some, tags, go, here)#)
 	 * </code>
-     *
-     * @param	string	$text			text for processing
-     * @param	array	$widget_value	widget
-     * @global  array	$db				global db instance	
-     * @global	aiki	$aiki			global aiki instance
-     * @return	string
-     */
-	public function tags($text, $widget_value)
-    {
+	 *
+	 * @param	string	$text		text for processing
+	 * @param	array	$widget_value	widget
+	 * @global	array	$db		global db instance	
+	 * @global	aiki	$aiki		global aiki instance
+	 * @return	string
+	 */
+	public function tags($text, $widget_value) {
 		global $db, $aiki;
 
 		/**
@@ -310,64 +290,60 @@ class parser extends aiki
 		 * into its own holding tank!
 		 */
 		$tags = $aiki->get_string_between($text, "(#(tags:", ")#)");
-		if ($tags)
-		{
+		if ($tags) {
 			$tagsides = explode("||", $tags);
 
-			if (isset($tagsides[2]))
+			if (isset($tagsides[2])) {
 				$separator = $tagsides[2];
-			else
+			} else {
 				$separator = ",";
-
+			}
 			$tags_links = explode("$separator", $widget_value->$tagsides[0]);
 			$tag_cloud = '';
 			$i = 0;
-			foreach ($tags_links as $tag_link)
-			{
-				if ($tag_link)
-				{
+			foreach ( $tags_links as $tag_link ) {
+				if ($tag_link) {
 					$tag_link = trim($tag_link);
-					if ($i > 0)
+					if ( $i > 0 ) {
 						$tag_cloud .= ' '.$separator;
+					}
 					/**
 					 * @todo extract out bar html.
 					 */
 					$tag_cloud .= 
-						' <a href="[root]/'.$tagsides[1].'" rel="tag">'.
-						$tag_link.'</a>';
+						' <a href="[root]/' . $tagsides[1] . '" rel="tag">' .
+						$tag_link . '</a>';
 					$tag_cloud = str_replace("_self", $tag_link, $tag_cloud);
 					$i++;
 				}
 			}
-			$text = str_replace("(#(tags:$tags)#)", $tag_cloud , $text);
+			$text = str_replace("(#(tags:$tags)#)", $tag_cloud, $text);
 		}
 		return $text;
 	} // end of tags function
 
 
-    /**
-     * This is generic markup for placing in image in a widget using aikimarkup.
-     *
+	/**
+	 * This is generic markup for placing in image in a widget using aikimarkup.
+	 *
 	 * This is a way with aikimarkup to output a stored image with a link
 	 * around it:
 	 * <code>
 	 * {+{SOME_STORED_IMAGE_NAME}+}
 	 * </code>
 	 *
-     * @param	string	$text	text for processing
-     * @global	array	$db		global db instance
-     * @global	aiki	$aiki	global aiki instance
-     * @global	array	$config	global config instance
-     * @return	string
-     */
-	public function images($text)
-    {
+	 * @param	string	$text	text for processing
+	 * @global	array	$db		global db instance
+	 * @global	aiki	$aiki	global aiki instance
+	 * @global	array	$config	global config instance
+	 * @return	string
+	 */
+	public function images($text) {
 		global $db, $aiki, $config;
 
 		$numMatches = preg_match_all( '/\{\+\{/', $text, $matches);
 
-		for ($i=0; $i<$numMatches; $i++)
-		{
+		for ( $i=0; $i<$numMatches; $i++ ) {
 			$get_photo_info = $this->get_string_between($text, "{+{", "}+}");
 			$photo_info_array = explode("|", $get_photo_info);
 			$html_photo = "";
@@ -375,65 +351,61 @@ class parser extends aiki
 			/** 
 			 * @todo rip out bare html
 			 */
-			if (!isset($photo_info_array[7]))
-			{
-				$html_photo .= "<a href='".$config['url']."file/image|".
-							   $photo_info_array[0]."'>";
+			if (!isset($photo_info_array[7])) {
+				$html_photo .= "<a href='" . $config['url'] . "file/image|" .
+							   $photo_info_array[0] . "'>";
 			}
 
 			$html_photo .= "<img ";
 
 			$html_photo .= "src='".$config['url']."image/";
 
-			if ($photo_info_array[5] and $photo_info_array[5] != "px" )
-			{
+			if ( $photo_info_array[5] and $photo_info_array[5] != "px" ) {
 				//add spesific size virtual folder
 				$html_photo .= "$photo_info_array[5]/"; 
 			}
 			$html_photo .= "$photo_info_array[0]'";
 
 			//this will overwrite the alt value from the database
-			if (isset($photo_info_array[1]) and $photo_info_array[1] != "0" )
-			{
+			if ( isset($photo_info_array[1]) and $photo_info_array[1] != "0" ) {
 				$html_photo .= "alt='$photo_info_array[1]' ";
 			}
 
-			if (isset($photo_info_array[2]) and 
+			if ( isset($photo_info_array[2]) and 
 				$photo_info_array[2] != "0" and 
-				!$photo_info_array[6])
-			{
+				!$photo_info_array[6] ) {
 				//no need to align if it's contained in aligned div
 				$html_photo .= "align='$photo_info_array[2]' ";
 			}
 
-			if (isset($photo_info_array[3]) and $photo_info_array[3] != "v:" )
-			{
+			if ( isset($photo_info_array[3]) and $photo_info_array[3] != "v:" ) {
 				$photo_info_array[3] = 
 					str_replace("v:", "", $photo_info_array[3]);
 				$html_photo .= "vspace='$photo_info_array[3]' ";
 			}
 
-			if ($photo_info_array[4] and $photo_info_array[4] != "h:" )
-			{
+			if ( $photo_info_array[4] and $photo_info_array[4] != "h:" ) {
 				$photo_info_array[4] = 
 					str_replace("h:", "", $photo_info_array[4]);
 				$html_photo .= "hspace='$photo_info_array[4]' ";
 			}
 			$html_photo .= "/ >";
 
-			if (!isset($photo_info_array[7]))
+			if (!isset($photo_info_array[7])) {
 				$html_photo .= "</a>";
-
-			if (isset($photo_info_array[6]) and $photo_info_array[6] != "0" )
+			}
+			if ( isset($photo_info_array[6]) and $photo_info_array[6] != "0" ) {
 				$html_photo .= "<br />$photo_info_array[6]";
-
+			}
 			/**
 			 * @todo rip out this bare html
 			 */
-			if ($photo_info_array[6] and $photo_info_array[6] != "0" )
-			{
-				$html_photo = "<div id='img_container' style='z-index: 9; clear: ".$photo_info_array[2]."; float: ".$photo_info_array[2]."; border-width: .5em 0 .8em 1.4em; padding: 10px'>
-				<div style='z-index: 10; border: 1px solid #ccc;	padding: 3px; background-color: #f9f9f9;font-size: 80%;text-align: center;overflow: hidden;'>$html_photo</div></div>";
+			if ( $photo_info_array[6] and $photo_info_array[6] != "0" ) {
+				$html_photo = "<div id='img_container' style='z-index: 9; clear: " .
+				$photo_info_array[2] . "; float: " . $photo_info_array[2] .
+				"; border-width: .5em 0 .8em 1.4em; padding: 10px'><div style='z-index" . 
+				": 10; border: 1px solid #ccc; padding: 3px; background-color: #f9f9f9;" .
+				"font-size: 80%;text-align: center;overflow: hidden;'>$html_photo</div></div>";
 			}
 
 			$text = str_replace("{+{".$get_photo_info."}+}", 
@@ -443,7 +415,7 @@ class parser extends aiki
 	} // end of images function
 
 
-    /**
+	/**
 	 * Display content of external file inside a widget
 	 * 
 	 * This is the aikimarkup for displaying output from external file in
@@ -452,20 +424,17 @@ class parser extends aiki
 	 * <code>
 	 * (#(inline:[root]/weather.php?city=(!(1)!))#)
 	 * </code>
-     *
-     * @param	string	$text	text for processing
-     * @return	string
-     */
-	public function inline($text)
-    {
+	 *
+	 * @param	string	$text	text for processing
+	 * @return	string
+	 */
+	public function inline($text) {
 		$inline = preg_match_all('/\(\#\(inline\:(.*)\)\#\)/U', $text, $matchs);
 
-		if ($inline > 0)
-		{
-			foreach ($matchs[1] as $inline_per)
-			{
-				$content	= file_get_contents($inline_per);
-				$text		= str_replace("(#(inline:$inline_per)#)", 
+		if ( $inline > 0 ) {
+			foreach ( $matchs[1] as $inline_per ) {
+				$content = file_get_contents($inline_per);
+				$text = str_replace("(#(inline:$inline_per)#)", 
 							  $content, $text);
 			}
 		}
@@ -473,8 +442,8 @@ class parser extends aiki
 	}
 
 
-    /**
-     * This is some convenience aiki markup for ajax markup. Its used in
+	/**
+	 * This is some convenience aiki markup for ajax markup. Its used in
 	 * the admin widgets at this point mainly. grep -R ajax_a src/*
 	 *
 	 * This is an example of using ajax aiki markup:
@@ -485,22 +454,19 @@ class parser extends aiki
 	 * @todo This code is used in the admin widgets primarily and is not 
 	 * documented very well.
 	 * 
-     *
-     * @param	string	$text	text for processing
-     * @global	array	$db		global db instance
-     * @return	string
-     */
-	public function markup_ajax($text)
-    {
+	 *
+	 * @param	string	$text	text for processing
+	 * @global	array	$db		global db instance
+	 * @return	string
+	 */
+	public function markup_ajax($text) {
 		global $db;
 
 		$count_links = 
 			preg_match_all('/\(ajax\_a\((.*)\)ajax\_a\)/Us', $text, $links);
 
-		if ($count_links > 0)
-		{
-			foreach ($links[1] as $set_of_requests)
-			{
+		if ( $count_links > 0 ) {
+			foreach ( $links[1] as $set_of_requests ) {
 				$output = '';
 				$array = explode(';', $set_of_requests);
 				$array_of_values = $array;
@@ -512,17 +478,16 @@ class parser extends aiki
 				 */
 				$output .= " <script type=\"text/javascript\">
 				$(document).ready(function(){
-				function $function_name(file, targetwidget, callback){
+				function $function_name(file, targetwidget, callback) {
 
-				$(targetwidget).load(file, {limit: 25}, function(){
+				$(targetwidget).load(file, {limit: 25}, function() {
 				eval(callback);
 			});
 			}
 		 $(\"#$array[0]\").click(function(event){
 		 ";
 
-				foreach ($array_of_values as $value)
-				{
+				foreach ( $array_of_values as $value ) {
 					$value = $this->get_string_between($value, "[", "]");
 
 					$value = explode(',', $value);
@@ -530,17 +495,16 @@ class parser extends aiki
 					$url = $this->get_string_between($value['0'], "'", "'");
 					$target = $this->get_string_between($value['1'], "'", "'");
 
-					if (isset ($value['2']))
-					{
+					if (isset($value['2'])) {
 						$callback = 
 							$this->get_string_between($value['2'], "'", "'");
 					}
 
 					$output .= "$function_name('$url', '$target'";
 
-					if ($callback)
+					if ($callback) {
 						$output .= ", '$callback;'";
-
+					}
 					$output .= ");"."\n";
 				}
 				$output .= "return false;
@@ -558,34 +522,30 @@ class parser extends aiki
 	} // end of markup_ajax function
 
 
-    /**
-     * This is aiki markup to get a field from a widget with a named
+	/**
+	 * This is aiki markup to get a field from a widget with a named
 	 * field that holds a unix timestamp. It is not generic for date output.
 	 *
 	 * This is the aikimarkup if there is a field publish_date in database:
 	 * <code>
 	 * (#(datetime:publish_date)#) 
 	 * </code>
-     *
-     * @param	string	$text			text for processing
+	 *
+	 * @param	string	$text			text for processing
 	 * @param	array	$widget_value	a widget
-     * @global	aiki	$aiki			global aiki instance
+	 * @global	aiki	$aiki			global aiki instance
 	 * @global	array	$config			global config options instance
-     * @return
-     */
-	public function datetime($text, $widget_value)
-	{
+	 * @return
+	 */
+	public function datetime($text, $widget_value) {
 		global $aiki, $config;
 
 		$datetimes = preg_match_all('/\(\#\(datetime\:(.*)\)\#\)/Us', 
 									$text, $matchs);
-		if ($datetimes > 0)
-		{
-			foreach ($matchs[1] as $datetime)
-			{
+		if ( $datetimes > 0 ) {
+			foreach ( $matchs[1] as $datetime ) {
 				//Check if valid unix timestamp
-				if (preg_match('/[0-9]{10}/', $widget_value->$datetime))
-				{ 
+				if (preg_match('/[0-9]{10}/', $widget_value->$datetime)) {
 					$widget_value->$datetime = 
 						date($config['default_time_format'], 
 						$widget_value->$datetime);
@@ -603,8 +563,8 @@ class parser extends aiki
 	} // end of datetime function
 
 
-    /**
-     * Looks for aikimarkup to to get related topics and then outputs them
+	/**
+	 * Looks for aikimarkup to to get related topics and then outputs them
 	 * as html so can be formatted for display.
 	 * 
 	 * This is an example:
@@ -615,20 +575,18 @@ class parser extends aiki
 	 * @todo this needs to be tested to see how it really works.
 	 * @todo this entire function needs better documentation 
 	 * @todo rip out bare strings and html
-     *
-     * @param	string	$text		text for processing
-     * @global	aiki	$aiki		global aiki instance
+	 *
+	 * @param	string	$text		text for processing
+	 * @global	aiki	$aiki		global aiki instance
 	 * @global	array	$db			global db instance
 	 * @global	array	$config		global config options instance
-     * @return	string
-     */
-	public function related_records($text)
-	{
+	 * @return	string
+	 */
+	public function related_records($text) {
 		global $aiki, $db, $config;
 
 		$related = $aiki->get_string_between($text, "(#(related:", ")#)");
-		if ($related)
-        {
+		if ($related) {
 			$relatedsides = explode("||", $related);
 
 			$related_cloud = "
@@ -636,17 +594,14 @@ class parser extends aiki
 
 			$related_links = explode("|", $relatedsides[0]);
 			$related_array = array();
-			foreach ($related_links as $related_link)
-			{
+			foreach ( $related_links as $related_link ) {
 				$get_sim_topics = $db->get_results("SELECT $relatedsides[2], $relatedsides[7] FROM $relatedsides[1] where ($relatedsides[3] LIKE '%|".$related_link."|%' or $relatedsides[3] LIKE '".$related_link."|%' or $relatedsides[3] LIKE '%|".$related_link."' or $relatedsides[3]='$related_link') and $relatedsides[7] != '$relatedsides[8]' order by $relatedsides[5] DESC limit $relatedsides[4]");
 
-				if ($get_sim_topics)
-				{
-					foreach($get_sim_topics as $related_topic)
-					{
-						$related_cloud_input = '<li><a href="'.$config['url'].
-							$relatedsides[6].'">'.
-							$related_topic->$relatedsides[2].'</a></li>';
+				if ($get_sim_topics) {
+					foreach ($get_sim_topics as $related_topic) {
+						$related_cloud_input = '<li><a href="' . $config['url'] .
+							$relatedsides[6] . '">' .
+							$related_topic->$relatedsides[2] . '</a></li>';
 						$related_cloud_input = 
 							str_replace("_self", 
 								$related_topic->$relatedsides[7], 
@@ -657,8 +612,7 @@ class parser extends aiki
 					}
 				}
 			}
-			foreach ($related_array as $related_cloud_output)
-			{
+			foreach ( $related_array as $related_cloud_output ) {
 				$related_cloud .= $related_cloud_output;
 			}
 			$related_cloud .= "</ul>";
@@ -671,3 +625,5 @@ class parser extends aiki
 		return $text;
 	} // end of related_records function
 } // end of class parser
+
+?>

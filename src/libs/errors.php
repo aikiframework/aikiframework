@@ -17,20 +17,21 @@
  * @filesource
  */
 
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if (!defined('IN_AIKI')) {
+	die('No direct script access allowed');
+}
 
 
 /**
  * A class to handle errors.
  *
- * @category    Aiki
- * @package     Library
+ * @category	Aiki
+ * @package	 Library
  *
  * @todo actually implement a real error handling class.
  * @todo rename class to Errors
  */
-class errors
-{
+class errors {
 
 	/**
 	 * Handle a page not found error (404).
@@ -39,43 +40,43 @@ class errors
 	 * it is, then also check if any redirects are in place. If the error is
 	 * a redirect, then redirect, otherwise return error message.
 	 *
-     * @param   array   $db     global db instance
-     * @param   aiki    $aiki   global aiki instance
-     * @param   array   $config global config instance
+	 * @param   array   $db	 global db instance
+	 * @param   aiki	$aiki   global aiki instance
+	 * @param   array   $config global config instance
 	 * @return  mixed
 	 */
-	public function page_not_found()
-    {
+	public function page_not_found() {
 		global $db, $aiki, $config;
 
-		if (isset($config["register_errors"]) )
-        {
-            
+		if (isset($config["register_errors"])) {
+			
 			$request = urldecode ($_SERVER['REQUEST_URI']);
 			
 			$check_request =  $db->get_row(
-                "SELECT * FROM aiki_redirects where url='$request'");
+				"SELECT * FROM aiki_redirects WHERE url='$request'");
 
 			if (isset($check_request->url))  {				
-                $db->query("update aiki_redirects set hits=hits+1 where url='$request'");
+				$db->query("UPDATE aiki_redirects SET hits=hits+1 WHERE url='$request'");
 				if ($check_request->redirect) {					
 					Header("Location: ". $check_request->redirect, false, 301);
 					die();
 				}
 
 			} else {
-				$db->query(	"insert into aiki_redirects values ('$request', '', '1')");
+				$db->query("INSERT INTO aiki_redirects VALUES('$request', '', '1')");
 			}
 		}
-                
-        Header("HTTP/1.1 404 Not Found");
-        /**
-         * @todo actually handle translating the page name
-         */
+				
+		Header("HTTP/1.1 404 Not Found");
+		/**
+		 * @todo actually handle translating the page name
+		 */
 		$aiki->output->set_title("404 Page Not Found");
-        // return page because it would be handle by cache..
+		// return page because it would be handle by cache..
 		return $config['error_404'];
 
 	} // end of page_not_found function
 
 } // end of Errors class
+
+?>

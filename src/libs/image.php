@@ -17,55 +17,54 @@
  * @filesource
  */
 
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if (!defined('IN_AIKI')) {
+	die('No direct script access allowed');
+}
 
 
 /**
  * A utility class to manipulate images.
  *
- * @category    Aiki
- * @package     Library
+ * @category	Aiki
+ * @package	 Library
  *
- * @todo        rename class to Image
+ * @todo rename class to Image
  */
-class image
-{
+class image {
 	/**
 	 * Converts an svg file to png
 	 * 
 	 * @link http://librsvg.sourceforge.net/
 	 *
-	 * @param   string	$file       filename with fullpath
+	 * @param   string	$file	   filename with fullpath
 	 * @param   int		$newwidth   png width
 	 * @param   int		$newheight	png height
 	 *  
 	 * @return  string
 	 */
-	public function rsvg_convert_svg_png($file, $newwidth, $newheight)
-	{
+	public function rsvg_convert_svg_png($file, $newwidth, $newheight) {
 		$file = str_replace(" ", "\ ",  $file);
 		$file = str_replace("(", "\(",  $file);
 		$file = str_replace(")", "\)",  $file);
 		//check if rsvg exists
 		exec("rsvg -v", $checkversion);
 
-		if ($newwidth < $newheight)
+		if ($newwidth < $newheight) {
 			$size = $newheight;
-		else
+		} else {
 			$size = $newwidth;
-
-		if ($checkversion[0])
-		{
+		}
+		if ($checkversion[0]) {
 			$filenopath = explode("/", $file);
 			$filenopath = array_reverse($filenopath);
 
 			$fileno = $filenopath[0];
 			$fileno = str_replace(".svg", ".png", $fileno);
-			$fileno = $size."px-".$fileno;
+			$fileno = $size . "px-".$fileno;
 
 			$filenamepng = str_replace($filenopath[0], $fileno, $file);
 
-			exec("rsvg --width $newwidth --height $newheight ".
+			exec("rsvg --width $newwidth --height $newheight " .
 				 "$file $filenamepng", $output);
 
 		} else {
@@ -85,19 +84,14 @@ class image
 	 * @param	integer	$minValueWaterMark	
 	 * 
 	 */
-	public function display_watermarked_image($fimage, 
-											  $watermark_file, 
-											  $minValueWaterMark)
-	{
+	public function display_watermarked_image($fimage, $watermark_file, $minValueWaterMark) {
 		$size = getimagesize($fimage);
 
-		if ($minValueWaterMark and 
+		if ( $minValueWaterMark and 
 			$size["0"] < $minValueWaterMark and 
-			$size["1"] < $minValueWaterMark)
-		{
+			$size["1"] < $minValueWaterMark ) {
 			// nothing?
-		} else 
-		{
+		} else {
 			$watermark_file_size = getimagesize($watermark_file);
 
 			$watermark_width = $watermark_file_size["0"];
@@ -131,19 +125,17 @@ class image
 	 *
 	 * @todo	should really allow one to specify new height or width
 	 */
-	public function imageresize($path,$filename,$newvalue,$imageprefix)
-	{
-		$filename2 =$path.$filename;
+	public function imageresize($path, $filename, $newvalue, $imageprefix) {
+		$filename2 = $path.$filename;
 		$size = getimagesize($filename2);
 		$width = $size["0"];
 		$height = $size["1"];
 		$type = $size["mime"];
 
-		if ($width < $height)
-		{
+		if ( $width < $height ) {
 			$newheight = $newvalue;
 			$newwidth = round(($newvalue * $width)/$height);
-		} elseif ($width == $height) {
+		} elseif ( $width == $height ) {
 			$newheight = $newvalue;
 			$newwidth = $newvalue;
 		} else {
@@ -151,14 +143,12 @@ class image
 			$newheight = round(($newvalue * $height)/$width);
 		}
 
-		if ($width < $newwidth or $height < $newheight)
-		{
+		if ( $width < $newwidth or $height < $newheight ) {
 			$newheight = $height;
 			$newwidth = $width;
 		}
 
-		switch ($type)
-		{
+		switch ($type) {
 			case "image/jpeg":
 				$thumb = imagecreatetruecolor($newwidth, $newheight);
 				$source = imagecreatefromjpeg($filename2);
@@ -198,3 +188,5 @@ class image
 	} // end of imageresize
 
 } // end of Image class
+
+?>

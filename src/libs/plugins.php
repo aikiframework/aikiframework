@@ -20,7 +20,7 @@
  *
  */
 
-if(!defined('IN_AIKI')) {
+if (!defined('IN_AIKI')) {
 	die('No direct script access allowed');
 }
 

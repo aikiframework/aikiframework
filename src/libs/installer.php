@@ -16,14 +16,16 @@
  * @package     Library
  * @filesource
  *
- * @todo        look at modularizing the installer for maintainability
+ * @todo  look at modularizing the installer for maintainability
  */
 
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if (!defined('IN_AIKI')) {
+	die('No direct script access allowed');
+}
 
 /** @see defs.inc */
 require_once("$AIKI_ROOT_DIR/configs/defs.php");
-    
+	
 /* setting $config["log_level"] = "NONE" disables the log 
  * or "None" and "none". Also if the log_level is not valid
  * the log will default to disabled. */
@@ -32,7 +34,7 @@ require_once("$AIKI_ROOT_DIR/libs/Log.php");
 
 /** @see File.php */
 require_once("$AIKI_ROOT_DIR/libs/File.php");
-    
+	
 /** Instantiate a new log for installer use
  * Log $log */
 $log = new Log(AIKI_LOG_DIR,
@@ -43,7 +45,7 @@ $log->message("Starting run-time installation", Log::INFO);
 
 echo '
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -180,7 +182,7 @@ legend {
 <h1>Aiki Framework Installer</h1>
 
 <div id="stylized" class="myform">';
-if (!isset($_POST['db_type']) or !isset($_POST['db_host']) or !isset($_POST['db_name']) or !isset($_POST['db_user'])){
+if ( !isset($_POST['db_type']) or !isset($_POST['db_host']) or !isset($_POST['db_name']) or !isset($_POST['db_user']) ) {
 	echo '
 <p>ONE STEP Installer Guide
 <br />
@@ -223,26 +225,26 @@ Before we start you need the following:
 <button type="submit">Next..</button>
 </form>';
 
-}else{
+} else {
 
-	if ($_POST['username']){
+	if ($_POST['username']) {
 		$username = $_POST['username'];
-	}else{
+	} else {
 		$username = "admin";
 	}
 
-	if ($_POST['full_name']){
+	if ($_POST['full_name']) {
 		$full_name = $_POST['full_name'];
-	}else{
+	} else {
 		$full_name = "System Admin";
 	}
 
-	if ($_POST['email']){
+	if ($_POST['email']) {
 		if (preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i", $_POST['email'])){
 			$email = $_POST['email'];
 		}
 	}
-	if (!isset($email)){
+	if (!isset($email)) {
 		$email = '';
 	}
 
@@ -254,17 +256,17 @@ Before we start you need the following:
 	/* Read config from file. This way the configurations can be shared with the
 	 * other installers and it's much easier to maintain one PHP configuration file */
 	$config_file = file_get_contents("$AIKI_ROOT_DIR/configs/config.php");
-	if (false == $config_file){
+	if ( false == $config_file ) {
 		die("<br />FATAL: failed to read file -> $AIKI_ROOT_DIR/configs/config.php<br />");
 	}
-	$config_file = str_replace("DB_TYPE","\"".$_POST['db_type']."\"",$config_file);
-	$config_file = str_replace("DB_NAME","\"".$_POST['db_name']."\"",$config_file);
-	$config_file = str_replace("DB_USER","\"".$_POST['db_user']."\"",$config_file);
-	$config_file = str_replace("DB_PASS","\"".$_POST['db_pass']."\"",$config_file);
-	$config_file = str_replace("DB_HOST","\"".$_POST['db_host']."\"",$config_file);
-	$config_file = str_replace("DB_ENCODE","\"".$_POST['db_encoding']."\"",$config_file);
-	$config_file = str_replace("@AIKI_SITE_URL@",$pageURL,$config_file);
-	$config_file = str_replace("@AIKI_REWRITE_BASE@",$_SERVER["REQUEST_URI"],$config_file);
+	$config_file = str_replace("DB_TYPE", "\"" . $_POST['db_type'] . "\"", $config_file);
+	$config_file = str_replace("DB_NAME", "\"" . $_POST['db_name'] . "\"", $config_file);
+	$config_file = str_replace("DB_USER", "\"" . $_POST['db_user'] . "\"", $config_file);
+	$config_file = str_replace("DB_PASS", "\"" . $_POST['db_pass'] . "\"", $config_file);
+	$config_file = str_replace("DB_HOST", "\"" . $_POST['db_host'] . "\"", $config_file);
+	$config_file = str_replace("DB_ENCODE", "\"" . $_POST['db_encoding'] . "\"", $config_file);
+	$config_file = str_replace("@AIKI_SITE_URL@", $pageURL, $config_file);
+	$config_file = str_replace("@AIKI_REWRITE_BASE@", $_SERVER["REQUEST_URI"], $config_file);
 
 	$config_file_html = htmlspecialchars($config_file);
 	$config_file_html = nl2br($config_file_html);
@@ -272,28 +274,27 @@ Before we start you need the following:
 	$conn = @mysql_connect($_POST['db_host'], $_POST['db_user'], $_POST['db_pass']) or die ('Error connecting to mysql');
 	$select_db = @mysql_select_db($_POST['db_name']);
 
-	if (!$select_db){
+	if (!$select_db) {
 		echo "An existing database named $_POST[db_name] is not found.<br />Attempting to create a database named $_POST[db_name]...";
 		$create_db = mysql_query("CREATE DATABASE `$_POST[db_name]` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
 		$select_db = @mysql_select_db($_POST['db_name']);
 
 		if (!$create_db and !$select_db){
 			die ("<br />Failed to create a database named $_POST[db_name].");
-		}else{
+		} else {
 			echo "<br />Successfully created a database named $_POST[db_name].";
 		}
 	}
 
 	$htaccess_file_path = "$AIKI_ROOT_DIR/configs/htaccess.inc";
 	$htaccess_file = file_get_contents($htaccess_file_path);
-	if ( false == $htaccess_file )
+	if ( false == $htaccess_file ) {
 		die("<br />WARN: failed to read file $htaccess_file_path<br />");
-
+	}
 	// $rewrite_base = ( AIKI_REWRITE_BASE != $_SERVER["REQUEST_URI"] ) ? 
 	//				  $_SERVER["REQUEST_URI"] : AIKI_REWRITE_BASE;
-	$htaccess_file = str_replace("@AIKI_REWRITE_BASE@", 
-								 $_SERVER["REQUEST_URI"], 
-					     		$htaccess_file);
+	$htaccess_file = str_replace("@AIKI_REWRITE_BASE@", $_SERVER["REQUEST_URI"], 
+						 		$htaccess_file);
 
 	$htaccess_file_html = nl2br($htaccess_file);
 
@@ -301,9 +302,9 @@ Before we start you need the following:
 	$FileHandle = fopen($config_file_name, 'w') or die("<br />Sorry, no permissions to create config.php, please create it in <b>$AIKI_ROOT_DIR</b> with the following: <br /><br />$config_file_html<hr /><br />also please add the following to .htaccess to enable pretty urls:<br /><br /><small>".$htaccess_file_html."</small>");
 	fwrite($FileHandle, $config_file);
 	fclose($FileHandle);
-    /* This is needed in the case where the 
-     * default file mode is too restrictive. */
-    chmod($config_file_name, 0644);
+	/* This is needed in the case where the 
+	 * default file mode is too restrictive. */
+	chmod($config_file_name, 0644);
 
 	$admin_password = substr(md5(uniqid(rand(),true)),1,8);
 	$admin_password_md5_md5 = md5(md5($admin_password));
@@ -312,28 +313,28 @@ Before we start you need the following:
 	 * other installers and it's much easier to maintain SQL scripts separately
 	 * using a SQL supported editor rather than the PHP escaped SQL statements */
 	$sql_create_tables = file_get_contents("$AIKI_ROOT_DIR/sql/CreateTables.sql");
-	if (false == $sql_create_tables){
+	if ( false == $sql_create_tables ) {
 		die("<br />FATAL: failed to read file -> $AIKI_ROOT_DIR/sql/CreateTables.sql<br />");
 	}
 	$sql_insert_defaults = file_get_contents("$AIKI_ROOT_DIR/sql/InsertDefaults.sql");
-	if (false == $sql_insert_defaults){
+	if ( false == $sql_insert_defaults ) {
 		die("<br />FATAL: failed to read file -> $AIKI_ROOT_DIR/sql/InsertDefaults.sql<br />");
 	}
 	$sql_insert_variable = file_get_contents("$AIKI_ROOT_DIR/sql/InsertVariable-in.sql");
-	if (false == $sql_insert_variable){
+	if ( false == $sql_insert_variable ) {
 		die("<br />FATAL: failed to read file -> $AIKI_ROOT_DIR/sql/InsertVariable-in.sql<br />");
 	}
-	$sql_insert_variable = str_replace("@AIKI_SITE_URL_LEN@",$page_strlen,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@AIKI_SITE_URL@",$pageURL,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@PKG_DATA_DIR_LEN@",$AIKI_ROOT_DIR_strlen,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@PKG_DATA_DIR@",$AIKI_ROOT_DIR,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@ADMIN_USER@",$username,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@ADMIN_NAME@",$full_name,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@ADMIN_PASS@",$admin_password_md5_md5,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@ADMIN_MAIL@",$email,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@VERSION@",AIKI_VERSION,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@REVISION@",AIKI_REVISION,$sql_insert_variable);
-	$sql_insert_variable = str_replace("@AUTHORS@",AIKI_AUTHORS,$sql_insert_variable);
+	$sql_insert_variable = str_replace("@AIKI_SITE_URL_LEN@", $page_strlen, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@AIKI_SITE_URL@", $pageURL, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@PKG_DATA_DIR_LEN@", $AIKI_ROOT_DIR_strlen, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@PKG_DATA_DIR@", $AIKI_ROOT_DIR, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@ADMIN_USER@", $username, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@ADMIN_NAME@", $full_name, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@ADMIN_PASS@", $admin_password_md5_md5, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@ADMIN_MAIL@", $email, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@VERSION@", AIKI_VERSION, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@REVISION@", AIKI_REVISION, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@AUTHORS@", AIKI_AUTHORS, $sql_insert_variable);
 	
 	/* In MySQL, the “-- ” (double-dash) comment style requires the second
 	 * dash to be followed by at least one whitespace or control character.
@@ -344,9 +345,8 @@ Before we start you need the following:
 
 	$sql = explode(SQL_DELIMIT, $sql);
 
-	foreach($sql as $sql_statment)
-	{
-	 mysql_query($sql_statment);
+	foreach ( $sql as $sql_statment ) {
+		mysql_query($sql_statment);
 	}
 
 
@@ -357,30 +357,32 @@ Before we start you need the following:
 	echo '<br />';
 	echo 'Password: '.$admin_password;
 
-	if ($email){
+	if ($email) {
 
 		$headers  = "MIME-Version: 1.0\r\n";
 		$headers .= "Content-type: text/html; charset=utf-8\r\n";
 		$headers .= "From: noreply@aikiframework.org\r\n";
 
 		$message = "Hello $full_name <br /> your new Aiki installation is ready to be used <br />
-			Go to: ".$pageURL."admin <br />
+			Go to: " . $pageURL . "admin <br />
 Username: $username <br />
 Password: $admin_password
 ";
 
-		mail($email,'Your new Aiki installation',$message,$headers);
+		mail($email,' Your new Aiki installation',$message,$headers);
 	}
-    
+	
 	$htaccess_file_name = ".htaccess";
 	$FileHandle = fopen($htaccess_file_name, 'w') or die("<br />Sorry, no permissions to create .htaccess file<br /> please add the following to .htaccess to enable pretty urls:<br /><br /><small>".$htaccess_file_html."</small>");
 	fwrite($FileHandle, $htaccess_file);
 	fclose($FileHandle);
 	/* This is needed in the case where the 
 	 * default file mode is too restrictive. */
-    chmod($htaccess_file_name, 0644);
+	chmod($htaccess_file_name, 0644);
 }
 echo '</div>
 </div>
 </body>
 </html>';
+
+?>
