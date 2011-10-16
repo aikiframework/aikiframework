@@ -32,13 +32,16 @@ require_once("libs/session/DatabaseSession.php");
  *
  * @category    Aiki
  * @package     Library
- *
- * @todo    rename the class to Membership
  */
-class membership {
+
+
+class membership
+{
+    
 	/**
 	 * @var string  permissions for a user
 	 */
+
 	public $permissions;
 	
 	/**
@@ -84,6 +87,7 @@ class membership {
 			$log->exception($e);		
 		}
 			
+
 		$allowGuestSessions = isset($config["allow_guest_sessions"]) && 
 							  $config["allow_guest_sessions"] ;
 				
@@ -219,13 +223,12 @@ class membership {
 	 */
 	public function isUserLogged($userid) {
 		global $db;
-		$user_session = $db->get_var("SELECT user_id FROM aiki_users_sessions where user_session='" .
-			$_SESSION['aikiuser'] . "'");
-		if ( $user_session == $userid ) {
-			return true;
-		} else {
-			return false;
-		}
+		
+		$SQL = "SELECT user_id" .
+		       " FROM aiki_users_sessions".
+		       " WHERE user_session='{$_SESSION['aikiuser']}' and user_id='{$userid}'";		
+		return  (is_null( $db->get_var($SQL))? false : true );
+
 	}
 
 
@@ -237,31 +240,30 @@ class membership {
 	 */
 	public function getUserPermissions($user) {
 		global $db;
-		$user = addslashes($user);
 
-		$user = $db->get_row("SELECT userid, usergroup, full_name, username FROM aiki_users where username='$user'");
-		if ( $user->userid and $this->isUserLogged($user->userid) ) {
-			$group_permissions = $db->get_row("SELECT group_permissions, group_level FROM aiki_users_groups " .
-				"WHERE id='".$user->usergroup."'");
+		$user   = addslashes($user);
+		$session= addslashes($_SESSION['aikiuser']);
 
-			$this->full_name = $user->full_name;
-			$this->username = $user->username;
-			$this->group_level= $group_permissions->group_level;
-			$this->userid = $user->userid;
-
-			$this->permissions = $group_permissions->group_permissions;
-
+		$SQL = "SELECT userid, usergroup, full_name, username,group_level,group_permissions".
+		       " FROM aiki_users ".
+		       " INNER JOIN aiki_users_sessions ON aiki_users.userid = aiki_users_sessions.user_id".
+		       " INNER JOIN aiki_users_groups   ON aiki_users.usergroup= aiki_users_groups.id".
+		       " WHERE aiki_users.username='$user' AND user_session='$session'";        
+		$user = $db->get_row($SQL);		
+		if ( $user )	{
+			$this->full_name   = $user->full_name;
+			$this->username    = $user->username;
+			$this->userid      = $user->userid;			
+			$this->group_level = $user->group_level;			
+			$this->permissions = $user->group_permissions;
 		} else {
-			$this->permissions = "";
-		}
-
-		//unset the browser session if the session
-		//record was deleted from aiki_users_sessions
-		if ( !isset($group_permissions) or !$group_permissions ) {
+			$this->permissions = "";	
+			
+			//unset the browser session if the session
+			//record was deleted from aiki_users_sessions	
 			unset($_SESSION['guest']);
 			unset($_SESSION['aikiuser']);
 		}
-
 	}
 
 
@@ -504,36 +506,53 @@ class membership {
 		}
 	} // end of logOut function
 
-	
-	/*
-	 * return number of registered user online.
-	 *
-	 *
-	 */
-	
-	function how_many_are_online() {
+
+    
+    /**
+     * return number of registered user online.
+     *
+     * @return integer 
+     * @global $db
+     */
+    
+    function how_many_are_online(){
 		global $db;
 		return $db->get_var("SELECT count(DISTINCT user_id) FROM aiki_users_sessions");
 	}	
 		
-	/*
-	 * Give a list (ul/li) of online users
-	 *
-	 *  format is the  sprintf format used for generate each line, between li.
-	 *  examples:  
-	 *   '%s' (default) display username
-	 *   '<a href='user-detail/%$s'>%1$s</a>'  a link to user page.
-	 *  $format receives two arguments in this order: user_name, user_id.
-	 */
-	
-	function who_is_online($format = '%s') {
+
+    /**
+     * Give a list (ul/li) of online users
+     *
+     *  format is the  sprintf format used for generate each line, between li.
+     *  examples:  
+     *   '%s' (default) display username
+     *   '<a href='user-detail/%$s'>%1$s</a>'  a link to user page.
+     *  $format receives two arguments in this order: user_name, user_id.
+     * @todo pagination 
+     
+     * @return string user list in html using ul/li tags.
+     * @global $db
+     */
+    
+    function who_is_online( $format = '%s', $max=100, $id="who-is-online"){
+
 		global $db;
 		
-		$output = "<ul>";
-		$users = $db->get_results("SELECT user_id, user_name FROM aiki_users_sessions");		
-		if (!is_null($users)) {
-			foreach ( $users as $user ) {
-				$output .= sprintf("<li>{$format}</li>", $user->user_name, $user->user_id);
+		$max= (int) $max;
+		$max=  (  $max <=0 || $max > 100 ?  100 : $max);
+		
+		$count= 0;
+		$output="<ul id='$id' >";
+		$users= $db->get_results("SELECT user_id, user_name FROM aiki_users_sessions");		
+		if ( !is_null($users) ){
+			foreach ($users as $user){		
+				$output .= sprintf("<li>{$format}</li>", $user->user_name, $user->user_id );
+				$count++;
+				if ( $count > 100) {
+				    // @todo pagination of result.
+					break;
+				}	
 			}
 		} else {
 			$output .= "<li>" . __("Nobody is online") . "</li>";
