@@ -189,9 +189,9 @@ class output {
 	public function footer() {
 		global $aiki;
 		$footer = "\n</body>";
-		$aiki->plugins->do_action("output_body_end", &$footer);
+		$aiki->plugins->do_action("output_body_end", $footer);
 		$html= "</html>";
-		$aiki->plugins->do_action("output_html_end", &$html);
+		$aiki->plugins->do_action("output_html_end", $html);
 		return $footer.$html;
 	}
 
