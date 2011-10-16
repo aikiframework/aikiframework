@@ -63,23 +63,25 @@ class security {
 		global $aiki, $db;
 			
 		if (preg_match_all('/\(\#\(permissions\:(.*)\)\#\)/Us', $text, $matchs)) {
-			foreach ( $matchs[1] as $i => $inline_per ) {
-				// tip to capture always two elements.
-				$get_sides = explode("||", $inline_per . "||", 2);
-								
-				$sql = "SELECT group_level" .
-					   " FROM  aiki_users_groups".
-					   " WHERE group_permissions='". addslashes($get_sides[0]) ."'";
-								
-				$get_group_level = $db->get_var($sql);
+			foreach ( $matchs[1] as $i => $inline_per ) {							
+				if ( strpos ( $inline_per, "||") !== false )  {
+					$get_sides = explode("||", $inline_per, 2);
+									
+					$sql = "SELECT group_level" .
+						   " FROM  aiki_users_groups".
+						   " WHERE group_permissions='". addslashes($get_sides[0]) ."'";
+									
+					$get_group_level = $db->get_var($sql);
 
-				if ( $get_sides[0] == $aiki->membership->permissions ||
-					$aiki->membership->group_level < $get_group_level ) {
-					$replace = $get_sides[1];
-				} else {			
-					$replace = "";						
+					if ( $get_sides[0] == $aiki->membership->permissions ||
+						$aiki->membership->group_level < $get_group_level ) {
+						$replace = $get_sides[1];
+					} else {			
+						$replace = "";						
+					}
+					
+					$text = str_replace($matchs[0][$i],$replace, $text);
 				}
-				$text = str_replace($matchs[0][$i],$replace, $text);
 			}
 		}
 		return $text;
