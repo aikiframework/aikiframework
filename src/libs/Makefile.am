@@ -19,20 +19,20 @@
 
 # The source files
 aiki_src_files = \
-	aiki_array.php \
-	aiki_curl.php \
+	AikiArray.php \
+	AikiCurl.php \
 	AikiException.php \
 	aiki.php \
 	AikiSession.php \
 	Archive.php \
 	Backup.php \
-	bot.php \
+	Bot.php \
 	config.php \
-	css_parser.php \
+	CssParser.php \
 	dictionary.php \
-	errors.php \
+	Errors.php \
 	File.php \
-	forms.php \
+	Forms.php \
 	image.php \
 	input.php \
 	installer.php \
@@ -40,14 +40,14 @@ aiki_src_files = \
 	Log.php \
 	membership.php \
 	message.php \
-	output.php \
+	Output.php \
 	parser.php \
 	php.php \
-	plugins.php \
-	records.php \
+	Plugins.php \
+	Records.php \
 	security.php \
 	site.php \
-	sql_markup.php \
+	SqlMarkup.php \
 	text.php \
 	Updater.php \
 	Upgrade.php \

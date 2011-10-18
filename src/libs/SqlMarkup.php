@@ -30,14 +30,14 @@ if (!defined('IN_AIKI')) {
  *
  * @todo this entire class needs a code review
  */
-class sql_markup {
+class SqlMarkup {
 	/**
 	 * Handle Aiki sql.
 	 * 
-	 * @param   string  $text   text for processing
-	 * @global  aiki	$aiki   global aiki instance
-	 * @global  array   $db	 global db instance
-	 * @return  string 
+	 * @param   string	$text	text for processing
+	 * @global  aiki	$aiki	global aiki instance
+	 * @global  array	$db	global db instance
+	 * @return  string
 	 *
 	 * @todo need a serious security review
 	 */
@@ -95,7 +95,7 @@ class sql_markup {
 						if (!preg_match('/\(select(.*)/', $html)) {
 							$html = substr($html,0,-1);
 						}
-						$result = $aiki->aiki_array->object2array($result);
+						$result = $aiki->AikiArray->object2array($result);
 						$result_key = @array_flip($result);
 
 						foreach ( $result as $field ) {

@@ -17,6 +17,11 @@
  * @package     Library
  * @filesource */
 
+// disable php script access
+if (!defined("IN_AIKI")) {
+	die("No direct script access allowed");
+}
+
 /** For more info see the following links
  * @link http://www.php.net/manual/en/language.exceptions.extending.php
  * @link http://www.php.net/manual/en/class.exception.php */

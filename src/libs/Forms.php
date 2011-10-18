@@ -30,7 +30,7 @@ if (!defined('IN_AIKI')) {
  * @todo        rename this class to Forms
  * @todo        redo this entire class!
  */
-class forms {
+class Forms {
 	/**
 	 * keeps track of the value of the Submit button in forms
 	 * @var	 string
@@ -106,7 +106,7 @@ $("#new_record_form").ajaxForm(function() {
 
 							$form_output = $form_javascript."\n";
 
-							$form_output .= $aiki->records->insert_from_form_to_db($serial_post, $form->id, 'POST[form_id]');
+							$form_output .= $aiki->Records->insert_from_form_to_db($serial_post, $form->id, 'POST[form_id]');
 
 							$form_output .= $this->create_insert_form($form, $form_array);
 
@@ -116,7 +116,7 @@ $("#new_record_form").ajaxForm(function() {
 
 							$serial_post = serialize($_POST);
 
-							$form_output = $aiki->records->edit_db_record_by_form_post($serial_post, $form->id, $form_sides[2]);
+							$form_output = $aiki->Records->edit_db_record_by_form_post($serial_post, $form->id, $form_sides[2]);
 
 							$form_output .= $this->create_update_form($form, $form_array, $form_sides[2]);
 
@@ -134,7 +134,7 @@ $("#new_record_form").ajaxForm(function() {
 							if (!isset($form_sides['3'])) {
 								$form_sides['3'] = 'no';
 							}
-							$form_output = $aiki->records->delete_record($form_array['tablename'], $form_sides['2'],  $form_sides['3'], $form_array['pkey']);
+							$form_output = $aiki->Records->delete_record($form_array['tablename'], $form_sides['2'],  $form_sides['3'], $form_array['pkey']);
 							break;
 
 					}
@@ -620,7 +620,7 @@ $(function() {
 		}
 		$form .= ("</fieldset></form></div>");
 
-		if ( $aiki->records->form_insert_success != true ) {
+		if ( $aiki->Records->form_insert_success != true ) {
 			return $form;
 		}
 
@@ -644,7 +644,7 @@ $(function() {
 
 		if ($form->form_html) {
 
-			$formOutput = $aiki->sql_markup->sql($form->form_html);
+			$formOutput = $aiki->SqlMarkup->sql($form->form_html);
 			$formOutput = $aiki->processVars($form->form_html);//@TODO..see.
 				   
 			$formOutput = strtr($formOutput, array(
@@ -676,7 +676,7 @@ $(function() {
 			
 		if ($form->form_html) {
 
-			$formOutput = $aiki->sql_markup->sql($form->form_html);
+			$formOutput = $aiki->SqlMarkup->sql($form->form_html);
 			$formOutput = $aiki->processVars($form->form_html);//@TODO..see
 
 			$formOutput = strtr ( $formOutput, array(
@@ -724,7 +724,7 @@ $(function() {
 
 		$viewrow = $db->get_row($sql);
 
-		$viewrow = $aiki->aiki_array->object2array($viewrow);
+		$viewrow = $aiki->AikiArray->object2array($viewrow);
 
 		if (!is_array($viewrow)) {
 			return;
@@ -795,7 +795,7 @@ $(function() {
 
 		foreach ( $db->col_info as $column ) {
 
-			$column = $aiki->aiki_array->object2array($column);
+			$column = $aiki->AikiArray->object2array($column);
 
 
 			if ( $column['primary_key'] == 1 ) {

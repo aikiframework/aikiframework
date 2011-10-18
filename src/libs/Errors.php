@@ -31,7 +31,7 @@ if (!defined('IN_AIKI')) {
  * @todo actually implement a real error handling class.
  * @todo rename class to Errors
  */
-class errors {
+class Errors {
 
 	/**
 	 * Handle a page not found error (404).
@@ -45,7 +45,7 @@ class errors {
 	 * @param   array   $config global config instance
 	 * @return  mixed
 	 */
-	public function page_not_found() {
+	public function pageNotFound() {
 		global $db, $aiki, $config;
 
 		if (isset($config["register_errors"])) {
@@ -71,7 +71,7 @@ class errors {
 		/**
 		 * @todo actually handle translating the page name
 		 */
-		$aiki->output->set_title("404 Page Not Found");
+		$aiki->Output->set_title("404 Page Not Found");
 		// return page because it would be handle by cache..
 		return $config['error_404'];
 

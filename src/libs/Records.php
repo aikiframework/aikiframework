@@ -28,12 +28,11 @@ if (!defined('IN_AIKI')) {
  * @category	Aiki
  * @package	 Library
  * 
- * @todo rename class Records
  * @todo this class and its functions need serious refactoring 
  * @todo there is massive code that is used in multiple places that can
  * be extracted and abstracted
  */
-class records {
+class Records {
 	/**
 	 * @var		bool		???
 	 * @todo	needs to be traced, no idea what it does
@@ -286,7 +285,7 @@ class records {
 		foreach( $form_array as $field ) {
 
 			$field = $aiki->url->apply_url_on_query($field);
-			$field = $aiki->sql_markup->sql($field);
+			$field = $aiki->SqlMarkup->sql($field);
 
 			$intwalker = explode(":", $field);
 
@@ -738,7 +737,7 @@ class records {
 								 $field_name => $field_value ) {
 							$field_value = str_replace("this_pkey", 
 										  $this_pkey, $field_value);
-							$field_value = $aiki->sql_markup->sql($field_value);
+							$field_value = $aiki->SqlMarkup->sql($field_value);
 
 							$field_value_var = 
 								$aiki->get_string_between($field_value, 
@@ -970,7 +969,7 @@ class records {
 	 * @todo this code awefully looks similar to
 	 *
 	 * <code>
-	 *	 $layout->forms = $aiki->sql_markup->sql($module_form);
+	 *	 $layout->forms = $aiki->SqlMarkup->sql($module_form);
 	 *	 $layout->forms = $this->fill_form($layout->forms, 
 	 *		 "select * from $tablename where $pkey='$postedpkey' limit 1");
 	 *	 $dolock = $this->lockdocument($pkey, $postedpkey, $tablename);
@@ -1350,7 +1349,7 @@ class records {
 			/** 
 			 * @todo remove this bare echo in the code!!!
 			 */
-			echo $aiki->records->edit_db_record_by_form_post($serial_post, 
+			echo $aiki->Records->edit_db_record_by_form_post($serial_post, 
 				$post['form_id'], $post['record_id']);
 		}
 
@@ -1518,7 +1517,7 @@ $("div #'.$primary_value.$field.'").html(htmldata);
 
 						$output = str_replace("\n", '', $output);
 
-						//$aiki->output->set_headers($output);
+						//$aiki->Output->set_headers($output);
 
 						$output .= '<div id="'.$primary_value.$field.'" class="edit_ready_'.$primary_value.$field.' edit_in_place">'.$widget_value->$field.'</div>';
 

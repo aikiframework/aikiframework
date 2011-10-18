@@ -39,7 +39,7 @@ if (!defined('IN_AIKI')) {
 
 define ("AIKI_PLUGIN_DIR", "plugins");
 
-class plugins {
+class Plugins {
 
 	private $plugins;
 	private $actions, $must_sorted;
@@ -67,27 +67,27 @@ class plugins {
 		}
 
 		// select plugins that match site/view/language
-		$pluginsActivated= array();
-		foreach ($configurations as $configuration) {
-			if (!isset($pluginsActivated[$configuration->plconf_plugin_id]) &&
+		$pluginsActivated = array();
+		foreach ( $configurations as $configuration ) {
+			if ( !isset($pluginsActivated[$configuration->plconf_plugin_id]) &&
 				 $aiki->match_pair($configuration->plconf_routes,
-									$site, $view, $language)){
+									$site, $view, $language) ) {
 				// is active plugins
 				$pluginsActivated[$configuration->plconf_plugin_id] = $configuration->plconf_values;
 			}
 		}
 
 		// init plugins: set action and load configuration		
-		if (count($pluginsActivated) > 0) {
+		if ( count($pluginsActivated) > 0 ) {
 			$sql =
 				"SELECT plugin_id, plugin_file,plugin_class_name FROM aiki_plugins " .
 				" WHERE plugin_state='available' AND (plugin_id='" .
 				implode("OR plugin_id='", array_keys($pluginsActivated)) . "')";
 			$toload= $db->get_results($sql);
 			if (!is_null($toload)) {
-				foreach ($toload as $load) {
+				foreach ( $toload as $load ) {
 					$file = $AIKI_ROOT_DIR . "/" . AIKI_PLUGIN_DIR . "/" . $load->plugin_file;
-					if (file_exists ($file)) {
+					if (file_exists($file)) {
 						include_once($file);
 						$this->plugins[] = new $load->plugin_class_name($this, $pluginsActivated[$load->plugin_id]);
 					} else {
@@ -112,7 +112,7 @@ class plugins {
 	 * @param optional integer $priority
 	 */
 
-	function add_action($action, $callback, $priority=999) {
+	function addAction($action, $callback, $priority=999) {
 		$this->actions[$action][$priority][] = $callback;
 		$this->must_sorted[$action] = true;
 	}
@@ -124,7 +124,7 @@ class plugins {
 	 * @param byref $string
 	 */
 
-	function do_action($action, &$text) {
+	function doAction($action, &$text) {
 
 		if (!isset($this->actions[$action])) {
 			return 0;
@@ -136,9 +136,9 @@ class plugins {
 			$this->must_sorted[$action]= false;
 		}
 
-		$i=0;
+		$i = 0;
 		// call plugin
-		foreach ($this->actions[$action] as $priority => $callbacks) {
+		foreach ( $this->actions[$action] as $priority => $callbacks ) {
 			foreach ($callbacks as $callback) {
 				$callback->action($action,$text);
 				$i++;
@@ -182,8 +182,7 @@ class plugins {
 
 	 static function insert_plugin_configuration($plugin_id, $route, $priority=999, $vars=array()) {
 		 global $db;
-		 $sql =
-			"INSERT INTO aiki_plugin_configurations" .
+		 $sql = "INSERT INTO aiki_plugin_configurations" .
 			" (plconf_plugin_id, plconf_routes, plconf_priority, plconf_values, plconf_active)" .
 			" VALUES ({$plugin_id},'{$route}', '{$priority}','" .
 			addslashes(serialize($vars))."','active')";				   
@@ -310,26 +309,26 @@ class plugins {
  */
 
 
-abstract class plugin {
+abstract class Plugin {
 	protected $plugins;
 	protected $parameters;
 
 	function __construct($pluginStore, $serializedParameters="") {
 		global $aiki, $db;
-		$this->plugins= $pluginStore;
+		$this->plugins = $pluginStore;
 		$this->parameters = array();
 
 		// set actions
-		foreach ($this->set_actions() as $key=>$value ){
+		foreach ( $this->setActions() as $key=>$value ) {
 			if (is_numeric($key)) {
-				$this->plugins->add_action($value, &$this);
+				$this->plugins->addAction($value, &$this);
 			} else {
-				$this->plugins->add_action($key, &$this ,$value);
+				$this->plugins->addAction($key, &$this, $value);
 			}
 		}
 		// read configuration
 		if ( $serializedParameters!="" &&
-			 preg_match('~^a:[1-9]+[0-0]*:\{~',$serializedParameters) ){ //is array ? a:99:{...
+			 preg_match('~^a:[1-9]+[0-0]*:\{~',$serializedParameters) ) { //is array ? a:99:{...
 			$this->parameters = unserialize($serializedParameters);
 		}
 		
@@ -346,7 +345,7 @@ abstract class plugin {
 		return NULL;
 	}
 
-	abstract function set_actions();
+	abstract function setActions();
 	abstract function action($action, &$text);
 
 }

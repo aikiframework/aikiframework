@@ -338,11 +338,11 @@ class aiki {
 	 */
 	public function processVars($text) {
 		static $bufferReplace;
-		global $aiki, $page ;
+		global $aiki, $page;
 
-		$pretty = $aiki->config->get('pretty_urls',1);
+		$pretty = $aiki->config->get('pretty_urls', 1);
 		$url = $aiki->config->get('url');
-							  
+
 		if ( $bufferReplace == NULL ) {
 			
 			$current_month = date("n");
@@ -366,7 +366,7 @@ class aiki {
 				$paths[] = $language;
 			}
 
-			$bufferReplace = array (
+			$bufferReplace = array(
 				'[userid]'	=> $aiki->membership->userid,
 				'[full_name]' => $aiki->membership->full_name,
 				'[username]'  => $aiki->membership->username,

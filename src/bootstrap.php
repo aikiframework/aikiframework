@@ -49,9 +49,16 @@ require_once("$AIKI_ROOT_DIR/libs/AikiException.php");
 /** 
  * @todo these should be set in some class, and are scoped wrong
  */
-if (isset($_GET['nogui'])){ $nogui = true; }
-if (isset($_GET['noheaders'])){ $noheaders = true; }
-if (isset($_GET['custom_output'])){$custom_output = true;	$noheaders = true; }
+if (isset($_GET['nogui'])) {
+	$nogui = true;
+}
+if (isset($_GET['noheaders'])) {
+	$noheaders = true;
+}
+if (isset($_GET['custom_output'])){
+	$custom_output = true;
+	$noheaders = true;
+}
 
 /** The existence of aiki-defs.php indicates an Automake installation.
  * @see aiki-defs.inc */
@@ -67,8 +74,7 @@ if (file_exists("$AIKI_ROOT_DIR/configs/aiki-defs.php")) {
  * Basically, config is Automake or run-time generated.
  * When ENABLE_RUNTIME_INSTALLER is NOT defined or TRUE, we
  * use the run-time installer. Otherwise, we use the Automake installer. */
-if (!defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE)
-{
+if ( !defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE ) {
 	/* use run-time installer config */
 	if (file_exists("$AIKI_ROOT_DIR/config.php")) {
 		/** @see config.php */
@@ -111,7 +117,7 @@ require_once("$AIKI_ROOT_DIR/libs/database/index.php");
 /**
  * @see aiki.php
  */
-require_once ("$AIKI_ROOT_DIR/libs/aiki.php");
+require_once("$AIKI_ROOT_DIR/libs/aiki.php");
 
 /**
  * Global creation of the aiki instance.
@@ -152,9 +158,9 @@ $membership = $aiki->load("membership");
 
 $aiki->load("languages");
 
-if ($aiki->site->language()!="en"){
+if ( $aiki->site->language() != "en" ) {
 	include_once ("$AIKI_ROOT_DIR/libs/classes/dictionaryTableClass.php");
-	$aiki->dictionary->add("core", new dictionaryTable($aiki->site->language() ) );
+	$aiki->dictionary->add("core", new dictionaryTable($aiki->site->language()));
 }
 
 
@@ -167,7 +173,7 @@ $aiki->load("records");
 $aiki->load("input");
 $aiki->load("output");
 $aiki->load("forms");
-$aiki->load("aiki_array");
+$aiki->load("AikiArray");
 $aiki->load("security");
 $aiki->load("parser");
 $aiki->load("php");

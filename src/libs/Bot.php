@@ -17,16 +17,17 @@
  * @filesource
  */
 
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if (!defined('IN_AIKI')) {
+	die('No direct script access allowed');
+}
 
 
 /**
  * BriefDescription
  *
- * @category    Aiki
- * @package     Library
+ * @category		Aiki
+ * @package		Library
  *
- * @todo        rename class to Bot
  * 
  * @todo		implement these removed methods:
  *				* public function import_javascript;
@@ -34,26 +35,25 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  *				* public function create_mockup_from_psd;
  *				* public function create_mockup_from_svg;
  * 
- * @todo	this code needs review, this is a misc. class, should consider
+ * @todo		this code needs review, this is a misc. class, should consider
  *			changing to import.php and split out the debug code into debug.php
- * @todo	another consideration is that this is an extension and not in the
+ * @todo		another consideration is that this is an extension and not in the
  *			aiki core
  */
-class bot
-{
-    /**
-     * @var integer timeout for using curl
-     */
+class Bot {
+	/**
+	 * @var integer timeout for using curl
+	 */
 	public  $timeout = 20;
-    /**
-     * @var string  url to access
-     */
+	/**
+	 * @var string  url to access
+	 */
 	public  $url;
 
-    /**
-     * Attempts to import an entire html mockup into aiki framework's widgets
-     *
-     * @param   string	$url			url of the html mockup
+	/**
+	 * Attempts to import an entire html mockup into aiki framework's widgets
+	 *
+	 * @param   string	$url			url of the html mockup
 	 * @param	string	$theme			currently unused	
 	 * @param	string	$display_url	
 	 * @global	aiki	$aiki			global aiki instance
@@ -62,17 +62,16 @@ class bot
 	 * 
 	 * @todo	this should really return true if successful or false if not
 	 * @todo	$theme doesn't do anything? use it or loose it.
-     */
-	public function import_mockup($url, $theme, $display_url)
-	{
+	 */
+	public function import_mockup($url, $theme, $display_url) {
 		global $aiki, $db, $config;
 
 		$this->url = $url;
 
-        /**
-         * @todo why doesn't this use the aiki_curl class?
-         * @see aiki_curl.php
-         */
+		/**
+		 * @todo why doesn't this use the AikiCurl class?
+		 * @see AikiCurl.php
+		 */
 		$ch = curl_init();
 		curl_setopt ($ch, CURLOPT_URL, $url);
 		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
@@ -83,11 +82,9 @@ class bot
 		$content = ob_get_contents();
 		ob_end_clean();
 
-		if ($content !== false) 
-		{
-			if ( extension_loaded('tidy' ) and 
-				function_exists('tidy_parse_string')) 
-			{
+		if ( $content !== false ) {
+			if ( extension_loaded('tidy') and
+				function_exists('tidy_parse_string') ) {
 				$tidy = new tidy();
 				$tidy->parseString($content, 
 					$config["html_tidy_config"], 'utf8');
@@ -97,8 +94,7 @@ class bot
 
 			$head = $aiki->get_string_between($content , "<head>", "</head>");
 
-			if (isset($head))
-			{
+			if (isset($head)) {
 				$head = trim($head);
 				$css = $this->import_css($head);
 				$css = addslashes($css);
@@ -106,10 +102,9 @@ class bot
 				$css = '';
 			}
 
-			$body = $aiki->get_string_between($content , "<body>", "</body>");
+			$body = $aiki->get_string_between($content, "<body>", "</body>");
 
-			if (isset($body))
-			{
+			if (isset($body)) {
 				$body = trim($body);
 				$body = str_replace('"', "'", $body);
 
@@ -118,23 +113,20 @@ class bot
 				$divs = $doc->getElementsByTagName('div');
 
 				$i = 0;
-				foreach($divs as $div) 
-				{
+				foreach ( $divs as $div ) {
 					$i++;
 					$match = "/\<$div->nodeName";
-					if ($div->getAttribute('id'))
-					{
+					if ($div->getAttribute('id')) {
 						$widgetname = $div->getAttribute('id');
 						$match .= " id\='".$div->getAttribute('id')."'";
 					} else {
 						$widgetname = 'nonamne';
 					}
 
-					if ($div->getAttribute('class'))
-					{
+					if ($div->getAttribute('class')) {
 						$styleid = $div->getAttribute('class');
 						$match .= " class\='".$div->getAttribute('class')."'";
-					}else{
+					} else {
 						$styleid = 'nostyle';
 					}
 
@@ -142,41 +134,47 @@ class bot
 
 					$item = preg_match($match, $body, $match);
 
-					if (!preg_match('/\<div/', $match[1]))
-					{
+					if (!preg_match('/\<div/', $match[1])) {
 						$match[1] = addslashes($match[1]);
 
-						$do = $db->query("INSERT INTO aiki_widgets (`id` ,`widget_name` ,`widget_site` ,`widget_target` ,`widget_type` ,`display_order` ,`style_id` ,`is_father` ,`father_widget` ,`display_urls` ,`widget` ,`is_active`) VALUES (NULL, '$widgetname', 'default', 'body', 'div', '$i', '$styleid', '0', '', '$display_url', '$match[1]', '1')");
+						$do = $db->query("INSERT INTO aiki_widgets (`id` ,`widget_name` ,`widget_site` " .
+							",`widget_target` ,`widget_type` ,`display_order` ,`style_id` ,`is_father` " .
+							",`father_widget` ,`display_urls` ,`widget` ,`is_active`) VALUES (NULL, " .
+							"'$widgetname', 'default', 'body', 'div', '$i', '$styleid', '0', '', " .
+							"'$display_url', '$match[1]', '1')");
 
 					} else {
 						$father_dev = 
-							$aiki->get_string_between($match[0] , "<div", ">");
+							$aiki->get_string_between($match[0], "<div", ">");
 						$father_name = 
 							$aiki->get_string_between($father_dev, "id='", "'");
 						$father_class = 
 							$aiki->get_string_between($father_dev, 
 							"class='", "'");
 
-						$do = $db->query("INSERT INTO aiki_widgets (`id` ,`widget_name` ,`widget_site` ,`widget_target` ,`widget_type` ,`display_order` ,`style_id` ,`is_father` ,`father_widget` ,`display_urls` ,`widget` ,`is_active`, `css`) VALUES (NULL, '$father_name', 'default', 'body', 'div', '$i', '$father_class', '1', '', '$display_url', '', '1', '$css')");
+						$do = $db->query("INSERT INTO aiki_widgets(`id` ,`widget_name` ,`widget_site` " .
+							",`widget_target` ,`widget_type` ,`display_order` ,`style_id` ,`is_father` ".
+							",`father_widget` ,`display_urls` ,`widget` ,`is_active`, `css`) VALUES " .
+							"(NULL, '$father_name', 'default', 'body', 'div', '$i', '$father_class', " .
+							"'1', '', '$display_url', '', '1', '$css')");
 						$css = '';
 					}
 				} // handle each div
 
 				//set fathers
-				$widgets = $db->get_results("select id, is_father from aiki_widgets where display_urls='$display_url' order by display_order");
-				if ($widgets)
-				{
-					foreach ($widgets as $widget)
-					{
-						if (isset($next_is_son) and $next_is_son != 0)
-						{
+				$widgets = $db->get_results("SELECT id, is_father FROM aiki_widgets WHERE display_urls='$display_url'" .
+					" ORDER BY display_order");
+				if ($widgets) {
+					foreach ( $widgets as $widget ) {
+						if ( isset($next_is_son) and $next_is_son != 0 ) {
 							$update = $db->query("update aiki_widgets set father_widget='$next_is_son' where id = '$widget->id'");
 						}
 
-						if ($widget->is_father == '1')
+						if ( $widget->is_father == '1' ) {
 							$next_is_son = $widget->id;
-						else
+						} else {
 							$next_is_son = 0;
+						}
 					}
 
 					/**
@@ -203,29 +201,25 @@ class bot
 	 * @param	string	$head	text for extracting css
 	 * @return	string	
 	 */
-	public function import_css($head)
-	{
+	public function import_css($head) {
 		$css_matchs = preg_match_all('/\<link href\=\"(.*)\" type\=\"text\/css\" rel=\"stylesheet\" \/\>/Us', $head, $matchs);
 
-		if ($css_matchs > 0)
-		{
+		if ( $css_matchs > 0 ) {
 			$css = '';
-			foreach ($matchs[1] as $css_link)
-			{
-				if (preg_match('/http/', $css_link))
-				{
+			foreach ( $matchs[1] as $css_link ) {
+				if (preg_match('/http/', $css_link)) {
 					$link = $css_link;
-				}else{
-					$link = preg_replace('/(.*)\/(.*)/', '\\1'.'/'.$css_link, 
-										 $this->url);
+				} else {
+					$link = preg_replace('/(.*)\/(.*)/',
+							'\\1' . '/' . $css_link, $this->url);
 				}
 
 				/**
-				 * @todo replace this with the aiki_curl class
+				 * @todo replace this with the AikiCurl class
 				 */
 				$ch = curl_init();
-				curl_setopt ($ch, CURLOPT_URL, $link);
-				curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
+				curl_setopt($ch, CURLOPT_URL, $link);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->timeout);
 
 				ob_start();
 				curl_exec($ch);
@@ -233,8 +227,9 @@ class bot
 				$content = ob_get_contents();
 				ob_end_clean();
 
-				if ($content !== false)
+				if ( $content !== false ) {
 					$css .= $content;
+				}
 			}
 		}
 		return $css;
@@ -246,14 +241,15 @@ class bot
 	 * 
 	 * @param	string	$path	path to the file
 	 */
-	public function rename_files_give_timestamp($path)
-	{
-		if (!isset($path)){return;}
+	public function rename_files_give_timestamp($path) {
+		if (!isset($path)) {
+			return;
+		}
 
 		$handle = opendir($path);
 		$path = str_replace(" ", "\ ", $path);
-		while (($file = readdir($handle))!==false) {
-			if ($file != "." and $file != ".."){
+		while ( ($file = readdir($handle)) !== false ) {
+			if ( $file != "." and $file != ".." ) {
 
 				$file = str_replace(" ", "\ ", $file);
 				$file = str_replace("(", "\(", $file);
@@ -283,41 +279,39 @@ class bot
 	 * @param	string		$tablename	name of table for meta
 	 * @global	array		$config		global config options
 	 */
-	public function create_photos_archive_meta($tablename)
-	{
+	public function create_photos_archive_meta($tablename) {
 		global $config;
 
 		$photos = $db->get_results(
-			"SELECT * FROM $tablename where checksum_sha1 =''");
-		foreach ( $photos as $photo )
-		{
+			"SELECT * FROM $tablename WHERE checksum_sha1 =''");
+		foreach ( $photos as $photo ) {
 			$path = $photo->full_path;
 
-			if (file_exists($config['top_folder'].'/'.$path.$photo->filename))
-			{
+			if (file_exists($config['top_folder'] . '/' . $path.$photo->filename)) {
 				$sha1 = 
-					sha1_file($config['top_folder'].'/'.$path.$photo->filename);
+					sha1_file($config['top_folder'] . '/' . $path.$photo->filename);
 				$md5 = 
-					md5_file($config['top_folder'].'/'.$path.$photo->filename);
+					md5_file($config['top_folder'] . '/' . $path.$photo->filename);
 				$filesize = 
-					filesize($config['top_folder'].'/'.$path.$photo->filename);
+					filesize($config['top_folder'] . '/' . $path.$photo->filename);
 				$size = 
-				getimagesize($config['top_folder'].'/'.$path.$photo->filename);
+				getimagesize($config['top_folder'] . '/' . $path.$photo->filename);
 
 				$width = $size["0"];
 				$hight = $size["1"];
 
-				$db->query("update $tablename set checksum_sha1='$sha1', checksum_md5='$md5', upload_file_size='$filesize', width='$width', height='$hight', is_missing='0' where id='$photo->id'");
+				$db->query("UPDATE $tablename SET checksum_sha1='$sha1', checksum_md5='$md5', " .
+					"upload_file_size='$filesize', width='$width', height='$hight', is_missing='0'" .
+					" WHERE id='$photo->id'");
 
 			} else {
-				$db->query(
-				"update $tablename set is_missing='1' where id='$photo->id'");
+				$db->query("UPDATE $tablename SET is_missing='1' WHERE id='$photo->id'");
 			}
 			/**
 			 * @todo why is this echoing content? Remove this and separate
 			 * this function from its view. And, use message class.
 			 */
-			echo $photo->id."<br>";
+			echo $photo->id . "<br>";
 		}
 	} // end of create_photos_archive_meta
 
@@ -334,34 +328,34 @@ class bot
 	 *
 	 * @param	string	$database	the database name
 	 */
-	function mysql_dump($database) 
-	{
+	function mysql_dump($database) {
 		$query = '';
 
 		$tables = @mysql_list_tables($database);
-		while ($row = @mysql_fetch_row($tables)) 
-		{
+		while ($row = @mysql_fetch_row($tables)) {
 			$table_list[] = $row[0];
 		}
 
-		for ($i = 0; $i < @count($table_list); $i++) 
-		{
+		for ( $i = 0; $i < @count($table_list); $i++ ) {
 			$results = 
 				mysql_query('DESCRIBE ' . $database . '.' . $table_list[$i]);
 			$query .='CREATE TABLE `' . $table_list[$i] . '` (' . "\r";
 
 			$tmp = '';
 
-			while ($row = @mysql_fetch_assoc($results))
-			{
+			while ($row = @mysql_fetch_assoc($results)) {
 				$query .= '`' . $row['Field'] . '` ' . $row['Type'];
 
-				if ($row['Null'] != 'YES') { $query .= ' NOT NULL'; }
-				if ($row['Default'] != '') { $query .= ' DEFAULT \'' . 
-											 $row['Default'] . '\''; }
-				if ($row['Extra']) { $query .= ' '.strtoupper($row['Extra']); }
-				if ($row['Key'] == 'PRI') 
-				{ 
+				if ($row['Null'] != 'YES') {
+					$query .= ' NOT NULL';
+				}
+				if ($row['Default'] != '') {
+					$query .= ' DEFAULT \'' . $row['Default'] . '\'';
+				}
+				if ($row['Extra']) {
+					$query .= ' '.strtoupper($row['Extra']);
+				}
+				if ( $row['Key'] == 'PRI' ) {
 					$tmp = 'primary key(' . $row['Field'] . ')'; 
 				}
 				$query .= ','. "\r";
@@ -374,13 +368,11 @@ class bot
 			$results = mysql_query(
 				'SELECT * FROM ' . $database . '.' . $table_list[$i]);
 
-			while ($row = @mysql_fetch_assoc($results))
-			{
+			while ($row = @mysql_fetch_assoc($results)) {
 				$query .= 'INSERT INTO `' . $table_list[$i] .'` (';
 				$data = Array();
 
-				while (list($key, $value) = @each($row)) 
-				{
+				while (list($key, $value) = @each($row)) {
 					$data['keys'][] = 
 					$key; $data['values'][] = 
 					addslashes($value);
@@ -409,15 +401,12 @@ class bot
 	 *
 	 * @todo	rename function to showTableStructure
 	 */
-	function ShowTableStructure($table)
-	{
+	function ShowTableStructure($table) {
 		global $aiki;
 
-		$result2 = mysql_query(
-		'SHOW COLUMNS FROM '.$table) or die('cannot show columns from '.$table);
+		$result2 = mysql_query('SHOW COLUMNS FROM ' . $table) or die('cannot show columns from ' . $table);
 
-		if(mysql_num_rows($result2)) 
-		{
+		if (mysql_num_rows($result2)) {
 			$output = '<div id="table_information_container">
 			<table cellpadding="0" cellspacing="0" class="db-table" '.
 				'style="width: 100%">';
@@ -450,16 +439,14 @@ class bot
 	 *
 	 * @todo	rename class to dataGrid
 	 */
-	function DataGrid($table_name)
-	{
+	function DataGrid($table_name) {
 		global $db, $config, $aiki;
 
 		$table_name = trim($table_name);
 
 		$table_info = $db->get_row(
-			"select * from aiki_forms where form_table like '$table_name'");
-		if (!$table_info)
-		{
+			"SELECT * FROM aiki_forms WHERE form_table LIKE '$table_name'");
+		if (!$table_info) {
 			/** 
 			 * @todo replace with message class
 			 */
@@ -477,24 +464,24 @@ class bot
 		$output = ("
 		<style type=\"text/css\">
 		.dashboard_grid_container ul li{
-		    float: left;
-            padding-right: 10px;
+			float: left;
+			padding-right: 10px;
 		}
 		.dashboard_grid_container ul li ul li{
 		 float: none;
 		}
 		</style>
 		<form method=\"POST\">
-							Search: 
-							<input type=\"text\" name=\"keyword\" size=\"30\">
-							<select name=\"wheresearch\">");
-		foreach($form_array as $field)
-		{
-			if ($field != $tablename)
-			{
+			Search: 
+			<input type=\"text\" name=\"keyword\" size=\"30\">
+			<select name=\"wheresearch\">");
+		foreach ( $form_array as $field ) {
+			if ( $field != $tablename ) {
 				$intwalker = explode(":", $field);
 
-				if (!isset($intwalker[1])){$intwalker[1] = $intwalker[0];}
+				if (!isset($intwalker[1])) {
+					$intwalker[1] = $intwalker[0];
+				}
 				$output .= 
 				"<option value=\"$intwalker[0]\">".$intwalker[1]."</option>";
 			}
@@ -502,10 +489,9 @@ class bot
 		$output .= 
 		"</select><input type=\"submit\" value=\"Go\" name=\"search\"></form>";
 
-		if (isset($orderby))
-		{
+		if (isset($orderby)) {
 			$orderby = "order by ".$orderby;
-		} elseif ($pkey){
+		} elseif ($pkey) {
 			$orderby = "order by ".$pkey;
 		} else {
 			$orderby = '';
@@ -514,19 +500,16 @@ class bot
 		$data = $db->get_results("select * from $tablename $orderby");
 
 		$form_fields = mysql_query('SHOW COLUMNS FROM '.$tablename) 
-            or die('cannot show columns from '.$tablename);
+			or die('cannot show columns from '.$tablename);
 
-		if(mysql_num_rows($form_fields)) 
-		{
+		if (mysql_num_rows($form_fields)) {
 			$output .= "<div class='dashboard_grid_container'><ul>";
 
 			$records_output = '';
 			$edit_delete_output = '';
 
-			while($fields_names = mysql_fetch_row($form_fields))
-			{
-				if ($fields_names['0'] == $pkey)
-				{
+			while($fields_names = mysql_fetch_row($form_fields)) {
+				if ( $fields_names['0'] == $pkey ) {
 					$edit_delete_output .= 
 					"<li><span class='dashboard_manage_text'>".
 					"<b>Tools</b></span><ul>";
@@ -536,32 +519,29 @@ class bot
 					"<b><a href=\"\">".$fields_names['0']."</a></b></span><ul>";
 
 				$i = 0;
-				if ($data)
-				{
-					foreach ($data as $field_data)
-					{
-						if ( ($i % 2) == 0 )
+				if ($data) {
+					foreach ( $data as $field_data ) {
+						if ( ($i % 2) == 0 ) {
 							$li_class="dashboard_li_even";
-						else 
+						} else {
 							$li_class = "dashboard_li_odd";
-
+						}
 						$field_data->$fields_names['0'] = 
 							htmlspecialchars($field_data->$fields_names['0']);
 
-						if ($fields_names['0'] == $pkey)
-						{
+						if ( $fields_names['0'] == $pkey ) {
 							$edit_delete_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'><a href='".$config['url']."admin_tools/edit/".$table_info->id."/".$field_data->$fields_names['0']."'  rel=\"edit_record\" rev=\"#table_information_container\">edit</a> -
 						<a href='".$config['url']."admin_tools/delete/".$table_info->id."/".$field_data->$fields_names['0']."' rel=\"delete_record\" rev=\"#table_information_container\">delete</a></span></li>";
 						}
 
-						$records_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
+						$records_output .= "<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
 
 						$i++;
 					}
 				}
-				if ($fields_names['0'] == $pkey)
+				if ( $fields_names['0'] == $pkey ) {
 					$edit_delete_output .= "</ul></li>";
-
+				}
 				$records_output .= "</ul></li>";
 			}
 			$output .= $edit_delete_output . $records_output . "</ul></div>";
@@ -572,35 +552,33 @@ class bot
 	} // end of dataGrid function
 
 
-    /**
-     * This is supposed to update aiki's sql to the latest.
-     * 
-     * Upon inspection, this looks at the sql in a current site and compares
-     * it to the current sql. If problem it skips the creation of new sql.
-     *
-     * @global  string      $AIKI_ROOT_DIR  path to system folder
-     * @globa   array       $db             global db instance
-     *
+	/**
+	 * This is supposed to update aiki's sql to the latest.
+	 * 
+	 * Upon inspection, this looks at the sql in a current site and compares
+	 * it to the current sql. If problem it skips the creation of new sql.
+	 *
+	 * @global  string	  $AIKI_ROOT_DIR  path to system folder
+	 * @globa   array	   $db			 global db instance
+	 *
 	 * @todo @link http://aikiframework.org/wiki/Aiki_Robust_Update_System
-     * @todo this is what bassel called the update system, need to review it
-     * @todo if there is any problem, really shouldn't run this.
-     * @todo this should be saving the current admin widgets somewhere and
-     * installing new widgets in place IMO, but need to look into more.
-     * @todo admin widgets definitely should be replaced upon each new version
-     * @todo this function is too big, and needs to take into account changes
-     * from version to version
-     * @todo hardcoded strings need to be removed
-     */
-	function auto_update_to_latest_aiki()
-	{
+	 * @todo this is what bassel called the update system, need to review it
+	 * @todo if there is any problem, really shouldn't run this.
+	 * @todo this should be saving the current admin widgets somewhere and
+	 * installing new widgets in place IMO, but need to look into more.
+	 * @todo admin widgets definitely should be replaced upon each new version
+	 * @todo this function is too big, and needs to take into account changes
+	 * from version to version
+	 * @todo hardcoded strings need to be removed
+	 */
+	function auto_update_to_latest_aiki() {
 		global $AIKI_ROOT_DIR, $db;
 
 		$output = '';
 		//create tables if one doesn't exists and check structure
 		$sql_create_tables = 
 			file_get_contents("$AIKI_ROOT_DIR/sql/CreateTables.sql");
-		if (false == $sql_create_tables)
-		{
+		if ( false == $sql_create_tables ) {
 			die("<br />FATAL: failed to read file -> ".
 				"$AIKI_ROOT_DIR/sql/CreateTables.sql<br />");
 		}
@@ -611,8 +589,7 @@ class bot
 
 		$sql = explode(SQL_DELIMIT, $sql);
 
-		foreach($sql as $sql_statment)
-		{
+		foreach ( $sql as $sql_statment ) {
 			mysql_query($sql_statment);
 
 			$table_name = preg_match(
@@ -622,21 +599,18 @@ class bot
 
 			//get the current table structure
 			$descripe_table = mysql_query('describe '.$table_name);
-			while($field_name = mysql_fetch_row($descripe_table)) 
-			{
+			while($field_name = mysql_fetch_row($descripe_table)) {
 				$current_table_structure[] = $field_name[0];
 			}
 
 			//get the table structure from stored database query
 			$table_fields = preg_match_all(
 				'/\`(.*)\`/Usi', $sql_statment, $table_fields_matches);
-			foreach ($table_fields_matches['1'] as $field)
-			{
+			foreach ( $table_fields_matches['1'] as $field ) {
 				//find if column exists
-				if ($field != $table_name and 
+				if ( $field != $table_name and 
 					!in_array($field, $fields_array) and 
-					!in_array($field, $current_table_structure))
-				{
+					!in_array($field, $current_table_structure) ) {
 					//get column description
 					$field_description = preg_match(
 					'/\`'.$field.'\`(.*)\,/Usi', $sql_statment, $desc_matches);
@@ -645,8 +619,7 @@ class bot
 						   $desc_matches[1];
 					$update_table = mysql_query($sql);
 
-					if ($update_table)
-					{
+					if ($update_table) {
 						$output .= "Added the field $field to ".
 								   "table <b>$table_name</b><br>";
 					}
@@ -661,8 +634,7 @@ class bot
 		//check for default values
 		$sql_insert_defaults = 
 			file_get_contents("$AIKI_ROOT_DIR/sql/InsertDefaults.sql");
-		if (false == $sql_insert_defaults)
-		{
+		if ( false == $sql_insert_defaults ) {
 			die("<br />FATAL: failed to read file -> ".
 				"$AIKI_ROOT_DIR/sql/InsertDefaults.sql<br />");
 		}

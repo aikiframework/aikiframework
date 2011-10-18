@@ -229,32 +229,32 @@ class message {
 		}
 
 		$tag = array();;
-		if (preg_match('#^<([^ />]*) ?[^>]*>$#s',$glue,$tag)) {
+		if (preg_match('#^<([^ />]*) ?[^>]*>$#s', $glue, $tag)) {
 			// it's a HTML tag
 			$tag = $tag[1];
 			echo "*** $tag ***";
 			switch ($tag) {
 				case "ul":
 				case "ol":
-					return "$glue<li>". implode("</li><li>", 
-						$this->stored[$key]) ."</li></$tag>";
+					return "$glue<li>" . implode("</li><li>", 
+						$this->stored[$key]) . "</li></$tag>";
 				case "br":
 					return implode($glue, $this->stored[$key]);
 				default:
-					return "$glue". implode("</$tag>$glue", 
-						$this->stored[$key]) ."</$tag>";
+					return "$glue" . implode("</$tag>$glue", 
+						$this->stored[$key]) . "</$tag>";
 			}
 		}
 
 		switch ($glue) {
 			case "as array": return $this->stored[$key];
 			case "comment-list": 
-				return "<!-- ". implode(", ", $this->stored[$key]) ."-->";
-			case "li": return "<li>". implode("</li><li>", 
-					   $this->stored[$key]) ."</li>";
+				return "<!-- " . implode(", ", $this->stored[$key]) . "-->";
+			case "li": return "<li>" . implode("</li><li>", 
+					   $this->stored[$key]) . "</li>";
 			case "ol":
-			case "ul": return "<$glue><li>". implode("</li><li>", 
-					   $this->stored[$key]) ."</li></$glue>";
+			case "ul": return "<$glue><li>" . implode("</li><li>", 
+					   $this->stored[$key]) . "</li></$glue>";
 			default  : return implode($glue, $this->stored[$key]);
 		}
 		return "";
@@ -338,7 +338,7 @@ class message {
 	 * @return	mixed
 	 */
 	function error($text, $attribs=NULL, $echo = true) {
-		$attribs['class'] =  $this->addclass('message-error', $attribs);
+		$attribs['class'] = $this->addclass('message-error', $attribs);
 		return message($text, $attribs, $echo);
 	}
 
@@ -377,7 +377,7 @@ class message {
 	 * @return	mixed
 	 */
 	function general($text,$attribs=NULL, $echo = true) {
-	   $attribs['class'] =  $this->addclass('message', $attribs );
+	   $attribs['class'] = $this->addclass('message', $attribs);
 	   return message($text, $attribs, $echo);
 	}
 

@@ -17,12 +17,11 @@
  * @filesource
  */
 
-
 /**
  * Starts the clock so we can measure loading time of the site
  * @global float $start_time the start time
  */
-$start_time = (float) array_sum(explode(' ',microtime()));
+$start_time = (float)array_sum(explode(' ',microtime()));
 
 /**
  * Creates a container for the total generated public HTML to display in browser
@@ -36,7 +35,6 @@ $html_output = '';
 require_once("bootstrap.php");
 config_error_reporting();
 
-
 /**
  * cache_file have tree result:
  *  false: if no cache file must be created
@@ -44,12 +42,12 @@ config_error_reporting();
  *  die, after echo a previous fresh cache file.
  * @global string $html_cache_file
  */
-$html_cache_file = $aiki->output->cache_file();
+$html_cache_file = $aiki->Output->cache_file();
 
 /**
  * @see widgets.php
  */
-require_once ("libs/widgets.php");
+require_once("libs/widgets.php");
 $layout = new CreateLayout();
 
 /**
@@ -57,12 +55,12 @@ $layout = new CreateLayout();
  */
 
 $noheaders = false;
-if (isset($global_widget) ) {
+if (isset($global_widget)) {
 	$noheaders = true;
 	$nogui = true;
 }
 
-
+$log->message("<>test ERROR", Log::ERROR);
 /**
  * @todo fix the misspelling
  */
@@ -71,18 +69,18 @@ if ($layout->widget_custom_output) {
 	$noheaders = true;
 }
 
-if ( $noheaders) {
+if ($noheaders) {
 	$html_output = $layout->html_output;
 } else {   
-	$html_output = $aiki->output->headers();
-	if (isset($aiki->output->title)) {
-		$layout->html_output =  str_replace(
+	$html_output = $aiki->Output->headers();
+	if (isset($aiki->Output->title)) {
+		$layout->html_output = str_replace(
 			'[page_title]', 
-			$aiki->output->title, 
+			$aiki->Output->title, 
 			$layout->html_output);
 	} 
 	$html_output .= $layout->html_output;
-	$html_output .= $aiki->output->footer();
+	$html_output .= $aiki->Output->footer();
 } 
 
 $html_output = $aiki->languages->L10n($html_output);
@@ -91,27 +89,27 @@ $html_output = $aiki->languages->L10n($html_output);
  * Tidy html using libtidy
  * @todo abstract this use of libtidy here
  */
-if ( extension_loaded('tidy' ) 
-	 && function_exists('tidy_parse_string')
-	 && $config["html_tidy"]) 
-{
+if ( extension_loaded('tidy') &&
+	 function_exists('tidy_parse_string') &&
+	 $config["html_tidy"] ) {
 	$tidy = new tidy();
 	$tidy->parseString($html_output, $config["html_tidy_config"], 'utf8');
 	$tidy->cleanRepair();
 
-	if ($config["tidy_compress"])
+	if ($config["tidy_compress"]) {
 		echo preg_replace("/\r?\n/m", "",tidy_get_output($tidy));
-	else
+	} else {
 		echo tidy_get_output($tidy);
+	}
 } else {
 
-	if (isset($_REQUEST['compress_output']) || 
-		(isset($config["compress_output"]) && $config["compress_output"]))  {
-		$html_output = $aiki->output->compress( $html_output);
+	if ( isset($_REQUEST['compress_output']) || 
+		( isset($config["compress_output"]) && $config["compress_output"] ) )  {
+		$html_output = $aiki->Output->compress($html_output);
 	}
 
 	if (!isset($_GET['no_output']))  {
-		$aiki->plugins->do_action("output_html", $html_output);   
+		$aiki->Plugins->doAction("output_html", $html_output);   
 		print $html_output;
 	}
 } // end of using tidy

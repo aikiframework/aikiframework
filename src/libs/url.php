@@ -56,7 +56,7 @@ class url {
 	 * 
 	 */
 	public function first_url(){
-		return current( $this->url);
+		return current($this->url);
 	}
 
 	/**

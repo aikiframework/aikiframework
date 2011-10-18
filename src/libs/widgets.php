@@ -18,9 +18,7 @@
  */
 	
 
-
-
-if(!defined('IN_AIKI')){
+if (!defined('IN_AIKI')){
 	die('No direct script access allowed');
 }
 
@@ -92,10 +90,10 @@ class CreateLayout {
 		global $db, $aiki;
 
 		// Initialize
-		$this->widgets_css= array();
+		$this->widgets_css = array();
 
 		// Convert global_values to an object to cache the SOL results in parsDBpars function.
-		$this->global_values=new stdClass();
+		$this->global_values = new stdClass();
 
 		// the widget is given directly or
 		if (isset($_GET["widget"])) {
@@ -107,7 +105,7 @@ class CreateLayout {
 		
 		// or in url, search widget and test there is a unique response
 		$module_widgets = $this->get_candidate_widgets();
-		$unique_widget_exists= false;		
+		$unique_widget_exists = false;		
 		if ($module_widgets) {				
 			foreach($module_widgets as $tested_widget){
 				if ($tested_widget->display_urls != "*"){
@@ -120,14 +118,14 @@ class CreateLayout {
 
 		// ..page not found..
 		if (!$unique_widget_exists) {
-			$this->html_output .= $aiki->errors->page_not_found();			
+			$this->html_output .= $aiki->Errors->pageNotFound();
 			return;
 		}
 	
 		// now filter canditate widgets, before create content
 		$widget_group = array();
-		foreach ($module_widgets as $widget) {
-			if ($aiki->url->match($widget->display_urls) && !$aiki->url->match($widget->kill_urls)){
+		foreach ( $module_widgets as $widget ) {
+			if ( $aiki->url->match($widget->display_urls) && !$aiki->url->match($widget->kill_urls) ) {
 				$widget_group[] = $widget->id;			
 			}			
 		}	
@@ -164,7 +162,7 @@ class CreateLayout {
 		if (isset($widgets_query)) {
 			$widget_result = $db->get_results($widgets_query);
 		}
-		if ( !isset($widgets_query) || is_null($widget_result) ){
+		if ( !isset($widgets_query) || is_null($widget_result) ) {
 			return ; // @TODO debug error
 		}
 		   
@@ -458,7 +456,7 @@ class CreateLayout {
 
 				// puts records in row
 				if ( $widget->display_in_row_of > 0 ) {
-					$widgetContents = $aiki->output->displayInTable(
+					$widgetContents = $aiki->Output->displayInTable(
 						$widgetContents, 
 						$widget->display_in_row_of);
 				}
@@ -477,7 +475,7 @@ class CreateLayout {
 				$widgetContents = $aiki->php->parser($widgetContents);
 				$widgetContents = $this->inline_widgets($widgetContents);
 				$widgetContents = $this->inherent_widgets($widgetContents);
-				$widgetContents = $aiki->sql_markup->sql($widgetContents);
+				$widgetContents = $aiki->SqlMarkup->sql($widgetContents);
 
 
 				// Hits sustitution 
@@ -517,15 +515,15 @@ class CreateLayout {
 			$processed_widget = '';
 		} else {	
 			$processed_widget = $this->parsDBpars($processed_widget, '');
-			$processed_widget = $aiki->processVars ($processed_widget);
+			$processed_widget = $aiki->processVars($processed_widget);
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
 			$processed_widget = $aiki->text->aiki_nl2br($processed_widget);
 			$processed_widget = $aiki->text->aiki_nl2p($processed_widget);
 			
 			$processed_widget = $aiki->processVars ($processed_widget);
 			$processed_widget = $aiki->parser->process($processed_widget);
-			$processed_widget = $aiki->aiki_array->displayArrayEditor($processed_widget);
-			$processed_widget = $aiki->forms->displayForms($processed_widget);
+			$processed_widget = $aiki->AikiArray->displayArrayEditor($processed_widget);
+			$processed_widget = $aiki->Forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);
 			$processed_widget = $aiki->php->parser($processed_widget);
 			$processed_widget = stripslashes($processed_widget);
@@ -534,7 +532,7 @@ class CreateLayout {
 		
 
 		// Apply (#(header:...
-		$processed_widget= $this->parse_header($processed_widget);
+		$processed_widget = $this->parse_header($processed_widget);
 			
 		if (isset($widget_cache_id)) {
 			$widget_cache_id_hash = md5($widget_cache_id);
@@ -554,7 +552,7 @@ class CreateLayout {
 
 			$title = $this->parsDBpars($widget->pagetitle, $widget_value);
 			$title = $aiki->input->requests($title);
-			$aiki->output->set_title($title);
+			$aiki->Output->set_title($title);
 		}
 
 		
@@ -828,7 +826,7 @@ class CreateLayout {
 		$template = $aiki->parser->tags($template, $values);
 		$template = $this->noaiki($template);
 		$template = $this->parsDBpars($template, $values);
-		$template = $aiki->records->edit_in_place($template, $values);
+		$template = $aiki->Records->edit_in_place($template, $values);
 		$template = $aiki->text->aiki_nl2br($template);
 		$template = $aiki->text->aiki_nl2p($template);
 		return $template;
@@ -840,10 +838,10 @@ class CreateLayout {
 		$template = $this->parsDBpars($template, '');
 		$template = $this->noaiki($template);
 		$template = $aiki->url->apply_url_on_query($template);
-		$template = $aiki->security->inlinePermissions($template);								  
+		$template = $aiki->security->inlinePermissions($template);
 		$template = $this->inline_widgets($template);
 		$template = $this->inherent_widgets($template);
-		$template = $aiki->sql_markup->sql($template);
+		$template = $aiki->SqlMarkup->sql($template);
 		return $template;
 	}
 

@@ -350,12 +350,12 @@ Before we start you need the following:
 	}
 
 
-	echo '<h1>Great success '.$full_name.'! Aiki Framework is installed.</h1>';
+	echo '<h1>Great success ' . $full_name . '! Aiki Framework is installed.</h1>';
 	echo '<a href="admin/">Click here to login and start creating a CMS</a>.';
 	echo '<br />';
-	echo 'Username: '.$username;
+	echo 'Username: ' . $username;
 	echo '<br />';
-	echo 'Password: '.$admin_password;
+	echo 'Password: ' . $admin_password;
 
 	if ($email) {
 

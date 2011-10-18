@@ -17,7 +17,7 @@
  * @filesource
  */
 
-if(!defined('IN_AIKI')) {
+if (!defined('IN_AIKI')) {
 	die('No direct script access allowed');
 }
 
@@ -28,7 +28,7 @@ if(!defined('IN_AIKI')) {
  *
  */
 
-class css_parser {
+class CssParser {
 
 	/**
 	 * Complete parse of a text.
@@ -41,7 +41,7 @@ class css_parser {
 	 */
 	function parse($style, $vars) {
 		$style = $this->style_parse_conditional_css($style, $vars);
-		$style = $this->style_parse_declarations($style, $vars );
+		$style = $this->style_parse_declarations($style, $vars);
 		$style = $this->style_parse_vars($style, $vars);	
 		return $style;
 	}
@@ -84,7 +84,7 @@ class css_parser {
 	 * @return string $style filtered
 	 */
 
-	function style_parse_declarations ($style, &$var) {
+	function style_parse_declarations($style, &$var) {
 		global $aiki;
 		
 		$view = $aiki->site->view();
@@ -123,7 +123,7 @@ class css_parser {
 						}
 						$key = substr($key, 1);
 															
-						if ( $value && substr($value,0,1)=="(" && substr($value, -1, 1) == ")" ) {
+						if ( $value && substr($value,0,1) == "(" && substr($value, -1, 1) == ")" ) {
 							
 							$value= substr($value,1,-1);						
 							$value= meval($value, $var);							

@@ -28,9 +28,8 @@ if (!defined('IN_AIKI')) {
  * @category    Aiki
  * @package     Library
  *
- * @todo rename class to Output
  */
-class output {
+class Output {
 
 	/**
 	 * storage tank for html output
@@ -79,13 +78,13 @@ class output {
 		global $aiki;
 		$title = '<title>' . ( $this->title ? "$this->title - " : "" ) .
 			$aiki->site->site_name() . '</title>';
-		$aiki->plugins->do_action("output_title", $title);						
+		$aiki->Plugins->doAction("output_title", $title);						
 		
 		$header = "\n".
 			'<meta charset="__encoding__"/>' . "\n" .
 			'<meta name="generator" content="Aikiframework ' .
 			AIKI_VERSION . '.' . AIKI_REVISION . '" />';
-		$aiki->plugins->do_action("output_meta", $header);
+		$aiki->Plugins->doAction("output_meta", $header);
 
 		return $header.$title;
 	}
@@ -171,10 +170,10 @@ class output {
 
 		$header .= $this->headers;
 		$header .= "</head>";
-		$aiki->plugins->do_action("output_head", $header);
+		$aiki->Plugins->doAction("output_head", $header);
 				
 		$bodybegin = "\n<body>\n";
-		$aiki->plugins->do_action("output_body_begin", $bodybegin);
+		$aiki->Plugins->doAction("output_body_begin", $bodybegin);
 		$header .= $bodybegin;
 		return $header;
 	} // end of headers function
@@ -189,9 +188,9 @@ class output {
 	public function footer() {
 		global $aiki;
 		$footer = "\n</body>";
-		$aiki->plugins->do_action("output_body_end", $footer);
+		$aiki->Plugins->doAction("output_body_end", $footer);
 		$html= "</html>";
-		$aiki->plugins->do_action("output_html_end", $html);
+		$aiki->Plugins->doAction("output_html_end", $html);
 		return $footer.$html;
 	}
 
