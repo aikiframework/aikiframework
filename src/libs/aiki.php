@@ -404,11 +404,11 @@ class aiki {
 				
 		}
 				
-		if ($pretty) {
+		if (!$pretty) {
 			/* TODO improve this*/		
 			$text = preg_replace(
-				'/href\=\"\[root\](.*)\"/U',
-				'href="[root]?pretty=\\1"', 
+				'/<a([^>]*)href\s*=\s*(["\'])\[root\](.*)\\2/U',
+				'<a\\1href=\\2[root]?pretty=\\3\\2', 
 				$text);
 		}
 		
