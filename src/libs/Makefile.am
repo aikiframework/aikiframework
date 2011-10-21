@@ -61,6 +61,7 @@ aiki_src_files = \
 SUBDIRS = \
 	archive \
 	backup \
+	classes \
 	database \
 	file \
 	session \
@@ -71,6 +72,7 @@ SUBDIRS = \
 DIST_SUBDIRS = \
 	archive \
 	backup \
+	classes \	
 	database \
 	file \
 	session \
