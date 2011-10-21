@@ -108,7 +108,7 @@ class Plugins {
 	 * Add a action to aiki
 	 *
 	 * @param string $action
-	 * @param object $callback. A reference to plugin objetc
+	 * @param object $callback. A reference to plugin object
 	 * @param optional integer $priority
 	 */
 
@@ -321,9 +321,9 @@ abstract class Plugin {
 		// set actions
 		foreach ( $this->setActions() as $key=>$value ) {
 			if (is_numeric($key)) {
-				$this->plugins->addAction($value, &$this);
+				$this->plugins->addAction($value, $this);
 			} else {
-				$this->plugins->addAction($key, &$this, $value);
+				$this->plugins->addAction($key, $this, $value);
 			}
 		}
 		// read configuration
