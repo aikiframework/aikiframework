@@ -23,11 +23,13 @@ aiki_src_files = \
 
 # Subdirectories to be built
 SUBDIRS = \
-	admin
+	admin \
+	installer
 
 # Subdirectories to distribute
 DIST_SUBDIRS = \
-	admin
+	admin \
+	installer
 
 # Additional files to distribute
 EXTRA_DIST = \
