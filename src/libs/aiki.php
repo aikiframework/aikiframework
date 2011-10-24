@@ -279,6 +279,55 @@ class aiki {
 		return false;
 	}
 
+	/**
+	 * Search first outest block in a text.
+	 * Example:
+	 * outest block of ( (css((sql(good)sql))css) .. " is (css((sql(good)sql))css)";
+	 *
+	 * @param string $string
+	 * @param string $offset
+	 *
+	 * @return mixed  false if not found or array with 0:initial,1:lenght
+	 *                2 delim
+	 */
+		
+	function outer_markup ( $string , $offset=0 ){
+        $i= 64; //max level of recursion.
+        $delim= "";
+        
+		$temp ="";
+		if ( preg_match ('/\(([a-z]+)\(/U', $string, $temp)  ){
+			$delim      = $temp[1];
+			$startDelim ="($delim(";
+			$endDelim   =")$delim)";
+			$temp = "";				
+		} else {
+			return false;
+		}			
+		               
+        $initial = strpos ($string, $startDelim, $offset);
+        if ( $initial === false ) {
+            return false;
+        }
+
+		$end = $initial;
+		$nested = $initial;
+        
+        do {
+
+            $nested = strpos($string, $startDelim, $nested+1);
+            $end    = strpos($string, $endDelim, $end+1);
+            if ( $end === false )
+                return false;
+            if ( $nested === false || $nested > $end ){
+				return array($initial, $end-$initial,$delim);				
+            }
+                            
+            $i--;
+        } while ($i);
+        return false;
+    }
+
 
 	/**
 	 * Eval a expression thats contains basic operators (+,-*,/), 
