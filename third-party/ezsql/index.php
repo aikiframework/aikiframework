@@ -616,7 +616,9 @@ switch ($config['db_type']){
 }
 
 
-if ($config['enable_query_cache']){
+if (isset($config['enable_query_cache']) && isset($config['cache_dir'])
+	&& $config['enable_query_cache'] ) {
+	
 	if (!isset($db_cache_timeout)){
 		$db_cache_timeout = 24;
 	}
