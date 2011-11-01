@@ -1,0 +1,151 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: AIKI_TOOLSS\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-10-31 23:26+0100\n"
+"PO-Revision-Date: 2011-10-31 23:33+0100\n"
+"Last-Translator: Roger Martin <rg1024@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: aiki_tools.php:78
+msgid "Please, wait 10 seconds before click on connect button"
+msgstr "Por favor, espera 10 segundos antes de clicar sobre el botón de envio"
+
+#: aiki_tools.php:85
+#, php-format
+msgid "Connected as %s"
+msgstr "Conectado como %s"
+
+#: aiki_tools.php:90
+#, php-format
+msgid "Select db %s"
+msgstr "Seleccionada la base de datos %s"
+
+#: aiki_tools.php:93
+msgid "No database selected"
+msgstr "No hay ninguna base de datos seleccionada"
+
+#: aiki_tools.php:98
+msgid "Error: can't connect to server"
+msgstr "Error: no se pudó conectar al servidor"
+
+#: aiki_tools.php:128
+msgid "Table name or id value not found"
+msgstr "No se encuentra el nombre de la tabla o el campo id"
+
+#: aiki_tools.php:142
+msgid "Error saving: missing table of id field value"
+msgstr "Error al guardar: no hay tabla o campo id"
+
+#: aiki_tools.php:144
+msgid "Record saved"
+msgstr "Registro guardado"
+
+#: aiki_tools.php:146
+msgid "Error saving:"
+msgstr "Error al guardar:"
+
+#: aiki_tools.php:152
+msgid "Error cloning: missing table of id field value"
+msgstr "Error en el clonado: falta la tabla o el campo id"
+
+#: aiki_tools.php:154
+msgid "Record cloned"
+msgstr "Registro clonadao"
+
+#: aiki_tools.php:156
+msgid "Error cloning:"
+msgstr "Error al clonar"
+
+#: aiki_tools.php:163
+msgid "Error adding: missing table"
+msgstr "Error al añadir: falta tabla"
+
+#: aiki_tools.php:165
+msgid "Record added"
+msgstr "Registro añadido"
+
+#: aiki_tools.php:167
+msgid "Error adding:"
+msgstr "Error al añadir"
+
+#: aiki_tools.php:203
+#, php-format
+msgid "invalid action %s"
+msgstr "Acción invalida: %s"
+
+#: aiki_tools.php:240
+msgid "No database avalaible"
+msgstr "No hay disponible ninguna base de datos"
+
+msgid "recovery tool for aiki framework"
+msgstr "herramienta de recuperación de aiki framework"
+
+msgid "Search widget by name or id"
+msgstr "Busca widget por nombre o id"
+
+msgid "by content"
+msgstr "por contenido"
+
+msgid "by url"
+msgstr "por url"
+
+
+
+
+
+
+msgid "Host"
+msgstr "Servidor"
+
+msgid "User"
+msgstr "Usuario"
+
+msgid "Password"
+msgstr "Contraseña"
+
+msgid "Database"
+msgstr "Base de datos"
+
+msgid "Connect"
+msgstr "Conectar"
+
+
+msgid "Widgets"
+msgstr "Widgets"
+
+msgid "Tables"
+msgstr "Tablas"
+
+msgid "Version"
+msgstr "Versión"
+
+msgid "Generated in %.2f msec"
+msgstr "Generado en %.2f mili-segundos"
+
+msgid "Write a SQL query"
+msgstr "Escribe la consulta SQL"
+
+msgid "Send Query"
+msgstr "Enviar consulta"
+
+msgid "BAD QUERY. MYSQL ERROR"
+msgstr "Consulta erronea. Mysql dice"
+
+msgid "No records found"
+msgstr "No se ha encontrado ningún registro"
+
+msgid "1 record found"
+msgstr "1 registro encontrado"
+
+msgid "Found: %s records"
+msgstr "Encontrados %s registros"

@@ -17,7 +17,8 @@
  * @filesource
  */
 
-define ("VERSION", "0.01 alpha");
+define ("VERSION", "0.02 alpha");
+define ("PO_FILE_DIR","./languages/");
 
  /*
   * PURPOSE 
@@ -26,16 +27,22 @@ define ("VERSION", "0.01 alpha");
   * 
   * It's not other admin interface.
   * 
-  *  
+  * HOW TO TRANSLATE.
+  *  1) COPY AND EXISTING /languages/*.po file (es.po for example to LANGUAGE.po)
+  *     OR USING xgettext aiki_tools.php -o LANGUAGE.po -kt
+  *  2) Make translation using a po editor (poedit for example)
   */
 
 
 $start= microtime(true);
 session_start();
 
+dictionary(); // determine language and load dictionary
+
+
 // try connection 
 $aikiDB = false;
-if ( isset($_SESSION["connection"]) ){
+if ( isset($_SESSION["connection"]) ){	
 	if ( !@mysql_connect( $_SESSION["db_host"], $_SESSION["db_user"], $_SESSION["db_pass"]) ){
 		unset($_SESSION["connection"]);
 	} elseif ( @mysql_select_db( $_SESSION["db_name"]) ){
@@ -45,6 +52,9 @@ if ( isset($_SESSION["connection"]) ){
 
 // set action to do
 $action = @$_POST["_action"] or $action=@$_GET["_action"] or $action="";
+if ( $action!="" && substr($action,0,1)===" " ){
+	$action= t_inverse ( substr($action,1) );	
+}
 $action = strtolower($action);
 if ( !$aikiDB && $action!="connect" ) {
 	$action="no-action";	
@@ -58,37 +68,37 @@ switch ( $action ) {
 		
 	case "connect":
 	    if ( !isset($_SESSION["time"]) || time()-$_SESSION["time"] < 10 ) {
-			message("Please, wait 10 sec. before click on connect button","warning");
+			message( t("Please, wait 10 seconds before click on connect button"),"warning");
 			$content= ask_connection_data();	    
 	    } elseif ( @mysql_connect( $_POST["db_host"], $_POST["db_user"], $_POST["db_pass"]) ){
 			$_SESSION['db_host']= $_POST["db_host"];
 			$_SESSION['db_user']= $_POST["db_user"];
 			$_SESSION['db_pass']= $_POST["db_pass"];		  
 			$_SESSION["connection"]=true;			
-			$message ="Conected {$_POST['db_user']}@{$_POST['db_host']}";
+			$message = sprintf( t("Connected as %s"), "{$_POST['db_user']}@{$_POST['db_host']}");
 			
 			if ( @mysql_select_db( $_POST["db_name"])){
 				$_SESSION["db_name"]= $_POST["db_name"];
 				$aikiDB= true;
-				message ( $message . "<br>Open {$_POST['db_name']}" );
+				message ( $message . "<br>" .sprintf( t("Select db %s"), "{$_POST['db_name']}") );
 			} else {				
 				$content  = ask_connection_data() ;
-				message ( $message . "<br><strong>No database selected</strong>", "warning");
+				message ( $message . "<br><strong>" . t("No database selected") . "</strong>", "warning");
 			}			
 			
 		} else {			
 			$content = ask_connection_data();
-			message ("Error: can't connect","error");
+			message ( t("Error: can't connect to server"),"error");
 		}  
 		break;
 	
-	case "search widget":			
+	case "search widget by name or id":	
 		$widget= str_replace("'","",$_GET["search"]);
 		$SQL= "SELECT * FROM aiki_widgets WHERE " . ( (integer) $widget>0 ? "id='$widget'" :  "widget_name='$widget'" );		
 		$content= show_mysql($SQL);
 		break;
 	
-	case "search content":
+	case "by content":
 		$widget_content= str_replace("'","",$_GET["search"]);
 		$link="'NO_FILTER_HTML:','<a href=\"?_action=query&SQL=SELECT * FROM aiki_widgets WHERE id=',id,'\">',id,'</a>'";
 		$SQL= "SELECT concat($link,'\n',widget_name, '\n', widget_site) as id_data,".
@@ -96,7 +106,7 @@ switch ( $action ) {
 		$content= show_mysql($SQL);
 		break;
 	
-	case "search url":			
+	case "by url":			
 		$widget= str_replace("'","",$_GET["search"]);
 		$SQL= "SELECT * FROM aiki_widgets WHERE display_urls like '%|$widget|%' OR display_urls='$widget' or display_urls like '%|$widget' or display_urls like '$widget|%'";
 		$content= show_mysql($SQL);
@@ -108,7 +118,7 @@ switch ( $action ) {
 			$id	= clean($_GET["id"]);
 			$content = form_record ( $table, $id );
 		} else {
-			message( "Table name or id value not found","error");
+			message( t("Table name or id value not found"),"error");
 		}
 		break;
 	
@@ -122,32 +132,32 @@ switch ( $action ) {
 	
 	case "save record":
 		if ( !isset($_POST["_table"]) || !isset($_POST["_table_id"])) {
-			message("Error saving: missing table of id field value","error");
+			message( t("Error saving: missing table of id field value"),"error");
 		} elseif ( sql_save_record( $_POST["_table"], $_POST["_table_id"]) ){
-			message("Record saved");
+			message( t("Record saved"));
 		} else {
-			message("Error saving:<br><em>". mysql_error()."</em>","error") ;	
+			message(t("Error saving:"). "<br><em>". mysql_error()."</em>","error") ;	
 		}
 		break;
 	
 	case "clone record":
 		if ( !isset($_POST["_table"]) || !isset($_POST["_table_id"])) {
-			message("Error cloning: missing table of id field value","error");
+			message(t("Error cloning: missing table of id field value"),"error");
 		} elseif ( sql_clone_record( $_POST["_table"], $_POST["_table_id"]) ){
-			message("Record cloned");
+			message(t("Record cloned"));
 		} else {
-			message( "Error cloning:" . mysql_error(), "error");
+			message( t("Error cloning:") . mysql_error(), "error");
 		}
 		break;
 	
 	case "save as new":
 	case "add record":
 		if ( !isset($_POST["_table"]) ) {
-			message("Error adding: missing table","error");
+			message(t("Error adding: missing table","error"));
 		} elseif ( sql_add_record( $_POST["_table"])){
-			message("Record added");
+			message(t("Record added"));
 		} else { 
-			message("Error adding:" . mysql_error());	
+			message(t("Error adding:"). mysql_error());	
 		}		
 		break;
 	
@@ -183,7 +193,7 @@ switch ( $action ) {
 		break;
 
 	default:
-		$content="invalid action .$action";
+		$content= sprintf( t("invalid action %s") ,$action);
 	} 
 
 
@@ -220,7 +230,7 @@ function ask_connection_data(){
 		}
 		
 		if ( $select_db=="") {
-			$select_db = "No database avalaible";
+			$select_db = t("No database avalaible");
 		} else {
 			$select_db =
 				"<select name='db_name'>\n".
@@ -231,13 +241,20 @@ function ask_connection_data(){
 	  $select_db= "<input type='text' name='db_name' size='30' value='$db_name'>" ;
 	} 
 	  	
+	$host    = t("Host");
+	$pass    = t("Password");
+	$user    = t("User");
+	$database= t("Database");
+	$connect = t("Connect");
+	  	
 	$form = <<<EOF
 <form id="f_conection" class="pretty" method="POST" action="$file" >
-	<label>Host:	  </label><input type="text" name="db_host" size="30" value="$db_host" >
-	<label>User:	  </label><input type="text" name="db_user" size="30" value="$db_user" >
-	<label>Password:</label><input type="password" name="db_pass" size="30" value="$db_pass" >
-	<label>Database:</label>$select_db	
-	<input type="submit" value="Connect" name="_action" class='button unique-button'>
+    <input type='hidden' name='_action' value='connect'>
+	<label>$host: </label><input type="text" name="db_host" size="30" value="$db_host" >
+	<label>$user: </label><input type="text" name="db_user" size="30" value="$db_user" >
+	<label>$pass: </label><input type="password" name="db_pass" size="30" value="$db_pass" >
+	<label>$database:</label>$select_db	
+	<input type="submit" value="$connect" class='button unique-button'>
 </form> 
 EOF;
 	return $form;
@@ -256,10 +273,10 @@ function ask_for_query(){
 	
 	$form= "
 <div id='database'>	
-	<h3>Write a SQL query</h3>
+	<h3>" .t("Write a SQL query") ."</h3>
 	<form method='get' action='$file'>		
 	<textarea name='SQL' rows='6' cols='60'>$SQL</textarea>
-	<input type='submit' value='Send Query' name='_action' class='button unique-button'>			
+	<input type='submit' value=' ". t("Send Query") ."' name='_action' class='button unique-button'>			
 	</form>
 </div>";
 
@@ -413,16 +430,16 @@ function show_search_bar(){
 $file  = basename(__FILE__);
 $widget = isset($_GET["search"] ) ? $_GET["search"] : "" ;
 $search = "
-<div id='search-area'>			
-	<a href='?_action=show+tables'>Show tables</a> <a href='?_action=show+widgets'>Show widgets</a>
+<div id='shortcuts'>
 	<a href='?_action=phpinfo'>phpinfo</a>
+</div>		
+<div id='search-area'>	    
 	<form method='get' action='$file' >
 		<input name='search' value='$widget'  />	
-		<input type='submit' value='Search widget'  name='_action' class='shortcut'/>
-		<input type='submit' value='Search content' name='_action' class='shortcut'/>
-		<input type='submit' value='Search url'     name='_action' class='shortcut'/>
-	</form>
-	
+		<input type='submit' value=' " .t("Search widget by name or id") . "' name='_action' class='shortcut'/>
+		<input type='submit' value=' " .t("by content"). "' name='_action' class='shortcut'/>
+		<input type='submit' value=' " .t("by url")    . "' name='_action' class='shortcut'/>
+	</form>	
 </div>";
 return $search;
 }
@@ -451,16 +468,16 @@ function show_mysql($SQL, $showRecordsFound=true){
 	// execute query
 	$result = mysql_query($SQL);
 	if ( mysql_errno() ) {
-	  message("BAD QUERY. MYSQL ERROR ". mysql_errno() ."<br><em>" . mysql_error()."</em>","error")	;
+	  message(t("BAD QUERY. MYSQL ERROR") ." ". mysql_errno() ."<br><em>" . mysql_error()."</em>","error")	;
 	  return " :-(";
 	} 
 	
 	$rows = mysql_num_rows($result);
 	if ( $showRecordsFound ) {
 		if ( $rows==0) {
-			message ( "No records found", "warning");
+			message ( t("No records found"), "warning");
 		} else {
-			message ( "Found: $rows record" . ( $rows>1?"s" : "")  );
+			message ( $rows==1? t("1 record found") : sprintf( t("Found: %s records"),$rows) );
 		}
 	}	
 	
@@ -524,8 +541,7 @@ function show_mysql($SQL, $showRecordsFound=true){
 function clean($string){
 	return strtr( $string, array (
 	"'" => "",
-	'"' => ""));
-	
+	'"' => ""));	
 }
 
 /**
@@ -736,7 +752,7 @@ function form_record($table, $id=NULL) {
 	} else {
 		$rs= mysql_query("SELECT * FROM $table WHERE $keyField='$id'");
 		if ( ! $record= mysql_fetch_array($rs) ) {
-			return "<div class='message error'>Record not found</div>";
+			return "<div class='message error'>".t ("Record not found") ."</div>";
 		}
 	}
 	
@@ -789,6 +805,115 @@ function form_fields_record( $fields, $record ){
 	return $ret;
 }
 
+/**
+ * Return list of available languages
+ * 
+ * @return string html ul-li
+ */
+
+function list_languages(){
+	global $language;
+	$list="";
+	$start= strlen(PO_FILE_DIR);
+	
+	$languages[]="en";
+	foreach ( glob(PO_FILE_DIR ."*.po") as $file){
+		$languages[] = substr($file, $start, -3);
+	}
+	// no other language found
+	if ( count($languages)==1 ){
+		return "";
+	}
+	asort($languages);
+	foreach ( $languages as $code) {		
+		$list .= "<li ". ( $language==$code ? " class='active'>" : ">" ) . 
+				 "<a href='?_language=$code'>$code</a></li>";
+	}
+	
+	return  "<div id='languages-list'>Language: <ul>$list</ul></div>" ;
+}
+
+
+
+/**
+ *
+ * Load the request diccionary.
+ * The language is defined by $_GET[_language], $_SESSION["language"] or "en".
+ * Sets the global vars  $language and $dictionary
+ * 
+ * @global $dictionary, $language
+ * 
+ */
+
+
+function dictionary(){
+	global $dictionary, $language;
+	
+	// determina language
+	if ( isset($_GET["_language"]) ){
+		$language= $_GET["_language"];
+	} elseif ( isset($_SESSION["language"]) ){
+		$language= $_SESSION["language"];
+	} else {
+		$language="en";
+	}
+	
+	// check language. Only en, es, or en_GB is allowed.
+	if ( !preg_match('/^[a-z]{2}(\_[A-Z]{2})?$/', $language) ){
+		$language="en";
+	}
+	
+	$dictionary=false;
+		
+
+	if ( $language!='en' && $text = file_get_contents(PO_FILE_DIR ."$language.po" )){
+		$matchs  = "";
+		$pattern = '/msgid "(.*)"\s*msgstr "(.*)"/U';	
+		if ( preg_match_all ( $pattern, $text, $matchs) ){
+			foreach ($matchs[1] as $i => $word ){
+				if ($matchs[2][$i]){
+					$dictionary[$word] = $matchs[2][$i];
+				}			
+			}
+		}		
+	} else  {
+		$language   = "en";			
+	}
+	$_SESSION["language"]= $language;
+	return $diccio;	
+}
+
+	
+/**
+ *
+ * translation string to user selected language.ry
+ * 
+ * @global $dictionary
+ * @param string $string to translate (in english)
+ * @return string translated string or original if can't translate
+ * 
+ */	
+	
+function t($string ){
+	global $dictionary;
+	return  (is_array($dictionary) && isset($dictionary[$string]) ) ? $dictionary[$string]: $string;
+}
+
+
+/**
+ *
+ * make a inverse translation (english) of a string
+ * 
+ * @global $dictionary
+ * @param string $string to translate (in local languageh)
+ * @return string translated string or original if can't translate
+ * 
+ */	
+	
+function t_inverse($string){
+	global $dictionary;
+	return  (is_array($dictionary) && $key=array_search($string, $dictionary) ) ? $key: $string;
+}
 
 /**
  * ECHO W3C border-radius css, with -moz and -webkit variants 
@@ -812,6 +937,7 @@ function border_radius($borders){
 <html>
 <head>
 <title>Aiki Tools</title>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <style type="text/css">
 
 * {	margin:0; padding:0;}
@@ -822,6 +948,7 @@ font-size:13px;
 line-height:16px;}
 
 body {
+padding-top: 9px;
 background-color:#333; }
 
 h1{ font-size: 30px; line-height:40px; padding:4px 0px; color:#555;text-transform:uppercase;}
@@ -836,31 +963,46 @@ a { text-decoration:none; color: #569}
 a:hover { color: #333}
 
 #page { <?php border_radius('15px');?>
-background-color:#fff;min-height:100%;padding: 1% 2% 9px 2%;position: relative;margin: 11px 6%;}
+background-color:#fff;min-height:100%;padding: 1% 2% 9px 2%;position: relative;margin: 18px 6%;}
 
 #header { padding-right:45%; min-height: 80px;}
 
-#connection-data { <?php border_radius('0px 0px 0px 6px');?>
-position: absolute; top: 0px; right: 0;
-padding: 2px 4px 6px 24px;
-background-color: #333;
-color: #fff; font-weight:bold;
+#connection-data { 
+position: absolute; top: 9px; right: 2%;
 text-align:right;}
-#connection-data a       { color: orange}
-#connection-data a:hover { color: #777}
-#connection-data a:before  {content: "\2192";padding-right: 0.25em}
 
 #search-area { position: absolute;top: 33px;width: 55%;right: 2%;text-align:right;}
 #search-area input[type='submit']{background-color: #fff; border:none;color: #569;}
 #search-area input[type='submit']:hover {color:#333; cursor:pointer}
 #search-area a + a { margin-left: 1em;}
-#search-area a:before  {content: "\2192";padding-right: 0.25em}
+
+
+#shortcuts { position: absolute;top: -18px; left:0; font-weight:bold; width:50%;}
+#shortcuts a { color: orange;}
+#shortcuts a:hover { color: #ddd;}
+#shortcuts a:before  {content: "\2192";padding-right: 0.25em; padding-left:2%;}
+
+
+
 
 #top {width:100%;background-color:#f0f0f0;height:31px;border-bottom:1px solid #333;}
 #top li { display: block; float:left; width:110px; padding:10px 4px 4px 4px; height: 18px;
 margin-bottom:16px;border-right: 1px solid #333}
 #top li:hover { background-color: #999}
 #top a { color: #333; font-weight: bold;}
+
+#top #a_logout { float:right; border-left: 1px solid #333; border-right:none}
+#top #a_logout a:before {content: "\2192";padding-right: 0.25em}
+
+
+#languages-list { position: absolute; top:-18px; right: 2%; font-weight:bold; color: #fff;}
+#languages-list ul, 
+#languages-list li { display:inline }
+#languages-list a { color: orange;}
+#languages-list a:hover { color: #ddd;}
+#languages-list li.active { font-weight:bold; color:#fff  }
+#languages-list li+li:before { content: " | " }
+
 
 #f_conection {width: 400px; margin: 15px auto;}
 
@@ -952,16 +1094,17 @@ form.record textarea:focus{ height: 30em}
 <div id="page">
 
 	<div id="header">
-		<h1><img src="http://www.aikiframework.org/assets/images/bannerlogo.png" alt="aiki framework"><em> recovery tool for aiki framework</em></h1>
+		<h1>Aiki framework<em><?php echo t("recovery tool for aiki framework");?></em></h1>
 		<?php if ( $aikiDB ) { ?>
 		   <div id="connection-data">
-		   <?php echo "<strong>Server:</strong> ",$_SESSION['db_host']," <strong>Database:</strong> ", $_SESSION['db_name'];?>
-			| <a href="?_action=logout">Logout</a>
+		   <?php echo "<strong>". t("Host") . ":</strong> ",$_SESSION['db_host']," <strong>". T("Database") .":</strong> ", $_SESSION['db_name'];?>			
 		   </div>
 		<?php
-			echo show_search_bar();
+			echo show_search_bar();			
 		 }
-		?>	
+		 echo list_languages();		 
+		?>
+			
 	</div>
 
 		
@@ -971,9 +1114,10 @@ form.record textarea:focus{ height: 30em}
 	   if ( $aikiDB ) {?>
 		<div id="top">
 			<ul>
-			<li><a href="?_action=show+widgets">Widgets</a></li>
-			<li><a href="?_action=show+tables">Tables</a></li>
+			<li><a href="?_action=show+widgets"><?php echo t("Widgets");?></a></li>
+			<li><a href="?_action=show+tables"><?php echo t("Tables");?></a></li>
 			<li><a href="?_action=query">SQL</a></li>
+			<li id="a_logout"><a href="?_action=logout">Logout</a></li>
 			</ul>
 		</div>		
 		<?php
@@ -993,8 +1137,7 @@ form.record textarea:focus{ height: 30em}
 		}?>
 	</div>		
 
-	<div id="aditional-info">Version <?php echo VERSION; printf(" | Generated in %.2f mseg", 1000*(microtime(true)-$start)); ?></div>
+	<div id="aditional-info"><?php echo t("Version")," ", VERSION, " | $language | "; printf( t("Generated in %.2f msec"), 1000*(microtime(true)-$start)); ?></div>
 </div>	
-
 </body>
 </html>
