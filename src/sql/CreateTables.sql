@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS aiki_dictionaries (
   translatefrom varchar(5) NOT NULL,
   translateto varchar(5) NOT NULL,
   translation varchar(120) NOT NULL,
-  PRIMARY KEY (term),
+  KEY term (term),
   KEY translatefrom (translatefrom),
   KEY translateto (translateto)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

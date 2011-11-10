@@ -36,6 +36,16 @@ class Dictionary {
 		$this->translateTo = "en";
 	}
 	
+	/**
+	 * Add a new domain to Dictionary store.
+	 * 
+	 * A domain is a dictionary object that translate terms from certain language to other.
+	 * 
+	 * @param string domain name
+	 * @param dictionary $dictionary object
+	 * 
+	 */
+	
 	function add($domain,$dictionary){		
 		$to   = $dictionary->translateTo();
 		$from = $dictionary->translateFrom();
@@ -52,6 +62,14 @@ class Dictionary {
 		$this->noDomains = false; 
 	}
  
+	/**
+	 * set/get default domain
+	 * 
+	 * @param string (optional) new default domain
+	 * @return string actual domain or if given, return previus.
+	 * 
+	 */
+
 	function domain($new=NULL){
 		$ret = $this->defaultDomain;
 		if (!is_null($new)) {
@@ -59,6 +77,14 @@ class Dictionary {
 		}
 		return $ret;
 	}
+	
+	/**
+	 * set/get default target language (to be translated)
+	 * 
+	 * @param string (optional) new language
+	 * @return string actual target language or if given, return previous.
+	 * 
+	 */
 	
 	function translateTo($new=NULL){
 		$ret = $this->translateTo;
@@ -68,6 +94,14 @@ class Dictionary {
 		return $ret;
 	}
 	
+	/**
+	 * set/get original language
+	 * 
+	 * @param string (optional) new default language
+	 * @return string actual language or if given, return previous.
+	 * 
+	 */
+	
 	function translateFrom($new=NULL){
 		$ret = $this->translateFrom;
 		if (!is_null($new)) {
@@ -75,6 +109,18 @@ class Dictionary {
 		}
 		return $ret;
 	}
+	
+	
+	/**
+	 * translate a term
+	 * 
+	 * @param $term to be translated
+	 * @param $translateFrom (optional), target language.
+	 * @param $translateTo (optional), term language.
+	 * @param $domain(optional), domain to be used.
+	 * @return string term translated
+	 * 
+	 */
 	
 	function translate( $term, $translateFrom=NULL, $translateTo=NULL, $domain=NULL){	
 		$to = is_null($translateTo) ? $this->translateTo : $translateTo;
@@ -95,10 +141,15 @@ class Dictionary {
 	}
 }
 
-/*
- * Shortcut for use in aiki code, apps, extension and libs
- * Note: aiki is develop in english, and 'core' is the default dictionary.
- **************************************/
+/**
+ * Shortcut for use in aiki code, apps, extension and libs to translate a term
+ *
+ * Aiki is develop in english, and 'core' is the default dictionary.
+ * 
+ * @param string $term to be translated
+ * @param string $domain (optional, "core" by default)
+ * 
+ */
 
 function __($term, $domain=NULL){	
 	global $aiki;
@@ -113,9 +164,12 @@ function __($term, $domain=NULL){
 }
 
 
-/*
- * Shortcut for use in aiki code, apps, extension and libs
- * Note: there is not  domain parameter 
+/**
+ * Shortcut for sprintf with translation
+ *
+ * @param string arg1 string formatted as sprinft
+ * @param mixed rest
+ * 
  **************************************/
 
 function __sprintf (){	
@@ -133,9 +187,16 @@ function __sprintf (){
 
 
 
-/*
- * Shortcut for use in widget..(need a parser)
- * In this case, base language (translate from) can be any language
+/**
+ * translation of a term.
+ * 
+ * __() functions assumes "en" as original language, t() doesn't.
+ *
+ * 
+ * @param string $term to be translated
+ * @param string $domain (optional, "core" by default)
+ *
+ * 
  **************************************/
 
 function t($term, $domain=NULL){	
