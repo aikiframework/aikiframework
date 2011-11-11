@@ -15,7 +15,7 @@
  * @category    Aiki
  * @package     Library
  *
- * Implementation of a dictionary using arrays.
+ * Implementation of a dictionary using tables.
  *
  *
  */
@@ -23,7 +23,18 @@
 
 class DictionaryTable{
   private $table, $to, $from, $fake;
-  
+
+  /**
+   * Construct a dictionary.
+   * 
+   * @param $to language to translate
+   * @param $table where terms are stored (optional, aiki_dictionaries by default)
+   * @param $from language from translate (optional, "en" by default)
+   *
+   * Exampless $diccio = new ( "eu", "plugins_diccio");
+   *
+   */
+
   function __construct( $to, $table="aiki_dictionaries", $from="en" ) {
     $this->table= $table;
     $this->to   = $to;
@@ -33,13 +44,21 @@ class DictionaryTable{
   
   function search($term){
     global $db;    
+    $search = addslashes($term);
     $SQL = 
         "SELECT translation FROM ". $this->table .
-        " WHERE term='$term'".
+        " WHERE term='$search'".
         "  AND translateto='{$this->to}' AND translatefrom = '{$this->from}'";
     $found= $db->get_var($SQL);
     return ( is_null($found) ? false : $found );
   }
+  
+  /**
+   * translate given term
+   * 
+   * @param $term to translate
+   * @return string term translated (if necesary)   
+   */  
   
   function translate($term){
     if ($this->fake){
@@ -49,9 +68,21 @@ class DictionaryTable{
     return ( $founded===false ? $term : $founded);
   }
   
+  /**
+   * return language which terms will be translated 
+   * 
+   * @return string original language   
+   */  
+  
   function translateTo(){
     return $this->to;
   }
+  
+  /**
+   * return original language of terms 
+   * 
+   * @return string original language   
+   */    
   
   function translateFrom(){
     return $this->from;
