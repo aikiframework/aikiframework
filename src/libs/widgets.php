@@ -526,6 +526,11 @@ class CreateLayout {
 			$processed_widget = $aiki->Forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);
 			$processed_widget = $aiki->php->parser($processed_widget);
+			
+			$processed_widget = $this->parse_translate_widget($processed_widget);
+			$processed_widget = $this->parse_translate_aiki_core($processed_widget);
+			
+			
 			$processed_widget = stripslashes($processed_widget);
 		}
 		
@@ -940,7 +945,51 @@ class CreateLayout {
 		return $text;
 	}
 
+	/**
+	 * Proccesed all (t(text_to_translate)t) .
+	 *
+	 * @PARA  string $widget_content to be translated
+	 * @RETUN string widget translated
+	 */
 
+
+	function parse_translate_widget(&$widgetContents) {				
+	global $aiki;		
+		if (!$aiki->site->need_translation()) {	
+			return preg_replace('/\(t\((.*)\)t\)/Us','$1', $widgetContents);
+		} else {				
+			return preg_replace_callback(
+				'/\(t\((.*)\)t\)/Us',
+				create_function(
+					'$matches',
+					'return t($matches[1]);')
+				,$widgetContents );
+		}		
+	}
+	
+	/**
+	 * Proccesed all (__(text_to_translate)__) .
+	 *
+	 * @PARA  string $widget_content to be translated
+	 * @RETUN string widget translated
+	 */
+
+
+	function parse_translate_aiki_core(&$widgetContents) {				
+	global $aiki;		
+		if ($aiki->site->language()=="en") {	
+			return preg_replace('/\(__\((.*)\)__\)/Us','$1', $widgetContents);
+		} else {					
+			return preg_replace_callback(
+				'/\(__\((.*)\)__\)/Us',
+				create_function(
+					'$matches',
+					'return __($matches[1]);')
+				,$widgetContents );
+		}		
+	}
+	
+	
 	/**
 	 * Proccesed all (#(hits:..)#) in widget content.
 	 *

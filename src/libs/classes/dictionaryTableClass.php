@@ -28,14 +28,14 @@ class DictionaryTable{
    * Construct a dictionary.
    * 
    * @param $to language to translate
-   * @param $table where terms are stored (optional, aiki_dictionaries by default)
    * @param $from language from translate (optional, "en" by default)
+   * @param $table where terms are stored (optional, aiki_dictionaries by default)  
    *
-   * Exampless $diccio = new ( "eu", "plugins_diccio");
+   * @Examples: $diccio = new ( "eu", "en", "plugins_diccio");
    *
    */
 
-  function __construct( $to, $table="aiki_dictionaries", $from="en" ) {
+  function __construct( $to, $from="en", $table="aiki_dictionaries"  ) {
     $this->table= $table;
     $this->to   = $to;
     $this->from = $from;

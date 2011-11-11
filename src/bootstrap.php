@@ -95,6 +95,7 @@ require_once("$AIKI_ROOT_DIR/libs/Log.php");
 	
 /** Instantiate a new log for global use
  * @global Log $log */
+  
 $log = new Log($config["log_dir"],
 			$config["log_file"],
 			$config["log_level"],
@@ -141,7 +142,6 @@ $config = $aiki->get_config($config);
 $aiki->load("message");
 $aiki->load("dictionary");
 
-
 /**
  * Load basic class: site, membership (permission), language, url(user requests)
  * @global membership $membership
@@ -152,18 +152,9 @@ $aiki->load('url');
 $aiki->load('site'); 
 $aiki->load('config');
 
-$membership = $aiki->load("membership");
-
-
-
 $aiki->load("languages");
 
-if ( $aiki->site->language() != "en" ) {
-	include_once ("$AIKI_ROOT_DIR/libs/classes/dictionaryTableClass.php");
-	$aiki->dictionary->add("core", new dictionaryTable($aiki->site->language()));
-}
-
-
+$membership = $aiki->load("membership");
 
 
 // this class will be loaded by demand 

@@ -20,7 +20,7 @@ if (!defined('IN_AIKI')) {
 	die('No direct script access allowed');
 }
 
-
+include_once ("$AIKI_ROOT_DIR/libs/classes/dictionaryTableClass.php");
 
 class Dictionary {
 	private $tranlateTo;
@@ -30,11 +30,13 @@ class Dictionary {
 	private $domains;
 
 	function __construct(){
+		global $aiki;		
 		$this->noDomains = true;
 		$this->domains = array();
 		$this->translateFrom = "en";
-		$this->translateTo = "en";
+		$this->translateTo   = "en";
 	}
+	
 	
 	/**
 	 * Add a new domain to Dictionary store.
@@ -204,5 +206,9 @@ function t($term, $domain=NULL){
 	if (!$aiki->site->need_translation()) {
 		return $term;
 	}
-	return $aikiDictionary->translate($term, $config["translateFrom"], $config["translateTo"], $domain);
+	return $aiki->dictionary->translate(
+		$term, 
+		$aiki->dictionary->translateFrom(), 
+		$aiki->dictionary->translateTo(), 
+		$domain);
 }
