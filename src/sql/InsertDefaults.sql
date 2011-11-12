@@ -23,7 +23,7 @@
  * For more info see SQL_DELIMIT in libs/installer.php.
  */
 
-INSERT IGNORE INTO `aiki_dictionary` (`term_id`, `app_id`, `short_term`, `lang_english`, `lang_arabic`, `lang_german`, `lang_chinese`) VALUES
+INSERT IGNORE INTO `aiki_dictionary` (`term_id`, `app_id`, `short_term`, `lang_en`, `lang_ar`, `lang_de`, `lang_zh`) VALUES
 (1, 0, 'encoding', 'utf-8', 'utf-8', 'utf-8', ''),
 (2, 0, 'added_successfully', 'Added successfully', '', '', ''),
 (3, 0, 'error_inserting_into_database', 'Error inserting into database', '', '', ''),

@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS aiki_config (
   config_type varchar(255) default NULL,
   config_data mediumtext,
   PRIMARY KEY (config_id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS aiki_settings (
   setting_autoload int(11) NOT NULL,
   PRIMARY KEY (setting_id),
   KEY setting_name (setting_name)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS aiki_configs (
   KEY config_name (config_name),
   KEY config_important (config_important),
   KEY config_weight (config_weight)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -65,12 +65,12 @@ CREATE TABLE IF NOT EXISTS aiki_dictionary (
   term_id int(11) NOT NULL AUTO_INCREMENT,
   app_id int(11) NOT NULL,
   short_term varchar(255) NOT NULL,
-  lang_english text NOT NULL,
-  lang_arabic text NOT NULL,
-  lang_german text NOT NULL,
-  lang_chinese text NOT NULL,
+  lang_en text NOT NULL,
+  lang_ar text NOT NULL,
+  lang_de text NOT NULL,
+  lang_zh text NOT NULL,
   PRIMARY KEY (term_id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS aiki_forms (
   form_html text NOT NULL,
   form_query text NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS aiki_events (
   widgetid int(11) NOT NULL,
   timestarted timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS aiki_flow (
   date varchar(255) NOT NULL,
   username varchar(255) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS apps_wiki_links (
   extrasql varchar(255) NOT NULL default '',
   is_extrasql_loop int(1) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=MyISAM CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ------------------------------------------------------
 
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS aiki_languages (
   align varchar(10) NOT NULL,
   is_default int(1) NOT NULL default '0',
   PRIMARY KEY (id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS aiki_redirects (
   hits int(11) NOT NULL,
   PRIMARY KEY (id),
   UNIQUE KEY url (url)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS aiki_views (
   PRIMARY KEY (view_id),
   KEY view_prefix (view_prefix),
   KEY view_site (view_site)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -226,7 +226,7 @@ CREATE TABLE IF NOT EXISTS aiki_sites (
   site_default_view varchar(32) NOT NULL,
   PRIMARY KEY (site_id),
   KEY site_prefix (site_prefix)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXISTS apps_wiki_templates (
   template_output text NOT NULL,
   PRIMARY KEY (id),
   KEY template_name (template_name)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -252,7 +252,7 @@ CREATE TABLE IF NOT EXISTS aiki_revisions (
   username varchar(255) NOT NULL,
   revision int(11) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -279,7 +279,7 @@ CREATE TABLE IF NOT EXISTS aiki_users (
   is_active int(5) NOT NULL default '1',
   PRIMARY KEY (userid),
   UNIQUE KEY username (username)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -290,7 +290,7 @@ CREATE TABLE IF NOT EXISTS aiki_users_groups (
   group_permissions varchar(255) NOT NULL,
   group_level int(11) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -305,7 +305,7 @@ CREATE TABLE IF NOT EXISTS aiki_users_sessions (
   user_ip varchar(100) NOT NULL,
   last_ip varchar(100) NOT NULL,
   PRIMARY KEY (session_id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -314,7 +314,7 @@ CREATE TABLE IF NOT EXISTS aiki_sessions (
   session_data varchar(255) NOT NULL,
   session_time int(11) NOT NULL,
   PRIMARY KEY (session_id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -352,7 +352,7 @@ CREATE TABLE IF NOT EXISTS aiki_widgets (
   widget_owner int(9) unsigned NOT NULL default '2',
   widget_privilege varchar(1) NOT NULL default 'w',
   PRIMARY KEY (id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ------------------------------------------------------
 
@@ -405,7 +405,7 @@ CREATE TABLE IF NOT EXISTS apps_photo_archive (
   filename varchar(255) NOT NULL,
   is_missing int(1) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=MyISAM CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ------------------------------------------------------
 
@@ -425,7 +425,7 @@ CREATE TABLE IF NOT EXISTS apps_wiki_text (
   PRIMARY KEY (id),
   FULLTEXT KEY title (title),
   FULLTEXT KEY text (text)
-) ENGINE=MyISAM CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ------------------------------------------------------
 
@@ -439,4 +439,4 @@ CREATE TABLE IF NOT EXISTS aiki_databases (
   db_encoding varchar(255) NOT NULL,
   db_use_mysql_set_charset varchar(255) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=MyISAM CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;;
