@@ -99,11 +99,11 @@ class languages {
 	 * @retun string Parsed string. All ocurrences of __Something__ are replaced, in found in aiki_dictionary.
 	 */
 	public function L10n($string) {
-		global $db, $config;
+		global $db, $aiki;
 
 		if (preg_match_all("/__([a-z_]{1,255})__/U", $string, $matches)){
 		
-			$default_language = "lang_".$config['default_language'];
+			$default_language = "lang_". $aiki->site->language();
 			$founded= array_unique($matches[1]);
 			unset($matches);
 
