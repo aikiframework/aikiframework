@@ -75,15 +75,18 @@ class Output {
 	 * @todo title has a hardcoded default here, need to remove
 	 */
 	public function title_and_metas() {
-		global $aiki;
+		global $aiki, $config;
 		$title = '<title>' . ( $this->title ? "$this->title - " : "" ) .
 			$aiki->site->site_name() . '</title>';
 		$aiki->Plugins->doAction("output_title", $title);						
 		
-		$header = "\n".
-			'<meta charset="__encoding__"/>' . "\n" .
-			'<meta name="generator" content="Aikiframework ' .
-			AIKI_VERSION . '.' . AIKI_REVISION . '" />';
+		$encoding = isset($config["db_encoding"]) ? $config["db_encoding"] : "utf-8";
+		
+		$header = sprintf("\n".
+			"<meta charset='$encoding' >\n" .
+			"<meta name='generator' content='Aikiframework %s.%s' >\n",
+			AIKI_VERSION , AIKI_REVISION );			
+		
 		$aiki->Plugins->doAction("output_meta", $header);
 
 		return $header.$title;
@@ -112,8 +115,12 @@ class Output {
 		/**
 		 * @todo this really needs to be abstracted? why just output xthml???
 		 */
-		return '<!doctype html>' .
-			'<html lang="'.$aiki->languages->language.'" dir="'.$aiki->languages->dir.'">' . "\n";
+		$lang=  $aiki->site->language();
+		$dir =  $aiki->languages->dir;
+		 
+		return 
+			"<!doctype html>\n".
+			"<html lang='$lang' dir='$dir'>\n";
 	} // end of doctype function
 
 

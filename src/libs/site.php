@@ -223,6 +223,9 @@ class Site {
 			$aiki->dictionary->add($config['site'], new dictionaryTable($this->default_language,$this->widget_language));
 		}	
 
+		// language
+		$aiki->languages->set( $this->language());
+
 		// site names
 		$this->site = $config['site'];
 		$this->site_name = $info->site_name;

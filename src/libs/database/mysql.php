@@ -120,7 +120,7 @@ class ezSQL_mysql extends ezSQLcore
 		else
 		{
 
-			if (isset($config['db_encoding']) and isset($config['db_use_mysql_set_charset']) and $config['db_use_mysql_set_charset']){
+			if (isset($config['db_encoding']) && (!isset($config['db_use_mysql_set_charset']) ||  $config['db_use_mysql_set_charset'])){
 
 				$db_encoding = $config['db_encoding'];
 

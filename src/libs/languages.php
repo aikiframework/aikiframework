@@ -52,15 +52,9 @@ class languages {
 	 * Try to set the language using $aiki->site
 	 */
 
-	function __construct() {
-		global $config, $aiki;
-
-		if (isset($aiki->site)) {
-			$this->set($aiki->site->language());			
-		}
-		
-	   
-		
+	function __construct() {		
+		$this->language = "en" ;
+		$this->dir      = "ltr";
 	}
 
 
@@ -71,7 +65,7 @@ class languages {
 	 * @param string $lang Default_language
 	 * @return boolean true if the language is valid (exist in aiki_languages) else, false.
 	 */
-	private function set($lang) {
+	function set($lang) {
 		global $db, $config;
 
 		$is_real_language = $db->get_row("SELECT sys_name,dir, short_name FROM aiki_languages WHERE short_name='$lang'");
