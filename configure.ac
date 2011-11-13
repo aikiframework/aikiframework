@@ -623,10 +623,6 @@ AC_CONFIG_FILES([ \
   rpm/SPECS/aiki.spec:rpm/spec.in \
   rpm/Makefile \
   third-party/Makefile \
-  third-party/codemirror/Makefile \
-  third-party/codemirror/css/Makefile \
-  third-party/codemirror/js/Makefile \
-  third-party/ezsql/Makefile \
   third-party/jquery/Makefile \
   third-party/jquery-form/Makefile \
   third-party/jquery-jstree/Makefile \
@@ -639,8 +635,6 @@ AC_CONFIG_FILES([ \
   third-party/jquery-ui/css/smoothness/Makefile \
   third-party/jquery-ui/css/smoothness/images/Makefile \
   third-party/jquery-xslt/Makefile \
-  third-party/plupload/Makefile \
-  third-party/plupload/img/Makefile \
   third-party/sarissa/Makefile \
 ])
 

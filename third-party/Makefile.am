@@ -22,28 +22,22 @@ aiki_src_files =
 
 # Subdirectories to be built
 SUBDIRS = \
-	codemirror \
-	ezsql \
 	jquery \
 	jquery-form \
 	jquery-jstree \
 	jquery-layout \
 	jquery-ui \
 	jquery-xslt \
-	plupload \
 	sarissa
 
 # Subdirectories to distribute
 DIST_SUBDIRS = \
-	codemirror \
-	ezsql \
 	jquery \
 	jquery-form \
 	jquery-jstree \
 	jquery-layout \
 	jquery-ui \
 	jquery-xslt \
-	plupload \
 	sarissa
 
 # Additional files to distribute

@@ -72,7 +72,7 @@ SUBDIRS = \
 DIST_SUBDIRS = \
 	archive \
 	backup \
-	classes \	
+	classes \
 	database \
 	file \
 	session \
