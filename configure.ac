@@ -589,6 +589,7 @@ AC_CONFIG_FILES([ \
   src/assets/uploads/Makefile \
   src/libs/archive/Makefile \
   src/libs/backup/Makefile \
+  src/libs/classes/Makefile \
   src/libs/database/Makefile \
   src/libs/file/Makefile \
   src/libs/session/Makefile \
