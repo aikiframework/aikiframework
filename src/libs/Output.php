@@ -67,6 +67,51 @@ class Output {
 		$this->headers = $headers;
 	}
 
+
+	/**
+	 * Convert db_encoding in a valid mime charset.
+	 *
+	 * @param  string  $encoding use in db connection
+	 * @param  string  for use in meta charset
+	 */
+
+	public function correct_encoding( $encoding ) {
+
+	/*
+	 SOURCE:
+	 mysql supported encoding: http://dev.mysql.com/doc/refman/5.0/en/charset-charsets.html
+	 IANA CHARSET:http://www.iana.org/assignments/character-sets
+	*/
+
+	$corrections= array(
+		"utf8" =>"uft-8", //mysql, postgre
+		"latin1" => "ISO-8859-1",
+		"latin2" => "ISO-8859-2",
+		"latin5" => "ISO-8859-9",
+		"latin7" => "ISO-8859-13",
+		"greek"  => "ISO-8859-7",
+		"ucs2"   => "ISO-10646-UCS-2",
+		"ascii"  => "US-ASCII",
+		"big5"   => "Big5",
+		"hebrew" => "ISO 8859-8", 
+		"cp850"  => "cp850",
+		"cp852"  => "cp852",
+		"cp866"  => "cp866",
+		"cp1250" => "windows-1250",
+		"cp1251" => "windows-1251",
+		"cp1256" => "windows-1256",
+		"cp1257" => "windows-1257",
+		"koi8u"  => "KOI8-U",
+		"ujis"   => "EUC-JP",
+		"sjis"   => "Shift-JIS",
+		"euckr"  => "EUC-KR",
+		"tis620" => "TIS-620",
+		"gb2312" => "GB2312");
+
+		return ( isset($corrections[$encoding]) ? $corrections[$encoding] : $encoding );
+	}
+
+
 	/**
 	 * Returns the title and default meta tags as html
 	 *
@@ -78,9 +123,8 @@ class Output {
 		global $aiki, $config;
 		$title = '<title>' . ( $this->title ? "$this->title - " : "" ) .
 			$aiki->site->site_name() . '</title>';
-		$aiki->Plugins->doAction("output_title", $title);						
-		
-		$encoding = isset($config["db_encoding"]) ? $config["db_encoding"] : "utf-8";
+		$aiki->Plugins->doAction("output_title", $title);
+		$encoding = isset($config["db_encoding"]) ? $this->correct_encoding($config["db_encoding"]) : "utf-8";
 		
 		$header = sprintf("\n".
 			"<meta charset='$encoding' >\n" .
