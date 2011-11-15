@@ -13,15 +13,32 @@
  * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
  * @link        http://www.aikiframework.org
  * @category    Aiki apps
- * @package     installaer
+ * @package     installer
  * @filesource
  *
  * @TODO Translate
- 
+ * 0.8.24.936
  * @TODO VERSION. REVISION, AUTHORS* 
  * AIKI_LOG_DIR, AIKI_LOG_FILE,AIKI_LOG_PROFILE, AIKI_LOG_LEVEL;
  *
  */
+
+
+/* 
+ * @TODO this must manually udpated..
+ */
+
+if ( !defined("AIKI_VERSION") ) {
+	define(AIKI_VERSION,"0.8.24");
+}
+
+if ( !defined("AIKI_REVISION") ) {
+	define(AIKI_REVISION,"+936");
+}
+
+if ( !defined("AIKI_AUTHORS") ) {
+	define("AIKI_AUTHORS", 'Bassel&nbsp;Safadi<br/>\r\nJon&nbsp;Phillips<br/>\r\nChristopher&nbsp;Adams<br/>\r\nBarry&nbsp;Threw<br/>\r\nMichi&nbsp;Krnac<br/>\r\nRonaldo&nbsp;Barbachano<br/>\r\nVera&nbsp;Lobatcheva<br/>\r\nBrad&nbsp;Phillips<br/>\r\nSteven&nbsp;Garcia<br/>\r\nRoger&nbsp;Martín<br/>\r\nFabricatorz,&nbsp;LLC<br/>\r\nAikiLab&nbsp;Singapore,&nbsp;PTE&nbsp;LTD<br/>\r\n');
+}
 
 
 // Steps
@@ -34,7 +51,8 @@
 define ("SQLS_DELIMITER", "-- ------------------------------------------------------");
 
 $AIKI_ROOT_DIR = realpath( dirname(__FILE__ ). "/../../..");
-$AIKI_SITE_URL = clean_url("http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]);
+$AIKI_SITE_URL = clean_url("http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]) ;
+
 
 // Vars
 $config = array(
@@ -135,7 +153,7 @@ function check_step($step) {
 		case 3:
 		case 4:
 			if ( !@mysql_connect ($config['db_host'],  $config['db_user'], $config['db_pass']) ) {
-				return  "Error: no connection --{$config['db_pass']}--" ;
+				return  "Error: no connection" ;
 			} elseif ( !@mysql_selectdb ($config['db_name']) ){
 				return  "Error: no database selected";
 			}
@@ -175,7 +193,7 @@ function check_step($step) {
 
 function clean_url($url){
 	$top= strpos( $url, "/assets/apps/installer");
-	return ( $top ? substr($url,0,$top) : $url );
+	return ( $top ? substr($url,0,$top) ."/" : $url . "/");
 }
 
 
@@ -192,7 +210,7 @@ function send_data_by_email(){
 	$headers .= "From: noreply@aikiframework.org\r\n";
 
 	$message = "Hello {$config['ADMIN_FULLNAME']} your new Aiki installation is ready to be used <br>\n".
-			   "Go to: " . $AIKI_SITE_URL . "/admin <br>\n".
+			   "Go to: " . $AIKI_SITE_URL . "admin <br>\n".
 			   "Username: {$config['ADMIN_USER']} <br>\n".
 			   "Password: {$config['ADMIN_PASSWORD']}<br>\n".
 			   " <br>\n".
@@ -200,7 +218,6 @@ function send_data_by_email(){
 
 	mail($config['ADMIN_EMAIL'],' Your new Aiki installation',$message,$headers);	
 	
-	echo "<div style='background:#fff;color:#000;'>$message</div>";
 	return true;	
 	
 }
@@ -212,10 +229,6 @@ function sqls(){
 	$config["ADMIN_PASSWORD"]        = substr(md5(uniqid(rand(),true)),1,8);
 	$config["ADMIN_PASSWORD_MD5_MD5"]= md5(md5($config["ADMIN_PASSWORD"]));
 
-	$sql_create_tables   = @file_get_contents("$AIKI_ROOT_DIR/sql/CreateTables.sql");
-	$sql_insert_defaults = @file_get_contents("$AIKI_ROOT_DIR/sql/InsertDefaults.sql");
-	$sql_insert_variable = @file_get_contents("$AIKI_ROOT_DIR/sql/InsertVariable-in.sql");
-
     $replace = array ( 
 		"@AIKI_SITE_URL_LEN@"=> strlen($AIKI_SITE_URL),
 		"@AIKI_SITE_URL@"    => $AIKI_SITE_URL,
@@ -224,13 +237,15 @@ function sqls(){
 		"@ADMIN_USER@"=> $config["ADMIN_USER"],
 		"@ADMIN_NAME@"=> $config["ADMIN_FULLNAME"],
 		"@ADMIN_PASS@"=> $config["ADMIN_PASSWORD_MD5_MD5"],
-		"@ADMIN_MAIL@"=> $config["ADMIN_EMAIL"]);
+		"@ADMIN_MAIL@"=> $config["ADMIN_EMAIL"],
+		"@VERSION@"   => AIKI_VERSION,
+		"@REVISION@"  => AIKI_REVISION,
+		"@AUTHORS@"   => AIKI_AUTHORS);
 	
-	/* @TODO insert this variables.
-		"@VERSION@"=> AIKI_VERSION;
-		"@REVISION@"=> AIKI_REVISION;
-		"@AUTHORS@"=> AIKI_AUTHORS;*/
-
+	$sql_create_tables   = strtr( @file_get_contents("$AIKI_ROOT_DIR/sql/CreateTables.sql")     ,$replace);
+	$sql_insert_defaults = strtr( @file_get_contents("$AIKI_ROOT_DIR/sql/InsertDefaults.sql")   ,$replace);
+	$sql_insert_variable = strtr( @file_get_contents("$AIKI_ROOT_DIR/sql/InsertVariable-in.sql"),$replace);
+	
 	return $sql_create_tables . SQLS_DELIMITER . $sql_insert_defaults . SQLS_DELIMITER.  $sql_insert_variable ;
 }
 

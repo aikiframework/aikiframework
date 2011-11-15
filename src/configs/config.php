@@ -18,7 +18,9 @@
  * @filesource */
 
 /** @see defs.php */
-require_once("$AIKI_ROOT_DIR/configs/defs.php");
+if ( file_exists("$AIKI_ROOT_DIR/configs/defs.php") ){
+    require_once("$AIKI_ROOT_DIR/configs/defs.php");
+}
 
 /* Do NOT remove the following constant definitions.
  * The run-time installer should insert the correct values here.
