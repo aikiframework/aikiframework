@@ -33,7 +33,7 @@ if ( !defined("AIKI_VERSION") ) {
 }
 
 if ( !defined("AIKI_REVISION") ) {
-	define(AIKI_REVISION,"+936");
+	define(AIKI_REVISION,"+940");
 }
 
 if ( !defined("AIKI_AUTHORS") ) {
@@ -119,7 +119,7 @@ $template[1]= "%s<form method='post'>
 
 $template[2]= "%s " . form_hidden(3, "<input type='submit' class='button next' value='Next: write configuration'>");
 $template[3]= "%s " . form_hidden(4, "<input type='submit' class='button next' value='Next: pretty url'>");
-$template[4]= "%s <div class='actions'>%s<a href='{$AIKI_SITE_URL}' class='button'>Test my site!!</a></div>";
+$template[4]= "%s <div class='actions'>%s</div>";
 
 $steps = array (
     0=>"Required files",
@@ -220,6 +220,25 @@ function send_data_by_email(){
 	
 	return true;	
 	
+}
+
+/** 
+ *
+ * Get new htaccess file from template /configs/htaccess.inc 
+ * 
+ * @param string aiki root dir
+ * 
+ * @return false or string htaccess content.
+ */
+
+function get_new_htaccess($url){
+	$htaccess_file = file_get_contents("$url/configs/htaccess.inc");
+	if ( $htaccess_file == false ){				
+		return false;
+	}	
+	$replace= array (	"@AIKI_REWRITE_BASE@" => clean_url($_SERVER["REQUEST_URI"]) );
+	$htaccess_file = strtr( $htaccess_file, $replace);
+	return $htaccess_file;
 }
 
 
@@ -346,6 +365,7 @@ switch ( $step){
 		break;
 
 	case 3:
+	    // STEP 3 Write config.php -------------------------------------------------
 		$config_file = file_get_contents("$AIKI_ROOT_DIR/configs/config.php");
 		if ( false == $config_file ) {
 			// file exists had been checked ..but can fails
@@ -377,25 +397,39 @@ switch ( $step){
 		break;
 
 	case 4:
-		$htaccess_file = file_get_contents("$AIKI_ROOT_DIR/configs/htaccess.inc");
-		if ( false == $htaccess_file ) {
-			$message = "<div class='error'>FATAL ERROR: failed to read htaccess.inc file"-
-			           "<em>Path $AIKI_ROOT_DIR/configs/config.php</em></div>";
-			break;
-		}
-
-		$replace= array (	"@AIKI_REWRITE_BASE@" => clean_url($_SERVER["REQUEST_URI"]) );
-		$htaccess_file = strtr( $htaccess_file, $replace);
-
-		if ( @file_put_contents ( "$AIKI_ROOT_DIR/.htaccess", $htaccess_file) ){
-			$message= "<div class='ok'>Installation finished <em>pretty urls are enabled</em></div>";
-		} else {
-			$aditional= "<input type='submit' name='try_step_4' value='Try again' class='button' >";
-			$message=
-				"<div class='error'>Aiki can't write .htaccess file: <em>Path: $AIKI_ROOT_DIR/.htaccess</em></div>".
-				"<div class='message'><p>Please, copy this code, create file and paste.</p><textarea class='filedump'>". $htaccess_file . "</textarea></div>";
-			$help  = "<div class='help'>Check permission in directory</div>";
-		}
+		// STEP 4 Write htaccess -------------------------------------------------
+		$htaccess_file = get_new_htaccess($AIKI_ROOT_DIR);
+		
+		if ( file_exists($AIKI_ROOT_DIR ."/.htaccess" ) ) {			
+			if ( file_get_contents($AIKI_ROOT_DIR ."/.htaccess") == $htaccess_file ){
+				$message= "<div class='ok'>Installation finished <em>pretty urls are enabled with previous .htaccess</em></div>";
+				$aditional="<a href='{$AIKI_SITE_URL}' class='button'>Test my site!!</a>";
+			} else {			
+				$aditional= "<input type='submit' name='try_step_4' value='Try/Check again' class='button' >";
+				$message = "<div class='error'>There is a existing .htaccess file</div>".
+				  		   "<div class='message'><p>Please, remove file or rewrite file with this code:</p><textarea class='filedump'>". $htaccess_file . "</textarea></div>";
+			}		
+		
+			break;	
+			           			           
+		} else {								
+			if ( !$htaccess_file ) {
+				$message = "<div class='error'>FATAL ERROR: failed to read htaccess.inc file"-
+						   "<em>Path $AIKI_ROOT_DIR/configs/config.php</em></div>";
+				break;
+			}
+			
+			if ( @file_put_contents ( "$AIKI_ROOT_DIR/.htaccess", $htaccess_file) ){
+				$message= "<div class='ok'>Installation finished <em>pretty urls are enabled</em></div>";
+				$aditional="<a href='{$AIKI_SITE_URL}' class='button'>Test my site!!</a>";
+			} else {	
+				$aditional= "<input type='submit' name='try_step_4' value='Try again' class='button' >";
+				$message=
+					"<div class='error'>Aiki can't write .htaccess file: <em>Path: $AIKI_ROOT_DIR/.htaccess</em></div>".
+					"<div class='message'><p>Please, copy this code, create file and paste.</p><textarea class='filedump'>". $htaccess_file . "</textarea></div>";
+				$help  = "<div class='help'>Check permission in directory</div>";
+			}
+		}	
 		break;
 
 	default:
