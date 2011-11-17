@@ -33,7 +33,7 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * @todo rename class Php
  */
 
-class php {
+class AikiScript {
 	
 	/**
 	 * Variables user by odd, counter, adn mod functions.
@@ -60,12 +60,12 @@ class php {
 		//$text = htmlspecialchars_decode($text);
 		$text = stripslashes($text);
 		
-		if (preg_match("/\<form(.*)\<php (.*) php\>(.*)\<\/form\>/Us", $text)) {
+		if (preg_match("/\<form.*((\<php |\(script\().*(\)script\)|php\>)).*\<\/form\>/Us", $text)) {
 			return $text;
 		}
 		// now, we will divided the text. The array is always
 		// out of marker, in of markers, out of markers, in of markers
-		$tokens= preg_split("/(<php)|(php>)/", $text);
+		$tokens= preg_split("/\(script\(|\)script\)|<php|php>/", $text);
 
 		$parsed = "";
 	   		

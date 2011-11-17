@@ -23,6 +23,7 @@ aiki_src_files = \
 	AikiCurl.php \
 	AikiException.php \
 	aiki.php \
+	AikiScript.php \
 	AikiSession.php \
 	Archive.php \
 	Backup.php \
@@ -42,7 +43,6 @@ aiki_src_files = \
 	message.php \
 	Output.php \
 	parser.php \
-	php.php \
 	Plugins.php \
 	Records.php \
 	security.php \
