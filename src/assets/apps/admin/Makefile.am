@@ -24,6 +24,7 @@ aiki_src_files = \
 	control_panel.js \
 	database_forms.php \
 	events.php \
+	run_sql.php \
 	urls_widgets.php \
 	log_view.php
 

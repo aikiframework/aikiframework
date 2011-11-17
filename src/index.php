@@ -60,7 +60,7 @@ if (isset($global_widget)) {
 	$nogui = true;
 }
 
-$log->message("<>test ERROR", Log::ERROR);
+
 /**
  * @todo fix the misspelling
  */

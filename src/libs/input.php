@@ -38,7 +38,7 @@ class input {
 	/** 
 	 * Handle input
 	 *
-	 * @global  aiki			$aiki   global aiki instance
+	 * @global  aiki		$aiki   global aiki instance
 	 * @global  CreateLayout	$layout global layout instance
 	 */
 	public function input() {
@@ -94,8 +94,8 @@ class input {
 	/**
 	 * A form handler
 	 * 
-	 * @param   string  $type			type of form handler
-	 * @param   array   $post			post data
+	 * @param   string  	$type		type of form handler
+	 * @param   array   	$post		post data
 	 * @global  membership  $membership	global membership instance
 	 *
 	 * @todo	this function does not look complete, need to investigate

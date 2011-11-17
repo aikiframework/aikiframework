@@ -151,12 +151,12 @@ class Site {
 			$this->site_prefix = "";							
 			$path = $aiki->url->first_url();
 			if ( $path != "homepage" ) {
-					$site= $db->get_var("SELECT site_shortcut from aiki_sites where site_prefix='$path'");
-					if ($site){
-						$config['site'] = $site;					
-						$aiki->url->shift_url();
-						$this->site_prefix = $path;				  
-					}	
+				$site= $db->get_var("SELECT site_shortcut from aiki_sites where site_prefix='$path'");
+				if ($site){
+					$config['site'] = $site;					
+					$aiki->url->shift_url();
+					$this->site_prefix = $path;				  
+				}	
 			}						
 		}
 		

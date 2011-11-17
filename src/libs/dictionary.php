@@ -112,7 +112,6 @@ class Dictionary {
 		return $ret;
 	}
 	
-	
 	/**
 	 * translate a term
 	 * 
@@ -123,8 +122,7 @@ class Dictionary {
 	 * @return string term translated
 	 * 
 	 */
-	
-	function translate( $term, $translateFrom=NULL, $translateTo=NULL, $domain=NULL){	
+	function translate($term, $translateFrom=NULL, $translateTo=NULL, $domain=NULL) {
 		$to = is_null($translateTo) ? $this->translateTo : $translateTo;
 		$from = is_null($translateFrom)? $this->translateFrom : $translateFrom;
 		
@@ -153,7 +151,7 @@ class Dictionary {
  * 
  */
 
-function __($term, $domain=NULL){	
+function __($term, $domain=NULL) {
 	global $aiki;
 	$to = $aiki->site->language();
 	if ( $to == "en" )  {
