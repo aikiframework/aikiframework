@@ -56,7 +56,7 @@ class AikiScript {
 
 		$text = stripslashes($text);
 		
-		if (preg_match("/\<form.*((\<php |\(script\().*(\)script\)|php\>)).*\<\/form\>/Us", $text)) {
+		if (preg_match("/\<textarea.*((\<php |\(script\().*(\)script\)|php\>)).*\<\/textarea\>/Us", $text)) {
 			return $text;
 		}
 		// now, we will divided the text. The array is always
