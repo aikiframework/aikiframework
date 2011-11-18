@@ -30,10 +30,10 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
  * @category  Aiki
  * @package   Library
  *
- * @todo rename class Php
  */
 
 class AikiScript {
+	
 	
 	/**
 	 * Variables user by odd, counter, adn mod functions.
@@ -54,10 +54,6 @@ class AikiScript {
 	public function parser($text) {
 		global $aiki;
 
-		/**
-		 * @todo why is this not just deleted? kill or keep?
-		 */
-		//$text = htmlspecialchars_decode($text);
 		$text = stripslashes($text);
 		
 		if (preg_match("/\<form.*((\<php |\(script\().*(\)script\)|php\>)).*\<\/form\>/Us", $text)) {
@@ -146,7 +142,7 @@ class AikiScript {
 					$php_output= $this->sql_rows($rest);
 					break;	
 				case "echo":
-					$php_output= $this->evalNeg($rest);
+					$php_output= $this->eval($rest);
 				default:
 					if (isset($config['debug'])) {
 						$php_output = "<php $php_function php>";
@@ -234,23 +230,19 @@ class AikiScript {
 	 *
 	 * @param	string	$text	text for processing
 	 * @return	string
-	 * @todo	this function has a bad name
+	 * 
 	 */
-	function evalNeg($text) {
+	function meval($text) {
 		$text = trim($text);
-		/**
-		 * @todo $cap is an out of scope variable, needs fixing
-		 */
-		if (preg_match('/^\$_(GET|POST|SESSION|REQUEST|COOKIE)\[(.*)\]$/',
-			  $text, $cap)) {
-			$key = preg_replace("/^['\"]|['\"]$/",'',$cap[2]);
+		$cap  = "";
+		
+		if (preg_match('/^\$_(GET|POST|SESSION|REQUEST|COOKIE)\[(.*)\]$/', $text, $cap)) {
+			$key = preg_replace("/^['\"]|['\"]$/",'',$cap[2]); // trim ' and "" 
 			switch ($cap[1]) {
 				 case "POST":
-					$text = isset($_POST[$key]) ? $_POST[$key] : "";
-					break;
+					$text = isset($_POST[$key]) ? $_POST[$key] : "";	break;
 				 case "GET":
-					$text = isset($_GET[$key]) ? $_GET[$key] : "";
-					break;
+					$text = isset($_GET[$key]) ? $_GET[$key] : "";	break;
 				 case "REQUEST":
 					$text = isset($_REQUEST[$key]) ? $_REQUEST[$key] : "" ; break;
 				 case "SESSION":
@@ -264,7 +256,7 @@ class AikiScript {
 		$text = preg_replace("/^(!?)\s?['\"]|['\"]$/", '\\1', $text);
 		return ( $text && $text[0] == '!' ? !substr($text,1) : $text );
 	
-	} // end of evalNeg function
+	} // end of eval function
 
 
 	/**
@@ -276,7 +268,7 @@ class AikiScript {
 	function php_ifelse($text) {
 		//divide the text
 		// @TODO improve this.
-		$partial = preg_split('/if |then |else /s', $text);
+		$partial = preg_split('/^\s*if |then |else /s', $text);
 
 		if (!isset($partial[3])) {
 			$partial[3] = "";
@@ -285,8 +277,8 @@ class AikiScript {
 		if (preg_match (
 			'/([^<>=]+)(=|==|>|<|>=|<=|<>| in | not in )([^<>=]+)/is', 
 				$partial[1], $evaluation)) {
-			$first = $this->evalNeg($evaluation[1]);
-			$second = $this->evalNeg($evaluation[3]);
+			$first = $this->meval($evaluation[1]);
+			$second = $this->meval($evaluation[3]);
 	
 			switch ($evaluation[2]) {
 				case "<" : $condition= $first  < $second ; break;
@@ -300,7 +292,7 @@ class AikiScript {
 				case " not in ": $condition = stripos($second, $first) === false; break;
 			}
 		} else {
-			$condition = $this->evalNeg($partial[1]);
+			$condition = $this->meval($partial[1]);
 		}
 		return (bool) $condition ? $partial[2]: $partial[3];
 	} // end of php_ifelse function
@@ -327,7 +319,7 @@ class AikiScript {
 		}
 
 		if ($para) {
-			return  $aiki->$class->$function($para);
+			return call_user_func_array ( array($aiki->$class, $function), $this->mtoken($para) );	
 		} else {
 			return $aiki->$class->$function();
 		}
