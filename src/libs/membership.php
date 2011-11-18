@@ -417,20 +417,10 @@ class membership
 	 * @return	string
 	 *
 	 * @todo	really the view should be separated out from this function
-	 * @todo	rename this function resetPassword
+	 * @todo	Change this to resetPassword
 	 */
-	public function ResetPassword($input) {
+	public function ResetPassword($username, $email, $emailfrom, $subject, $message) {
 		global $db, $aiki, $config;
-
-		$vars_array = str_replace('"', '', $input);
-		$vars_array = str_replace("'", '', $vars_array);
-		$vars_array = explode(',', $vars_array);
-
-		$username = trim($vars_array['0']);
-		$email = trim($vars_array['1']);
-		$emailfrom = trim($vars_array['2']);
-		$subject = trim($vars_array['3']);
-		$message = trim($vars_array['4']);
 
 		if ( !$username and !$email ) {
 			return '';
