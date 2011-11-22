@@ -472,7 +472,7 @@ class CreateLayout {
 					$this->parsDBpars($no_loop_bottom_part, $widget_value);
 				
 				// now widget is complete other parser can aplied.
-				$widgetContents = $aiki->php->parser($widgetContents);
+				$widgetContents = $aiki->AikiScript->parser($widgetContents);
 				$widgetContents = $this->inline_widgets($widgetContents);
 				$widgetContents = $this->inherent_widgets($widgetContents);
 				$widgetContents = $aiki->SqlMarkup->sql($widgetContents);
@@ -525,7 +525,7 @@ class CreateLayout {
 			$processed_widget = $aiki->AikiArray->displayArrayEditor($processed_widget);
 			$processed_widget = $aiki->Forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);
-			$processed_widget = $aiki->php->parser($processed_widget);
+			$processed_widget = $aiki->AikiScript->parser($processed_widget);
 			
 			$processed_widget = $this->parse_translate_widget($processed_widget);
 			$processed_widget = $this->parse_translate_aiki_core($processed_widget);
@@ -1196,7 +1196,16 @@ class CreateLayout {
 														
 				$widget_data = $db->get_row(
 					"SELECT * FROM aiki_widgets WHERE id='{$widget_id}' LIMIT 1");
+					
+				// widget css is added	
+				if ( trim($widget_data->css) <> "" &&
+				     !in_array( $widget_data->id, $this->widgets_css)) {					
+					$this->widgets_css[]= $widget_data->id ;
+				}				
 				$widget_html = $this->createWidgetContent($widget_data, $normal_select);
+				
+				
+				
 
 				// if the same widget appears two times..it will be replaced.
 				$widget = str_replace($matches[0][$i], $widget_html, $widget);
