@@ -30,7 +30,8 @@ INSERT IGNORE INTO `aiki_config` (`config_id`, `app_id`, `config_type`, `config_
 (4, 0, 'images_settings', 'a:4:{s:7:"max_res";s:3:"650";s:20:"default_photo_module";s:18:"apps_photo_archive";s:23:"store_native_extensions";s:4:"true";s:13:"new_extension";s:5:".aiki";}'),
 (5, 0, 'admin_settings', 'a:1:{s:17:"show_edit_widgets";s:1:"0";}'),
 (6, 0, 'upload_settings', 'a:4:{s:18:"allowed_extensions";s:20:"jpg|gif|png|jpeg|svg";s:11:"upload_path";s:15:"assets/uploads/";s:22:"plupload_max_file_size";s:4:"10mb";s:13:"plupload_path";s:15:"assets/uploads/";}'),
-(7, 0, 'revisions_settings', 'a:1:{s:24:"send_email_notifications";s:5:"false";}');
+(7, 0, 'revisions_settings', 'a:1:{s:24:"send_email_notifications";s:5:"false";}'),
+(8, 0, 'log_settings', 'a:3:{s:7:"log_dir";s:3:"log";s:8:"log_file";s:8:"aiki.log";s:9:"log_level";s:4:"NONE";}');
 
 -- ------------------------------------------------------
 

@@ -24,10 +24,19 @@ if (!defined("IN_AIKI")) {
 }
 
 class Log {
+	
+	static $levels = array(
+	     0                =>"NONE",
+		 E_USER_ERROR     =>"ERROR",
+		 E_USER_WARNING   =>"WARN",
+		 E_USER_NOTICE    =>"INFO",
+		 E_USER_DEPRECATED=>"DEBUG");
+	
 	// these should be used to specify the log message level
+	const NONE  = 0;
 	const ERROR = E_USER_ERROR;
-	const WARN = E_USER_WARNING;
-	const INFO = E_USER_NOTICE;
+	const WARN  = E_USER_WARNING;
+	const INFO  = E_USER_NOTICE;
 	const DEBUG = E_USER_DEPRECATED;
 	
 	/** string $_allow Used to specify at what level of messages to log */
@@ -44,75 +53,100 @@ class Log {
 	
 	/** string $_path Full path including directory and file name of the log */
 	protected $_path;
-	
-	/** string $_root The root directory of this application */
-	protected $_root;
-	
+			
+	/** string $_path Full for aplication */
+	protected $_root;			
+			
+			
 	/** Class constructor which creates a new log
 	 * @param string $dir The log directory
 	 * @param string $file The log file name
-	 * @param string $level Used to specify at what level of messages to log
-	 * @param string $root The root directory of this application
+	 * @param string $level Used to specify at what level of messages to log	
+	 * @paran string $root application root
 	 * @return void */
-	public function __construct($dir, $file, $level, $root) {
-		$this->_root = $root;
-		$this->_path = $dir . "/" . $file;
-		// date_default_timezone_set requires PHP 5.1 or greater
-		date_default_timezone_set(@date_default_timezone_get());
-		$levelNo = $this->_getLevelNumber(strtoupper($level));
-		$this->_allow = $this->_getLevelString($levelNo);
-		// if level is NONE, disable the log
-		if ( $this->_isAllowed($levelNo) and $this->_isDir($dir) ) {
-			$this->_stream = fopen($this->_path, $this->_mode);
+	public function __construct($dir="", $file="", $level="NONE", $root=NULL) {		
+		
+		if ( is_null($root) && !$file && $level=="NONE"){
+			$root= $dir;
+			$dir="";
 		}
+		
+		$this->_root = $root;
+		
+		// date_default_timezone_set requires PHP 5.1 or greater
+		date_default_timezone_set(@date_default_timezone_get());		
+		
+		$levelCode = (int) array_search ( strtoupper($level), Log::$levels );	
+		$this->_open($dir,$file,$levelCode);	
+		
 		set_error_handler(array($this, "_handler"));
 	}
+	
+	private function _open($dir,$file,$levelCode){
+		global $AIKI_ROOT_DIR;
+			
+		$this->_path= "";
+		// correct relative path.
+		if ( $dir &&  $dir[0]!="/" ){ 
+			$dir =  $this->_root ."/$dir";
+		} 
+		
+		$this->_allow = $levelCode ;			
+		if ( $this->_allow && $this->_isDir($dir, $file) ) {						
+			$this->_path = "$dir/$file";
+			$this->_stream = fopen( $this->_path, $this->_mode);						
+		} else {
+			// when dir is not writable turn off logs				
+			$this->_allow = 0;			
+		}	
+	}
+	
+	/** To change log setting
+	 * @param string $dir The log directory
+	 * @param string $file The log file name
+	 * @param string $level Used to specify at what level of messages to log	
+	 * @return void */
+		
+	public function change ($dir,$file,$level) {		
+		$levelCode =  (int) array_search ( strtoupper($level), Log::$levels );
+		if ( $dir &&  $dir[0]!="/" ){ 
+			$path=  $this->_root ."/$dir/$file";
+		} else {
+			$path=  "$dir/$file";
+		}
+		
+		if ( $levelCode != $this->_allow || $this->_path != $path ){			    
+			$this->_close();			
+			$this->_open($dir,$file,$levelCode);
+		} 				
+	}
+	
+	
 	/** Class destructor which closes the log file
 	 * @return void */
 	public function __destruct() {
 		$this->_close();
 	}
+	
+	
 	/** Attempt to make the log directory if it does not exist
 	 * @param string $dir The log directory
 	 * @return boolean $result True when directory exists or is created */
-	protected function _isDir($dir) {
-		$result = true;
+	protected function _isDir($dir,$file) {		
+		if ( $dir=="" || $file=="" ) {
+			return false;
+		}		
+				
 		if (!is_dir($dir)) {
-			if (!is_dir($this->_root . "/" . $dir)) {
-				$result = mkdir($dir, 0700);
-			}
-		}
-		return $result;
+			return @mkdir($dir, 0700);
+		} elseif ( file_exists( "$dir/$file")) {
+			return is_writable("$dir/$file");
+		} else {				
+			return is_writable("$dir");
+		}	
 	}
-	/** Allows or disallows a log message
-	 * @param int $errno The current message level
-	 * @return boolean $allowed Whether or not to allow */
-	protected function _isAllowed($errno) {
-		$allowed = false;
-		$level = $this->_getLevelString($errno);
-		switch (true) {
-			case ( "ERROR" === $this->_allow and $level === "ERROR" ):
-				$allowed = true;
-				break;
-			case ( "WARN" === $this->_allow and
-				( $level === "ERROR" or $level === "WARN" ) ):
-				$allowed = true;
-				break;
-			case ( "INFO" === $this->_allow and 
-				( $level === "ERROR" or $level === "WARN" or $level === "INFO" ) ):
-				$allowed = true;
-				break;
-			case ( "DEBUG" === $this->_allow and
-				($level === "ERROR" or $level === "WARN" or $level === "INFO" or $level === "DEBUG" ) ):
-				$allowed = true;
-				break;
-			case ( "NONE" === $this->_allow ):
-				break;
-			default :
-				break;
-		}
-		return $allowed;
-	}
+	
+	
 	/** Format a log message
 	 * @param string $message The message
 	 * @param array $data The context of the message
@@ -120,7 +154,7 @@ class Log {
 	 * @return string $message The formated message */
 	protected function _format($message, $data, $level) {
 		$message = "[" . date($this->_dateFormat) . "] " .
-			"[" . $this->_getLevelString($level) . "] " .
+			"[" . Log::$levels[$level]  . "] " .
 			$message . " " .
 			"in " . $data["file"] . " " .
 			"on line " . $data["line"] . " " .
@@ -146,83 +180,56 @@ class Log {
 	 * @param array $data The context data such as file and line number
 	 * @return void */
 	public function message($message, $level = Log::DEBUG, $data = NULL) {
-		if ($this->_isAllowed($level)) {
+		$logLevel= $this->_isAllowed($level);
+		if ($logLevel) {
 			// get the message context data if necessary
 			if ( $data == NULL ) {
 				$trace = debug_backtrace();
 				$data = current($trace);
 			}
 			// format the message
-			$message = $this->_format($message, $data, $level);
+			$message = $this->_format($message, $data, $logLevel);
 			// write the message
 			$this->_write($message);
 		}
 	}
-	/** Get a integer representation of the log level from a string.
-	 * @param string $level The log level as a string
-	 * @return int $number The log level number */
-	protected function _getLevelNumber($level) {
-		$number = 0;
-		switch (true) {
-			case ( "ERROR" === $level ):
-				$number = Log::ERROR;
-				break;
-			case ( "WARN" === $level ):
-				$number = Log::WARN;
-				break;
-			case ( "INFO" === $level ):
-				$number = Log::INFO;
-				break;
-			case ( "DEBUG" === $level ):
-				$number = Log::DEBUG;
-				break;
-			default:
-				break;
-		}
-		return $number;
-	}
-	/** Get a string representation of the log level. Although
-	 * Some of the errors below may never reach our custom
-	 * error handler, they are included here for completeness.
-	 * @param int $errno The error number
-	 * @return string $level The log level */
-	/*
-	 * The following error types cannot be handled with a user
-	 * defined function: E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING,
-	 * E_COMPILE_ERROR, E_COMPILE_WARNING, and most of E_STRICT raised
-	 * in the file where set_error_handler() is called. */
-	protected function _getLevelString($errno) {
-		$level = "NONE";
+	
+	
+	/** Allows or disallows a log message
+	 * @param int $errno The current message level
+	 * @return boolean $allowed Whether or not to allow */
+
+	protected function _isAllowed($errno) {		
 		switch ($errno) {
 			case E_ERROR:
 			case E_PARSE:
 			case E_CORE_ERROR:
 			case E_COMPILE_ERROR:
 			case E_USER_ERROR:
-			case E_RECOVERABLE_ERROR:
-				$level = "ERROR";
-				break;
+			case E_RECOVERABLE_ERROR:				
+				return ( $this->_allow == Log::ERROR ? LOG::ERROR : 0 );
+			
 			case E_WARNING:
 			case E_CORE_WARNING:
 			case E_COMPILE_WARNING:
 			case E_USER_WARNING:
 			case E_STRICT:
 			case E_DEPRECATED:
-				$level = "WARN";
-				break;
+				return ($this->_allow == Log::ERROR || $this->_allow == Log::WARN ? Log::WARN: 0);
+						
 			case E_NOTICE:
 			case E_USER_NOTICE:
-				$level = "INFO";
-				break;
+				return ($this->_allow == Log::ERROR || $this->_allow == Log::WARN ||
+				        $this->_allow == Log::INFO ? Log::INFO : 0 );
+
 			case E_USER_DEPRECATED:
-				$level = "DEBUG";
-				break;
-			default:
-				$level = "NONE";
-				break;
+				return ( $this->_allow == Log::ERROR || $this->_allow == Log::WARN ||
+					     $this->_allow == Log::INFO  || $this->_allow == Log::DEBUG ? Log::DEBUG : 0);
+						
 		}
-		return $level;
+		return false;
 	}
+	
 	/** Handle an error as a log message. This must be public
 	 * for use as a callback and is not ment to be called otherwise.
 	 * @param int $errno The error number
@@ -247,14 +254,13 @@ class Log {
 	/** Get the contents of the log
 	 * @return mixed The log file contents, NONE or FALSE on failure. */
 	public function getContents() {
-		$levelNo = $this->_getLevelNumber($this->_allow);
-		$contents = $this->_allow;
-		// if level is NONE, disable the log
-		if ($this->_isAllowed($levelNo)) {
-			$contents = file_get_contents($this->_path);
-			if ( false === $contents ) {
-				$contents = file_get_contents($this->_root . "/" . $this->_path);
-			}
+		if ( $this->_allow == Log::NONE ){
+			return "NONE";
+		}
+		
+		$contents = file_get_contents($this->_path);
+		if ( false === $contents ) {
+			return "CANT'T OPEN LOG FILE";
 		}
 		return $contents;
 	}
