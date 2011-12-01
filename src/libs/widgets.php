@@ -482,7 +482,7 @@ class CreateLayout {
 				$widgetContents = $this->parse_hits($widgetContents);			
 				
 				// insert pagination.
-				if ( $pagination && strpos($widgetContents, "[no_pagination]") === false ){
+				if ( $pagination && strpos($widgetContents, "[no_pagination]") === false ) {
 					if (strpos($widgetContents, "[pagination]")) {
 					$widgetContents = str_replace(
 						"[pagination]", 
@@ -692,9 +692,9 @@ class CreateLayout {
 		 * @todo the harcoded pagination must die
 		 */
 		$pagination .= 
-			"<div class='pagination'>" . 
-			"<span class='pagination_move_to_page'>" . 
-			"__move_to_page__</span><br />";
+		  "<div class='pagination'>" .
+		  "<span class='pagination_move_to_page'>" . 
+		  __("move to page") . "</span><br />";
 
 		if ($page) {
 			$previous = 
@@ -704,8 +704,8 @@ class CreateLayout {
 			 * @todo more hardcoded pagination, must change!
 			 */
 			$pagination .= 
-				"<span class='pagination_previous'>" . 
-				"<a href=\"$previous\">__previous__</a></span>";
+			  "<span class='pagination_previous'>" . 
+			  "<a href=\"$previous\">" . __("previous") . "</a></span>";
 		}
 
 		if ($group_pages)
@@ -738,7 +738,7 @@ class CreateLayout {
 						$widget->link_example);
 					$pagination .= 
 						"<span class='pagination_active'>" . 
-						"<a href=\"$next_link\">$i</a></span>";
+						" <a href=\"$next_link\">$i</a> </span>";
 				}
 			} // end of for loop
 
@@ -753,8 +753,8 @@ class CreateLayout {
 					$next_link = str_replace("[page]", $i, 
 								 $widget->link_example);
 					$pagination .= 
-						"<span class='pagination_active'>" . 
-						"<a href=\"$next_link\">$i</a></span>";
+					  "<span class='pagination_active'>" . 
+					  " <a href=\"$next_link\">$i</a> </span>";
 				}
 			}
 		}
@@ -763,27 +763,28 @@ class CreateLayout {
 			$next = str_replace("[page]", $page + 2, 
 								$widget->link_example);
 			$pagination .= 
-				"<span class='pagination_next'>". 
-				"<a href=\"$next\">__next__</a></span>";
+			  "<span class='pagination_next'>". 
+			  "<a href=\"$next\">" . __("next") . "</a></span>";
 		}
 
 		if($page) {
 			$first_page = str_replace("[page]", '1', 
 				$widget->link_example);
 			$pagination .= 
-				"<span class='pagination_first'>" . 
-				" <a href=\"$first_page\">__first_page__</a>" .
-				"</span>";
+			  "<span class='pagination_first'>" . 
+			  " <a href=\"$first_page\">" . __("first page") . "</a> " .
+			  "</span>";
 		}
 
 		if( $page != ($numpages-2) ) 
 		{
 			$last_page = str_replace("[page]", 
-				$full_numb_of_pages -1, $widget->link_example);
+									 $full_numb_of_pages -1, 
+									 $widget->link_example);
 			$pagination .= 
-				"<span class='pagination_last'>" . 
-				"<a href=\"$last_page\">__last_page__</a>" . 
-				"</span>";
+			  "<span class='pagination_last'>" . 
+			  "<a href=\"$last_page\">" . __("last page") . "</a>" . 
+			  "</span>";
 		}
 		
 		if (isset($next)) {					
@@ -791,8 +792,8 @@ class CreateLayout {
 		}	
 
 		if (isset($previous)) {
-			$pagination = str_replace("[previous]", $previous, $widgetContents);
-		}	
+		  $pagination = str_replace("[previous]", $previous, $pagination);
+		}
 		
 		$pagination .= "</div>";
 		return $pagination;	   	
