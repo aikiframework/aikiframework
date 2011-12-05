@@ -192,17 +192,17 @@ class CreateLayout {
 					}
 				}
 			}
-
+			/**
+			 * @todo all output of comments needs to be an option, since
+			 *		 it makes output pages bigger by default.
+			 *		 Should only turn on for debug mode IMO.
+			 */
+			$this->widget_html .=
+			  "\n <!--start {$widget->widget_name}({$widget->id})--> \n";
+			
 			if ( !$custom_output &&
 				 $widget->widget_type &&
 				 $widget->remove_container != 1 ) {
-				/**
-				 * @todo all output of comments needs to be an option, since
-				 *		 it makes output pages bigger by default.
-				 *		 Should only turn on for debug mode IMO.
-				 */
-				$this->widget_html .= 
-					"\n <!--start {$widget->widget_name}({$widget->id})--> \n";
 
 				$this->widget_html .= 
 					"<$widget->widget_type id=\"$widget->widget_name\"";
@@ -244,9 +244,9 @@ class CreateLayout {
 				 *		 it makes output pages bigger by default.
 				 *		 Should only turn on for debug mode IMO.
 				 */
-				$this->widget_html .= 
-					"\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
 			}
+			$this->widget_html .=
+			  "\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
 
 			if ($this->kill_widget) {
 				if ($widget->if_no_results) { 
@@ -444,7 +444,7 @@ class CreateLayout {
 					if (!$custom_output) {
 						$widgetContents .= 
 							"\n<!-- The Beginning of a Record -->\n";
-					}							
+					}
 					$widgetContents .=  $this->parse_widget_with_data(
 						$template,
 						$widget_value);
@@ -482,13 +482,13 @@ class CreateLayout {
 				$widgetContents = $this->parse_hits($widgetContents);			
 				
 				// insert pagination.
-				if ( $pagination && strpos($widgetContents, "[no_pagination]") === false ) {
+				if ( $pagination != false && strpos($widgetContents, "[no_pagination]") === false ) {
 					if (strpos($widgetContents, "[pagination]")) {
 					$widgetContents = str_replace(
-						"[pagination]", 
-						$pagination, 
+						"[pagination]",
+						$pagination,
 						$widgetContents);
-					} else {				
+					} else {	
 						$widgetContents .= $pagination;
 					}
 				}
@@ -531,7 +531,7 @@ class CreateLayout {
 			$processed_widget = $this->parse_translate_aiki_core($processed_widget);
 			
 			
-			$processed_widget = stripslashes($processed_widget);
+			//$processed_widget = stripslashes($processed_widget);
 		}
 		
 		
@@ -615,6 +615,9 @@ class CreateLayout {
 
 	private function pagination($widget, $records_num) {
 		global $db, $aiki;
+		if (!$widget->records_in_page) {
+			return false;
+		}
 		$pagesgroup = 10;
 		$group_pages = false;
 
@@ -673,7 +676,7 @@ class CreateLayout {
 		}
 
 		if ( $numpages <= 1 ) {
-			return "";
+			return "<div class='pagination'></div>";
 		}
 			
 		$widget->link_example = $aiki->input->requests($widget->link_example);

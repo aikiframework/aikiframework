@@ -17,7 +17,9 @@
  * @filesource
  */
 
-if(!defined('IN_AIKI')){die('No direct script access allowed');}
+if (!defined('IN_AIKI')){
+	die('No direct script access allowed');
+}
 
 
 /**
@@ -54,7 +56,7 @@ class AikiScript {
 	public function parser($text) {
 		global $aiki;
 
-		$text = stripslashes($text);
+		//$text = stripslashes($text);
 		
 		if (preg_match("/\<textarea.*((\<php |\(script\().*(\)script\)|php\>)).*\<\/textarea\>/Us", $text)) {
 			return $text;

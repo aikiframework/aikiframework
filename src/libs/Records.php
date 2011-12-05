@@ -1194,7 +1194,7 @@ class Records {
 					"($insert_query_fields) VALUES ($insert_query_values)";
 				break;
 		}
-
+		
 		if (isset($special_permission)) {
 			$special_permission = explode("|", $special_permission);
 
@@ -1209,6 +1209,7 @@ class Records {
 					$db->get_var("select $normal_accounts from ".
 						"$tablename where $pkey = $record_id");
 			}
+			
 			if ( isset($normal_accounts) and 
 				isset($get_user_name) and 
 				$get_user_name == $membership->username ) {
@@ -1340,19 +1341,17 @@ class Records {
 	 */
 	public function edit_in_place($text, $widget_value) {
 		global $aiki,$db, $membership, $layout;
-
-		if ( isset($post['edit_form']) and 
-			isset($post['form_id']) and 
-			isset($post['record_id']) ) {
-			$serial_post = serialize($post);
-
+		
+		if (isset($_POST['edit_form']) and
+			isset($_POST['form_id']) and
+			isset($_POST['record_id']) ) {
+			$serial_post = serialize($_POST);
 			/** 
 			 * @todo remove this bare echo in the code!!!
 			 */
 			echo $aiki->Records->edit_db_record_by_form_post($serial_post, 
-				$post['form_id'], $post['record_id']);
+				$_POST['form_id'], $_POST['record_id']);
 		}
-
 		$edit_matchs = 
 			preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
 
