@@ -197,20 +197,24 @@ class CreateLayout {
 			 *		 it makes output pages bigger by default.
 			 *		 Should only turn on for debug mode IMO.
 			 */
-			$this->widget_html .=
-			  "\n <!--start {$widget->widget_name}({$widget->id})--> \n";
 			
-			if ( !$custom_output &&
-				 $widget->widget_type &&
-				 $widget->remove_container != 1 ) {
+			
+			
+			if (!$custom_output) {
+				$this->widget_html .=
+					"\n <!--start {$widget->widget_name}({$widget->id})--> \n";
+				
+				if ( $widget->widget_type &&
+					$widget->remove_container != 1 ) {
 
-				$this->widget_html .= 
-					"<$widget->widget_type id=\"$widget->widget_name\"";
+					$this->widget_html .= 
+						"<$widget->widget_type id=\"$widget->widget_name\"";
 
-				if ($widget->style_id){
-					$this->widget_html .= " class=\"$widget->style_id\"";
+					if ($widget->style_id){
+						$this->widget_html .= " class=\"$widget->style_id\"";
+					}
+					$this->widget_html .= ">\n";
 				}
-				$this->widget_html .= ">\n";
 			}
 
 			$this->createWidgetContent($widget);
@@ -235,18 +239,21 @@ class CreateLayout {
 				}
 			} // end of handling father
 
-			if (!$custom_output and 
-				$widget->widget_type and 
-				$widget->remove_container != 1) {
-				$this->widget_html .= "\n</$widget->widget_type>\n";
+			if (!$custom_output) {
+				if ($widget->widget_type and 
+					$widget->remove_container != 1) {
+					$this->widget_html .= "\n</$widget->widget_type>\n";
+				}
+				
 				/**
 				 * @todo all output of comments needs to be an option, since
 				 *		 it makes output pages bigger by default.
 				 *		 Should only turn on for debug mode IMO.
 				 */
+				$this->widget_html .=
+					"\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
 			}
-			$this->widget_html .=
-			  "\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
+			
 
 			if ($this->kill_widget) {
 				if ($widget->if_no_results) { 
@@ -500,7 +507,8 @@ class CreateLayout {
 				 * @todo hide this behind debug time option
 				 */
 				if ($widgetContents == 
-					"\n<!-- The Beginning of a Record -->\n\n<!-- The End of a Record -->\n"){
+					"\n<!-- The Beginning of a Record -->\n".
+					"\n<!-- The End of a Record -->\n"){
 					$this->kill_widget = $widget->id;
 				} else {
 					$processed_widget = $widgetContents;
@@ -514,30 +522,35 @@ class CreateLayout {
 		if (!isset($processed_widget)) {
 			$processed_widget = '';
 		} else {	
+			
 			$processed_widget = $this->parsDBpars($processed_widget, '');
 			$processed_widget = $aiki->processVars($processed_widget);
 			$processed_widget = $aiki->url->apply_url_on_query($processed_widget);
 			$processed_widget = $aiki->text->aiki_nl2br($processed_widget);
 			$processed_widget = $aiki->text->aiki_nl2p($processed_widget);
 			
-			$processed_widget = $aiki->processVars ($processed_widget);
+			$processed_widget = $aiki->processVars($processed_widget);
 			$processed_widget = $aiki->parser->process($processed_widget);
 			$processed_widget = $aiki->AikiArray->displayArrayEditor($processed_widget);
+			$processed_widget = $this->parse_translate_aiki_core($processed_widget);
+			$processed_widget = $this->parse_translate_widget($processed_widget);
+			// Apply (#(header:...
+			$processed_widget = $this->parse_header($processed_widget);
 			$processed_widget = $aiki->Forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);
-			$processed_widget = $aiki->AikiScript->parser($processed_widget);
+			//$processed_widget = $aiki->AikiScript->parser($processed_widget);
 			
-			$processed_widget = $this->parse_translate_widget($processed_widget);
-			$processed_widget = $this->parse_translate_aiki_core($processed_widget);
+			//
+			
 			
 			
 			//$processed_widget = stripslashes($processed_widget);
+			
 		}
 		
 		
 
-		// Apply (#(header:...
-		$processed_widget = $this->parse_header($processed_widget);
+		
 			
 		if (isset($widget_cache_id)) {
 			$widget_cache_id_hash = md5($widget_cache_id);
@@ -602,8 +615,9 @@ class CreateLayout {
 		if ($is_inline) {
 			if ( !$processed_widget and $widget->if_no_results ) {
 				$widget->if_no_results = 
-					$aiki->processVars ($widget->if_no_results);
-				return stripslashes($widget->if_no_results);
+					$aiki->processVars($widget->if_no_results);
+				return $widget->if_no_results;
+				//return stripslashes($widget->if_no_results);
 			} else {
 				return $processed_widget;
 			}
@@ -1035,12 +1049,16 @@ class CreateLayout {
 		
 	private function parse_no_results($text) {
 		global $aiki;
-		$text = stripcslashes($text);
+		//$text = stripcslashes($text);
 		$text = $aiki->processVars($text);
 		$text = $aiki->url->apply_url_on_query($text);
 		$text = $aiki->input->requests($text);
-		return $text;		
-	}	
+		$text = $aiki->AikiScript->parser($text);
+		$text = $this->parse_translate_aiki_core($text);
+		$text = $this->parse_translate_widget($text);
+		$text = $this->parse_header($text);
+		return $text;
+	}
 		
 		
 	private function parse_select($select, $inline_select) {
