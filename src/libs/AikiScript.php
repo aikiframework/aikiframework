@@ -188,19 +188,22 @@ class AikiScript {
 				 if ( $char == $separator ) { //last character is a separator
 					$result[] = $word;
 					$result[] = "";
+				 } elseif ( $char == '"' || $char == "'" ) {
+					 $result[] = $word; // fix quote in last word bug
 				 } else {
-					$result[] = $word . $char;
-				 }				 
+					 $result[] = $word . $char;
+				 }
 				 $word="";
-			} elseif ( ( $char == "'" && $state == 1 ) ||  //anotate string ends.
-						  ( $char == '"' && $state == 2 ) ||
-						  ( $char == $separator && $state == 3 ) ) {
-				 $state = ($state == 3 ? 0 : 4);
-				 $result[] = $word;
-				 $word = "";
+			} elseif ( ( $char == "'" && $state == 1 ) || //anotate string ends.
+					   ( $char == '"' && $state == 2 ) ||
+					   ( $char == $separator && $state == 3 ) ) {
+				$state = ( $state == 3 ? 0 : 4 );
+				
+				$result[] = $word;
+				$word = "";
 			} elseif ( $char == $separator && $state == 4 ) { 
 				//found separator when waiting
-				 $state = 0;
+				$state = 0;
 			} elseif ( $char == $separator && $state == 0 ) { 
 				//found separator when waiting a token.
 				 $result[] = "";
@@ -214,6 +217,8 @@ class AikiScript {
 			} elseif ( $state == 0 ) {
 				 $state = 3;
 				 $word = $char;
+			} elseif ($i == $max-1) {
+				
 			} else {
 				 $word .= $char;
 			}
