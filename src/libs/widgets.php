@@ -538,9 +538,7 @@ class CreateLayout {
 			$processed_widget = $this->parse_header($processed_widget);
 			$processed_widget = $aiki->Forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);
-			//$processed_widget = $aiki->AikiScript->parser($processed_widget);
-			
-			//
+			$processed_widget = $aiki->AikiScript->parser($processed_widget);
 			
 			
 			
