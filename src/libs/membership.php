@@ -489,6 +489,7 @@ class membership
 			unset($_SESSION['guest']);
 			session_destroy();
 			session_unset();
+            setcookie ("PHPSESSID", "", time() - 3600);
 
 			return $aiki->message->ok(__("Logged out."), NULL, false);
 		} else {
