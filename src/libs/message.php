@@ -323,6 +323,7 @@ class message {
 	 * @param	string	$default	default class name
 	 * @param	array	$attribs	the attributes array
 	 * @return	string
+	 * @TODO change name to addClass
 	 */
 	private function Addclass($default, &$attribs) {
 		return $default . 

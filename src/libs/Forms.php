@@ -495,7 +495,7 @@ $(function() {
 
 
 
-					case "autofiled":
+					case "autofield":
 						switch ($intwalker[2]){
 							case "publishdate":
 								$form .= ("<label for=\"$intwalker[0]\">$intwalker[1]</label><input type=\"text\"" .

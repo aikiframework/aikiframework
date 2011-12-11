@@ -425,11 +425,12 @@ class CreateLayout {
 		} else {				
 			$selects = explode("|OR|", $widget->normal_select);
 			foreach ($selects as $select) {								
-				$widget->normal_select= $select;
+				$widget->normal_select = $select;
+				$records_num = $this->records_num($widget->normal_select);
 				
-				$records_num = $this->records_num($widget->normal_select);  				
 				// pagination change normal_select adding limit.
 				$pagination = $this->pagination($widget, $records_num);
+				
 				$widget_select = $db->get_results($widget->normal_select);
 				if ($widget_select) {
 					break;
@@ -627,9 +628,11 @@ class CreateLayout {
 
 	private function pagination($widget, $records_num) {
 		global $db, $aiki;
+		
 		if (!$widget->records_in_page) {
 			return false;
 		}
+		
 		$pagesgroup = 10;
 		$group_pages = false;
 
@@ -1251,11 +1254,11 @@ class CreateLayout {
 		if (!preg_match('/^select(.*) from /Usi', $sql, $select)){
 			return false;
 		}
-						   
+		
 		if (stripos($sql, " GROUP BY ") || stripos($sql, " LIMIT")) {
 			// with GROUP or LIMIT clausule must do a query 
 			$db->get_results($sql);
-			$records_num= $db->num_rows;			
+			$records_num = $db->num_rows;			
 		} else {
 			// try made a substituion of all select field with count(*)
 			
@@ -1266,10 +1269,9 @@ class CreateLayout {
 				$mysql_count = ' count(*) ';
 			}
 			$new_sql = preg_replace(
-				"/^select.* from /Usi",
+				"/^select.*? from /Usi",
 				"SELECT $mysql_count FROM ",
 				$sql);
-			
 			// if there is a unique 'ORDER BY', try remove it.	
 			if ( substr_count($new_sql, "ORDER BY") == 1 ){	
 				$new_sql = preg_replace(

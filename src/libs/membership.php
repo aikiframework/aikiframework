@@ -346,14 +346,14 @@ class membership
 	 * @return	string
 	 *
 	 * @todo	good to remove the html if possible.
-	 * @todo	rename this function to newPassword
 	 * @todo	check to make sure that the returned string is being output
-	 *		with a message class.
+	 *		    with a message class.
 	 */
-	public function NewPassword($key) {
+	public function newPassword($key) {
 		global $db, $aiki, $config;
 
 		$is_user = $db->get_var("SELECT userid, username FROM aiki_users WHERE randkey = '$key'");
+		
 		if ($is_user) {
 			$form = '
 <div id="form_container">
@@ -417,9 +417,8 @@ class membership
 	 * @return	string
 	 *
 	 * @todo	really the view should be separated out from this function
-	 * @todo	Change this to resetPassword
 	 */
-	public function ResetPassword($username, $email, $emailfrom, $subject, $message) {
+	public function resetPassword($username, $email, $emailfrom, $subject, $message) {
 		global $db, $aiki, $config;
 
 		if ( !$username and !$email ) {
@@ -461,8 +460,11 @@ class membership
 			"<a href='".$config['url']."secure?key=".$randkey."'>".
 			$config['url']."secure?key=".$randkey."</a>";
 
-			mail($email,$subject,$message,$headers);
-			return $aiki->message->ok( __("An email has been sent to your address. Please follow the link to reset your password."), NULL, false);
+			if (mail($email, $subject, $message, $headers)) {
+				return $aiki->message->ok( __("An email has been sent to your address. Please follow the link to reset your password."), NULL, false);
+			} else {
+				return $aiki->message->error( __("Sorry, but we have some problem with sending an email."), NULL, false);
+			}
 
 		}
 
