@@ -35,8 +35,7 @@ require_once("libs/session/DatabaseSession.php");
  */
 
 
-class membership
-{
+class membership {
     
 	/**
 	 * @var string  permissions for a user
@@ -208,7 +207,7 @@ class membership
 			}			
 			
 		} else {
-			$aiki->message->set_login_error(__("Wrong username or password.") );
+			$aiki->message->set_login_error(__("Wrong username or password."));
 		}
 
 	} // handle login function
@@ -224,9 +223,8 @@ class membership
 	public function isUserLogged($userid) {
 		global $db;
 		
-		$SQL = "SELECT user_id" .
-		       " FROM aiki_users_sessions".
-		       " WHERE user_session='{$_SESSION['aikiuser']}' and user_id='{$userid}'";		
+		$SQL = "SELECT user_id FROM aiki_users_sessions WHERE user_session=".
+			"'{$_SESSION['aikiuser']}' and user_id='{$userid}'";
 		return  (is_null( $db->get_var($SQL))? false : true );
 
 	}
@@ -244,11 +242,12 @@ class membership
 		$user   = addslashes($user);
 		$session= addslashes($_SESSION['aikiuser']);
 
-		$SQL = "SELECT userid, usergroup, full_name, username,group_level,group_permissions".
-		       " FROM aiki_users ".
-		       " INNER JOIN aiki_users_sessions ON aiki_users.userid = aiki_users_sessions.user_id".
-		       " INNER JOIN aiki_users_groups   ON aiki_users.usergroup= aiki_users_groups.id".
-		       " WHERE aiki_users.username='$user' AND user_session='$session'";        
+		$SQL = "SELECT userid, usergroup, full_name, username,group_level,".
+			"group_permissions FROM aiki_users INNER JOIN aiki_users_sessi".
+			"ons ON aiki_users.userid = aiki_users_sessions.user_id INNER ".
+			"JOIN aiki_users_groups ON aiki_users.usergroup= aiki_users_gr".
+			"oups.id WHERE aiki_users.username='$user' AND user_session=".
+			"'$session'";
 		$user = $db->get_row($SQL);		
 		if ( $user )	{
 			$this->full_name   = $user->full_name;
@@ -303,10 +302,12 @@ class membership
 		}
 		
 		// permissions don't match. Try group level.
-		$get_group_level = $db->get_var(
-			"SELECT group_level from aiki_users_groups where group_permissions='$permission'");
+		$get_group_level = $db->get_var("SELECT group_level from aiki_users".
+										"_groups where group_permissions=".
+										"'$permission'");
 		
-		return ( !is_null($get_group_level) && $this->group_level < $get_group_level );
+		return ( !is_null($get_group_level) &&
+				 $this->group_level < $get_group_level );
 	}
 
 	/**
@@ -351,7 +352,7 @@ class membership
 	 */
 	public function newPassword($key) {
 		global $db, $aiki, $config;
-
+		$key = $db->escape($key);
 		$is_user = $db->get_var("SELECT userid, username FROM aiki_users WHERE randkey = '$key'");
 		
 		if ($is_user) {
@@ -384,18 +385,22 @@ class membership
 				!isset($_POST['key']) ) {
 				return $form;
 			} else {
-				if ( $_POST['password'] and 
-					$_POST['password_confirm'] and 
-					$_POST['key'] and 
+				if ( $_POST['password'] and
+					$_POST['password_confirm'] and
+					$_POST['key'] and
 					$_POST['password_confirm'] == $_POST['password'] ) {
+					$key = $db->escape($_POST['key']);
 					$password = md5(md5($_POST['password']));
-					$update = $db->query("UPDATE aiki_users SET password = '$password' WHERE randkey = '" .
-						$_POST['key'] . "'");
+					$update = $db->query("UPDATE aiki_users SET password = ".
+										 "'$password' WHERE randkey = '$key'");
 
-					return $aiki->message->ok("Your password has been reset. You can now log in to your account.", NULL, false);
+					$msg = __("Your password has been reset. You can now ".
+							  "log in to your account.");
+					return $aiki->message->ok($msg, NULL, false);
 				} else {
-
-					$error_message = $aiki->message->error("The two passwords do not match. Please try again.", NULL, false);
+					$msg = __("The two passwords do not match. Please try".
+							  "again.");
+					$error_message = $aiki->message->error($msg, NULL, false);
 					return $error_message . $form;
 				}
 			}
@@ -425,20 +430,30 @@ class membership
 			return '';
 		}
 		if (!$username) {
-			return $aiki->message->warning('You must provide your username in order to reset your password.', NULL, false);
+			$msg = __('You must provide your username in order to reset '.
+					  'your password.');
+			return $aiki->message->warning($msg, NULL, false);
 		}
 
 		if (!$email) {
-			return $aiki->message->warning('You must enter the email address you used to sign up for the account.', NULL, false);
+			$msg = __('You must enter the email address you used to sign '.
+					  'up for the account.');
+			return $aiki->message->warning($msg, NULL, false);
 		}
 
-		$is_user = $db->get_var("SELECT userid FROM aiki_users WHERE username = '$username' AND email = '$email'");
+		$is_user = $db->get_var("SELECT userid FROM aiki_users WHERE usern".
+								"ame = '$username' AND email = '$email'");
 		if (!$is_user) {
-			$is_user = $db->get_var("SELECT userid FROM aiki_users WHERE username = '$username'");
+			$is_user = $db->get_var("SELECT userid FROM aiki_users WHERE ".
+									"username = '$username'");
 			if (!$is_user) {
-				return $aiki->message->error( __sprintf("The user %s doesn't exist. Make sure you typed the name correctly.",$username), NULL, false);
+				$msg = __sprintf("The user %s doesn't exist. Make sure yo".
+								 "u typed the name correctly.", $username);
+				return $aiki->message->error($msg, NULL, false);
 			} else {
-				return $aiki->message->error( __("The email address and username do not match what we have on file."), NULL, false);
+				$msg = __("The email address and username do not match wha".
+						  "t we have on file.");
+				return $aiki->message->error($msg, NULL, false);
 			}
 
 		} else {
@@ -449,7 +464,9 @@ class membership
 			 */
 			$randkey = md5(uniqid(rand(),true));
 
-			$add_rand_key = $db->query("update aiki_users set randkey = '$randkey' where userid = '$is_user' limit 1");
+			$add_rand_key = $db->query("update aiki_users set randkey = ".
+									   "'$randkey' where userid = ".
+									   "'$is_user' limit 1");
 
 			$headers  = "MIME-Version: 1.0\r\n";
 			$headers .= "Content-type: text/html; charset=utf-8\r\n";
@@ -461,9 +478,13 @@ class membership
 			$config['url']."secure?key=".$randkey."</a>";
 
 			if (mail($email, $subject, $message, $headers)) {
-				return $aiki->message->ok( __("An email has been sent to your address. Please follow the link to reset your password."), NULL, false);
+				$msg = __("An email has been sent to your address. Please".
+						  "follow the link to reset your password.");
+				return $aiki->message->ok($msg, NULL, false);
 			} else {
-				return $aiki->message->error( __("Sorry, but we have some problem with sending an email."), NULL, false);
+				$msg = __("Sorry, but we have some problem with sending a".
+						  "n email.");
+				return $aiki->message->error($msg, NULL, false);
 			}
 
 		}
@@ -484,8 +505,9 @@ class membership
 		global $db, $aiki;
 
 		if (isset($_SESSION['aikiuser'])) {
-			$delete_session_data = $db->query("DELETE FROM aiki_users_sessions where user_session='" . 
-				$_SESSION['aikiuser'] . "'");
+			$delete_session_data = $db->query("DELETE FROM aiki_users_ses".
+											  "sions where user_session='".
+											  $_SESSION['aikiuser'] . "'");
 
 			unset($_SESSION['aikiuser']);
 			unset($_SESSION['guest']);
@@ -495,7 +517,8 @@ class membership
 
 			return $aiki->message->ok(__("Logged out."), NULL, false);
 		} else {
-			return $aiki->message->warning(__("You are already logged out."), NULL, false);
+			$msg = __("You are already logged out.");
+			return $aiki->message->warning($msg, NULL, false);
 		}
 	} // end of logOut function
 
@@ -510,7 +533,8 @@ class membership
     
     function how_many_are_online(){
 		global $db;
-		return $db->get_var("SELECT count(DISTINCT user_id) FROM aiki_users_sessions");
+		return $db->get_var("SELECT count(DISTINCT user_id) FROM ".
+							"aiki_users_sessions");
 	}	
 		
 
@@ -537,10 +561,13 @@ class membership
 		
 		$count= 0;
 		$output="<ul id='$id' >";
-		$users= $db->get_results("SELECT user_id, user_name FROM aiki_users_sessions");		
+		$users= $db->get_results("SELECT user_id, user_name FROM ".
+								 "aiki_users_sessions");		
 		if ( !is_null($users) ){
 			foreach ($users as $user){		
-				$output .= sprintf("<li>{$format}</li>", $user->user_name, $user->user_id );
+				$output .= sprintf("<li>{$format}</li>",
+								   $user->user_name, 
+								   $user->user_id );
 				$count++;
 				if ( $count > 100) {
 				    // @todo pagination of result.
