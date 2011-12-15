@@ -228,6 +228,10 @@ class AikiScript {
 			$result[] = $word;
 		}
 
+		if ($state==0 && count($result)>0) {
+			$result[] ="";
+		}
+
 		return $result;
 	} // end of mtoken function
 
