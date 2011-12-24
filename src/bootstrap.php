@@ -62,8 +62,7 @@ if (isset($_GET['custom_output'])){
 
 /** The existence of aiki-defs.php indicates an Automake installation.
  * @see aiki-defs.inc */
-if (file_exists("$AIKI_ROOT_DIR/configs/aiki-defs.php") && 
-	!file_exists("$AIKI_ROOT_DIR/config.php")) {
+if (!file_exists("$AIKI_ROOT_DIR/config.php")) {
 	/** @see config.php */
 	require_once("$AIKI_ROOT_DIR/configs/config.php");
 }
