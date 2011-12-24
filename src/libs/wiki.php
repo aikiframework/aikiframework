@@ -641,13 +641,13 @@ class wiki extends aiki {
 			}
 			$i++;
 		}
+
 		//Now close all remaining tags.  Notice that the order is important.
 		if ( $state === 'b' || $state === 'ib' ) {
 			$output .= '</b>';
 
 			if ( $state === 'i' || $state === 'bi' || $state === 'ib' ) {
 				$output .= '</i>';
-
 				if ( $state === 'bi' ) {
 					$output .= '</b>';
 
@@ -659,3 +659,5 @@ class wiki extends aiki {
 				}
 			} // end of function markup_quotes($text)
 		} // end of Wiki class
+	}
+}
