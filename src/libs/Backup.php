@@ -73,7 +73,7 @@ class Backup implements BackupInterface {
 	 * @param string $destination Directory to restore the backup in 
 	 * @param array $exclude Target files or directories to exclude
 	 * @throws AikiException */
-	public function restore($source, $destination, Array $exclude = Array() {
+	public function restore($source, $destination, Array $exclude = Array() ) {
 		foreach ( $this->_extenders as $extender ) {
 			$extender->restore($source, $destination, $exclude);
 		}
@@ -83,7 +83,7 @@ class Backup implements BackupInterface {
 	 * @param string $destination Directory to save the backup in 
 	 * @return void
 	 * @throws AikiException */
-	public function save($destination, Array $exclude = Array()) {
+	public function save($destination, Array $exclude = Array() ) {
 		foreach ( $this->_extenders as $extender ) {
 			$extender->save($destination, $exclude);
 		}

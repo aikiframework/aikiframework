@@ -8,7 +8,7 @@
  * This source file is subject to the AGPL-3.0 license that is bundled
  * with this package in the file LICENSE.
  *
- * @author      Aikilab http://www.aikilab.com 
+ * @author      Aikilab http://www.aikilab.com
  * @copyright   (c) 2008-2011 Aiki Lab Pte Ltd
  * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
  * @link        http://www.aikiframework.org
@@ -63,9 +63,9 @@ class wiki extends aiki {
 		for ( $i=0; $i<$numMatches; $i++ ) {
 			$templateFullText = $aiki->get_string_between($widget, "{{", "}}");
 			$templateText = str_replace("| ", "|", $templateFullText);
-			
+
 			// fix for after nl2br function is used
-			$templateText = str_replace("<br>", "", $templateText); 
+			$templateText = str_replace("<br>", "", $templateText);
 			$templateText = str_replace("<br />", "", $templateText);
 
 			$templateElement = explode("|", $templateText);
@@ -73,8 +73,8 @@ class wiki extends aiki {
 
 			if ($templateName) {
 				$template_output = $db->get_var("SELECT template_output from ".
-					"apps_wiki_templates where template_name = 
-					'$templateName'");
+						"apps_wiki_templates where template_name =
+						'$templateName'");
 			}
 
 			foreach ($templateElement as $element) {
@@ -86,13 +86,13 @@ class wiki extends aiki {
 				} else {
 					$elementSides[1] = '';
 				}
-				$template_output = 
-					str_replace("($elementSides[0])", 
-								$elementSides[1], $template_output);
+				$template_output =
+				str_replace("($elementSides[0])",
+						$elementSides[1], $template_output);
 			}
 			// replace the markup with the template
-			$widget = str_replace ("{{".$templateFullText."}}", 
-								   $template_output, $widget);
+			$widget = str_replace ("{{".$templateFullText."}}",
+					$template_output, $widget);
 		}
 		return $widget;
 	} // end of function wikiTemplates($widget)
@@ -106,7 +106,7 @@ class wiki extends aiki {
 	 * @global	membership	$membership	global membership instance
 	 * @global	array		$db			global db instance
 	 * @global	array		$config		global config options
-	 * @returgn	string		
+	 * @returgn	string
 	 */
 	public function intlinks($text) {
 		global $aiki, $membership, $db, $config;
@@ -118,14 +118,14 @@ class wiki extends aiki {
 				foreach ($link_tags as $tag) {
 					$query = '';
 					$count = preg_match_all( '/'.
-						preg_quote($tag->tagstart, '/').
-						preg_quote($tag->parlset, '/').'(.*)'.
-						preg_quote($tag->tagend, '/').'/U', $text, $match );
+							preg_quote($tag->tagstart, '/').
+							preg_quote($tag->parlset, '/').'(.*)'.
+							preg_quote($tag->tagend, '/').'/U', $text, $match );
 
 					if ( $count > 0 ) {
 						if ($tag->linkexample) {
-							$query = "SELECT $tag->idcolumn, " . 
-								"$tag->namecolumn FROM $tag->dbtable WHERE ";
+							$query = "SELECT $tag->idcolumn, " .
+							"$tag->namecolumn FROM $tag->dbtable WHERE ";
 							$tagidcolumn = $tag->idcolumn;
 							$tagnamecolumn = $tag->namecolumn;
 							$is_extrasql_loop = $tag->is_extrasql_loop;
@@ -150,12 +150,12 @@ class wiki extends aiki {
 									$tag_equivalent = $tag_match_array[1];
 								}
 
-								$query .= 
-									"$tagnamecolumn LIKE '$tag_equivalent'";
+								$query .=
+								"$tagnamecolumn LIKE '$tag_equivalent'";
 
 								if ( $extrasql and $is_extrasql_loop ) {
 									$extrasql = str_replace('[tag_equivalent]',
-												$tag_equivalent, $extrasql);
+											$tag_equivalent, $extrasql);
 									$query .= " $extrasql ";
 								}
 
@@ -170,8 +170,8 @@ class wiki extends aiki {
 							}
 
 							if ( $extrasql and !$is_extrasql_loop ) {
-								$extrasql = str_replace('[tag_equivalent]', 
-											$tag_equivalent, $extrasql);
+								$extrasql = str_replace('[tag_equivalent]',
+										$tag_equivalent, $extrasql);
 								$query .= " $extrasql ";
 							}
 
@@ -190,26 +190,26 @@ class wiki extends aiki {
 											$tag_output_side = $tag_output[1];
 
 											if ( $tag_output_side == $tagname ) {
-												$text = 
+												$text =
 												str_replace($tag->tagstart.
-												$tag->parlset.$tag_output[0].
-												'='.$tag_output[1].
-												$tag->tagend, "<a href=\"".
-												$config['url'].
-												"$tag->linkexample/$tagid\">".
-												"$tag_output[0]</a>", $text);
+														$tag->parlset.$tag_output[0].
+														'='.$tag_output[1].
+														$tag->tagend, "<a href=\"".
+														$config['url'].
+														"$tag->linkexample/$tagid\">".
+														"$tag_output[0]</a>", $text);
 											}
 										} else {
 											$tag_output = $tag_output[0];
 
 											if ( $tag_output == $tagname ) {
-												$text = 
+												$text =
 												str_replace($tag->tagstart.
-												$tag->parlset.$tag_output.
-												$tag->tagend, "<a href=\"".
-												$config['url'].
-												"$tag->linkexample/$tagid\">".
-												"$tag_output</a>", $text);
+														$tag->parlset.$tag_output.
+														$tag->tagend, "<a href=\"".
+														$config['url'].
+														"$tag->linkexample/$tagid\">".
+														"$tag_output</a>", $text);
 											}
 										}
 									}
@@ -226,19 +226,19 @@ class wiki extends aiki {
 					 */
 					if ( $membership->permissions == "SystemGOD" ) {
 						$text = preg_replace( '/'.
-							preg_quote($tag->tagstart, '/').
-							preg_quote($tag->parlset, '/').'(.*)(\=.*)?'.
-							preg_quote($tag->tagend, '/').'/U', 
+								preg_quote($tag->tagstart, '/').
+								preg_quote($tag->parlset, '/').'(.*)(\=.*)?'.
+								preg_quote($tag->tagend, '/').'/U',
 								"<a style='color:#FF0000' target=\"_blank\"".
 								" href=\"".$config['url'].
-								"$tag->linkexample/new\"><b>\\1</b></a>", 
+								"$tag->linkexample/new\"><b>\\1</b></a>",
 								$text );
 					} else {
 						$text = preg_replace( '/'.
-							preg_quote($tag->tagstart, '/').
-							preg_quote($tag->parlset, '/').'(.*)(\=.*)?'.
-							preg_quote($tag->tagend, '/').'/U', '\\1', 
-							$text );
+								preg_quote($tag->tagstart, '/').
+								preg_quote($tag->parlset, '/').'(.*)(\=.*)?'.
+								preg_quote($tag->tagend, '/').'/U', '\\1',
+								$text );
 					}
 				} // end of foreach ($link_tags as $tag), handle them all
 			} // end of if ($link_tags), then do something
@@ -249,8 +249,8 @@ class wiki extends aiki {
 
 	/**
 	 * Make external links.
-	 * 
-	 * @param	string	$text	
+	 *
+	 * @param	string	$text
 	 * @global	aiki	$aiki	global aiki instance
 	 * @global	array	$config	global config options
 	 * @return	string
@@ -260,8 +260,8 @@ class wiki extends aiki {
 
 		$tags_output = array();
 
-		$count = preg_match_all( '/'."\(\+\(".'(.*)'."\)\+\)".'/U', $text, 
-								$match );
+		$count = preg_match_all( '/'."\(\+\(".'(.*)'."\)\+\)".'/U', $text,
+				$match );
 
 		if ( $count > 0 ) {
 			foreach ($match[1] as $tag_match) {
@@ -276,13 +276,13 @@ class wiki extends aiki {
 				}
 
 				/**
-				 * @TODO: make sure it's correct link and if not correct it, 
+				 * @TODO: make sure it's correct link and if not correct it,
 				 * and check for email addresses
 				 */
-				$processed_tag = "<a target=\"_blank\" href=\"" . 
-					"$tag_equivalent\" style=\"background:transparent url(".
-				$config['url']."assets/images/external.png) no-repeat scroll".
-					" left center; padding-left:13px;\">".$tag_text.'</a>';
+				$processed_tag = "<a target=\"_blank\" href=\"" .
+						"$tag_equivalent\" style=\"background:transparent url(".
+						$config['url']."assets/images/external.png) no-repeat scroll".
+						" left center; padding-left:13px;\">".$tag_text.'</a>';
 
 				$tags_output[] .= $processed_tag;
 			}
@@ -294,26 +294,26 @@ class wiki extends aiki {
 
 	/**
 	 * Make table of contents
-	 * 
+	 *
 	 * Original function: doHeadings from wikimedia /includes/parser/Parser.php
 	 * Parts of the new rebuilt function are from function called formatHeadings
-	 * 
+	 *
 	 * @param	string	$text	text for processing
 	 * @return	string
 	 */
 	public function markup_toc($text) {
 		for ( $i = 6; $i >= 1; --$i ) {
 			$h = str_repeat('=', $i);
-			$text = preg_replace("/^$h(.+)$h\\s*/m", 
-					"<a name='\\1'><h{$i}>\\1</h{$i}></a>\\2", 
+			$text = preg_replace("/^$h(.+)$h\\s*/m",
+					"<a name='\\1'><h{$i}>\\1</h{$i}></a>\\2",
 					$text);
 		}
 
 		$toc = '';
 		$matches = array();
 		$numMatches = preg_match_all('/<H(?P<level>[1-6])' .
-			'(?P<attrib>.*?'.'>)(?P<header>.*?)<\/H[1-6] *>/i',
-			$text, $matches);
+				'(?P<attrib>.*?'.'>)(?P<header>.*?)<\/H[1-6] *>/i',
+				$text, $matches);
 
 		$i = 0;
 		$oldertoc = "";
@@ -333,7 +333,7 @@ class wiki extends aiki {
 						$toc .= "</ul></ul></ul></ul>";
 					}
 					$toc .= "<li style='list-style-type: upper-roman'>".
-						"<a href=\"#$headline\">".$headline."</a></li>";
+							"<a href=\"#$headline\">".$headline."</a></li>";
 					$oldertoc = 2;
 					break;
 
@@ -352,7 +352,7 @@ class wiki extends aiki {
 					}
 
 					$toc .= "<li style='list-style-type: decimal'>".
-						"<a href=\"#$headline\">".$headline."</a></li>";
+							"<a href=\"#$headline\">".$headline."</a></li>";
 					$oldertoc = 3;
 					break;
 
@@ -367,12 +367,12 @@ class wiki extends aiki {
 						$toc .= "<ul>";
 					}
 					$toc .= "<li style='list-style-type: decimal'>".
-						"<a href=\"#$headline\">".$headline."</a></li>";
+							"<a href=\"#$headline\">".$headline."</a></li>";
 					$oldertoc = 4;
 					break;
 
 				case 5:
-					if ($ oldertoc == 6 ) {
+					if ($oldertoc == 6 ) {
 						$toc .= "</ul>";
 					}
 					/**
@@ -385,7 +385,7 @@ class wiki extends aiki {
 						$toc .= "<ul>";
 					}
 					$toc .= "<li style='list-style-type: decimal'>".
-						"<a href=\"#$headline\">".$headline."</a></li>";
+							"<a href=\"#$headline\">".$headline."</a></li>";
 					$oldertoc = 5;
 					break;
 
@@ -395,7 +395,7 @@ class wiki extends aiki {
 					}
 
 					$toc .= "<li style='list-style-type: decimal'>".
-						"<a href=\"#$headline\">".$headline."</a></li>";
+							"<a href=\"#$headline\">".$headline."</a></li>";
 					$oldertoc = 6;
 					break;
 			} // end of switch
@@ -412,10 +412,10 @@ class wiki extends aiki {
 			$custom_toc_place = preg_match_all("/\[toc\]/", $text, $tocmatches);
 			if ( $custom_toc_place > 0 ) {
 				$text = str_replace("[toc]", "<div id='toc'>__content__<ul>".
-					$toc."</ul></div>", $text);
+						$toc."</ul></div>", $text);
 			} else {
 				$text = "<div id='toc'>__content__<ul>".$toc.
-					"</ul></div>".$text;
+				"</ul></div>".$text;
 			}
 		}
 		return $text;
@@ -424,7 +424,7 @@ class wiki extends aiki {
 
 	/**
 	 * Convert markup to table html
-	 * 
+	 *
 	 * @param	string	$text	text for processing
 	 * @global	aiki	$aiki	global aiki instance
 	 * @return	string
@@ -478,8 +478,8 @@ class wiki extends aiki {
 			return $text;
 		} else {
 			/**
-			 * First, do some preliminary work. This may shift some apostrophes 
-			 * from being mark-up to being text. It also counts the number of 
+			 * First, do some preliminary work. This may shift some apostrophes
+			 * from being mark-up to being text. It also counts the number of
 			 * occurrences of bold and italics mark-ups.
 			 */
 			$i = 0;
@@ -488,8 +488,8 @@ class wiki extends aiki {
 			foreach ($arr as $r) {
 				if ( ( $i % 2 ) == 1 ) {
 					/**
-					 * If there are ever four apostrophes, assume the first is 
-					 * supposed to be text, and the remaining three constitute 
+					 * If there are ever four apostrophes, assume the first is
+					 * supposed to be text, and the remaining three constitute
 					 * mark-up for bold text.
 					 */
 					if ( strlen($arr[$i]) == 4 ) {
@@ -497,14 +497,14 @@ class wiki extends aiki {
 						$arr[$i] = "'''";
 					} else if ( strlen($arr[$i]) > 5 ) {
 						/**
-						 * If there are more than 5 apostrophes in a row, assume 
+						 * If there are more than 5 apostrophes in a row, assume
 						 * they're all text except for the last 5.
 						 */
 						$arr[$i-1] .= str_repeat( "'", strlen( $arr[$i] ) - 5 );
 						$arr[$i] = "'''''";
 					}
-					/** 
-					 * Count the number of occurrences of bold and 
+					/**
+					 * Count the number of occurrences of bold and
 					 * italics mark-ups.
 					 * We are not counting sequences of five apostrophes.
 					 */
@@ -512,8 +512,8 @@ class wiki extends aiki {
 						$numitalics++;
 					} else if ( strlen($arr[$i]) == 3 ) {
 						$numbold++;
-					} else if ( strlen($arr[$i]) == 5 ) { 
-						$numitalics++; $numbold++; 
+					} else if ( strlen($arr[$i]) == 5 ) {
+						$numitalics++; $numbold++;
 					}
 				}
 				$i++;
@@ -593,7 +593,7 @@ class wiki extends aiki {
 							$state = 'b';
 						} else if ( $state === 'ib' ) {
 							$output .= '</b></i><b>';
-							$state = 'b'; 
+							$state = 'b';
 						} else if ( $state === 'both' ) {
 							$output .= '<b><i>' . $buffer . '</i>';
 							$state = 'b';
@@ -626,38 +626,36 @@ class wiki extends aiki {
 							$state = 'b';
 						} else if ($state === 'bi')
 							$output .= '</i></b>';
-							$state = '';
-						} else if ( $state === 'ib' ) {
-							$output .= '</b></i>';
-							$state = '';
-						} else if ( $state === 'both' ) {
-							$output .= '<i><b>' . $buffer . '</b></i>';
-							$state = '';
-						} else { //($state == '')
-							$buffer = '';
-							$state = 'both';
-						}
+						$state = '';
+					} else if ( $state === 'ib' ) {
+						$output .= '</b></i>';
+						$state = '';
+					} else if ( $state === 'both' ) {
+						$output .= '<i><b>' . $buffer . '</b></i>';
+						$state = '';
+					} else { //($state == '')
+						$buffer = '';
+						$state = 'both';
 					}
 				}
-				$i++;
 			}
-			//Now close all remaining tags.  Notice that the order is important.
-			if ( $state === 'b' || $state === 'ib' ) {
-				$output .= '</b>';
-			|
+			$i++;
+		}
+		//Now close all remaining tags.  Notice that the order is important.
+		if ( $state === 'b' || $state === 'ib' ) {
+			$output .= '</b>';
+
 			if ( $state === 'i' || $state === 'bi' || $state === 'ib' ) {
 				$output .= '</i>';
-			|
-			if ( $state === 'bi' ) {
-				$output .= '</b>';
-			|
-			// There might be lonely ''''', so make sure we have a buffer
-			if ( $state === 'both' && $buffer ) {
-				$output .= '<b><i>'.$buffer.'</i></b>';
-			}
-			return $output;
-		}
-	} // end of function markup_quotes($text)
-} // end of Wiki class
 
-?>
+				if ( $state === 'bi' ) {
+					$output .= '</b>';
+
+					// There might be lonely ''''', so make sure we have a buffer
+					if ( $state === 'both' && $buffer ) {
+						$output .= '<b><i>'.$buffer.'</i></b>';
+					}
+					return $output;
+				}
+			} // end of function markup_quotes($text)
+		} // end of Wiki class
