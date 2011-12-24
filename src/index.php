@@ -17,6 +17,7 @@
  * @filesource
  */
 
+
 /**
  * Starts the clock so we can measure loading time of the site
  * @global float $start_time the start time
