@@ -18,11 +18,6 @@ way than comparable offerings.
 Aiki Framework is built on PHP and is pluggable to many SQL-based
 database engines (MYSQL, PSQL, SQLite, etc).
 
-We are also working on Python and Ruby on Rails versions, but they are
-still in pre-alpha stage. You will be able to convert any website
-built on the current PHP version to the Python or the Ruby alternative
-(once they are completed) in one click!
-
 -----
 
 Copyright (C) 2010 Aikilab
