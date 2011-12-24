@@ -23,8 +23,6 @@ if (!defined('IN_AIKI')) {
 	die('No direct script access allowed');
 }
 
-/** @see defs.inc */
-require_once("$AIKI_ROOT_DIR/configs/defs.php");
 	
 /* setting $config["log_level"] = "NONE" disables the log 
  * or "None" and "none". Also if the log_level is not valid
