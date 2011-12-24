@@ -1,7 +1,7 @@
 <?php
 
 /** Aiki Framework (PHP)
- * 
+ *
  * This is the bootstrap file.
  *
  * LICENSE
@@ -23,7 +23,7 @@
  * The number right or east of the dots indicates a bug FIX or small change.
  * When the MINOR number changes, the FIX number should reset to zero.
  * When the MAJOR number changes, the MINOR number should reset to zero.
- * When the MAJOR number is zero, this indicates an alpha or beta type 
+ * When the MAJOR number is zero, this indicates an alpha or beta type
  * release. Each number can, but should probably not exceed 99 */
 define('AIKI_VERSION','0.9');
 
@@ -39,14 +39,14 @@ $AIKI_ROOT_DIR = realpath(dirname(__FILE__));
 
 // append to the include path while preserving existing entries
 set_include_path(
-	get_include_path() .
-	PATH_SEPARATOR .
-	"$AIKI_ROOT_DIR");
+		get_include_path() .
+		PATH_SEPARATOR .
+		"$AIKI_ROOT_DIR");
 
 /** @see AikiException.php */
 require_once("$AIKI_ROOT_DIR/libs/AikiException.php");
 
-/** 
+/**
  * @todo these should be set in some class, and are scoped wrong
  */
 if (isset($_GET['nogui'])) {
@@ -67,42 +67,34 @@ if (!file_exists("$AIKI_ROOT_DIR/config.php")) {
 	require_once("$AIKI_ROOT_DIR/configs/config.php");
 }
 
-/** ENABLE_RUNTIME_INSTALLER is defined by aiki-defs.php which
- * should NOT exist in a run-time installation distribution package.
- * It should be used to test for an Automake installed config and database 
- * versus a config and database which is created at run-time via a web page.
- * Basically, config is Automake or run-time generated.
- * When ENABLE_RUNTIME_INSTALLER is NOT defined or TRUE, we
- * use the run-time installer. Otherwise, we use the Automake installer. */
-if ( !defined('ENABLE_RUNTIME_INSTALLER') or ENABLE_RUNTIME_INSTALLER == TRUE ) {
-	/* use run-time installer config */
-	if (file_exists("$AIKI_ROOT_DIR/config.php")) {
-		/** @see config.php */
-		require_once("$AIKI_ROOT_DIR/config.php");
-	}
-	else {
-		/** @see installer.php */
-		require("$AIKI_ROOT_DIR/libs/installer.php");
-		die();
-	}
+
+/* use run-time installer config */
+if (file_exists("$AIKI_ROOT_DIR/config.php")) {
+	/** @see config.php */
+	require_once("$AIKI_ROOT_DIR/config.php");
 }
-	
-/* setting $config["log_level"] = "NONE" disables the log 
+else {
+	/** @see installer.php */
+	require("$AIKI_ROOT_DIR/libs/installer.php");
+	die();
+}
+
+/* setting $config["log_level"] = "NONE" disables the log
  * or "None" and "none". Also if the log_level is not valid
- * the log will default to disabled. */
+* the log will default to disabled. */
 /** @see Log.php */
 require_once("$AIKI_ROOT_DIR/libs/Log.php");
-	
+
 /** Instantiate a new log for global use
  * @global Log $log */
-  
+
 $log = new Log($config["log_dir"],
-			$config["log_file"],
-			$config["log_level"],
-			$AIKI_ROOT_DIR);
+		$config["log_file"],
+		$config["log_level"],
+		$AIKI_ROOT_DIR);
 
 /* the following lines are usage examples:
-$log->message("test message which defaults to debug level");
+ $log->message("test message which defaults to debug level");
 $log->message("test ERROR", Log::ERROR);
 $log->message("test WARN", Log::WARN);
 $log->message("test INFO", Log::INFO);
@@ -110,7 +102,7 @@ $log->message("test DEBUG", Log::DEBUG);*/
 
 /**
  * Where $db is defined as a switch in this 3rd party library.
- * 
+ *
  * @see index.php
  */
 require_once("$AIKI_ROOT_DIR/libs/database/index.php");
@@ -123,21 +115,21 @@ require_once("$AIKI_ROOT_DIR/libs/aiki.php");
 /**
  * Global creation of the aiki instance.
  * @global aiki $aiki
- */ 
+ */
 $aiki = new aiki();
 
 /**
  * Get and store the configuration options.
  * @global array $config
  * @todo place by new config class.
- * 
- */ 
-  
+ *
+ */
+
 $config = $aiki->get_config($config);
 
 /*
  * Load some auxiliary classes
- */
+*/
 
 $aiki->load("message");
 $aiki->load("dictionary");
@@ -146,10 +138,10 @@ $aiki->load("dictionary");
  * Load basic class: site, membership (permission), language, url(user requests)
  * @global membership $membership
  * @todo replace global membership by $aiki->membership
- */ 
+ */
 
 $aiki->load('url');
-$aiki->load('site'); 
+$aiki->load('site');
 $aiki->load('config');
 
 $aiki->load("languages");
@@ -157,9 +149,9 @@ $aiki->load("languages");
 $membership = $aiki->load("membership");
 
 
-// this class will be loaded by demand 
+// this class will be loaded by demand
 /*
-$aiki->load("text");
+ $aiki->load("text");
 $aiki->load("records");
 $aiki->load("input");
 $aiki->load("output");
