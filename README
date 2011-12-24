@@ -1,7 +1,7 @@
 README for Aiki Framework
 -------------------------
 
-Aiki Framework is a flexible free and open source web 2.0 platform
+Aiki Framework is a flexible free and open source web platform
 that allows programmers to easily create and work with content
 management systems. Aiki Framework saves all the controllers and
 output templates in a database or any other storage system. This
