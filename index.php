@@ -105,7 +105,7 @@ if ( extension_loaded('tidy') &&
 } else {
 
 	if ( isset($_REQUEST['compress_output']) || 
-		( isset($config["compress_output"]) && $config["compress_output"] ) )  {
+		( isset($config["compress_output"]) && $config["compress_output"] ) ) {
 		$html_output = $aiki->Output->compress($html_output);
 	}
 
@@ -116,16 +116,16 @@ if ( extension_loaded('tidy') &&
 } // end of using tidy
 
 
-if ( $html_cache_file ) {
+if ($html_cache_file) {
 	//write the cache file
-	error_log ( $html_output, 3, $html_cache_file);
+	error_log($html_output, 3, $html_cache_file);
 }
 
 /**
  * For ending the counter to see the page load time.
  */
 if (isset($config["debug"]) and $config["debug"]){
-	$end = (float) array_sum(explode(' ',microtime()));
+	$end = (float)array_sum(explode(' ',microtime()));
 	$end_time = sprintf("%.4f", ($end-$start_time));
 	echo "\n <!-- queries: ".$db->num_queries." -->\n";
 	echo "\n <!-- Time: ".$end_time." seconds -->";

@@ -315,8 +315,7 @@ class CreateLayout {
 	private function createWidgetContent($widget, $normal_select=false) {
 		global $aiki, $db, $membership, $nogui, $custom_output, $config;
 
-		$is_inline = ( $normal_select ? true : false );
-
+		$is_inline = ( $normal_select !== false ? true : false );
 		$stopcaching = false;
 		if ( isset($config["widget_cache"]) && 
 			$config["widget_cache"] &&
@@ -1215,7 +1214,7 @@ class CreateLayout {
 			foreach ($matches['1'] as $i=>$widget_info) {
 				$widget_para = explode("|", $widget_info);
 				$widget_id  = $this->get_widget_id($widget_para[0]);
-				$normal_select = ( isset($widget_para[1]) ? $widget_para[1] :"" );
+				$normal_select = ( isset($widget_para[1]) ? $widget_para[1] : "" );
 														
 				$widget_data = $db->get_row(
 					"SELECT * FROM aiki_widgets WHERE id='{$widget_id}' LIMIT 1");
