@@ -1,14 +1,5 @@
 .project
 *~
-kojiscratch.sh
-build/*
-build/**/*
-build-aux/*
-build-aux/**/*
-Makefile.in
-aclocal.m4
-configure
 autom4te.cache
 autom4te.cache/*
 autom4te.cache/**/*
-Makefile
