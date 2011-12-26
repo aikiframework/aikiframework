@@ -211,7 +211,7 @@ Before we start you need the following:
 	type="text" name="db_name" value="" /> <label>Database username</label><input
 	type="text" name="db_user" value="" /> <label>Database password</label><input
 	type="text" name="db_pass" value="" /> <label>Database encoding</label><input
-	type="text" name="db_encoding" value="utf8" />
+	type="text" name="db_encoding" value="utf-8" />
 	</fieldset>
 	
 <fieldset><legend>Admin Settings</legend>
