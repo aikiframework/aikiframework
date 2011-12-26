@@ -670,9 +670,9 @@ class CreateLayout {
 		// calculate the number of pages and prepare the sql 
 		// to extract this rows
 		$numpages=0;
-		if ( $widget->link_example and 
-			$widget->records_in_page and 
-			$widget->normal_select )	{
+		if ( $widget->link_example and
+			$widget->records_in_page and
+			$widget->normal_select ) {
 			if ( $records_num >= $widget->records_in_page ) {
 				$numpages = ceil($records_num / $widget->records_in_page);
 			} else {
@@ -1268,7 +1268,7 @@ class CreateLayout {
 				$mysql_count = ' count(*) ';
 			}
 			$new_sql = preg_replace(
-				"/^select.*? from /Usi",
+				"/^select.*from /Usi",
 				"SELECT $mysql_count FROM ",
 				$sql);
 			// if there is a unique 'ORDER BY', try remove it.	
