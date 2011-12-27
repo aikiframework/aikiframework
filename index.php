@@ -62,10 +62,6 @@ if (isset($global_widget)) {
 }
 
 
-/**
- * @todo fix the misspelling
- */
-
 if ($layout->widget_custom_output) {
 	$noheaders = true;
 }
