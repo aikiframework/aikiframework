@@ -112,6 +112,7 @@ require_once("$AIKI_ROOT_DIR/libs/database/index.php");
  */
 require_once("$AIKI_ROOT_DIR/libs/aiki.php");
 
+
 /**
  * Global creation of the aiki instance.
  * @global aiki $aiki
@@ -126,6 +127,14 @@ $aiki = new aiki();
  */
 
 $config = $aiki->get_config($config);
+
+
+/*
+ * run time correction for site path
+*/
+if ($config['top_folder'] and $config['top_folder'] != $AIKI_ROOT_DIR){
+	$config['top_folder'] = $AIKI_ROOT_DIR;
+}
 
 /*
  * Load some auxiliary classes
