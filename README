@@ -1,5 +1,5 @@
-README for Aiki Framework
--------------------------
+Aiki Framework
+--------------
 
 Aiki Framework is a flexible free and open source web platform
 that allows programmers to easily create and work with content
@@ -17,6 +17,17 @@ way than comparable offerings.
 
 Aiki Framework is built on PHP and is pluggable to many SQL-based
 database engines (MYSQL, PSQL, SQLite, etc).
+
+More Information
+----------------
+
+* http://aikiframework.org
+
+* Our Code, Bugs and Blueprints Tracked at:
+** http://launchpad.net/aikiframework
+
+* For free hosting of assets (extensions, plugins, etc)
+** http://aikiframework.org/wiki/Asset_Hosting
 
 -----
 
