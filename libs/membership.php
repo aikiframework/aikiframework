@@ -358,7 +358,7 @@ class membership {
 		if ($is_user) {
 			$form = '
 <div id="form_container">
-  <form method="post" enctype="multipart/form-data" id="reset_password_form" name="reset_password_form">
+  <form method="post" id="reset_password_form" name="reset_password_form">
 
   <fieldset class="fields">
 	<div class="password field">
