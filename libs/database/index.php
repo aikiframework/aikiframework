@@ -575,7 +575,7 @@ switch ($config['db_type']){
 		 * @see mysql.php
 		 */
 		require_once("mysql.php");
-		$db = new ezSQL_mysql( $config['db_user'] , $config['db_pass'] , $config['db_name'] , $config['db_host'] );
+		$db = new ezSQL_mysql( $config['db_user'] , $config['db_pass'] , $config['db_name'] , $config['db_host']);
 		break;
 
 	case "oracle":

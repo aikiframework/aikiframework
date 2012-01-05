@@ -125,7 +125,7 @@ class Output {
 			$aiki->site->site_name() . '</title>';
 		$aiki->Plugins->doAction("output_title", $title);
 		$encoding = isset($config["db_encoding"]) ? $this->correct_encoding($config["db_encoding"]) : "utf-8";
-		
+
 		$header = sprintf("\n".
 			"<meta charset='$encoding' >\n" .
 			"<meta name='generator' content='Aikiframework %s.%s' >\n",
@@ -185,11 +185,10 @@ class Output {
 	 */
 	public function headers() {
 		global $aiki, $db, $layout, $nogui, $config;
-
+		
 		$header = $this->doctype();
 		$header .= '<head>';
 		$header .= $this->title_and_metas();
-
 		if (!$nogui) {
 			if (count($layout->widgets_css)) {
 
@@ -214,7 +213,7 @@ class Output {
 				'<link rel="icon" href="' . $config['url'] .
 				'assets/images/favicon.ico" type="image/x-icon" />';
 		}
-
+	
 		if (isset($layout->head_output)){
 			$header .= $layout->head_output;
 		}
@@ -226,6 +225,7 @@ class Output {
 		$bodybegin = "\n<body>\n";
 		$aiki->Plugins->doAction("output_body_begin", $bodybegin);
 		$header .= $bodybegin;
+		
 		return $header;
 	} // end of headers function
 

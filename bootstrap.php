@@ -175,4 +175,4 @@ $aiki->load("view_parser");
 $aiki->load("image");
 $aiki->load("errors");*/
 
-$aiki->load("plugins");
+$aiki->load("Plugins");

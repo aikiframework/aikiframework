@@ -68,9 +68,9 @@ class aiki {
 	public function load($class) {
 		global $AIKI_ROOT_DIR;
 
-		if (isset($this->$class))
+		if (isset($this->$class)){
 			return $this->$class;
-
+		}
 		// Try to load the class file in /libs, assets/extensions and
 		// assets/extension/$class/$class.php
 		if (file_exists($AIKI_ROOT_DIR . '/libs/' . $class . '.php')) {

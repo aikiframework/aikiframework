@@ -91,6 +91,7 @@ class ezSQL_mysql extends ezSQLcore
 
 	public function quick_connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
 	{
+		
 		$return_val = false;
 		if ( ! $this->connect($dbuser, $dbpassword, $dbhost,true) ) ;
 		else if ( ! $this->select($dbname) ) ;
@@ -132,7 +133,7 @@ class ezSQL_mysql extends ezSQLcore
 			$this->dbhost = $dbhost;
 			$return_val = true;
 		}
-
+		
 		return $return_val;
 	}
 

@@ -47,11 +47,11 @@ class Plugins {
 	function __construct(){
 		global $aiki, $db;
 		global $AIKI_ROOT_DIR;
-
+		
 		$this->plugins = array();
 		$this->actions = array();
 		$this->must_sorted = array();
-
+		
 		// read active plugins configuration
 		$site = $aiki->site->get_site();
 		$view = $aiki->site->view();
@@ -62,10 +62,11 @@ class Plugins {
 			" WHERE plconf_active='active'" .
 			" ORDER BY plconf_priority";
 		$configurations = $db->get_results($sql);
+		
 		if (is_null($configurations)) {
 			return;
 		}
-
+		
 		// select plugins that match site/view/language
 		$pluginsActivated = array();
 		foreach ( $configurations as $configuration ) {
@@ -125,7 +126,7 @@ class Plugins {
 	 */
 
 	function doAction($action, &$text) {
-
+		
 		if (!isset($this->actions[$action])) {
 			return 0;
 		}
