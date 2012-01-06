@@ -24,8 +24,11 @@
  * When the MINOR number changes, the FIX number should reset to zero.
  * When the MAJOR number changes, the MINOR number should reset to zero.
  * When the MAJOR number is zero, this indicates an alpha or beta type
- * release. Each number can, but should probably not exceed 99 */
-define('AIKI_VERSION','0.9');
+ * release. Each number can, but should probably not exceed 99 
+ * @TODO: Need to integrat the bzr revno into this after the X.X.X.REVNO
+ *        since bassel nuked it because he didn't understand it.
+ */
+define('AIKI_VERSION','0.8.25');
 
 /**
  * Used to test for script access
