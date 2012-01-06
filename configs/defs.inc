@@ -70,10 +70,6 @@ define("AIKI_BACKUP_DIR", "@AIKI_BACKUP_DIR@");
  * This must be relative to the aiki save directory */
 define("AIKI_UPDATE_DIR", "@AIKI_UPDATE_DIR@");
 
-/** Whether suPHP is turned on or off. Default is off.
- * When --enable-update is given, then it is on. */
-define("SUPHP_ENGINE", "@SUPHP_ENGINE@");
-
 /** Aiki Random string should be different everytime
  * a distribution package is configured and built */
 define("AIKI_RANDOM", "@AIKI_RANDOM@");
