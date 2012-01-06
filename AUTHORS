@@ -1,42 +1,19 @@
 # Authors of Aiki Framework
 
-# IMPORTANT
-# The authors in this file are being parsed. This file should adhere to a
-# specific format. All non-blank lines NOT containing an authors name must
-# lead with the comment character '#'. Authors names must start at the
-# beginning of the line. Authors names may contain multiple non-consecutive
-# SINGLE spaces and must be terminated by one or more consecutive DOUBLE spaces.
-
 # The following entities contributed to the development of
 # Aiki Framework in some way. Please, let us know if you should
 # be listed here. Thank you for your generous contributions.
 
-# Name                          Title 
-Bassel Safadi                   Lead Developer/Programmer
-Jon Phillips                    Project Manager/Developer
-Christopher Adams               Developer
-Barry Threw                     Developer
-Michi Krnac                     Developer
-Ronaldo Barbachano              Developer
-Vera Lobatcheva                 Graphic Design
-Brad Phillips                   Developer/Graphic Design
-Steven Garcia                   Developer/Programmer
-Roger Martín                    Developer/Programmer
-Jakub Jankiewicz                Developer/Programmer
-Fabricatorz, LLC                Developers/Graphic Design
-AikiLab Singapore, PTE LTD      Developers/Graphic Design
-
-# Copyright (C) 2010 Aikilab
-
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Aiki Lab Pte Ltd 
+Fabricatorz LLC
+Bassel Safadi
+Jon Phillips
+Christopher Adams
+Barry Threw
+Michi Krnac
+Ronaldo Barbachano
+Vera Lobatcheva
+Brad Phillips
+Steven Garcia
+Roger Martín
+Jakub Jankiewicz

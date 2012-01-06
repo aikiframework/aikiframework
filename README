@@ -18,6 +18,7 @@ way than comparable offerings.
 Aiki Framework is built on PHP and is pluggable to many SQL-based
 database engines (MYSQL, PSQL, SQLite, etc).
 
+
 More Information
 ----------------
 
@@ -29,6 +30,7 @@ More Information
 * For free hosting of assets (extensions, plugins, etc)
 ** http://github.com/aikilab
 ** http://aikiframework.org/wiki/Asset_Hosting (more information about)
+
 
 -----
 
