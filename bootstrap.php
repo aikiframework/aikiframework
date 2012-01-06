@@ -63,8 +63,13 @@ if (isset($_GET['custom_output'])){
 	$noheaders = true;
 }
 
-/** The existence of aiki-defs.php indicates an Automake installation.
- * @see aiki-defs.inc */
+/** 
+ * Set the configuration option defaults.
+ * 
+ * @see configs/config.php 
+ * @TODO The assumption here is that config.php overrides all defaults! Is that
+ *       correct?
+ */
 if (!file_exists("$AIKI_ROOT_DIR/config.php")) {
 	/** @see config.php */
 	require_once("$AIKI_ROOT_DIR/configs/config.php");

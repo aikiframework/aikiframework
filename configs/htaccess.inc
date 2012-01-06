@@ -1,3 +1,8 @@
+# NOTE: You may see performance benefits if you install this in 
+# your apache configuration file in the section that looks like this:
+#   <Directory /some/path>...</Directory>
+# if you are using that setup.
+
 Options +FollowSymLinks
 RewriteEngine on
 RewriteBase @AIKI_REWRITE_BASE@/
