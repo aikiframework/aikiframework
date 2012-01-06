@@ -164,12 +164,6 @@ $config["save_revision_history"] = false;
  * @global bool $config["register_errors"] */
 $config["register_errors"] = false;
 
-/** Custom 404 error page
- * @global string $config["error_404"] */
-$config["error_404"] = "<h1>404 Page Not Found</h1>
-<p>This page is not found</p>
-<p>Please visit <a href=\"".AIKI_SITE_URL."\">Home page</a> so you may find what you are looking for.</p>"; 
-
 /** Your default timezone. Before code had "America/Los_Angeles", should try
  * defaults first. If one has set this, then it overrides the system.
  * @global string $config["timezone"] */

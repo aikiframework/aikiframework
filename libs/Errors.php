@@ -71,9 +71,10 @@ class Errors {
 		/**
 		 * @todo actually handle translating the page name
 		 */
-		$aiki->Output->set_title("404 Page Not Found");
+		
+		//$aiki->Output->set_title("404 Page Not Found");
 		// return page because it would be handle by cache..
-		return $config['error_404'];
+		//return $config['error_404'];
 
 	} // end of page_not_found function
 

@@ -115,20 +115,21 @@ class CreateLayout {
 			}		
 								
 		}
-
+		
+		$widget_group = array();
 		// ..page not found..
 		if (!$unique_widget_exists) {
-			$this->html_output .= $aiki->Errors->pageNotFound();
-			return;
+			$aiki->Errors->pageNotFound();
+			$widget_group = $this->getPageNotFoundWidgets();
+		} else {
+			// now filter canditate widgets, before create content
+			foreach ($module_widgets as $widget) {
+				if ($aiki->url->match($widget->display_urls) && 
+					!$aiki->url->match($widget->kill_urls) ) {
+					$widget_group[] = $widget->id;
+				}
+			}	
 		}
-	
-		// now filter canditate widgets, before create content
-		$widget_group = array();
-		foreach ( $module_widgets as $widget ) {
-			if ( $aiki->url->match($widget->display_urls) && !$aiki->url->match($widget->kill_urls) ) {
-				$widget_group[] = $widget->id;			
-			}			
-		}	
 		$this->createWidget($widget_group);			
 	}
 
@@ -1139,17 +1140,28 @@ class CreateLayout {
 		
 		$search = $aiki->url->url[0];
 		$SQL =
-			"SELECT id, display_urls,kill_urls,widget_name " .
-			" FROM aiki_widgets " .
+			"SELECT id, display_urls, kill_urls, widget_name FROM aiki_widgets " .
 			" WHERE father_widget=$father AND is_active=1 AND " .
 			" (widget_site='{$aiki->site}' OR widget_site ='aiki_shared') AND " . // default.
-			" (display_urls LIKE '%$search%' OR display_urls = '*' OR display_urls LIKE '%#%#%') AND " .
-			" (kill_urls='' OR kill_urls<> '$search') " .	
+			" (display_urls LIKE '%$search%' OR display_urls = '*' OR ".
+			" display_urls LIKE '%#%#%') AND " .
+			" (kill_urls='' OR kill_urls not like '%$search%') " .	
 			" ORDER BY  display_order, id";
 		 return $db->get_results($SQL);
 	}	
 	
-	
+	function getPageNotFoundWidgets() {
+		global $db, $aiki;
+		
+		$SQL =
+			"SELECT id FROM aiki_widgets WHERE is_active=1 AND " .
+			" (widget_site='{$aiki->site}' OR widget_site ='aiki_shared') AND " .
+			" (display_urls LIKE '%error_404%' OR display_urls = '*' OR " .
+			" display_urls LIKE '%#%#%') AND " .
+			" (kill_urls='' OR kill_urls not like '%error_404%') " .
+			" ORDER BY display_order, id";
+		return $db->get_col($SQL);
+	}
 	/**
 	 * lookup a widget_id.
 	 *	
