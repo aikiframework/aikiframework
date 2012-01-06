@@ -106,7 +106,8 @@ if ( extension_loaded('tidy') &&
 	}
 
 	if (!isset($_GET['no_output']))  {
-		$aiki->Plugins->doAction("output_html", $html_output);   
+		$aiki->Plugins->doAction("output_html", $html_output);
+		$html_output = stripslashes($html_output);   
 		print $html_output;
 	}
 } // end of using tidy
