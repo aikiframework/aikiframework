@@ -1,2 +1,41 @@
+Aiki Framework + PHP Unit
+=========================
+
 This is the salvaged phpunit tester which is not directly hooked into aiki
 framework.
+
+This folder is included with aiki to encourage people to write unit tests
+for their code.
+
+
+WHY?
+====
+
+Writing unit tests are a great way for programmers to test their code when
+working on all sizes of projects to insure that it is working well, is
+encapsulated, and stays solid through other peoples changes over time.
+
+
+Installing PHPUNIT
+==================
+
+* get it from the php pear program to install the latest stable phpunit
+
+OR
+
+* clone the repo from https://github.com/sebastianbergmann/phpunit
+
+
+Writing Unit Test
+=================
+
+To write a unit test, see libs/LogTest.php for a quick example of testing
+code in Aiki Framework.
+
+Then you can run phpunit like so:
+
+ phpunit LogTest
+
+If there are errors, then fix them!
+
+
