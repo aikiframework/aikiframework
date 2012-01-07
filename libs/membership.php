@@ -161,7 +161,7 @@ class membership {
 
 		$time_now = time();
 		
-		
+	
 		if ( !isset($_SESSION['aikiuser']) and 
 			!isset($_SESSION['guest']) and 
 			!isset($_COOKIE["PHPSESSID"]) ) {
@@ -175,6 +175,7 @@ class membership {
 			"  AND is_active=1" .		  
 			" LIMIT 1");
 		if ($get_user) {
+			
 			$host_name = $_SERVER['HTTP_HOST'];
 			$user_ip   = $this->get_ip();
 
@@ -205,7 +206,7 @@ class membership {
 				$update_acces = $db->query("UPDATE `aiki_users` SET `first_login`= NOW(),`first_ip`=" .
 				"'$user_ip' WHERE `userid`='" . $get_user->userid . "' LIMIT 1");
 			}			
-			
+
 		} else {
 			$aiki->message->set_login_error(__("Wrong username or password."));
 		}

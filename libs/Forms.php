@@ -836,6 +836,4 @@ $(function() {
 
 	} // end of auto_generate function
 
-} // end of Forms class
-
-?>
+}

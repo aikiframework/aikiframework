@@ -1294,6 +1294,4 @@ class CreateLayout {
 		return $records_num;		
 	}	
 
-} // end of CreateLayout Class
-
-?>
+}

@@ -181,5 +181,3 @@ class input {
 	}
 
 } // end of Input class
-
-?>
