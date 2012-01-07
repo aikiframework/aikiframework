@@ -338,14 +338,16 @@ class CreateLayout {
 			$stopcaching = true;
 		}
 
-		// Security check to determine which widget content to display.		
+		// Security check to determine which widget content to display.	
+		//echo $widget->is_admin."-".$membership->permissions."-".$widget->if_authorized."<br>";
 		if ( $widget->is_admin 
 			&& $membership->permissions 
 			&& $widget->if_authorized 
 			&& $membership->have_permission($widget->permissions) ) {
 				$widget->widget = $widget->if_authorized;
 				$widget->normal_select = $widget->authorized_select;
-				$stopcaching = true;			
+				$stopcaching = true;	
+		
 		}
 
 		if ( !$stopcaching and 
@@ -536,15 +538,13 @@ class CreateLayout {
 			$processed_widget = $this->parse_translate_aiki_core($processed_widget);
 			$processed_widget = $this->parse_translate_widget($processed_widget);
 			// Apply (#(header:...
+					
 			$processed_widget = $this->parse_header($processed_widget);
 			$processed_widget = $aiki->Forms->displayForms($processed_widget);
 			$processed_widget = $aiki->input->requests($processed_widget);
 			$processed_widget = $aiki->AikiScript->parser($processed_widget);
 			
-			
-			
 			//$processed_widget = stripslashes($processed_widget);
-			
 		}
 		
 		
@@ -621,6 +621,7 @@ class CreateLayout {
 				return $processed_widget;
 			}
 		} else {
+
 			$this->widget_html .=  $processed_widget;
 		}
 	} // end of createWidgetContent() 

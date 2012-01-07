@@ -197,6 +197,7 @@ class membership {
 					" `user_session`!='" . $_SESSION['aikiuser'] . "' and `user_name` = '" .
 					$get_user->username . "' and `user_id`='" . $get_user->userid . "'");
 			}
+			
 			$this->getUserPermissions($get_user->username);
 
 			$update_acces = $db->query("UPDATE `aiki_users` SET `last_login`= NOW(),`last_ip`='$user_ip'," .
@@ -249,14 +250,17 @@ class membership {
 			"JOIN aiki_users_groups ON aiki_users.usergroup= aiki_users_gr".
 			"oups.id WHERE aiki_users.username='$user' AND user_session=".
 			"'$session'";
-		$user = $db->get_row($SQL);		
+		$user = $db->get_row($SQL);	
+		
 		if ( $user )	{
+			
 			$this->full_name   = $user->full_name;
 			$this->username    = $user->username;
 			$this->userid      = $user->userid;			
 			$this->group_level = $user->group_level;			
 			$this->permissions = $user->group_permissions;
 		} else {
+		
 			$this->permissions = "";	
 			
 			//unset the browser session if the session
@@ -296,6 +300,7 @@ class membership {
 		
 	public function have_permission($permission="SystemGOD") {
 		global $db;
+
 		if ( $permission=="SystemGOD" ) {
 			return $this->permissions == "SystemGOD";
 		} elseif ( $permission == $this->permissions ) {
