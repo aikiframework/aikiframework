@@ -76,7 +76,7 @@ class membership {
 	 */
 	public function membership() {
 		global $db, $config, $log;
-		
+
 		try {
 			/* Has user defined session handler as alternative
 			 * to the default php file based session handler */
@@ -86,14 +86,13 @@ class membership {
 			$log->exception($e);		
 		}
 			
-
 		$allowGuestSessions = isset($config["allow_guest_sessions"]) && 
 							  $config["allow_guest_sessions"] ;
 				
 		if ( $allowGuestSessions || @$_COOKIE["PHPSESSID"] ) {
 			session_start();
 		}
-		
+
 		if (isset($_SESSION['aikiuser'])) {
 			$username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aikiuser']."'");
 		}
@@ -260,7 +259,6 @@ class membership {
 			$this->group_level = $user->group_level;			
 			$this->permissions = $user->group_permissions;
 		} else {
-		
 			$this->permissions = "";	
 			
 			//unset the browser session if the session

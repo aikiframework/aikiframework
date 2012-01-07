@@ -148,6 +148,8 @@ if ($config['top_folder'] and $config['top_folder'] != $AIKI_ROOT_DIR){
  * Load some auxiliary classes
 */
 
+$membership = $aiki->load("membership");
+
 $aiki->load("message");
 $aiki->load("dictionary");
 
@@ -162,8 +164,6 @@ $aiki->load('site');
 $aiki->load('config');
 
 $aiki->load("languages");
-
-$membership = $aiki->load("membership");
 
 
 // this class will be loaded by demand

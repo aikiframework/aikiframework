@@ -339,7 +339,6 @@ class CreateLayout {
 		}
 
 		// Security check to determine which widget content to display.	
-		//echo $widget->is_admin."-".$membership->permissions."-".$widget->if_authorized."<br>";
 		if ( $widget->is_admin 
 			&& $membership->permissions 
 			&& $widget->if_authorized 
@@ -347,7 +346,6 @@ class CreateLayout {
 				$widget->widget = $widget->if_authorized;
 				$widget->normal_select = $widget->authorized_select;
 				$stopcaching = true;	
-		
 		}
 
 		if ( !$stopcaching and 
