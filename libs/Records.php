@@ -1348,9 +1348,10 @@ class Records {
 			$serial_post = serialize($_POST);
 			/** 
 			 * @todo remove this bare echo in the code!!!
-			 */
+			 
 			echo $aiki->Records->edit_db_record_by_form_post($serial_post, 
 				$_POST['form_id'], $_POST['record_id']);
+				*/
 		}
 		$edit_matchs = 
 			preg_match_all('/\<edit\>(.*)\<\/edit\>/Us', $text, $matchs);
