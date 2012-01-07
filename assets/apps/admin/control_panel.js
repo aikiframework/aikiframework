@@ -620,79 +620,94 @@ function log_view() {
 /**
  * Executes when the DOM is fully loaded. This is basically
  * the main entry point to the JS control panel. */
-$().ready(function() {
-	$("#dialog").dialog({ autoOpen: false });
+$(function() {
+    
+	$("#dialog").dialog({
+        autoOpen: false
+    });
 	$("#aiki-icon-button").click(function(){
 		$("#dialog").dialog('open');
 	});
 	
 	var outerLayout; // init global vars
 
-		// PAGE LAYOUT
-		outerLayout = $('body').layout({
-			applyDefaultStyles:	true
-			// AUTO-RESIZE Accordion widget when west pane resizes
-		,	west__onresize:		function () { $("#structur_accordion").accordion("resize"); }
-		,	west__onopen:		function () { $("#structur_accordion").accordion("resize"); }
-		,	center__onresize:	function () { $("#accordion-center").accordion("resize"); }
-		,	center__onopen:		function () { $("#accordion-center").accordion("resize"); }
-		,	west__size:			300
-		});
+	// PAGE LAYOUT
+	outerLayout = $('body').layout({
+		applyDefaultStyles:	true,
+        
+		// AUTO-RESIZE Accordion widget when west pane resizes
+		west__onresize: function() {
+            $("#structur_accordion").accordion("resize"); 
+        },
+		west__onopen: function() {
+            $("#structur_accordion").accordion("resize"); 
+        },
+        center__onresize: function() {
+            $("#accordion-center").accordion("resize"); 
+        }, 
+        center__onopen:	function() {
+            $("#accordion-center").accordion("resize"); 
+        }, 
+        west__size: 300,
+        slidable: false,
+        closable: false,
+        enableCursorHotkey: false
+	});
 
-		structur_accordion();
+	structur_accordion();
 
-		widget_accordion();
+	widget_accordion();
 
-		aiki_log("Sql Command: <input type='text' id='sql_query' name='sql_query' style='border: 1px solid; width: 80%;'>" +
-				"<input type='button' id='submit_query' name='submit_query' value='Run' style='border: 1px solid'>"); 
+	aiki_log("Sql Command: <input type='text' id='sql_query' name='sql_query' style='border: 1px solid; width: 80%;'>" +
+			 "<input type='button' id='submit_query' name='submit_query' value='Run' style='border: 1px solid'>"); 
 	 	 
-	   $("#submit_query").click(function(event){
+	$("#submit_query").click(function(event){
         var query_value = $('#sql_query').val();
         
-         $.post("assets/apps/admin/run_sql.php", { sql_query: query_value},
-          function(data){
-            aiki_log(data);
-           });
-	     });
+        $.post("assets/apps/admin/run_sql.php", { sql_query: query_value},
+               function(data){
+                   aiki_log(data);
+               });
+	});
+	
+	$("#database_forms").click(function(event){
+		database_forms_tree();
+	});	 
+	
+	$("#urls_widgets").click(function(event){
+		urls_widgets_tree();
+	});	   
+	
+	$("#remove").live('click', function(event){
 		
-	   $("#database_forms").click(function(event){
-		   database_forms_tree();
-	   });	 
-	   
-	   $("#urls_widgets").click(function(event){
-		   urls_widgets_tree();
-	   });	   
-	   
-	   $("#remove").live('click', function(event){
-		   
-		   $(this).parent().remove();
-		   
-		   return false;
-	   });
-	   
-	   // The following line is autoconf generated
-	   // 
-	   
-	   // append the log button to the main navigation
-	    $("<li><a href='#' id='log-button'>Log</a></li>").appendTo("#main-navigation");
-	   // when the log button is clicked,
-	   // display the log view interface.
-	   $("#log-button").click(function(event) {
-		   log_view();
-	   });
-	   	   
-	    $("<li><a href='#' id='open_events_listener'>Events</a></li>").appendTo("#main-navigation");
-		$("<div id='events_output' title='Events'></div>").appendTo("#header");
-		$("#events_output").load("assets/apps/admin/events.php");
-		$("#events_output").dialog({width: 420, autoOpen: false});
+		$(this).parent().remove();
 		
-		$("#open_events_listener").click(function(){
-			$("#events_output").dialog('open');
-		});
-        
-		var refreshId = setInterval(function(){
-			if ($("#events_output").dialog( "isOpen" )){
-		        $("#events_output").load("assets/apps/admin/events.php");
-			}
-		 }, 3000);
+		return false;
+	});
+	
+	// The following line is autoconf generated
+	// 
+	
+	// append the log button to the main navigation
+	$("<li><a href='#' id='log-button'>Log</a></li>").appendTo("#main-navigation");
+	// when the log button is clicked,
+	// display the log view interface.
+	$("#log-button").click(function(event) {
+		log_view();
+	});
+	
+	$("<li><a href='#' id='open_events_listener'>Events</a></li>").appendTo("#main-navigation");
+	$("<div id='events_output' title='Events'></div>").appendTo("#header");
+	$("#events_output").load("assets/apps/admin/events.php");
+	$("#events_output").dialog({width: 420, autoOpen: false});
+	
+	$("#open_events_listener").click(function(){
+		$("#events_output").dialog('open');
+	});
+    
+	var refreshId = setInterval(function(){
+		if ($("#events_output").dialog( "isOpen" )){
+		    $("#events_output").load("assets/apps/admin/events.php");
+		}
+	}, 3000);
 });

@@ -137,7 +137,7 @@ class url {
 	 * @return boolean 
 	 */
 
-	public function match($displayString){
+	public function match($displayString) {
 		if ($displayString) {
 			
 			// a regular expression can containe a | character, that must be 
