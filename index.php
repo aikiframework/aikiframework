@@ -51,14 +51,11 @@ $html_cache_file = $aiki->Output->cache_file();
 require_once("libs/widgets.php");
 $layout = new CreateLayout();
 
-/**
- * @todo need to define these before use + integrate into @see widgets.php
- */
-
-$noheaders = false;
+$noheaders  = false;
+$nogui      = false;
 if (isset($global_widget)) {
-	$noheaders = true;
-	$nogui = true;
+	$noheaders  = true;
+	$nogui      = true;
 }
 
 
@@ -83,8 +80,7 @@ if ($noheaders) {
 $html_output = $aiki->languages->L10n($html_output);
 
 /**
- * Tidy html using libtidy
- * @todo abstract this use of libtidy here
+ * Tidy html using libtidy, or output compressed output, or just output.
  */
 if ( extension_loaded('tidy') &&
 	 function_exists('tidy_parse_string') &&
