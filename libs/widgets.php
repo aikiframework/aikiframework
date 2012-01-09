@@ -258,7 +258,6 @@ class CreateLayout {
 
 			if ($this->kill_widget) {
 				if ($widget->if_no_results) { 
-					
 					$dead_widget = 
 						'<'.$widget->widget_type.' id="'.
 						$widget->widget_name.'">' . $this->parse_no_results($widget->if_no_results) .
