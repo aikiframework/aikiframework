@@ -46,7 +46,7 @@ class security {
 
 		$text = preg_replace("/\<script(.*)\>(.*)\<\/script\>/Ui", "", $text);
 
-		$text = preg_replace("/\<iframe(.*)\>(.*)\<\/iframe\>/Ui", "", $text);
+		//$text = preg_replace("/\<iframe(.*)\>(.*)\<\/iframe\>/Ui", "", $text);
 
 		return $text;
 	}
