@@ -415,6 +415,10 @@ class aiki {
 				$paths[] = $language;
 			}
 
+			if ($_SERVER["HTTPS"] == "on") {
+				$url = str_replace("http://", "https://", $url);
+			}
+
 			$bufferReplace = array(
 				'[userid]'	=> $aiki->membership->userid,
 				'[full_name]' => $aiki->membership->full_name,
