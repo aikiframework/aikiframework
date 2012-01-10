@@ -415,7 +415,7 @@ class aiki {
 				$paths[] = $language;
 			}
 
-			if ($_SERVER["HTTPS"] == "on") {
+			if ( isset($_SERVER["HTTPS"])) {
 				$url = str_replace("http://", "https://", $url);
 			}
 
