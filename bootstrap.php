@@ -136,6 +136,11 @@ $aiki = new aiki();
 
 $config = $aiki->get_config($config);
 
+// if HTTP port is not 80, insert port in URL.
+if ( isset($config["url"]) && $_SERVER["SERVER_PORT"]!=80 ){
+	$config["url"] = preg_replace("#(http.?://[^/]*)(/)#",'$1:'. $_SERVER["SERVER_PORT"] . "/", $config["url"]);
+}
+
 
 /*
  * run time correction for site path
@@ -162,7 +167,6 @@ $aiki->load("dictionary");
 $aiki->load('url');
 $aiki->load('site');
 $aiki->load('config');
-
 $aiki->load("languages");
 
 
