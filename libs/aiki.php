@@ -403,8 +403,8 @@ class aiki {
 			$language = $aiki->site->language();
 			$prefix = $aiki->site->prefix();
 			$view_prefix= $aiki->site->view_prefix();
-			$paths[] = $url;
-
+			
+			$paths= array();
 			if ($prefix) {
 				$paths[] = $prefix;
 			}
@@ -414,11 +414,13 @@ class aiki {
 			if ( count($aiki->site->languages()) > 1 ) {
 				$paths[] = $language;
 			}
-
+			$paths = implode("/",$paths);
+			
 			if ( isset($_SERVER["HTTPS"])) {
 				$url = str_replace("http://", "https://", $url);
-			}
-
+			}	
+			$trimedUrl = preg_replace('#/$#',"",$url); // reg: remove ending /
+						
 			$bufferReplace = array(
 				'[userid]'	=> $aiki->membership->userid,
 				'[full_name]' => $aiki->membership->full_name,
@@ -437,11 +439,12 @@ class aiki {
 				'current_year' => $current_year,
 				'current_day' => $current_day,
 				'[root]'		  => $url,
-				'[root-language]' => $url .  "/" . $aiki->site->language(),
+				'[root-language]' => $trimedUrl .  "/" . $aiki->site->language(),
 				'[site_prefix]'   => $prefix ,
 				'[view_prefix]'   => $view_prefix ,
-				'[route]'		 => implode("/",$paths) );
-		
+				'[route]'		 => $trimedUrl.  "/". $paths,
+				'[route-local]'	 => $paths );
+									
 			// substitute all [POST[key]] and [GET[key]]
 			if ( $aiki->config->get("show_gets", true) ){
 				foreach ( $_GET as $key => $value ){
