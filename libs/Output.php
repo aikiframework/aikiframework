@@ -128,8 +128,9 @@ class Output {
 
 		$header = sprintf("\n".
 			"<meta charset='$encoding' >\n" .
-			"<meta name='generator' content='Aikiframework %s.%s' >\n",
-			AIKI_VERSION , AIKI_REVISION );			
+			"<meta name='generator' content='Aikiframework %s%s' >\n",
+			defined("AIKI_VERSION")  ? AIKI_VERSION: "" ,
+			defined("AIKI_REVISION") ? ".". AIKI_REVISION : "" );
 		
 		$aiki->Plugins->doAction("output_meta", $header);
 
@@ -189,6 +190,7 @@ class Output {
 		$header = $this->doctype();
 		$header .= '<head>';
 		$header .= $this->title_and_metas();
+						
 		if (!$nogui) {
 			if (count($layout->widgets_css)) {
 
@@ -202,7 +204,7 @@ class Output {
 				$header .= sprintf(
 					'<link rel="stylesheet" type="text/css" ' .
 					' href="%sstyle.php?site=%s&amp;%swidgets=%s&amp;language=%s" />',
-					$config['url'],
+					config("url"),
 					$aiki->site->get_site(),
 					( $view ? "view={$view}&amp;" : ""),
 					implode("_", $layout->widgets_css),
