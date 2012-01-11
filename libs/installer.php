@@ -58,7 +58,8 @@ echo '
 }
 
 body {
-	background-color: #E5E5E5;
+	background-color: #444;
+    color: #333;	
 }
 
 legend {
@@ -66,9 +67,13 @@ legend {
 }
 
 #content {
-	float: left;
-	width: 520px;
-	padding: 6px 10px 0px 6px;
+    background-color:#fff;
+    border-radius: 12px;
+    box-shadow: 0px 0px 8px 4px #000;
+    color: #333;
+	width: 520px; 
+	margin: 10px auto;
+	padding: 6px 24px 12px 24px;
 }
 
 #content img {
@@ -80,48 +85,16 @@ legend {
 	float: left;
 }
 
-#content p {
-	font-family: verdana, "Microsoft Sans Serif", Times, serif;
-	font-size: 8pt;
-	margin-top: 0px;
-	margin-bottom: 10px;
-	padding: 0px 10px;
-	text-align: justify;
-	line-height: 12pt;
-}
-
-#content h1 {
-	font-family: Baskerville, Georgia, Times, serif;
-	font-size: 15pt;
+#content h1 {	
+	font-size: 32px;
 	font-style: normal;
-	font-weight: normal;
-	margin-top: 5px;
-	padding: 10px 0 10px 0;
+	font-weight: normal;	
+	color: #666;
+	padding: 20px 0 10px 0px;
 }
 
-.myform {
-	margin: 10px;
-	padding: 14px;
-}
 
-#stylized {
-	border: solid 2px #999;
-	background: #F7F7F7;
-}
 
-#stylized h1 {
-	font-size: 14px;
-	font-weight: bold;
-	margin-bottom: 0px;
-}
-
-#stylized p {
-	font-size: 11px;
-	color: #666666;
-	margin-bottom: 20px;
-	border-bottom: solid 1px #999;
-	padding-bottom: 10px;
-}
 
 #stylized label {
 	display: block;
@@ -146,7 +119,7 @@ legend {
 	padding: 4px 2px;
 	border: solid 1px #999;
 	width: 200px;
-	margin: 2px 0 20px 10px;
+	margin: 2px 0 16px 10px;
 }
 
 #stylized select {
@@ -155,21 +128,48 @@ legend {
 	padding: 4px 2px;
 	border: solid 1px #999;
 	width: 200px;
-	margin: 2px 0 20px 10px;
+	margin: 2px 0 14px 10px;
 }
 
 #stylized button {
 	clear: both;
-	margin-left: 150px;
-	width: 128px;
+	display:block;
+	margin: 6px auto;
+	width: 8em;
 	height: 35px;
-	background: #666666;
-	text-align: center;
-	line-height: 31px;
-	color: #FFFFFF;
-	font-size: 11px;
-	font-weight: bold;
+	background: #333;
+	text-align: center;	
+	color: #fff;
+	font-size: 16px;
+	font-weight: normal;
+	border:1px solid #999;
+	border-radius:4px;
+	box-shadow:2px 2px 6px 1px #aaa;
 }
+
+#stylized button:hover {
+	cursor: pointer;
+	background-color: #999;
+	color: #fff;
+	box-shadow: none}
+
+fieldset { border-color: #ddd #333 #333 #eee; }
+
+#steps {
+	font-size: 0.8em;
+	line-height: 1.4em;
+	width:100%;
+	padding:6px 24px;
+	position: relative;
+	left: -24px;
+	border-bottom: 1px solid #f4e355;
+	border-top: 1px solid #f4e355;
+	background-color: #f8ed90;
+}
+
+#steps h2 { font-weight: bold; font-size: 1.2em; padding-bottom: 0.2em; }
+#steps ol { padding-left: 36px;}
+
 </style>
 
 </head>
@@ -182,19 +182,15 @@ legend {
 <div id="stylized" class="myform">';
 if ( !isset($_POST['db_type']) or !isset($_POST['db_host']) or !isset($_POST['db_name']) or !isset($_POST['db_user']) ) {
 	echo '
-<p>ONE STEP Installer Guide
-<br />
-Before we start you need the following:
-<br />
-<br />
-1- An empty database, with collation set to utf8_general_ci.
-<br />
-<br />
-2- PHP 5.2 or above and apache2.
-<br />
-<br />
-3- mod_rewrite must be enabled inside apache2 httpd.conf  
-</p>	
+<div id="steps">
+<h2>ONE STEP Installer Guide</h2>
+<p>Before we start you need the following:</p>
+<ol>
+<li>An empty database, with collation set to <em>utf8_general_ci.</em></li>
+<li>PHP 5.2 or above and Apache2.</li>
+<li>mod_rewrite must be enabled inside apache2 httpd.conf</li>
+</ol>
+</div>
 	
 <form method="post" id="form">
 <fieldset><legend> Database Settings</legend> <label>Database type</label>
@@ -215,10 +211,10 @@ Before we start you need the following:
 	</fieldset>
 	
 <fieldset><legend>Admin Settings</legend>
-<label>Username</label><input type="text" name="username" value="" /></label>
+<label>Username</label><input type="text" name="username" value="admin" /></label>
 <label>Full Name</label><input type="text" name="full_name" value="" /></label>
 <label>Email</label><input	type="text" name="email" value="" /></label>
-	</fieldset>	
+</fieldset>	
 
 <button type="submit">Next..</button>
 </form>';
