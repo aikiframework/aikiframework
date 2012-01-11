@@ -95,6 +95,12 @@ class SqlMarkup {
 						if (!preg_match('/\(select(.*)/', $html)) {
 							$html = substr($html,0,-1);
 						}
+						//ez_SQL return array or Object not assoc
+						$result = get_object_vars($result);
+						foreach ($result as $k => $v) {
+							$html = str_replace("[-[".$k."]-]", $v,  $html);
+						}
+						/* just in case
 						$result = $aiki->AikiArray->object2array($result);
 						$result_key = @array_flip($result);
 
@@ -104,7 +110,7 @@ class SqlMarkup {
 											"]-]", $field,  $html);
 							}
 						}
-
+						*/
 						$match .= $html;
 						
 						/**
