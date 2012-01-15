@@ -44,7 +44,7 @@ define("AIKI_REWRITE_BASE", "@AIKI_REWRITE_BASE@");
 define("AIKI_REVISION", "@REVISION@");
 
 /** Aiki Authors */
-define("AIKI_AUTHORS", '@AUTHORS@');
+define("AIKI_AUTHORS", 'Aiki Lab Pte Ltd, Fabricatorz LLC, Bassel Safadi, Jon Phillips, Christopher Adams, Barry Threw, Michi Krnac, Ronaldo Barbachano, Vera Lobatcheva, Brad Phillips, Steven Garcia, Roger Martín, Jakub Jankiewicz');
 
 /** Aiki Log Directory */
 define("AIKI_LOG_DIR", "@AIKI_LOG_DIR@");
