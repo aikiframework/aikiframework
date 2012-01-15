@@ -351,6 +351,7 @@ CREATE TABLE IF NOT EXISTS aiki_widgets (
   is_active int(1) NOT NULL,
   widget_owner int(9) unsigned NOT NULL default '2',
   widget_privilege varchar(1) NOT NULL default 'w',
+  last_change int(11) NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
