@@ -22,9 +22,9 @@ if ( file_exists("$AIKI_ROOT_DIR/configs/defs.php") ){
     require_once("$AIKI_ROOT_DIR/configs/defs.php");
 }
 
-/* Do NOT remove the following constant definitions.
- * The run-time installer should insert the correct values here.
- * Otherwise, these will be defined in aiki-defs.php. */
+/**
+ * These are needed in the web installer
+ */
 if (!defined("AIKI_REWRITE_BASE")) {
 	/** Aiki Rewrite Base (for htaccess) if NOT defined */
     define("AIKI_REWRITE_BASE", "@AIKI_REWRITE_BASE@");
