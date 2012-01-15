@@ -689,14 +689,10 @@ class CreateLayout {
 		}
 
 		if ( $numpages <= 1 ) {
-			return "<div class='pagination'></div>";
+			return "";
 		}
 			
 		$widget->link_example = $aiki->input->requests($widget->link_example);
-
-		/**
-		 * @todo abstract this all into a pagination class
-		 */
 
 		$numpages = $numpages + 1; // WHAT?????
 
@@ -704,13 +700,10 @@ class CreateLayout {
 		$pagination = '';
 		$page2 = $page;
 		
-		/**
-		 * @todo the harcoded pagination must die
-		 */
 		$pagination .= 
 		  "<div class='pagination'>" .
 		  "<span class='pagination_move_to_page'>" . 
-		  __("move to page") . "</span><br />";
+		  __("move to page") . "</span>";
 
 		if ($page) {
 			$previous = 

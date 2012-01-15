@@ -27,6 +27,10 @@
  * @version     @VERSION@.@REVISION@
  * @filesource */
 
+ // @TODO: move the defs.inc to defs.php
+ // @TODO: make all these check to see if another define exists before defining
+ // @TODO: make sure its easy to move a site by setting an option in a file
+
 
 // @TODO added these back from aiki-defs.inc and need to be defined in installer
 /** Aiki Site URL */
