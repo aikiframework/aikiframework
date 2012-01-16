@@ -96,19 +96,16 @@ function mod_basic(){
 	
 	$('#tools_box').remove();
 	
-	hide_advanced();
-	hide_permissions();
-	$('.display_urls').show();
+    show_all_fields();
 	
-	
-	$('<div id="tools_box" style="background: none repeat scroll 0pt 0pt rgb(221, 221, 221); border-width: 1px 0pt 0pt; border-style: solid none none; border-color: rgb(170, 170, 170) -moz-use-text-color -moz-use-text-color; margin-left: auto; margin-right: auto; position: relative; top: 15px; z-index: 10000; width: 320px;">' +
+	$('<div id="tools_box" style="background: none repeat scroll 0pt 0pt rgb(221, 221, 221); border-width: 1px 1px 0 1px; border-style: solid solid none solid; border-color: rgb(170, 170, 170); position: fixed; bottom: 0; z-index: 10000; right: 11.2%; opacity: 0.6; filter: alpha(opacity=60); border-radius: 2px 2px 2px 2px; min-width: 380px;">' +
 '<ul style="cursor:pointer;">' +
-'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="widget_tools"><a>Content</a>' +
-'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="sql_tools"><a>Sql</a>' +
-'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="style_tools"><a>Style</a></li>' +
-'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="permissions_tools"><a>Permissions</a>' +
-'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="advanced_mod"><a>Advanced</a>' +
-'<li style="display:block; float: left; padding:5px;" class="widget_editor_li" id="full_mod"><a>All</a>' +
+'<li style="display:block; float: left; padding:11px;" class="widget_editor_li" id="widget_tools"><a>Content</a>' +
+'<li style="display:block; float: left; padding:11px;" class="widget_editor_li" id="sql_tools"><a>Sql</a>' +
+'<li style="display:block; float: left; padding:11px;" class="widget_editor_li" id="style_tools"><a>Style</a></li>' +
+'<li style="display:block; float: left; padding:11px;" class="widget_editor_li" id="permissions_tools"><a>Permissions</a>' +
+'<li style="display:block; float: left; padding:11px;" class="widget_editor_li" id="advanced_mod"><a>Advanced</a>' +
+'<li style="display:block; float: left; padding:11px;" class="widget_editor_li" id="full_mod"><a>All</a>' +
 '</li></ul></div>').appendTo('body');
 	
 	$("#style_tools").click(function(event){
@@ -159,14 +156,7 @@ function mod_basic(){
 	});
 	
 	$("#full_mod").click(function(event){
-		$('.widget_editor_li').css('background','#FFFFFF');
-		$(this).css('background','#CCCCCC');
-
-		show_style();
-		show_sql();
-		show_permissions();
-		show_advanced();
-		$('.widget').show();
+        show_all_fields();
 	});	
 	
 	$("#sql_tools").click(function(event){
@@ -180,6 +170,17 @@ function mod_basic(){
 		$('.widget').hide();
 	});	
 	
+}
+
+function show_all_fields(){
+		$('.widget_editor_li').css('background','#FFFFFF');
+		$(this).css('background','#CCCCCC');
+
+		show_style();
+		show_sql();
+		show_permissions();
+		show_advanced();
+		$('.widget').show();
 }
 
 function show_sql(){
@@ -685,8 +686,6 @@ $(function() {
 		return false;
 	});
 	
-	// The following line is autoconf generated
-	// 
 	
 	// append the log button to the main navigation
 	$("<li><a href='#' id='log-button'>Log</a></li>").appendTo("#main-navigation");
