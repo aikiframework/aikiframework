@@ -330,8 +330,8 @@ if ( !isset($_POST['db_type']) or !isset($_POST['db_host']) or !isset($_POST['db
 	$sql_insert_variable = str_replace("@ADMIN_MAIL@", $email, $sql_insert_variable);
 	$sql_insert_variable = str_replace("@VERSION@", AIKI_VERSION, $sql_insert_variable);
 	$sql_insert_variable = str_replace("@REVISION@", Util::get_last_revision(), $sql_insert_variable);
-	$sql_insert_variable = str_replace("@AUTHORS@", 
-        file_get_contents("$AIKI_ROOT_DIR/AUTHORS"), $sql_insert_variable);
+	$sql_insert_variable = str_replace("@AUTHORS@", Util::get_authors(), 
+                                       $sql_insert_variable);
 	
 	/* In MySQL, the “-- ” (double-dash) comment style requires the second
 	 * dash to be followed by at least one whitespace or control character.

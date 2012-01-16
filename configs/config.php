@@ -30,10 +30,9 @@ if (!defined("AIKI_SITE_URL")) {
     define("AIKI_SITE_URL", "@AIKI_SITE_URL@");
 }
 
-
-/** Aiki Framework Revision */
-if (!defined("AIKI_REVISION"))
-    define("AIKI_REVISION", "@REVISION@");
+/** @todo review how to replace the rest of these constants, but they 
+          aren't breaking anything right now and can be overridden from
+          config.php file. */
 
 /** Aiki Log Directory */
 if (!defined("AIKI_LOG_DIR"))
