@@ -17,10 +17,6 @@
  * @package     Configs
  * @filesource */
 
-/** @see defs.php */
-if ( file_exists("$AIKI_ROOT_DIR/configs/defs.php") ){
-    require_once("$AIKI_ROOT_DIR/configs/defs.php");
-}
 
 /**
  * These are needed in the web installer
@@ -33,6 +29,106 @@ if (!defined("AIKI_SITE_URL")) {
     /** Aiki Site URL if NOT defined */
     define("AIKI_SITE_URL", "@AIKI_SITE_URL@");
 }
+
+
+/** Aiki Framework Revision */
+if (!defined("AIKI_REVISION"))
+    define("AIKI_REVISION", "@REVISION@");
+
+/** Aiki Log Directory */
+if (!defined("AIKI_LOG_DIR"))
+    define("AIKI_LOG_DIR", "@AIKI_LOG_DIR@");
+
+/** Aiki Log File Name */
+if (!defined("AIKI_LOG_FILE"))
+    define("AIKI_LOG_FILE", "@AIKI_LOG_FILE@");
+
+/** Aiki Host Profile File Name */
+if (!defined("AIKI_LOG_PROFILE"))
+    define("AIKI_LOG_PROFILE", "@AIKI_LOG_PROFILE@");
+
+/** Aiki Log Level */
+if (!defined("AIKI_LOG_LEVEL"))
+    define("AIKI_LOG_LEVEL", "@AIKI_LOG_LEVEL@");
+
+/** Aiki directory that stores downloads and
+ *  backup files used to revert from update */
+if (!defined("AIKI_SAVE_DIR"))
+    define("AIKI_SAVE_DIR", "@AIKI_SAVE_DIR@");
+
+/** Aiki directory that stores downloads.
+ * This must be relative to the aiki save directory */
+if (!defined("AIKI_DOWNLOAD_DIR"))
+    define("AIKI_DOWNLOAD_DIR", "@AIKI_DOWNLOAD_DIR@");
+
+/** Aiki directory that stores backups.
+ * This must be relative to the aiki save directory */
+if (!defined("AIKI_BACKUP_DIR"))
+    define("AIKI_BACKUP_DIR", "@AIKI_BACKUP_DIR@");
+
+/** Aiki directory that stores updates.
+ * This must be relative to the aiki save directory */
+if (!defined("AIKI_UPDATE_DIR"))
+    define("AIKI_UPDATE_DIR", "@AIKI_UPDATE_DIR@");
+
+/** Aiki Random string should be different everytime
+ * a distribution package is configured and built */
+if (!defined("AIKI_RANDOM"))
+    define("AIKI_RANDOM", "@AIKI_RANDOM@");
+
+// **** Begin non-generated constants **** //
+
+/** Aiki Update URL with update information and requirements */
+if (!defined("AIKI_UPDATE_URL"))
+    define("AIKI_UPDATE_URL", "http://aikiframework.org/files/update");
+
+/** Whether or not to check for update after admin login */
+if (!defined("AIKI_UPDATE_CHECK"))
+    define("AIKI_UPDATE_CHECK", true);
+
+/** Aiki Update URL to the update package excluding filename */
+if (!defined("AIKI_UPDATE_PATH"))
+    define("AIKI_UPDATE_PATH", "http://aikiframework.org/files/");
+
+/** First part of the update package filename excluding version and extension */
+if (!defined("AIKI_UPDATE_PREFIX"))
+    define("AIKI_UPDATE_PREFIX", "aiki-src-");
+
+/** Last part of the update package filename indicating file format */
+if (!defined("AIKI_UPDATE_EXT"))
+    define("AIKI_UPDATE_EXT", ".zip");
+
+/** Last part of the sum filename indicating file format */
+if (!defined("AIKI_SUM_EXT"))
+    define("AIKI_SUM_EXT", ".shasum-256.txt");
+
+/** Retry to download or validate the downloaded update package
+ * this number of times if failed. Do NOT put the following value in quotes. */
+if (!defined("AIKI_UPDATE_RETRY"))
+    define("AIKI_UPDATE_RETRY", 3);
+
+/** Whether or not this update involves changes to the Aiki
+ *  configuration (aiki_config table, config.php or .htaccess) 
+ *  Do NOT put the following value (TRUE or FALSE) in quotes. */
+if (!defined("AIKI_UPDATE_CONFIG"))
+    define("AIKI_UPDATE_CONFIG", false);
+
+/* the following error related constants
+ * are built-in on newer versions of PHP */
+if (!defined("E_RECOVERABLE_ERROR")) {
+	/** Define E_RECOVERABLE_ERROR if not defined */
+    define("E_RECOVERABLE_ERROR", 4096);
+}
+if (!defined("E_DEPRECATED")) {
+    /** Define E_DEPRECATED if not defined */
+    define("E_DEPRECATED", 8192);
+}
+if (!defined("E_USER_DEPRECATED")) {
+    /** Define E_USER_DEPRECATED if not defined */
+    define("E_USER_DEPRECATED", 16384);
+}
+
+
 
 /** Used to store global configuration options
  * @global array $config */

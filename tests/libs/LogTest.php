@@ -17,9 +17,6 @@
  * @package     Tests
  * @filesource */
 
-/** define this for script access */
-define("IN_AIKI", TRUE);
-
 require_once("libs/Log.php");
 
 /** To test protected properties and methods */

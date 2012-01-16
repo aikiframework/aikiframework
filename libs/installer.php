@@ -23,6 +23,8 @@ if (!defined('IN_AIKI')) {
 	die('No direct script access allowed');
 }
 
+/** @see Util.php */
+require_once("$AIKI_ROOT_DIR/libs/Util.php");
 	
 /* setting $config["log_level"] = "NONE" disables the log 
  * or "None" and "none". Also if the log_level is not valid
@@ -327,8 +329,9 @@ if ( !isset($_POST['db_type']) or !isset($_POST['db_host']) or !isset($_POST['db
 	$sql_insert_variable = str_replace("@ADMIN_PASS@", $admin_password_md5_md5, $sql_insert_variable);
 	$sql_insert_variable = str_replace("@ADMIN_MAIL@", $email, $sql_insert_variable);
 	$sql_insert_variable = str_replace("@VERSION@", AIKI_VERSION, $sql_insert_variable);
-	$sql_insert_variable = str_replace("@REVISION@", AIKI_REVISION, $sql_insert_variable);
-	$sql_insert_variable = str_replace("@AUTHORS@", AIKI_AUTHORS, $sql_insert_variable);
+	$sql_insert_variable = str_replace("@REVISION@", Util::get_last_revision(), $sql_insert_variable);
+	$sql_insert_variable = str_replace("@AUTHORS@", 
+        file_get_contents("$AIKI_ROOT_DIR/AUTHORS"), $sql_insert_variable);
 	
 	/* In MySQL, the “-- ” (double-dash) comment style requires the second
 	 * dash to be followed by at least one whitespace or control character.
