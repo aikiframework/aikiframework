@@ -98,7 +98,7 @@ function mod_basic(){
 	
     show_all_fields();
 	
-	$('<div id="tools_box" style="background: none repeat scroll 0pt 0pt rgb(221, 221, 221); border-width: 1px 1px 0 1px; border-style: solid solid none solid; border-color: rgb(170, 170, 170); position: fixed; bottom: 0; z-index: 10000; right: 11.2%; opacity: 0.6; filter: alpha(opacity=60); border-radius: 2px 2px 2px 2px; min-width: 380px;">' +
+	$('<div id="tools_box" style="background: none repeat scroll 0pt 0pt rgb(221, 221, 221); border-width: 1px 1px 0 1px; border-style: solid solid none solid; border-color: rgb(170, 170, 170); position: fixed; bottom: 0; z-index: 10000; right: 12.3%; opacity: 0.6; filter: alpha(opacity=60); border-radius: 2px 2px 2px 2px; min-width: 380px;">' +
 '<ul style="cursor:pointer;">' +
 '<li style="display:block; float: left; padding:11px;" class="widget_editor_li" id="widget_tools"><a>Content</a>' +
 '<li style="display:block; float: left; padding:11px;" class="widget_editor_li" id="sql_tools"><a>Sql</a>' +
