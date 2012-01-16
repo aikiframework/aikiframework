@@ -31,4 +31,12 @@ class UtilTest extends PHPUnit_Framework_TestCase {
         // make sure not empty
         $this->assertNotEmpty($last_revision);
     }
+
+    public function testGetAuthors () {
+        $authors = Util::get_authors();
+
+        $this->assertNotEmpty($authors);
+
+        $this->assertInternalType('string', $authors);
+    }
 }

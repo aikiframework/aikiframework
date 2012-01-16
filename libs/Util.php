@@ -49,4 +49,18 @@ class Util {
 
         return $last_revision;
     }
+
+
+    public static function get_authors() {
+        global $AIKI_ROOT_DIR;
+        $authors_file = $AIKI_ROOT_DIR . "/AUTHORS";
+        // $authors = _('See AUTHORS file.');
+        $authors_array = array(_('See AUTHORS file.'));
+        if ( file_exists($authors_file) )
+            $authors_array = 
+                explode("\n", file_get_contents($authors_file));
+
+        return join(', ', $authors_array);
+
+    }
 }
