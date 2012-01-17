@@ -1266,7 +1266,8 @@ class CreateLayout {
 			
 			// Support DISTINCT selection
 			if (preg_match('/^select DISTINCT(.*) from/Usi', $sql, $distinct)){
-				$mysql_count = ' count(DISTINCT({$distinc[1]})) ';
+				$dist = preg_replace('/ *as [^,]+,/Usi', ',', $distinct[1]);
+				$mysql_count = " count(DISTINCT ". $dist . ") ";
 			} else {  
 				$mysql_count = ' count(*) ';
 			}
