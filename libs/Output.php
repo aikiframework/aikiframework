@@ -122,13 +122,13 @@ class Output {
 	public function title_and_metas() {
 		global $aiki, $config;
 		$title = '<title>' . ( $this->title ? "$this->title - " : "" ) .
-			$aiki->site->site_name() . '</title>';
+			$aiki->site->site_name() . '</title>' . "\n";
 		$aiki->Plugins->doAction("output_title", $title);
 		$encoding = isset($config["db_encoding"]) ? $this->correct_encoding($config["db_encoding"]) : "utf-8";
 
 		$header = sprintf("\n".
-			"<meta charset='$encoding' >\n" .
-			"<meta name='generator' content='Aikiframework %s%s' >\n",
+			"<meta charset='$encoding' />\n" .
+			"<meta name='generator' content='Aikiframework %s%s' />\n",
 			defined("AIKI_VERSION")  ? AIKI_VERSION: "" ,
 			defined("AIKI_REVISION") ? ".". AIKI_REVISION : "" );
 		
@@ -162,10 +162,14 @@ class Output {
 		 */
 		$lang=  $aiki->site->language();
 		$dir =  $aiki->languages->dir;
+
+        $header  = "<!doctype html>\n";
+		$aiki->Plugins->doAction("output_doctype_begin", $header);
+        $html = "<html lang='$lang' dir='$dir'>\n";
+		$aiki->Plugins->doAction("output_html_begin", $html);
+        $header .= $html;
 		 
-		return 
-			"<!doctype html>\n".
-			"<html lang='$lang' dir='$dir'>\n";
+		return $header;
 	} // end of doctype function
 
 
@@ -187,8 +191,11 @@ class Output {
 	public function headers() {
 		global $aiki, $db, $layout, $nogui, $config;
 		
+		$aiki->Plugins->doAction("output_begin", $header);
 		$header = $this->doctype();
-		$header .= '<head>';
+		$head_tag = '<head>';
+		$aiki->Plugins->doAction("output_head_begin", $head_tag);
+        $header .= $head_tag;
 		$header .= $this->title_and_metas();
 						
 		if (!$nogui) {
@@ -203,7 +210,7 @@ class Output {
 				$view = $aiki->site->view();// comodity
 				$header .= sprintf(
 					'<link rel="stylesheet" type="text/css" ' .
-					' href="%sstyle.php?site=%s&amp;%swidgets=%s&amp;language=%s" />',
+					' href="%sstyle.php?site=%s&amp;%swidgets=%s&amp;language=%s" />' . "\n",
 					config("url"),
 					$aiki->site->get_site(),
 					( $view ? "view={$view}&amp;" : ""),
@@ -211,9 +218,12 @@ class Output {
 					$language);
 			}
 			// set favicon, but doesn't really check to see if it exists
-			$header .=
+			$favicon =
 				'<link rel="icon" href="' . $config['url'] .
 				'assets/images/favicon.ico" type="image/x-icon" />';
+
+		    $aiki->Plugins->doAction("output_head_favicon", $favicon);
+            $header .= $favicon;
 		}
 	
 		if (isset($layout->head_output)){
@@ -221,8 +231,11 @@ class Output {
 		}
 
 		$header .= $this->headers;
-		$header .= "</head>";
-		$aiki->Plugins->doAction("output_head", $header);
+		$head_tag_close = "</head>";
+        // Yes, the next two are the same.
+		$aiki->Plugins->doAction("output_head", $head_tag_close);
+		$aiki->Plugins->doAction("output_head_end", $head_tag_close);
+        $header .= $head_tag_close;
 				
 		$bodybegin = "\n<body>\n";
 		$aiki->Plugins->doAction("output_body_begin", $bodybegin);
