@@ -62,7 +62,7 @@ class Plugins {
 			" WHERE plconf_active='active'" .
 			" ORDER BY plconf_priority";
 		$configurations = $db->get_results($sql);
-		
+				
 		if (is_null($configurations)) {
 			return;
 		}
@@ -78,16 +78,19 @@ class Plugins {
 			}
 		}
 
+	
 		// init plugins: set action and load configuration		
 		if ( count($pluginsActivated) > 0 ) {
+				
 			$sql =
 				"SELECT plugin_id, plugin_file,plugin_class_name FROM aiki_plugins " .
 				" WHERE plugin_state='available' AND (plugin_id='" .
-				implode("OR plugin_id='", array_keys($pluginsActivated)) . "')";
+				implode("' OR plugin_id='", array_keys($pluginsActivated)) . "')";
 			$toload= $db->get_results($sql);
+			
 			if (!is_null($toload)) {
 				foreach ( $toload as $load ) {
-					$file = $AIKI_ROOT_DIR . "/" . AIKI_PLUGIN_DIR . "/" . $load->plugin_file;
+					$file = $AIKI_ROOT_DIR . "/" . AIKI_PLUGIN_DIR . "/" . $load->plugin_file;					
 					if (file_exists($file)) {
 						include_once($file);
 						$this->plugins[] = new $load->plugin_class_name($this, $pluginsActivated[$load->plugin_id]);
