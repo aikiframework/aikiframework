@@ -37,7 +37,7 @@ if (!defined('IN_AIKI')) {
  *
  */
 
-define ("AIKI_PLUGIN_DIR", "plugins");
+define ("AIKI_PLUGIN_DIR", "assets/plugins");
 
 class Plugins {
 
@@ -303,8 +303,8 @@ class Plugins {
  * class MyPluginName extends plugin { ..here code }
  *
  * The code must contain the two functions:
- * - set_actions that must return a array of actions=>priorities
- * - do_action that receive two parameters action and &text ..
+ * - setActions that must return a array of actions=>priorities
+ * - action that receive two parameters action and &text ..
  *
  * You must not:
  * - create a plugin object.

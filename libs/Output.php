@@ -116,8 +116,6 @@ class Output {
 	 * Returns the title and default meta tags as html
 	 *
 	 * @return  string
-	 *
-	 * @todo title has a hardcoded default here, need to remove
 	 */
 	public function title_and_metas() {
 		global $aiki, $config;
@@ -142,9 +140,6 @@ class Output {
 	 *
 	 * @global  $aiki
 	 * @return  string
-	 *
-	 * @todo we really should have a default template for pages somewhere and
-	 * NOT have default doctype written directly inside of aiki!
 	 */
 	public function doctype() {
 		global $aiki;
@@ -157,9 +152,6 @@ class Output {
 			$aiki->languages->language = "en";
 			$aiki->languages->dir = "ltr";
 		}
-		/**
-		 * @todo this really needs to be abstracted? why just output xthml???
-		 */
 		$lang=  $aiki->site->language();
 		$dir =  $aiki->languages->dir;
 
@@ -191,6 +183,7 @@ class Output {
 	public function headers() {
 		global $aiki, $db, $layout, $nogui, $config;
 		
+        $header = '';
 		$aiki->Plugins->doAction("output_begin", $header);
 		$header = $this->doctype();
 		$head_tag = '<head>';
@@ -217,11 +210,9 @@ class Output {
 					implode("_", $layout->widgets_css),
 					$language);
 			}
-			// set favicon, but doesn't really check to see if it exists
 			$favicon =
 				'<link rel="icon" href="' . $config['url'] .
 				'assets/images/favicon.ico" type="image/x-icon" />';
-
 		    $aiki->Plugins->doAction("output_head_favicon", $favicon);
             $header .= $favicon;
 		}
@@ -233,7 +224,6 @@ class Output {
 		$header .= $this->headers;
 		$head_tag_close = "</head>";
         // Yes, the next two are the same.
-		$aiki->Plugins->doAction("output_head", $head_tag_close);
 		$aiki->Plugins->doAction("output_head_end", $head_tag_close);
         $header .= $head_tag_close;
 				
