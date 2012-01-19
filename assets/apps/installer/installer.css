@@ -32,8 +32,8 @@ input {
 	background: #fff url(./images/page_bg.png) 6px 3px no-repeat;
 	color: #333;
 	padding: 18px 24px;
-	-moz-border-radius: 12px ;
-	-moz-box-shadow: 12px 12px 12px #000;}
+	border-radius: 12px ;
+	box-shadow: 12px 12px 12px #000;}
 
 p {
 	margin: 9px 0 }
@@ -70,7 +70,7 @@ span.error {
 fieldset {
 	border:none;
 	border: 1px solid #666;	
-	-moz-border-radius: 5px;
+	border-radius: 5px;
 	padding:9px;
 	margin-bottom: 18px;}
 
@@ -79,7 +79,7 @@ legend {
 	margin:0 auto;
 	font-weight: bold;
 	background-color: #666;
-	-moz-border-radius: 4px ;
+	border-radius: 4px ;
 	color: #fff;
 	padding: 7px 5% 2px 5%;
 	width:87%;
@@ -120,15 +120,16 @@ div.error,
 div.message-strong {
 	padding: 9px 18px 9px 50px;;
 	margin: 9px 0px;
-	-moz-border-radius: 8px ;
+	border-radius: 8px ;
 	border:  3px solid #e5e5e5;
+	border:  1px solid #999;
 }
 
 div.error,
 div.ok {
 	font-size: 20px;
 	line-height: 27px;
-	-moz-box-shadow: 6px 6px 12px #eee;
+	box-shadow: 3px 3px 3px #eee;
 }
 
 div.error em,
@@ -139,8 +140,8 @@ div.ok em {
 	line-height: 18px;}
 
 div.message {
-	padding: 9px 0px 9px 22px;
-	background: #fff url(./images/info.png) no-repeat 0px 18px;
+	padding: 9px 0px 9px 50px;
+	background: #fff url(./images/info.png) no-repeat 8px 12px;
 }
 	
 
@@ -154,8 +155,8 @@ input.button,
 .user-input {
 	border: 1px solid #777;
 	padding: 5px 4px 2px 4px;
-	-moz-border-radius: 4px ;
-	-moz-box-shadow: 4px 4px 2px #f0f0f0;
+	border-radius: 4px ;
+	box-shadow: 4px 4px 2px #f0f0f0;
 	background-color:#fff;
 	color: #333;
 }
@@ -203,3 +204,35 @@ input.button:hover {
 textarea.filedump {
 	width:98%;
 	height: 20em;}
+
+
+#f_language { margin-bottom:9px; padding-bottom:9px; overflow:auto;}
+#f_language input, 
+#f_language select, 
+#f_language label { display: inline; margin-right:0.5em; }
+
+
+#welcome {	
+	line-height: 1.4em;	
+	padding:12px;
+	margin-bottom: 24px;
+}
+
+
+#requirements {	
+	line-height: 1.4em;
+	width:100%;
+	padding:6px 24px 12px 24px;
+	position: relative;
+	left: -24px;
+	border-bottom: 1px solid #f4e355;
+	border-top: 1px solid #f4e355;
+	background-color: #f8ed90;
+	margin-bottom: 24px;
+}
+
+#requirements h2 { font-weight: bold; font-size: 1.2em; padding-bottom: 0.2em; }
+#requirements ol { padding-left: 36px;}
+
+#file-list { oveflow:auto }
+#file-list div.col { float:left; width:43%; margin-right:6%;}
