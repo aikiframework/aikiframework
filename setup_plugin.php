@@ -38,7 +38,7 @@ if ( $founded) {
         echo "No plugins is found or all have configuration\n";
     } else {
         foreach ($ids as $id){
-            echo "lugin {$id->plugin_name} activated for *\n";
+            echo "plugin {$id->plugin_name} activated for *\n";
             plugins::insert_plugin_configuration($id->plugin_id,"*");
         }
     }

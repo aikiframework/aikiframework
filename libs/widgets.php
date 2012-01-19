@@ -489,7 +489,7 @@ class CreateLayout {
 				$widgetContents = $this->parse_hits($widgetContents);			
 				
 				// insert pagination.
-				if ( $pagination != false && strpos($widgetContents, "[no_pagination]") === false ) {
+				if ( (isset($pagination) || $pagination != false) && strpos($widgetContents, "[no_pagination]") === false ) {
 					if (strpos($widgetContents, "[pagination]")) {
 					$widgetContents = str_replace(
 						"[pagination]",
@@ -689,7 +689,7 @@ class CreateLayout {
 		}
 
 		if ( $numpages <= 1 ) {
-			return "";
+            return "";
 		}
 			
 		$widget->link_example = $aiki->input->requests($widget->link_example);

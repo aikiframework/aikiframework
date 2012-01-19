@@ -253,7 +253,7 @@ class ezSQLcore
 		{
 			$this->query($query);
 		}
-
+		$new_array = array();
 		// Extract the column values
 		for ( $i=0; $i < count($this->last_result); $i++ )
 		{
@@ -290,6 +290,7 @@ class ezSQLcore
 			if ( $this->last_result )
 			{
 				$i=0;
+				$new_array = array();
 				foreach( $this->last_result as $row )
 				{
 
