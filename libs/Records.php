@@ -1156,11 +1156,12 @@ class Records {
 							$membership->permissions or 
 							$membership->group_level < $get_group_level ) and 
 							isset($post[$intwalker[0]]) ) {
+						/*
 						$post[$intwalker[0]] = 
 							@str_replace('&lt;', '<' , $post[$intwalker[0]]);
 						$post[$intwalker[0]] = 
 							@str_replace('&gt;', '>' , $post[$intwalker[0]]);
-
+						*/
 						$insert_query_fields .= "$intwalker[0], ";
 						$insert_query_values .= "'".$post[$intwalker[0]]."', ";
 
