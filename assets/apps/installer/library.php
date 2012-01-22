@@ -18,13 +18,21 @@
  *
  *
  * Installer function library
- * @todo PHPDOC
+ *
  */
 
 
-define ("SQLS_DELIMITER", "-- ------------------------------------------------------");
+/** 
+ *
+ * return english name of iso6391 codec
+ * 
+ * @param string iso code
+ * 
+ * @return english name or code.
+ */
 
-function iso639($code) {
+function iso639($code) {	
+	// source: http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
 	$iso639 = array(
 		'aa' => 'Afar',
 		'ab' => 'Abkhaz',
@@ -137,7 +145,7 @@ function iso639($code) {
 		'mt' => 'Maltese',
 		'my' => 'Burmese',
 		'na' => 'Nauru',
-		'nb' => 'Norwegian BokmÃ¥l',
+		'nb' => 'Norwegian Bokmål',
 		'nd' => 'North Ndebele',
 		'ne' => 'Nepali',
 		'ng' => 'Ndonga',
@@ -163,7 +171,7 @@ function iso639($code) {
 		'ro' => 'Romanian, Moldavian, Moldovan',
 		'ru' => 'Russian',
 		'rw' => 'Kinyarwanda',
-		'sa' => 'Sanskrit (Sa?sk?ta)',
+		'sa' => 'Sanskrit (Saṁskṛta)',
 		'sc' => 'Sardinian',
 		'sd' => 'Sindhi',
 		'se' => 'Northern Sami',
@@ -201,7 +209,7 @@ function iso639($code) {
 		'uz' => 'Uzbek',
 		've' => 'Venda',
 		'vi' => 'Vietnamese',
-		'vo' => 'VolapÃ¼k',
+		'vo' => 'Volapük',
 		'wa' => 'Walloon',
 		'wo' => 'Wolof',
 		'xh' => 'Xhosa',
@@ -215,6 +223,17 @@ function iso639($code) {
 }
 
 
+/** 
+ *
+ * construct html form inserting config values, buttons, and next step.
+ * 
+ * @param $step next step
+ * @param $buttons string with additional html controls.
+ *
+ * @return string containg complete form
+ */
+
+
 
 function form_hidden ( $step , $buttons) {
 	global $config;
@@ -226,13 +245,52 @@ function form_hidden ( $step , $buttons) {
 	return $form_hidden;
 }
 
-// html templates for controls.
+
+/** 
+ *
+ * construct select control for language select
+ * 
+ * @param array translations available
+ * 
+ * @return string containg comple html select or "" if not necesary
+ */
+
+function select_language (){
+	global $t;
+
+	$translations = $t->translations();
+	if ( !is_array($translations) || count($translations)==0 ){
+		return ""; 
+	}
+	
+	$options = "<option value='en'>English</option>";	
+	foreach ( $translations as $isoCode ){
+		$options .= "<option value='$isoCode'>" . iso639($isoCode) ."</option>\n";
+	}	
+	return 
+		"<form id='f_language'><label for='language'>" . $t->t("Select language for installation") ."</label>\n" .
+	    "<select name='language' id='language' class='user-input'>".	                
+	    $options.
+	    "</select><input type='submit' value='" . $t->t("Change") ."'></form>";	
+}
+
+
+/** 
+ *
+ * construct select control for sql server type
+ * 
+ * @param actual selected $db_type
+ * 
+ * @return string containg comple html select.
+ */
+
 function select_db_type( $db_type ){
+	global $t;
 	$selectType="<select name='db_type' id='db_type' class='user-input'>\n";
 	$options = array (
 		"mysql" =>"MySQL",
 		"mssql" =>"mssql",
-		"oracle" =>"oracle 8 or higher",
+		"oracle" => $t->t("oracle 8 or higher"),
 		"pdo"=>"PDO",
 		"postgresql" =>"postgresql",
 		"sqlite" =>"sqlite");
@@ -244,17 +302,27 @@ function select_db_type( $db_type ){
 	return $selectType;
 }
 
+/** 
+ *
+ * check step
+ * 
+ * @param by value step.
+ * 
+ * @return message or "". Correct step.
+ */
 
 function check_step(&$step) {
-	global $AIKI_ROOT_DIR, $config;
+	global $AIKI_ROOT_DIR, $config, $t;
 
 	switch ($step){
 		case 4:
 		case 5:
 			if ( !@mysql_connect ($config['db_host'],  $config['db_user'], $config['db_pass']) ) {
-				return  "_t(Error: no connection)" ;
+				$step=2;
+				return  $t->t("Error: no connection") ;
 			} elseif ( !@mysql_selectdb ($config['db_name']) ){
-				return  "_t(Error: no database selected)";
+				$step=2;
+				return  $t->t("Error: no database selected");
 			}
 			if ( $step==5 && !file_exists($AIKI_ROOT_DIR ."/config.php") ){
 				$step=4;
@@ -263,7 +331,9 @@ function check_step(&$step) {
 		case 2:
 		default:
 			if ( file_exists($AIKI_ROOT_DIR ."/config.php" )  && $step!=5 ) {
-				return  "_t(There is a existing configuration file)<em>_t(Please remove file to continue installation)<br>".
+				$step=0;
+				return  $t->t("There is a existing configuration file.") .
+						"<em>".  $t->t("Please remove file to continue installation") ."<br>".
 				        "$AIKI_ROOT_DIR/config.php".
 						"</em>";
 			}
@@ -283,7 +353,8 @@ function check_step(&$step) {
 				}
 			}
 			if ($message!="") {
-				$message ="_t(Essential files missing):<em>$message</em>";
+				$step=0;
+				$message = $t->t("Essential files missing") . ":<em>$message</em>";
 		    }
 			return $message;
 	}
@@ -296,6 +367,15 @@ function clean_url($url){
 }
 
 
+/** 
+ *
+ * send login and password via email
+ * 
+ * @global $config, $AIKI_SITE_URL, $t
+ * 
+ * @return false if mail is send else true
+ */
+
 function send_data_by_email(){
 	global $config, $AIKI_SITE_URL, $t;
 	
@@ -305,50 +385,53 @@ function send_data_by_email(){
 	}
 	
 	$headers  = "MIME-Version: 1.0\r\n";
-	$headers .= "Content-type: text/html; charset=utf-8\r\n";
+	$headers .= "Content-type: text/plain; charset=utf-8\r\n";
 	$headers .= "From: noreply@aikiframework.org\r\n";
 
-	$message = "_t(Hello) {$config['ADMIN_FULLNAME']} _t(your new Aiki installation is ready to be used) <br>\n".
-			   "_t(Go to): " . $AIKI_SITE_URL . "admin <br>\n".
-			   "_t(Username): {$config['ADMIN_USER']} <br>\n".
-			   "_t(Password): {$config['ADMIN_PASSWORD']}<br>\n".
-			   " <br>\n".
-			   "_t(Have a nice day)<br>\n";
+	$message = $t->t("Hello"). "  {$config['ADMIN_FULLNAME']} \n".
+	           $t->t("Your new Aiki installation is ready to be used"). "\n\n".
+			   $t->t("Go to") .  ": $AIKI_SITE_URL/admin \n".
+			   $t->t("Username") . ":{$config['ADMIN_USER']} \n".
+			   $t->t("Password") . ":{$config['ADMIN_PASSWORD']}\n\n".
+			   $t->t("Have a nice day")."<br>\n";
 
-    // translate.
-	$message = preg_replace_callback (
-		"/_t\(([^\)]*)\)/",  // all _t(literals)
-		array($t,"t"),       // will be translated by $t->t()
-		$message );
-	mail($config['ADMIN_EMAIL'], $t->t('Your new Aiki installation'),$message,$headers);	
-	
-	return true;	
-	
+	return mail($config['ADMIN_EMAIL'], $t->t('Your new Aiki installation'),$message,$headers);
+		
 }
 
 /** 
  *
  * Get new htaccess file from template /configs/htaccess.inc 
  * 
- * @param string aiki root dir
+ * @param string aiki installation path 
  * 
- * @return false or string htaccess content.
+ * @return false or htaccess content as string.
  */
 
-function get_new_htaccess($url){
-	$htaccess_file = file_get_contents("$url/configs/htaccess.inc");
+function get_new_htaccess($aikiPath){
+	$htaccess_file = @file_get_contents("$aikiPath/configs/htaccess.inc");
 	if ( $htaccess_file == false ){				
 		return false;
 	}	
-	$replace= array (	"@AIKI_REWRITE_BASE@" => clean_url($_SERVER["REQUEST_URI"]) );
-	$htaccess_file = strtr( $htaccess_file, $replace);
-	return $htaccess_file;
+	return str_replace( "@AIKI_REWRITE_BASE@", clean_url($_SERVER["REQUEST_URI"]), $htaccess_file);
+	
 }
 
+
+/** 
+ *
+ * Read all sql file, making some replacemnets
+ * 
+ * @global $config, $AIKI_ROOT_DIR, $AIKI_SITE_URL, $AIKI_AUTHORS
+ * 
+ * @return array of SQLS statments
+ */
 
 function sqls(){
 	global $config, $AIKI_ROOT_DIR, $AIKI_SITE_URL, $AIKI_AUTHORS ;
 
+	$SQLS_DELIMITER = "-- ------------------------------------------------------";
+	
 	$config["ADMIN_PASSWORD"]        = substr(md5(uniqid(rand(),true)),1,8);
 	$config["ADMIN_PASSWORD_MD5_MD5"]= md5(md5($config["ADMIN_PASSWORD"]));
 
@@ -369,14 +452,14 @@ function sqls(){
 		"$AIKI_ROOT_DIR/sql/CreateTables.sql",
 		"$AIKI_ROOT_DIR/sql/InsertDefaults.sql",
 		"$AIKI_ROOT_DIR/sql/InsertVariable-in.sql",
-		"$AIKI_ROOT_DIR/sql/Site.sql");
+		"Site.sql");
 			
 	foreach ($files as $file ){
 		if ( file_exists($file) ){
-			$ret.= SQLS_DELIMITER . "\n". @file_get_contents($file) ;
+			$ret.= $SQLS_DELIMITER . "\n". @file_get_contents($file) ;
 		}
 	}
 	
-	return explode(SQLS_DELIMITER, strtr ($ret, $replace));
+	return explode($SQLS_DELIMITER, strtr ($ret, $replace));
 	// note: files can contain sql_delimeters,
 }
