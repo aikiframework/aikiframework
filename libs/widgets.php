@@ -714,7 +714,7 @@ class CreateLayout {
 			 */
 			$pagination .= 
 			  "<span class='pagination_previous'>" . 
-			  "<a href=\"$previous\">" . __("previous") . "</a></span>";
+			  "<a rel='prev' href=\"$previous\">" . __("previous") . "</a></span>";
 		}
 
 		if ($group_pages)
@@ -773,7 +773,7 @@ class CreateLayout {
 								$widget->link_example);
 			$pagination .= 
 			  "<span class='pagination_next'>". 
-			  "<a href=\"$next\">" . __("next") . "</a></span>";
+			  "<a rel='next' href=\"$next\">" . __("next") . "</a></span>";
 		}
 
 		if($page) {
