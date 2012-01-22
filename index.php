@@ -53,7 +53,7 @@ $layout = new CreateLayout();
 
 $noheaders  = false;
 $nogui      = false;
-if (isset($global_widget)) {
+if (isset($global_widget) or isset($_REQUEST['noheaders'])) {
 	$noheaders  = true;
 	$nogui      = true;
 }
