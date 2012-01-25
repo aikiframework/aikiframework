@@ -560,7 +560,7 @@ class ezSQLcore
 
 }
 
-
+if ( isset($config
 
 switch ($config['db_type']){
 	case "mssql":
@@ -592,7 +592,12 @@ switch ($config['db_type']){
 		 * @see pdo.php
 		 */
 		require_once("pdo.php");
-		$db = new ezSQL_pdo( $db_dsn , $config['db_user'] , $config['db_pass'] );
+		// to maintain backwark with old pdo installation in which a $db_dsn contains path.
+		// @TODO remove when all PDO installation is corrected.
+		if ( isset ($db_dsn) &&  (!isset($config['db_path']) || !$config['db_path'] ) ){
+			$config['db_path'] = $db_dsn;
+		}
+		$db = new ezSQL_pdo( $config['db_path'], $config['db_user'] , $config['db_pass'] );
 		break;
 
 	case "postgresql":
