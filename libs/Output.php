@@ -84,7 +84,7 @@ class Output {
 	*/
 
 	$corrections= array(
-		"utf8" =>"uft-8", //mysql, postgre
+		"utf8" =>"utf-8", //mysql, postgre
 		"latin1" => "ISO-8859-1",
 		"latin2" => "ISO-8859-2",
 		"latin5" => "ISO-8859-9",
