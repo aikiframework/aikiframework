@@ -560,7 +560,6 @@ class ezSQLcore
 
 }
 
-if ( isset($config
 
 switch ($config['db_type']){
 	case "mssql":
@@ -625,10 +624,7 @@ switch ($config['db_type']){
 if (isset($config['enable_query_cache']) && isset($config['cache_dir'])
 	&& $config['enable_query_cache'] ) {
 	
-	if (!isset($db_cache_timeout)){
-		$db_cache_timeout = 24;
-	}
-	$db->cache_timeout = $config['db_cache_timeout'];
+	$db->cache_timeout = !isset($config['db_cache_timeout']) ? $config['db_cache_timeout'] : 24;
 	$db->cache_dir = $config['cache_dir'];
 	$db->use_disk_cache = true;
 	$db->cache_queries = true;
