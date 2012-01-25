@@ -169,7 +169,10 @@ class ezSQL_mysql extends ezSQLcore
 
 			$this->register_error($str.' in '.__FILE__.' on line '.__LINE__);
 			$this->show_errors ? trigger_error($str,E_USER_WARNING) : null;
-			die("Fatal error: Lost Connection to database. please make sure the information in your config.php are correct");
+			// @TODO need revision, perhaps must die never
+			if ( !defined("AIKI_INSTALLER_APPS") ){				
+				die("Fatal error: Lost Connection to database. please make sure the information in your config.php are correct");
+			}
 		}
 		else
 		{
