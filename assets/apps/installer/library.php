@@ -314,21 +314,12 @@ function select_db_type( $db_type ){
 function check_step(&$step) {
 	global $AIKI_ROOT_DIR, $config, $t;
 
-	switch ($step){
-		case 4:
-		case 5:
-			if ( !@mysql_connect ($config['db_host'],  $config['db_user'], $config['db_pass']) ) {
-				$step=2;
-				return  $t->t("Error: no connection") ;
-			} elseif ( !@mysql_selectdb ($config['db_name']) ){
-				$step=2;
-				return  $t->t("Error: no database selected");
-			}
-			if ( $step==5 && !file_exists($AIKI_ROOT_DIR ."/config.php") ){
+	switch ($step){		
+		case 5:			
+			if ( !file_exists($AIKI_ROOT_DIR ."/config.php") ){
 				$step=4;
 			}
 
-		case 2:
 		default:
 			if ( file_exists($AIKI_ROOT_DIR ."/config.php" )  && $step!=5 ) {
 				$step=0;

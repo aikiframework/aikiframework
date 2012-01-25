@@ -17,7 +17,7 @@
  * @filesource
  *
  *
- * @TODO use ezSQL,
+ *
  * @TODO VERSION, REVISION,
  * @TODO AIKI_LOG_DIR, AIKI_LOG_FILE,AIKI_LOG_PROFILE, AIKI_LOG_LEVEL;
  * 
@@ -58,6 +58,7 @@
   * 
   */
 
+define ("AIKI_INSTALLER_APPS",1);
 
 include_once ("library.php");
 
@@ -86,6 +87,7 @@ $AIKI_SITE_URL = clean_url("http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_U
 // Variables necesary for installation
 $config = array(
     "db_type"        => "mysql",
+    "db_path"        => "",
 	"db_host"        => "localhost",
 	"db_name"        => "aiki",
 	"db_user"        => "",
@@ -131,6 +133,7 @@ $template[2]= "%s<form method='post'>
 	<p><label for='db_name'>"     . $t->t("Database name")."</label><input type='text' name='db_name' id='db_name' class='user-input' value='{$config['db_name']}'><span class='required'>*</span></p>
 	<p><label for='db_user'>"     . $t->t("User")         ."</label><input type='text' name='db_user' id='db_user' class='user-input' value='{$config['db_user']}'><span class='required'>*</span></p>
 	<p><label for='db_pass'>"     . $t->t("Password")     ."</label><input type='password' name='db_pass' id='db_pass' class='user-input' value='{$config['db_pass']}'><span class='required'>*</span></p>
+	<p><label for='db_path'>"     . $t->t("Path/DSN")     ."</label><input type='text' name='db_path' id='db_path' class='user-input' value='{$config['db_path']}'><span class='info'>Used only in sqlite and pdo<span></p>
 	<p><label for='db_encoding'>" . $t->t("Encoding")     ."</label><input type='text' name='db_encoding' id='db_encoding' class='user-input' value='{$config['db_encoding']}'><span class='required'>*</span></p>
 	</fieldset>
 
@@ -172,20 +175,20 @@ $steps = array (
  ***********************************************************************/
 
 // SET STEP
-if ( isset($_REQUEST['step']) ) {
+if ( isset($_REQUEST["try_step_2"]) ) {
+	$step=2;
+} elseif ( isset($_REQUEST["try_step_3"]) ) {
+	$step=3;
+} elseif ( isset($_REQUEST["try_step_4"]) ) {	
+	$step=4;
+} elseif ( isset($_REQUEST["try_step_5"]) ) {		
+	$step=5;
+} elseif ( isset($_REQUEST['step']) ) {
 	$step = (int) $_REQUEST['step'];
 	if ( $step<0 || $step> 5 ) {
 		$step=2;
 	}
-} elseif ( isset($_POST["try_step_2"]) ) {
-	$step=2;
-} elseif ( isset($_POST["try_step_3"]) ) {
-	$step=3;
-} elseif ( isset($_POST["try_step_4"]) ) {	
-	$step=4;
-} elseif ( isset($_POST["try_step_5"]) ) {		
-	$step=5;
-} else {
+} else  {
 	$step=1;
 }
 
@@ -208,23 +211,37 @@ switch ( $step){
 		$step=2;
 		$test = isset($_POST["testDB"]);
 
-		if ( !$config['db_host'] || !$config['db_user'] ) {
+		if ( !$config['db_type']  ) {
 			$message = "<div class='error'>" . $t->t("Please, fill all required fields")."</div>";
-		} elseif ( !@mysql_connect ($config['db_host'],  $config['db_user'], $config['db_pass']) ) {
-			$message = "<div class='error'>" . $t->t("Error: no connection")."</div>";
-		} elseif ( !@mysql_selectdb ($config['db_name']) ){
-			$message = ( $test ?
-							"<div class='ok'>" . $t->t("Connection OK")."</div><div class='error'>" . $t->t("no database name")."</div>":
-							"<div class='error'>" . $t->t("Error: can't select database")."</div>" );
-		} else {
+			break;
+		} 
+		
+		// connect using ezSQL
+		if( !defined('IN_AIKI') ) {
+			define ("IN_AIKI",1);
+		}
+		
+		// use ezSQL library.
+		require_once ( "../../../libs/database/index.php"); // create $db object.
+		
+		// tips: ezSQL establishes connection and selects db when the first query is called.
+		$errorLevel = error_reporting(0);
+		$db->last_error = false;
+		$db->query("SELECT 1"); 
+		error_reporting($errorLevel);
+		
+		if ( $db->last_error ) { 
+			$message = "<div class='error'>" . $t->t("Error: no connection or database")."</div>";
+		}  else {
 			if ( $test ) {
 				$message = "<div class='ok'>" . $t->t("Connection and database OK")."</div>";
 			} else {
 				$step=3;
 				$message = "<div class='message'><p><strong>" . $t->t("created tables")."</strong><br><div id='file-list'>";
-
-				$errors="";
+				
+				$errors= "";
 				$cont  =0;
+				
 				foreach ( sqls() as $sql ){
 					if ( trim($sql) =="" ){
 						continue;
@@ -234,16 +251,18 @@ switch ( $step){
 						if ( $cont % 10 == 0 ){
 							$message .= ( $cont ? "</div>":"") ."<div class='col'>";
 						}
-						$message .= $table[2] ;
-						if  ( mysql_query($sql)  ) {
-							$message .=  " <strong>Ok</strong><br>";
+						$message .= $table[2];
+						$db->last_error="";		
+						$db->query($sql); // @TODO..why db->query don't return false on error.
+						if ( $db->last_error ) {
+							$errors= $db->last_error . "\n";
+							$message .="<span class='error'>" . $t->t("error")."</span><br>";														
 						} else {
-							$message .="<span class='error'>" . $t->t("error")."</span><br>";
-							$errors .= "<br>". mysql_error() ;
+							$message .=  " <strong>Ok</strong><br>";						
 						}
 						$cont++;
 					} else {
-						mysql_query($sql);
+						$db->query($sql);
 					}
 				}
 
@@ -258,10 +277,11 @@ switch ( $step){
 				if ( $errors  ) {
 					$message   = "<div class='ok'>$userData</div>".
 								 "<div class='error'>" . $t->t("Some errors during creating tables <em>,perhaps tables already exists</em>")."</div>"
-								 . $message
-								 . "<textarea class='file_dump'>$errors</textarea>";
+								 . $message 
+								 . ( $errors ? "<p class='errors'>Errors</p><textarea class='errordump'>$errors</textarea>" : "" );
+								 
 
-					$aditional = "<input type='submit' name='try_step_2' value='" . $t->t("Try again") ."' class='button' >";
+					$aditional = "<input type='submit' name='try_step_3' value='" . $t->t("Try again") ."' class='button' >";
 					$help  .= "<div class='help'>" . $t->t("Delete all tables for new installtion, or push next for upgrading")."</div>";
 				} else {
 					$message = 	"<div class='ok'>" . $t->t("All tables have created correctly")." <em>$userData</em></div>" . $message;
@@ -351,7 +371,7 @@ $css           = $t->t("installer.css");
 $text_direction= $t->t("dir='ltr'");
 // note: which css to use, and text direction can be set in .po file
 
-// insert values and result in html template
+// insert values and results in html template
 $stepOf = sprintf( $t->t("Step %d of %d"), $step, count($steps)-1) ;
 $result = sprintf($template[$step], $message, $aditional.$help) ;
 

@@ -178,6 +178,13 @@ span.required {
     padding-left: 4px;
 	color: #666;}
 
+span.info {
+    display: block;
+	font-size: 14px;
+    padding: 5px 0px 2px 4px;
+	color: #888;}
+
+
 p.required {
 clear: both;}
 
@@ -203,6 +210,12 @@ input.button:hover {
 
 textarea.filedump {
 	width:98%;
+	height: 20em;}
+
+p.errors { margin:9px 0px 9px 50px; clear:both; color: #900; padding-top:9px;}
+textarea.errordump {
+    margin-left: 50px;
+    width: 500px;	
 	height: 20em;}
 
 

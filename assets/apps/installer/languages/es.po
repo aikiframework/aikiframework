@@ -117,8 +117,8 @@ msgstr "Por favor, rellena los campos obligatorios"
 
 #: ../installer.php:214
 #: ../library.php:322
-msgid "Error: no connection"
-msgstr "Error: no hay conexión"
+msgid "Error: no connection or database"
+msgstr "Error: no hay conexión o base de datos"
 
 #: ../installer.php:217
 msgid "Connection OK"
@@ -146,11 +146,11 @@ msgstr "error"
 
 #: ../installer.php:251
 msgid "Admin login:"
-msgstr "Login del administrador"
+msgstr "Login del administrador:"
 
 #: ../installer.php:251
 msgid "Password:"
-msgstr "Contraseña"
+msgstr "Contraseña:"
 
 #: ../installer.php:252
 msgid "<strong>Please, annotate</strong> login and password. You will need them"
@@ -340,4 +340,3 @@ msgstr "PHP 5.2 o superior y Apache2"
 #: ../defaults.php:34
 msgid "mod_rewrite must be enabled inside apache2 httpd.conf"
 msgstr "mod_rewrite activo "
-

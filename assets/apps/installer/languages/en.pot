@@ -111,7 +111,7 @@ msgid "Please, fill all required fields"
 msgstr ""
 
 #: ../installer.php:214 ../library.php:322
-msgid "Error: no connection"
+msgid "Error: no connection or database"
 msgstr ""
 
 #: ../installer.php:217
