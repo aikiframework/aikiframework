@@ -22,7 +22,11 @@
  *
  ****/
 
-include "bootstrap.php";
+define ("IN_AIKI",1);
+
+include "config.php";
+include "libs/database/index.php";
+include "libs/Plugins.php";
 
 $founded= plugins::search_plugins(AIKI_PLUGIN_DIR);
 
@@ -35,7 +39,7 @@ if ( $founded) {
     global $db;
     $ids= $db->get_results("SELECT plugin_name,plugin_id FROM aiki_plugins LEFT JOIN aiki_plugin_configurations ON plugin_id= plconf_plugin_id WHERE plconf_id is NULL");
     if ( !is_array($ids) ){
-        echo "No plugins is found or all have configuration\n";
+        echo "No plugins is found or all are configurated\n";
     } else {
         foreach ($ids as $id){
             echo "plugin {$id->plugin_name} activated for *\n";
