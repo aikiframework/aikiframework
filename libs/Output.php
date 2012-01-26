@@ -260,7 +260,7 @@ class Output {
 	 * @param     integer  $columns     number of columns
 	 * @return    string
 	 *
-	 * @todo remove hardcoded html
+	 * @todo remove hardcoded html. NOTE, this relies upon debug-time only opt.
 	 */
 	public function displayInTable($widget, $columns) {
 		$widgetTabled = "<table width='100%'>";

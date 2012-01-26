@@ -143,11 +143,12 @@ class CreateLayout {
 	 * @global aiki   $aiki glboal aiki object
 	 * @global string $url 
 	 * @global string $custom_output
+     * @global array  $config configs the old way
 	 *
 	 * @todo this all need to be broken down into helper functions, too big!
 	 */
 	private function createWidget($widget_group) {
-		global $db, $aiki, $custom_output;
+		global $db, $aiki, $custom_output, $config;
 
 		/**
 		 * Daddy this is where widgets come from...
@@ -179,11 +180,16 @@ class CreateLayout {
 			if ($widget->css) {
 				$this->widgets_css[]= $widget->id ;
 			}	
+			if ( isset($widget->custome_output) )
+                            $widget->custom_output = $widget->custome_output;
 
 			if ($widget->custom_output) {
 				$custom_output = true;
 				$this->widget_custom_output = true;
 			}
+
+                        if ( isset($widget->custome_header) )
+                            $widget->custom_header = $widget->custome_header;
 
 			if ( $widget->custom_header && $widget->custom_header != '' ) {
 				$custom_headers = explode("\n", $widget->custom_header);
@@ -193,17 +199,13 @@ class CreateLayout {
 					}
 				}
 			}
-			/**
-			 * @todo all output of comments needs to be an option, since
-			 *		 it makes output pages bigger by default.
-			 *		 Should only turn on for debug mode IMO.
-			 */
 			
-			
-			
-			if (!$custom_output) {
-				$this->widget_html .=
+			if (!$custom_output)
+            {
+                if ( isset($config["debug"]) and $config["debug"] ) {
+				    $this->widget_html .=
 					"\n <!--start {$widget->widget_name}({$widget->id})--> \n";
+                }
 				
 				if ( $widget->widget_type &&
 					$widget->remove_container != 1 ) {
@@ -246,13 +248,10 @@ class CreateLayout {
 					$this->widget_html .= "\n</$widget->widget_type>\n";
 				}
 				
-				/**
-				 * @todo all output of comments needs to be an option, since
-				 *		 it makes output pages bigger by default.
-				 *		 Should only turn on for debug mode IMO.
-				 */
-				$this->widget_html .=
-					"\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
+                if ( (isset($config["debug"]) and $config["debug"]) ) {
+				    $this->widget_html .=
+					   "\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
+                }
 			}
 			
 
@@ -279,6 +278,7 @@ class CreateLayout {
 
 			switch ($widget->widget_target){
 				case "body": 
+				    error_log ( $this->widget_target, 0);
 					$this->html_output .= $this->widget_html;
 					break;
 				case "header": 
@@ -448,14 +448,19 @@ class CreateLayout {
 					/**
 					 * @todo put this behind debug time option
 					 */
-					if (!$custom_output) {
+					if (!$custom_output and 
+                        ( isset($config["debug"]) and $config["debug"] ) ) 
+                    {
 						$widgetContents .= 
 							"\n<!-- The Beginning of a Record -->\n";
 					}
 					$widgetContents .=  $this->parse_widget_with_data(
 						$template,
 						$widget_value);
-					if (!$custom_output) {
+
+					if (!$custom_output and
+                        ( isset($config["debug"]) and $config["debug"] ) ) 
+                    {
 						$widgetContents .= 
 							"\n<!-- The End of a Record -->\n";
 					}
