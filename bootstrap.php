@@ -168,7 +168,7 @@ $aiki->load('url');
 $aiki->load('site');
 $aiki->load('config');
 $aiki->load("languages");
-
+$aiki->load("input");
 
 // this class will be loaded by demand
 /*
