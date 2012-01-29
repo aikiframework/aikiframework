@@ -202,10 +202,15 @@ class CreateLayout {
 			
 			if (!$custom_output)
             {
-                if ( isset($config["debug"]) and $config["debug"] ) {
+                /**
+                 * @TODO: Want to hide this, but aiki using big hack to
+                 *        work with kill widgets.
+                 *        if ( isset($config["debug"]) and $config["debug"] )
+                 *
+                 *        Not changing, waiting for real widget parser.
+                 */
 				    $this->widget_html .=
 					"\n <!--start {$widget->widget_name}({$widget->id})--> \n";
-                }
 				
 				if ( $widget->widget_type &&
 					$widget->remove_container != 1 ) {
@@ -247,11 +252,13 @@ class CreateLayout {
 					$widget->remove_container != 1) {
 					$this->widget_html .= "\n</$widget->widget_type>\n";
 				}
-				
-                if ( (isset($config["debug"]) and $config["debug"]) ) {
+			    /**
+                 * @TODO: Aiki needs this code, but when not in debug mode
+                 *        we should not be seeing it
+                 *        if ( (isset($config["debug"]) and $config["debug"]) )
+                 */
 				    $this->widget_html .=
 					   "\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
-                }
 			}
 			
 
@@ -444,9 +451,6 @@ class CreateLayout {
 			if ( $widget_select && isset($num_results) && $num_results > 0 ) {
 				$widgetContents = '';
 				foreach ($widget_select as $widget_value) {
-					/**
-					 * @todo put this behind debug time option
-					 */
 					if (!$custom_output and 
                         ( isset($config["debug"]) and $config["debug"] ) ) 
                     {
