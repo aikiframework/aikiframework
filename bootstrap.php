@@ -66,14 +66,7 @@ if (isset($_GET['custom_output'])){
 /** 
  * Set the configuration option defaults.
  * 
- * @see configs/config.php 
- * @TODO The assumption here is that config.php overrides all defaults! Is that
- *       correct?
  */
-if (!file_exists("$AIKI_ROOT_DIR/config.php")) {
-	/** @see config.php */
-	require_once("$AIKI_ROOT_DIR/configs/config.php");
-}
 
 
 /* use run-time installer config */
@@ -82,9 +75,8 @@ if (file_exists("$AIKI_ROOT_DIR/config.php")) {
 	require_once("$AIKI_ROOT_DIR/config.php");
 }
 else {
-	/** @see installer.php */
-	require("$AIKI_ROOT_DIR/libs/installer.php");
-	die();
+	/** @see assets/apps/installer/installer.php */
+	header("location:./assets/apps/installer/installer.php");	
 }
 
 /* setting $config["log_level"] = "NONE" disables the log
