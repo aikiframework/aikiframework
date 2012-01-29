@@ -135,17 +135,19 @@ class aiki {
 
 		// go through every config record. if the config item
 		// is not already set then use the database record
-		foreach ($settings as $setting_group) {
+		if ( !is_null($settings) ) {
+			foreach ($settings as $setting_group) {
 
-			// unserialize array key => value pairs stored
-			// in this config group. Every row should be an array
-			// of config items pertaining to a config group
-			$temp = @unserialize($setting_group->config_data);
+				// unserialize array key => value pairs stored
+				// in this config group. Every row should be an array
+				// of config items pertaining to a config group
+				$temp = @unserialize($setting_group->config_data);
 
-			if (is_array($temp)) {
-				// adding arrays doesn't overwrite the first parameter/array with
-				// the values of the second parameter/array when the keys match
-				$config = $config + $temp;
+				if (is_array($temp)) {
+					// adding arrays doesn't overwrite the first parameter/array with
+					// the values of the second parameter/array when the keys match
+					$config = $config + $temp;
+				}
 			}
 		}
 
