@@ -278,7 +278,6 @@ class CreateLayout {
 
 			switch ($widget->widget_target){
 				case "body": 
-				    error_log ( $this->widget_target, 0);
 					$this->html_output .= $this->widget_html;
 					break;
 				case "header": 
