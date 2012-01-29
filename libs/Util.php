@@ -50,15 +50,27 @@ class Util {
         return $last_revision;
     }
 
-
-    public static function get_authors() {
+	public static function get_license( ) {
+		global $AIKI_ROOT_DIR;
+		$file = $AIKI_ROOT_DIR . "/LICENSE";
+		if ( file_exists($file) ) {
+			return file_get_contents($file);
+		} 
+		return  "GNU AFFERO GENERAL PUBLIC LICENSE\nVrsion 3, 19 November 2007";
+	}
+	
+    public static function get_authors( $format="plain") {
         global $AIKI_ROOT_DIR;
         $authors_file = $AIKI_ROOT_DIR . "/AUTHORS";
         // $authors = _('See AUTHORS file.');
         $authors_array = array(_('See AUTHORS file.'));
-        if ( file_exists($authors_file) )
-            $authors_array = 
-                explode("\n", file_get_contents($authors_file));
+        if ( file_exists($authors_file) ) {
+            $authors_array = explode("\n", file_get_contents($authors_file));
+        }
+           
+		if ( $format=="list") {	
+			return "<ul><li>". join('</li><li>', array_filter($authors_array)) ."</li></ul>";
+		}
 
         return join(', ', $authors_array);
 
