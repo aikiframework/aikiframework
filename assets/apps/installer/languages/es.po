@@ -32,6 +32,16 @@ msgstr "Siguiente:"
 msgid "Settings"
 msgstr "Configuraciones"
 
+
+#: installer.php:129
+msgid "License"
+msgstr "Licencia"
+
+#: installer.php:130 installer.php:134
+msgid "Authors"
+msgstr "Autores"
+
+
 #: ../installer.php:128
 msgid "Database"
 msgstr "Base de datos"

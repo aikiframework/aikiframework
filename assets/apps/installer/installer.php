@@ -8,7 +8,7 @@
  * This source file is subject to the AGPL-3.0 license that is bundled
  * with this package in the file LICENSE.
  *
- * @author      Roger Martin, Aikilab http://www.aikilab.com 
+ * @author      Aikilab http://www.aikilab.com 
  * @copyright   (c) 2008-2011 Aiki Lab Pte Ltd
  * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
  * @link        http://www.aikiframework.org
@@ -18,11 +18,8 @@
  *
  *
  *
- * @TODO VERSION, REVISION,
  * @TODO AIKI_LOG_DIR, AIKI_LOG_FILE,AIKI_LOG_PROFILE, AIKI_LOG_LEVEL;
  * 
- * @TODO a step for licences?
- * @TODO a step for authors?
  */
 
 
@@ -58,9 +55,14 @@
   * 
   */
 
-define ("AIKI_INSTALLER_APPS",1);
+	
+// connect using ezSQL
+if( !defined('IN_AIKI') ) {
+	define ("IN_AIKI","AIKI_INSTALLER_APPS");
+}
 
-include_once ("library.php");
+require_once ("library.php");
+require_once ( "../../../libs/Util.php");
 
 // initiate translation system
 include_once("TranslateUsingPo.php");
@@ -76,13 +78,12 @@ if ( !defined("AIKI_VERSION") ) {
 	define(AIKI_VERSION,"0.8.24");
 }
 
-if ( !defined("AIKI_REVISION") ) {
-	define(AIKI_REVISION,"+1019");
-}
-
 $AIKI_ROOT_DIR = realpath( dirname(__FILE__ ). "/../../..");
-$AIKI_AUTHORS  = @file_get_contents("../../../AUTHORS") ;
-$AIKI_SITE_URL = clean_url("http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"]) ;
+$AIKI_SITE_URL = clean_url("http://".
+	$_SERVER["SERVER_NAME"].
+	($_SERVER["SERVER_PORT"]!=80 ? ":" . $_SERVER["SERVER_PORT"] :"" ).
+	$_SERVER["REQUEST_URI"]) ;
+
 
 // Variables necesary for installation
 $config = array(
@@ -117,12 +118,20 @@ foreach ( $config as $key => $value) {
 include_once("defaults.php"); 
 
 
+
 $template[0]="<div class='error'>" . $t->t("Installation aborted")."</div><div class='error'>%s</div>";
 
 
 $template[1]=
 	"<div id='welcome'>$INSTALLER_WELCOME_TEXT</div>
-    <div id='requirements'>$INSTALLER_REQUIREMENTS_TEXT</div>".
+	<div class='links'>
+		<a href='#requirements' class='toggle'>". $t->t("Requirements") ."</a>
+		<a href='#license'      class='toggle'>". $t->t("License") ."</a>
+		<a href='#authors'      class='toggle'>". $t->t("Authors") ."</a>
+	</div>
+    <div id='requirements' class='toggle'>$INSTALLER_REQUIREMENTS_TEXT</div>
+    <div id='license'      class='toggle'><pre>". Util::get_license() ."</pre></div>
+    <div id='authors'      class='toggle'><h3>". $t->t("Authors")."</h3>". Util::get_authors("list")."</div>".
 	select_language() .
 	form_hidden(2, "<input type='submit' class='button next' value=' " . $t->t("Next:") ." ".  $t->t("Settings") . "'>");
 
@@ -200,10 +209,30 @@ $message  = check_step($step);
  * ACTION FOR EACH STEP
  *
  **************************************************************/
-
+$javascripts="";
 switch ( $step){
-	case 0: // pre-installation check
+	
 	case 1: // welcome, language
+		$javascripts = <<<JAVASCRIPT
+		<script src="../../javascript/jquery/jquery-1.4.2.min.js"></script>
+		<script>
+jQuery(document).ready ( function() {
+	  jQuery('#license,#authors').hide();
+      jQuery('[href=#requirements]').addClass("active");
+	  		
+	  jQuery('a.toggle').click ( function() { 
+			jQuery('div.toggle').hide(); 
+			div = jQuery(this).attr('href');	
+			jQuery(div).show(0);
+			jQuery('a.toggle').removeClass("active");
+			jQuery(this).addClass("active");	
+			 } );	  
+	});	
+		</script>
+		
+JAVASCRIPT;
+		
+	case 0: // pre-installation check
 	case 2: // settings
 		break;  // only must echo template;
 
@@ -215,12 +244,7 @@ switch ( $step){
 			$message = "<div class='error'>" . $t->t("Please, fill all required fields")."</div>";
 			break;
 		} 
-		
-		// connect using ezSQL
-		if( !defined('IN_AIKI') ) {
-			define ("IN_AIKI",1);
-		}
-		
+			
 		// use ezSQL library.
 		require_once ( "../../../libs/database/index.php"); // create $db object.
 		
@@ -240,13 +264,13 @@ switch ( $step){
 				$message = "<div class='message'><p><strong>" . $t->t("created tables")."</strong><br><div id='file-list'>";
 				
 				$errors= "";
-				$cont  =0;
-				
+				$cont  =0;			
 				foreach ( sqls() as $sql ){
 					if ( trim($sql) =="" ){
 						continue;
 					}
 					$table = "";
+					
 					if ( preg_match ( "/CREATE TABLE (IF NOT EXISTS )?`?([^\(`]*)/i", $sql, $table) ){
 						if ( $cont % 10 == 0 ){
 							$message .= ( $cont ? "</div>":"") ."<div class='col'>";
@@ -255,15 +279,20 @@ switch ( $step){
 						$db->last_error="";		
 						$db->query($sql); // @TODO..why db->query don't return false on error.
 						if ( $db->last_error ) {
-							$errors= $db->last_error . "\n";
+							$errors.= trim($table[2]) .": " .$db->last_error . "\n";
 							$message .="<span class='error'>" . $t->t("error")."</span><br>";														
 						} else {
 							$message .=  " <strong>Ok</strong><br>";						
 						}
 						$cont++;
-					} else {
-						$db->query($sql);
+					} else {																	
+						$db->last_error="";		
+						$db->query($sql); // @TODO..why db->query don't return false on error.		
+						if ( $db->last_error ) {				
+							$errors.= $db->last_error . "\n";
+						}	
 					}
+					
 				}
 
 				$message .= ($cont ? "</div>" : "") . "</div></div>";
@@ -375,13 +404,14 @@ $text_direction= $t->t("dir='ltr'");
 $stepOf = sprintf( $t->t("Step %d of %d"), $step, count($steps)-1) ;
 $result = sprintf($template[$step], $message, $aditional.$help) ;
 
-$html = <<< HTML
+echo <<< HTML
 <!DOCTYPE HTML>
 <html lang="{$language}" {$text_direction}>
 <head>
 	<title>_{$INSTALLER_TITLE_TAG}</title>
 	<meta charset='utf-8' >
 	<link rel='stylesheet' href='./{$css}' type="text/css" media="all">
+	{$javascripts}
 </head>
 
 <body>
@@ -392,12 +422,4 @@ $html = <<< HTML
 </body>
 </html>    
 HTML;
-
-echo $html;
-
-/* make translation  and echo
-echo preg_replace_callback (
-	"/_t\(([^\)]*)\)/",  // all _t(literals)
-	array($t,"t"),       // will be translated by $t->t()
-	$html );*/
 ?>

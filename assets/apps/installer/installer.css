@@ -231,21 +231,49 @@ textarea.errordump {
 	margin-bottom: 24px;
 }
 
+div.links {
+  position: relative;
+  top:  6px;
+  z-index:99;
+  overflow: auto }
 
-#requirements {	
+a.toggle:hover  { color: #999}
+a.toggle:active { color: #000}	
+
+a.toggle {  
+  outline: none !important;
+  text-transform: uppercase;
+  display:block;
+  float:left;
+  color: #555;
+  padding: 6px 12px 12px 12px;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  text-decoration:none;}
+
+a.active {
+  background-image: url(images/toggle.png) }
+
+div.toggle pre {
+font-size: 0.8em;}
+  
+div.toggle {	
 	line-height: 1.4em;
 	width:100%;
-	padding:6px 24px 12px 24px;
+	padding:16px 16px 12px 32px;
 	position: relative;
 	left: -24px;
 	border-bottom: 1px solid #f4e355;
 	border-top: 1px solid #f4e355;
 	background-color: #f8ed90;
 	margin-bottom: 24px;
+	overflow: auto;
+	max-height:400px;
 }
 
-#requirements h2 { font-weight: bold; font-size: 1.2em; padding-bottom: 0.2em; }
-#requirements ol { padding-left: 36px;}
+div.toggle h2 { font-weight: bold; font-size: 1.2em; padding-bottom: 0.2em; }
+div.toggle ul,
+div.toggle ol { padding-left: 36px;}
 
-#file-list { oveflow:auto }
+#file-list { overflow:auto }
 #file-list div.col { float:left; width:43%; margin-right:6%;}

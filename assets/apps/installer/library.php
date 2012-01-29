@@ -419,7 +419,7 @@ function get_new_htaccess($aikiPath){
  */
 
 function sqls(){
-	global $config, $AIKI_ROOT_DIR, $AIKI_SITE_URL, $AIKI_AUTHORS ;
+	global $config, $AIKI_ROOT_DIR, $AIKI_SITE_URL ;
 
 	$SQLS_DELIMITER = "-- ------------------------------------------------------";
 	
@@ -436,8 +436,8 @@ function sqls(){
 		"@ADMIN_PASS@"=> $config["ADMIN_PASSWORD_MD5_MD5"],
 		"@ADMIN_MAIL@"=> $config["ADMIN_EMAIL"],
 		"@VERSION@"   => AIKI_VERSION,
-		"@REVISION@"  => AIKI_REVISION,
-		"@AUTHORS@"   => $AIKI_AUTHORS);
+		"@REVISION@"  => Util::get_last_revision(),
+		"@AUTHORS@"   => Util::get_authors());
 	
 	$files = array (
 		"$AIKI_ROOT_DIR/sql/CreateTables.sql",
@@ -447,8 +447,9 @@ function sqls(){
 			
 	foreach ($files as $file ){
 		if ( file_exists($file) ){
-			$ret.= $SQLS_DELIMITER . "\n". @file_get_contents($file) ;
-		}
+			$ret.= $SQLS_DELIMITER . "\n". preg_replace ("#/\*.*\*/#Us","",@file_get_contents($file));
+			// remove coments
+		} 
 	}
 	
 	return explode($SQLS_DELIMITER, strtr ($ret, $replace));
