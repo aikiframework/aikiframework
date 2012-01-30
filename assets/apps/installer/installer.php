@@ -116,8 +116,9 @@ foreach ( $config as $key => $value) {
 // read titles and welcome text, creating global var $INSTALLER_TITLE_TAG,
 // $INSTALLER_TITLE, $INSTALLER_WELCOME_TEXT, $INSTALLER_REQUIREMENTS_TEXT,
 include_once("defaults.php"); 
-
-
+if ( file_exists("siteDefaults.php") ){
+	include_once("siteDefaults.php"); 
+}
 
 $template[0]="<div class='error'>" . $t->t("Installation aborted")."</div><div class='error'>%s</div>";
 
@@ -396,7 +397,10 @@ JAVASCRIPT;
 
 // internationalization
 $language      = $t->translateTo();
-$css           = $t->t("installer.css");
+$css="";
+foreach ( explode(";" , $INSTALLER_CSS ) as $fileCSS ) {
+	$css .= "<link rel='stylesheet' href='./" . $t->t($fileCSS) ."' type='text/css' media='all'>\n";
+}
 $text_direction= $t->t("dir='ltr'");
 // note: which css to use, and text direction can be set in .po file
 
@@ -408,9 +412,9 @@ echo <<< HTML
 <!DOCTYPE HTML>
 <html lang="{$language}" {$text_direction}>
 <head>
-	<title>_{$INSTALLER_TITLE_TAG}</title>
+	<title>{$INSTALLER_TITLE_TAG}</title>
 	<meta charset='utf-8' >
-	<link rel='stylesheet' href='./{$css}' type="text/css" media="all">
+	{$css}
 	{$javascripts}
 </head>
 

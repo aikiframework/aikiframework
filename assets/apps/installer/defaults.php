@@ -2,7 +2,8 @@
 /*
  * default for AIKI INSTALLER
  *
- * You can change this values. 
+ * Don't change this values. This file will be overwritten in a aiki upgrade.
+ * If you need change this values, copy this file to siteDefaults.php. 
  *
  * Update po files, if you edit this values.
  * 
@@ -33,3 +34,7 @@ $INSTALLER_REQUIREMENTS_TEXT = "
 		<li>" . $t->t("PHP 5.2 or above and Apache2"). "</li>
 		<li>" . $t->t("mod_rewrite must be enabled inside apache2 httpd.conf"). "</li>
 	</ol>";
+
+
+// file with css. Separate files with ";".
+$INSTALLER_CSS ="installer.css";
