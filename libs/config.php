@@ -191,21 +191,29 @@ class config {
 	function get($setting, $default=false, $selector="CURRENT") {
 		global $db, $config, $aiki;
 
+		// check if setting is in cache.
 		if (isset($config[$setting])) {
 			return $config[$setting];
 		}
 
+        //else, obtain list of values for for setting.
 		$values = $db->get_results (
 			"SELECT config_value, config_selector" .
 			" FROM aiki_configs" .
 			" WHERE config_name='" . addslashes($setting) . "'" .
-			" ORDER BY config_weight DESC");
-	 
-		list($site,$view,$language)= $this->selector($selector);
+			" ORDER BY config_important DESC,config_weight DESC");
+	 		
+		list($site,$view,$language)= $this->selector($selector);	
+				
+		// and filter the first that match selector		
 		if (is_array($values)) {
-			foreach ($values as $value) {
+			foreach ($values as $value) {				 
 				if ($aiki->match_pair($value->config_selector, $site, $view, $language)) {
-					$ret= unserialize($value->config_value);
+					if ( preg_match ('/$[asidb]:/', $value->config_value) ) {
+						$ret= unserialize($value->config_value);
+					} else {
+						$ret= $value->config_value;
+					}								
 					$config[$setting]= $ret;
 					return $ret;
 				}				

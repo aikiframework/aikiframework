@@ -39,15 +39,34 @@ class Util {
      * @return number
 	 */
 
-    public static function get_last_revision() {
-        global $AIKI_ROOT_DIR;
-        $last_revision_file = $AIKI_ROOT_DIR . "/.bzr/branch/last-revision";
-        $last_revision = '0';
-        if ( file_exists($last_revision_file) )
-            list($last_revision) = 
-                explode(' ', file_get_contents($last_revision_file) );
+	public static function get_changelog($actualRevision) {
+		global $AIKI_ROOT_DIR;        
+		$ret = "No changelog information";
+		$fileWithChanges = "$AIKI_ROOT_DIR/configs/changelog.php";
+		if ( file_exists($fileWithChanges) ){
+			include_once($fileWithChanges); 
+			// Note: create a array $changes with revision=>text.
+			$ret="";
+			foreach ( $changes as $revision => $text ){
+				if ( $actualRevision < $revision ){
+					$ret .= "<div><strong>$revision:</strong> $text</div>\n";
+				}
+			}
+		}	
+		return $ret;		
+	}	
 
-        return $last_revision;
+
+    public static function get_last_revision() {
+        global $AIKI_ROOT_DIR;        
+        foreach ( array(".bzr/branch/last-revision", "configs/last-revision") as $file){
+			if ( file_exists ( "$AIKI_ROOT_DIR/$file" ) ){
+				list($last_revision) = explode(' ', file_get_contents("$AIKI_ROOT_DIR/$file") );
+				return $last_revision;
+			}			
+		} 
+		return 0;
+        
     }
 
 	public static function get_license( ) {

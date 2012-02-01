@@ -319,6 +319,13 @@ JAVASCRIPT;
 				
 
 			}
+
+			// INSERT THE REVISION IN DATABASE. Updater need this data.
+			$revisionNumber = (int) Util::get_last_revision();
+			if ( !$revisionNumber ){
+				$revisionNumber = 1057; // installer revision
+			}				
+			$db->query("INSERT INTO `aiki`.`aiki_configs` (`config_id`, `config_name`, `config_value`, `config_selector`, `config_important`, `config_weight`) VALUES (NULL, 'AIKI-REVISION', 'i:$revisionNumber', '*', '1', '10000');");
 		}
 		break;
 

@@ -1,0 +1,282 @@
+/**
+ * Aiki Framework (PHP)
+ *
+ * @author      Roger Martin
+ * @copyright   (c) 2008-2011 Aiki Lab Pte Ltd
+ * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
+ * @link        http://www.aikiframework.org
+ * @category    Aiki
+ * @package     apps
+ *
+ */
+
+* {
+	margin: 0;
+	padding: 0;}
+
+body {
+	background: #444 url(./images/installer_bg.png) repeat-x top left;
+	font: normal normal normal 14px/18px sans-serif ;
+	}
+
+select,
+input {
+	font: normal normal normal 14px/18px sans-serif ;
+
+}
+
+
+#page {
+	margin: 40px auto;
+	width: 600px;
+	background: #fff url(./images/page_bg.png) 6px 3px no-repeat;
+	color: #333;
+	padding: 18px 24px;
+	border-radius: 12px ;
+	box-shadow: 12px 12px 12px #000;}
+
+p {
+	margin: 9px 0 }
+p.note {
+	margin: 4px 0px 14px 0px;
+	font-size: 12px;	
+	color: #555;}
+
+h1 {
+	color: #111;
+	font-size: 28px;
+	line-height:36px;
+	border-bottom:1px dotted #999;	
+	background: url(./images/aiki_logo.png) no-repeat top right;	
+	padding-bottom:8px;
+	margin: 9px 0px;}
+
+
+h1 em {
+	display: block;
+	font-size: 14px;
+	line-height: 18px;
+	font-style: normal;
+	color: #72cccf;
+}
+
+h1 strong { text-transform: uppercase }
+
+
+span.error {
+	color: #a40000;
+}
+
+fieldset {
+	border:none;
+	border: 1px solid #666;	
+	border-radius: 5px;
+	padding:9px;
+	margin-bottom: 18px;}
+
+legend {
+	display: block;
+	margin:0 auto;
+	font-weight: bold;
+	background-color: #666;
+	border-radius: 4px ;
+	color: #fff;
+	padding: 7px 5% 2px 5%;
+	width:87%;
+}
+
+fieldset.db {
+	float:left;
+	width:45%;
+	}
+
+fieldset.other {
+	float:right;
+	width:45%;
+	}
+
+label {
+	display: block;
+}
+
+
+div.actions {
+	clear: both;
+	overflow: auto;
+	border-top:1px dotted #d0d0d0;
+	margin: 18px 0 6px 0;
+}
+
+div.help {
+	clear: both;
+	margin: 18px 0 6px 0;
+	background: url(./images/help.png) no-repeat 0px 0px;
+	padding-left: 22px;
+}
+
+
+div.ok,
+div.error,
+div.message-strong {
+	padding: 9px 18px 9px 50px;;
+	margin: 9px 0px;
+	border-radius: 8px ;
+	border:  3px solid #e5e5e5;
+	border:  1px solid #999;
+}
+
+div.error,
+div.ok {
+	font-size: 20px;
+	line-height: 27px;
+	box-shadow: 3px 3px 3px #eee;
+}
+
+div.error em,
+div.ok em {
+	font-style: normal;
+	display:block;
+	font-size: 14px;
+	line-height: 18px;}
+
+div.message {
+	padding: 9px 0px 9px 50px;
+	background: #fff url(./images/info.png) no-repeat 8px 12px;
+}
+	
+
+div.error   { background: #fff url(./images/error.png) no-repeat 8px 6px; }
+div.message-strong { background: #f2f2f2 url(./images/info.png) no-repeat 8px 6px;}
+div.ok      { background: #fff url(./images/ok.png) no-repeat 8px 6px;}
+
+
+a.button,
+input.button, 
+.user-input {
+	border: 1px solid #777;
+	padding: 5px 4px 2px 4px;
+	border-radius: 4px ;
+	box-shadow: 4px 4px 2px #f0f0f0;
+	background-color:#fff;
+	color: #333;
+}
+
+a.button,
+input.button {
+	display:block;}
+
+
+.user-input {
+	width: 215px !important;
+}
+
+.user-input:focus {    
+	border-color: #f57900}
+
+span.required {
+	font-size: 18px;
+    padding-left: 4px;
+	color: #666;}
+
+span.info {
+    display: block;
+	font-size: 14px;
+    padding: 5px 0px 2px 4px;
+	color: #888;}
+
+
+p.required {
+clear: both;}
+
+a.button,
+input.button {
+	padding: 5px 12px 2px 12px;
+	background-color: #f2f2f2;
+	float:left;
+	text-decoration: none;
+	margin: 18px 9px 9px 0px;
+}
+
+input.next {
+	background: url(./images/next.png) no-repeat right center;
+	padding-right: 28px;
+	margin-right: 0px;
+	float: right }
+
+a.button:hover,
+input.button:hover {
+	background-color: #ddd;
+}
+
+textarea.filedump {
+	width:98%;
+	height: 20em;}
+
+p.errors { margin:9px 0px 9px 50px; clear:both; color: #900; padding-top:9px;}
+textarea.errordump {
+    margin-left: 50px;
+    width: 500px;	
+	height: 20em;}
+
+
+#f_language { margin-bottom:9px; padding-bottom:9px; overflow:auto;}
+#f_language input, 
+#f_language select, 
+#f_language label { display: inline; margin-right:0.5em; }
+
+
+#welcome {	
+	line-height: 1.4em;	
+	padding:12px;
+	margin-bottom: 24px;
+}
+
+div.links {
+  position: relative;
+  top:  6px;
+  z-index:99;
+  overflow: auto }
+
+a.toggle:hover  { color: #999}
+a.toggle:active { color: #000}	
+
+a.toggle {  
+  outline: none !important;
+  text-transform: uppercase;
+  display:block;
+  float:left;
+  color: #555;
+  padding: 6px 12px 12px 12px;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  text-decoration:none;}
+
+a.active {
+  background-image: url(images/toggle.png) }
+
+div.toggle pre {
+font-size: 0.8em;}
+  
+div.toggle {	
+	line-height: 1.4em;
+	width:100%;
+	padding:16px 16px 12px 32px;
+	position: relative;
+	left: -24px;
+	border-bottom: 1px solid #f4e355;
+	border-top: 1px solid #f4e355;
+	background-color: #f8ed90;
+	margin-bottom: 24px;
+	overflow: auto;
+	max-height:400px;
+}
+
+div.toggle h2 { font-weight: bold; font-size: 1.2em; padding-bottom: 0.2em; }
+div.toggle ul,
+div.toggle ol { padding-left: 36px;}
+
+#file-list { overflow:auto }
+#file-list div.col { float:left; width:43%; margin-right:6%;}
+
+div.finished {
+margin-top: 36px !important}

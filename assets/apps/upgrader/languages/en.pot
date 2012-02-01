@@ -1,0 +1,331 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-01-29 23:45+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: defaults.php:16
+msgid "Aiki Framework Installer"
+msgstr ""
+
+#: defaults.php:19
+msgid "Aiki Installer"
+msgstr ""
+
+#: defaults.php:24
+msgid ""
+"<strong>Aiki Framework</strong> is an open source high-performance Web "
+"Application Framework for rapid web application development using Open "
+"Standards."
+msgstr ""
+
+#: defaults.php:29 installer.php:128
+msgid "Requirements"
+msgstr ""
+
+#: defaults.php:30
+msgid "Before we start you need the following:"
+msgstr ""
+
+#: defaults.php:32
+msgid "An empty database, with collation set to"
+msgstr ""
+
+#: defaults.php:33
+msgid "PHP 5.2 or above and Apache2"
+msgstr ""
+
+#: defaults.php:34
+msgid "mod_rewrite must be enabled inside apache2 httpd.conf"
+msgstr ""
+
+#: installer.php:122
+msgid "Installation aborted"
+msgstr ""
+
+#: installer.php:129
+msgid "License"
+msgstr ""
+
+#: installer.php:130 installer.php:134
+msgid "Authors"
+msgstr ""
+
+#: installer.php:136 installer.php:161 installer.php:166 installer.php:167
+msgid "Next:"
+msgstr ""
+
+#: installer.php:136 installer.php:175
+msgid "Settings"
+msgstr ""
+
+#: installer.php:139
+msgid "Database"
+msgstr ""
+
+#: installer.php:141
+msgid "Host"
+msgstr ""
+
+#: installer.php:142
+msgid "Database name"
+msgstr ""
+
+#: installer.php:143
+msgid "User"
+msgstr ""
+
+#: installer.php:144 library.php:386
+msgid "Password"
+msgstr ""
+
+#: installer.php:145
+msgid "Path/DSN"
+msgstr ""
+
+#: installer.php:146
+msgid "Encoding"
+msgstr ""
+
+#: installer.php:149
+msgid "Admin user / Site"
+msgstr ""
+
+#: installer.php:150
+msgid "Login"
+msgstr ""
+
+#: installer.php:151
+msgid "Full name"
+msgstr ""
+
+#: installer.php:152
+msgid "Email"
+msgstr ""
+
+#: installer.php:153
+msgid "Aiki will send login and password using this email."
+msgstr ""
+
+#: installer.php:157
+msgid "Required Fields"
+msgstr ""
+
+#: installer.php:160
+msgid "Test connection"
+msgstr ""
+
+#: installer.php:161 installer.php:176
+msgid "Create database"
+msgstr ""
+
+#: installer.php:166
+msgid "Write configuration"
+msgstr ""
+
+#: installer.php:167 installer.php:178
+msgid "Pretty urls"
+msgstr ""
+
+#: installer.php:173
+msgid "Pre-installation check"
+msgstr ""
+
+#: installer.php:174
+msgid "Requirements & language"
+msgstr ""
+
+#: installer.php:177
+msgid "Config file"
+msgstr ""
+
+#: installer.php:244
+msgid "Please, fill all required fields"
+msgstr ""
+
+#: installer.php:258
+msgid "Error: no connection or database"
+msgstr ""
+
+#: installer.php:261
+msgid "Connection and database OK"
+msgstr ""
+
+#: installer.php:264
+msgid "created tables"
+msgstr ""
+
+#: installer.php:283
+msgid "error"
+msgstr ""
+
+#: installer.php:299
+msgid "Admin login:"
+msgstr ""
+
+#: installer.php:299
+msgid "Password:"
+msgstr ""
+
+#: installer.php:300
+msgid ""
+"<strong>Please, annotate</strong> login and password. You will need them"
+msgstr ""
+
+#: installer.php:303
+#, php-format
+msgid "Data had send to %s"
+msgstr ""
+
+#: installer.php:308
+msgid ""
+"Some errors during creating tables <em>,perhaps tables already exists</em>"
+msgstr ""
+
+#: installer.php:313 installer.php:348 installer.php:383
+msgid "Try again"
+msgstr ""
+
+#: installer.php:314
+msgid "Delete all tables for new installtion, or push next for upgrading"
+msgstr ""
+
+#: installer.php:316
+msgid "All tables have created correctly"
+msgstr ""
+
+#: installer.php:329
+msgid "FATAL ERROR: failed to read config template file"
+msgstr ""
+
+#: installer.php:330 installer.php:375 installer.php:385
+msgid "Path"
+msgstr ""
+
+#: installer.php:346
+msgid "Config file created."
+msgstr ""
+
+#: installer.php:350
+msgid "can't write config file:"
+msgstr ""
+
+#: installer.php:350
+msgid "Path:"
+msgstr ""
+
+#: installer.php:351 installer.php:386
+msgid "Please, copy this code, create file and paste."
+msgstr ""
+
+#: installer.php:352 installer.php:387
+msgid "Check permission in directory"
+msgstr ""
+
+#: installer.php:362
+msgid ""
+"Installation finished <em>pretty urls are enabled with previous .htaccess</"
+"em>"
+msgstr ""
+
+#: installer.php:363 installer.php:381
+msgid "Test my site!!"
+msgstr ""
+
+#: installer.php:365
+msgid "Try/Check again"
+msgstr ""
+
+#: installer.php:366
+msgid "There is a existing .htaccess file."
+msgstr ""
+
+#: installer.php:367
+msgid "Please, remove file or rewrite file with this code:"
+msgstr ""
+
+#: installer.php:374
+msgid "FATAL ERROR: failed to read htaccess.inc file"
+msgstr ""
+
+#: installer.php:380
+msgid "Installation finished <em>pretty urls are enabled.</em>"
+msgstr ""
+
+#: installer.php:385
+msgid "Aiki can't write .htaccess file:"
+msgstr ""
+
+#: installer.php:399
+msgid "installer.css"
+msgstr ""
+
+#: installer.php:400
+msgid "dir='ltr'"
+msgstr ""
+
+#: installer.php:404
+#, php-format
+msgid "Step %d of %d"
+msgstr ""
+
+#: library.php:271
+msgid "Select language for installation"
+msgstr ""
+
+#: library.php:274
+msgid "Change"
+msgstr ""
+
+#: library.php:293
+msgid "oracle 8 or higher"
+msgstr ""
+
+#: library.php:326
+msgid "There is a existing configuration file."
+msgstr ""
+
+#: library.php:327
+msgid "Please remove file to continue installation"
+msgstr ""
+
+#: library.php:348
+msgid "Essential files missing"
+msgstr ""
+
+#: library.php:382
+msgid "Hello"
+msgstr ""
+
+#: library.php:383
+msgid "Your new Aiki installation is ready to be used"
+msgstr ""
+
+#: library.php:384
+msgid "Go to"
+msgstr ""
+
+#: library.php:385
+msgid "Username"
+msgstr ""
+
+#: library.php:387
+msgid "Have a nice day"
+msgstr ""
+
+#: library.php:389
+msgid "Your new Aiki installation"
+msgstr ""
