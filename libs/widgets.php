@@ -404,25 +404,30 @@ class CreateLayout {
 
 
         // noloop part are extracted and deleted.
-        $no_loop_part = $aiki->get_string_between(
-            $widget->widget,
-            '(noloop(', ')noloop)');
+        $no_loop_part = $aiki->get_string_between($widget->widget,
+												  '(noloop(', ')noloop)');
 
-        $widget->widget = str_replace(
-            '(noloop(' . $no_loop_part . ')noloop)', '',
-            $widget->widget);
+        $widget->widget = str_replace('(noloop(' . $no_loop_part . ')noloop)',
+									  '',
+									  $widget->widget);
 
-        $no_loop_bottom_part = $aiki->get_string_between(
-            $widget->widget,
-            '(noloop_bottom(', ')noloop_bottom)');
+        $custom_pagination = $aiki->get_string_between($widget->widget,
+													   "(pagination(",
+													   ")pagination)");
 
-        $widget->widget = str_replace(
-            '(noloop_bottom(' . $no_loop_bottom_part . ')noloop_bottom)', '',
-            $widget->widget);
+        $no_loop_bottom_part = $aiki->get_string_between($widget->widget,
+                                                         '(noloop_bottom(',
+                                                         ')noloop_bottom)');
 
-        $widget->normal_select = $this->parse_select(
-            $widget->normal_select,
-            $normal_select);
+        $widget->widget = str_replace('(noloop_bottom(' .
+                                      $no_loop_bottom_part .
+                                      ')noloop_bottom)', '',
+                                      $widget->widget);
+
+        $widget->normal_select = $this->parse_select($widget->normal_select,
+                                                     $normal_select);
+
+
 
 
         if (!$widget->normal_select) {
@@ -434,7 +439,8 @@ class CreateLayout {
                 $records_num = $this->records_num($widget->normal_select);
 
                 // pagination change normal_select adding limit.
-                $pagination = $this->pagination($widget, $records_num);
+                $pagination = $this->pagination($widget, $records_num,
+                                                $custom_pagination);
 
                 $widget_select = $db->get_results($widget->normal_select);
                 if ($widget_select) {
@@ -442,18 +448,19 @@ class CreateLayout {
                 }
             }
 
-            if ( $records_num !== false ) {
-                $widget->widget = str_replace("[records_num]", $records_num, $widget->widget);
+            if ($records_num !== false) {
+                $widget->widget = str_replace("[records_num]",
+                                              $records_num,
+                                              $widget->widget);
                 $template = $widget->widget;
                 $num_results = $db->num_rows;
             }
 
-            if ( $widget_select && isset($num_results) && $num_results > 0 ) {
+            if ($widget_select && isset($num_results) && $num_results > 0) {
                 $widgetContents = '';
                 foreach ($widget_select as $widget_value) {
                     if (!$custom_output and
-                        ( isset($config["debug"]) and $config["debug"] ) )
-                    {
+                        (isset($config["debug"]) and $config["debug"])) {
                         $widgetContents .=
                             "\n<!-- The Beginning of a Record -->\n";
                     }
@@ -486,7 +493,30 @@ class CreateLayout {
                     $widgetContents.
                     $this->parsDBpars($no_loop_bottom_part, $widget_value);
 
-                // now widget is complete other parser can aplied.
+
+                // insert pagination.
+                if ((isset($pagination) || $pagination != false) &&
+                     strpos($widgetContents, "[no_pagination]") === false) {
+                    if (strpos($widgetContents, "[pagination]")) {
+                        $widgetContents = str_replace("[pagination]",
+                                                      $pagination,
+                                                      $widgetContents);
+                    } elseif ($custom_pagination != "") {
+                        // when noloop is inserted it call $this->parsDBpars
+                        // content may changed so $custom_pagination variable
+                        // could be different then value in $widgetContent
+                        $regex = "/\(pagination\(.*\)pagination\)/Usi";
+                        $widgetContents = preg_replace($regex,
+                                                       $pagination,
+                                                       $widgetContents);
+                    } else {
+                        $widgetContents .= $pagination;
+                    }
+                }
+                $widgetContents = str_replace("[no_pagination]", "",
+                                              $widgetContents);
+
+                 // now widget is complete other parser can aplied.
                 $widgetContents = $aiki->AikiScript->parser($widgetContents);
                 $widgetContents = $this->inline_widgets($widgetContents);
                 $widgetContents = $this->inherent_widgets($widgetContents);
@@ -495,20 +525,6 @@ class CreateLayout {
 
                 // Hits sustitution
                 $widgetContents = $this->parse_hits($widgetContents);
-
-                // insert pagination.
-                if ( (isset($pagination) || $pagination != false) && strpos($widgetContents, "[no_pagination]") === false ) {
-                    if (strpos($widgetContents, "[pagination]")) {
-                    $widgetContents = str_replace(
-                        "[pagination]",
-                        $pagination,
-                        $widgetContents);
-                    } else {
-                        $widgetContents .= $pagination;
-                    }
-                }
-                $widgetContents = str_replace("[no_pagination]", "", $widgetContents);
-
 
                 /**
                  * Delete empty widgets
@@ -595,7 +611,7 @@ class CreateLayout {
                 $processed_widget_cach =
                     $aiki->languages->L10n($processed_widget_cach);
 
-                error_log ( $processed_widget_cach, 3, $widget_file);
+                error_log($processed_widget_cach, 3, $widget_file);
             }
         }
 
@@ -632,7 +648,7 @@ class CreateLayout {
     } // end of createWidgetContent()
 
 
-    private function pagination($widget, $records_num) {
+    private function pagination($widget, $records_num, $custom="") {
         global $db, $aiki;
 
         if (!$widget->records_in_page) {
@@ -696,7 +712,7 @@ class CreateLayout {
                 $widget->records_in_page;
         }
 
-        if ( $numpages <= 1 ) {
+        if ($numpages <= 1) {
             return "";
         }
 
@@ -705,13 +721,17 @@ class CreateLayout {
         $numpages = $numpages + 1; // WHAT?????
 
         $full_numb_of_pages = $numpages;
-        $pagination = '';
         $page2 = $page;
-
-        $pagination .=
-          "<div class='pagination'>" .
-          "<span class='pagination_move_to_page'>" .
-          __("move to page") . "</span>";
+        if ($custom != "") {
+            $pagination = $custom;
+            $pagination = str_replace("[numpages]", $numpages-1, $pagination);
+            $pagination = str_replace("[currentpage]", $page+1, $pagination);
+        } else {
+            $pagination =
+                "<div class='pagination'>" .
+                "<span class='pagination_move_to_page'>" .
+                __("move to page") . "</span>";
+        }
 
         if ($page) {
             $previous =
@@ -720,58 +740,64 @@ class CreateLayout {
             /**
              * @todo more hardcoded pagination, must change!
              */
-            $pagination .=
-              "<span class='pagination_previous'>" .
-              "<a rel='prev' href=\"$previous\">" . __("previous") . "</a></span>";
+            if ($custom == "") {
+                $pagination .=
+                    "<span class='pagination_previous'>" .
+                    "<a rel='prev' href=\"$previous\">" . __("previous") .
+                    "</a></span>";
+            }
         }
 
-        if ($group_pages)
-        {
+        if ($group_pages) {
             $numpages = $pagesgroup;
             $numpages = $numpages + $page + 1;
 
-            if ( $page > ($pagesgroup / 2) )
-            {
+            if ($page > ($pagesgroup / 2)){
                 $pages_to_display = $page - (int)($pagesgroup / 2);
                 $numpages =  $numpages - (int)($pagesgroup / 2);
             } else {
                 $pages_to_display = 0;
             }
 
-            if ( $numpages > $full_numb_of_pages )
+            if ($numpages > $full_numb_of_pages) {
                 $numpages = $full_numb_of_pages;
-
-            for ($i = $pages_to_display +1; $i < $numpages; $i++) {
-                /**
+            }
+            if ($custom == "") {
+                for ($i = $pages_to_display +1; $i < $numpages; $i++) {
+                    /**
                  * @todo more hardcoded html
                  */
-                if ( $i == $page + 1 ) {
-                    $pagination .=
-                        "<span class='pagination_notactive'>" .
-                        " $i </span>";
+                if ($i == $page + 1) {
+                        $pagination .=
+                            "<span class='pagination_notactive'>" .
+                            " $i </span>";
                 } else {
                     $next_link =
                         str_replace("[page]", $i,
-                        $widget->link_example);
-                    $pagination .=
-                        "<span class='pagination_active'>" .
-                        " <a href=\"$next_link\">$i</a> </span>";
+                                    $widget->link_example);
+
+                        $pagination .=
+                            "<span class='pagination_active'>" .
+                            " <a href=\"$next_link\">$i</a> </span>";
+                    }
                 }
             } // end of for loop
 
         } else {
 
-            for ($i = 1; $i < $numpages; $i++) {
-                if ( $i == $page + 1 ) {
-                    $pagination .=
-                        "<span class='pagination_notactive'>".
-                        " $i </span>";
-                } else {
-                    $next_link = str_replace("[page]", $i,
-                                 $widget->link_example);
-                    $pagination .=
-                      "<span class='pagination_active'>" .
-                      " <a href=\"$next_link\">$i</a> </span>";
+            if ($custom == "") {
+                for ($i = 1; $i < $numpages; $i++) {
+                    if ( $i == $page + 1 ) {
+                        $pagination .=
+                            "<span class='pagination_notactive'>".
+                            " $i </span>";
+                    } else {
+                        $next_link = str_replace("[page]", $i,
+                                                 $widget->link_example);
+                        $pagination .=
+                            "<span class='pagination_active'>" .
+                            " <a href=\"$next_link\">$i</a> </span>";
+                    }
                 }
             }
         }
@@ -779,40 +805,55 @@ class CreateLayout {
         if ( $page+2 != ($numpages) ) {
             $next = str_replace("[page]", $page + 2,
                                 $widget->link_example);
-            $pagination .=
-              "<span class='pagination_next'>".
-              "<a rel='next' href=\"$next\">" . __("next") . "</a></span>";
+            if ($custom == "") {
+                $pagination .=
+                    "<span class='pagination_next'>".
+                    "<a rel='next' href=\"$next\">" . __("next") . "</a></span>";
+            }
         }
 
         if($page) {
             $first_page = str_replace("[page]", '1',
                 $widget->link_example);
-            $pagination .=
-              "<span class='pagination_first'>" .
-              " <a href=\"$first_page\">" . __("first page") . "</a> " .
-              "</span>";
+            if ($custom == "") {
+                $pagination .=
+                    "<span class='pagination_first'>" .
+                    " <a href=\"$first_page\">" . __("first page") . "</a> " .
+                    "</span>";
+            }
         }
 
-        if( $page != ($numpages-2) )
-        {
+        if ($page != $numpages-2) {
             $last_page = str_replace("[page]",
                                      $full_numb_of_pages -1,
                                      $widget->link_example);
-            $pagination .=
-              "<span class='pagination_last'>" .
-              "<a href=\"$last_page\">" . __("last page") . "</a>" .
-              "</span>";
+            if ($custom == "") {
+                $pagination .=
+                    "<span class='pagination_last'>" .
+                    "<a href=\"$last_page\">" . __("last page") . "</a>" .
+                    "</span>";
+            }
         }
 
         if (isset($next)) {
             $pagination = str_replace("[next]", $next, $pagination);
+            $pagination = str_replace("(next(", "", $pagination);
+            $pagination = str_replace(")next)", "", $pagination);
+        } else {
+            $pagination = preg_replace("/\(next\(.*\)next\)/Ui", "", $pagination);
         }
 
         if (isset($previous)) {
-          $pagination = str_replace("[previous]", $previous, $pagination);
+            $pagination = str_replace("[previous]", $previous, $pagination);
+            $pagination = str_replace("(previous(", "", $pagination);
+            $pagination = str_replace(")previous)", "", $pagination);
+        } else {
+            $pagination = preg_replace("/\(previous\(.*\)previous\)/Ui",
+                                       "", $pagination);
         }
-
-        $pagination .= "</div>";
+        if ($custom == "") {
+            $pagination .= "</div>";
+        }
         return $pagination;
     } // basically end of pagination code
 
