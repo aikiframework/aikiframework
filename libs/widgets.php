@@ -1144,7 +1144,7 @@ class CreateLayout {
             " (widget_site='{$aiki->site}' OR widget_site ='aiki_shared') AND " . // default.
             " (display_urls LIKE '%$search%' OR display_urls = '*' OR ".
             " display_urls LIKE '%#%#%') AND " .
-            " (kill_urls='' OR kill_urls not like '^$search\$|^$search\\\\||\\\\|$search\$|\\\\|$search\\\\|') " .
+            " (kill_urls='' OR kill_urls not rlike '^$search\$|^$search\\\\||\\\\|$search\$|\\\\|$search\\\\|') " .
             " ORDER BY  display_order, id";
          return $db->get_results($SQL);
     }
@@ -1157,7 +1157,7 @@ class CreateLayout {
             " (widget_site='{$aiki->site}' OR widget_site ='aiki_shared') AND " .
             " (display_urls LIKE '%error_404%' OR display_urls = '*' OR " .
             " display_urls LIKE '%#%#%') AND " .
-            " (kill_urls='' OR kill_urls not like '^error_404\$|\\\\|error_404\$|^error_404\\\\|\\\\|error_404\\\\|') " .
+            " (kill_urls='' OR kill_urls not rlike '^error_404\$|\\\\|error_404\$|^error_404\\\\|\\\\|error_404\\\\|') " .
             " ORDER BY display_order, id";
         return $db->get_col($SQL);
     }
