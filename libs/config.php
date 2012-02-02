@@ -209,7 +209,7 @@ class config {
 		if (is_array($values)) {
 			foreach ($values as $value) {				 
 				if ($aiki->match_pair($value->config_selector, $site, $view, $language)) {
-					if ( preg_match ('/$[asidb]:/', $value->config_value) ) {
+					if ( preg_match ('/^[asidb]:/', $value->config_value) ) {
 						$ret= unserialize($value->config_value);
 					} else {
 						$ret= $value->config_value;
