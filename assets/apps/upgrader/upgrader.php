@@ -129,15 +129,22 @@ JAVASCRIPT;
 
 
 // internationalization
-$language      = $t->translateTo();
-$css           = $t->t("upgrader.css");
-$text_direction= $t->t("dir='ltr'");
-// note: which css to use, and text direction can be set in .po file
+$language       = $t->translateTo();
+$text_direction = $t->t("dir='ltr'");
+$cssSuffix      = ( $text_direction=="dir='ltr'" ? "": "rtl" );
+// note: text direction can be set in .po file
 
 // insert values and results in html template
 $stepOf = sprintf( $t->t("Step %d of %d"), $step, steps(-1) ) ;
 $cSteps = steps($step);
 $result = sprintf(template($step), $message, $aditional.$help) ;
+
+// theme
+if ( isset($UPGRADER_CSS) ){
+	$css = $UPGRADER_CSS.$cssSuffix;
+} else {
+	$css = "./../../themes/" . config("AIKI-ADMIN-THEME","default") . "/installer_upgrader" . $cssSuffix;
+}
 
 echo <<< HTML
 <!DOCTYPE HTML>
@@ -145,7 +152,7 @@ echo <<< HTML
 <head>
 	<title>{$UPGRADER_TITLE_TAG}</title>
 	<meta charset='utf-8' >
-	<link rel='stylesheet' href='./{$css}' type="text/css" media="all">
+	<link rel='stylesheet' href='{$css}.css' type="text/css" media="all">
 	{$javascripts}
 </head>
 

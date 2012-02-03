@@ -269,7 +269,7 @@ function upgradeAikiData (){
 	
 	// Manual upgrades by SQL statments -------------------------------
 	$sqls = array();
-	include_once "upgrades.php";
+	include_once "upgrades.php"; // creates $upgrades array
 	// filter revision
 	foreach ( $upgrades as $revision=>$sql ){
 		if ( $revision > $REVISION ) {

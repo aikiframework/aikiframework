@@ -24,3 +24,7 @@ $UPGRADER_WELCOME_TEXT =
 	$t->t("This is aiki UPGRADER.")."<br>".
 	$t->t("Please <strong>make a backup</strong> for all files and don't forget copy database.").
 	"</p>";
+
+// don't define UPGRADER_CSS if you want use aiki admin theme
+// Don't add extension: .css or rtl.css will be added.
+// $UPGRADER_CSS= "./upgrader";
