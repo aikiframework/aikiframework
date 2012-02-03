@@ -26,5 +26,7 @@ $UPGRADER_WELCOME_TEXT =
 	"</p>";
 
 // don't define UPGRADER_CSS if you want use aiki admin theme
-// Don't add extension: .css or rtl.css will be added.
-// $UPGRADER_CSS= "./upgrader";
+// Don't add extension: .css or rtl.css will be added. 
+// Include path.
+// separate css files by ;
+// $UPGRADER_CSS= "./../../theme/default/installer_upgrader;./mysite";

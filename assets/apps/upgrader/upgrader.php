@@ -131,7 +131,7 @@ JAVASCRIPT;
 // internationalization
 $language       = $t->translateTo();
 $text_direction = $t->t("dir='ltr'");
-$cssSuffix      = ( $text_direction=="dir='ltr'" ? "": "rtl" );
+$cssSuffix      = ( $text_direction=="dir='ltr'" ? ".css": "rtl.css" );
 // note: text direction can be set in .po file
 
 // insert values and results in html template
@@ -140,11 +140,14 @@ $cSteps = steps($step);
 $result = sprintf(template($step), $message, $aditional.$help) ;
 
 // theme
-if ( isset($UPGRADER_CSS) ){
-	$css = $UPGRADER_CSS.$cssSuffix;
-} else {
-	$css = "./../../themes/" . config("AIKI-ADMIN-THEME","default") . "/installer_upgrader" . $cssSuffix;
+if ( !isset($UPGRADER_CSS) ) {
+	$UPGRADER_CSS = "./../../themes/" . config("AIKI-ADMIN-THEME","default") . "/installer_upgrader" ;
 }
+$css="";
+foreach ( explode(";" , $UPGRADER_CSS ) as $fileCSS ) {
+	$css .= "<link rel='stylesheet' href='{$fileCSS}{$cssSuffix}' type='text/css' media='all'>\n";
+}	
+
 
 echo <<< HTML
 <!DOCTYPE HTML>
@@ -152,7 +155,7 @@ echo <<< HTML
 <head>
 	<title>{$UPGRADER_TITLE_TAG}</title>
 	<meta charset='utf-8' >
-	<link rel='stylesheet' href='{$css}.css' type="text/css" media="all">
+	{$css}
 	{$javascripts}
 </head>
 
