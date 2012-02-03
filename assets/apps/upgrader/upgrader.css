@@ -161,14 +161,27 @@ input.button,
 	color: #333;
 }
 
+.user-input {
+	width: 215px;
+}
+
+
+input#captcha { 
+width: 5em ;
+margin:7px;
+float:left;}
+
+img.captcha {
+display:block;
+float:left;
+clear:left;
+margin:4px 8px 4px 0px;;
+padding: 3px;
+border: 1px solid #777;}
+
 a.button,
 input.button {
 	display:block;}
-
-
-.user-input {
-	width: 215px !important;
-}
 
 .user-input:focus {    
 	border-color: #f57900}
@@ -184,6 +197,11 @@ span.info {
     padding: 5px 0px 2px 4px;
 	color: #888;}
 
+span.wrong {
+	color: #A00;
+	text-transform: uppercase;
+	font-weight: bold;
+	}
 
 p.required {
 clear: both;}

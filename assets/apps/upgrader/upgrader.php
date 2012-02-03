@@ -51,7 +51,8 @@
   * 
   */
 
-if( !defined('IN_AIKI') ) {
+session_start(); 
+if ( !defined('IN_AIKI') ) {
 	// upgrader can be called directly.
 	include ("../../../bootstrap.php");
 }

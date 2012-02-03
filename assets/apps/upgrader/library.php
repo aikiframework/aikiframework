@@ -114,9 +114,13 @@ function template($step) {
 				form_hidden(2 );
 
 		case 2:
-			return "%s<form method='post'>
+			return "<span class='wrong'>%s</span><form method='post'>
 		<p><label for='login'>". $t->t("Superuser login") ."</label><input type='text' name='login' id='login' class='user-input'></p>
-		<p><label for='pass'>" . $t->t("Password")        ."</label><input type='text' name='password' id='password' class='user-input'></p>".
+		<p><label for='pass'>" . $t->t("Password")        ."</label><input type='password' name='password' id='password' class='user-input'></p>
+		<p><label for='captcha'>" . $t->t("Security Captcha check")        ."</label>
+		<img src='../captcha/captcha.php' class='captcha' alt='Captcha'>
+		<input type='text' name='captcha' id='captcha' class='user-input'>
+		</p>".
 		form_hidden(3,false)."
 		</form>";
 		
@@ -165,29 +169,36 @@ function check_step(&$step) {
 			}
 			break;
 			
-		case 3:
-		    
+		case 3:		  
+		   		    
 			$username = stripslashes($_REQUEST["login"] );
 			$password = md5(md5(stripslashes($_REQUEST["password"] )));
+			
+			if ( md5($_REQUEST["captcha"]) != $_SESSION['captcha_key'] ){
+				$step=2;
+				return $t->t("Wrong captcha");
+			}	
+			
 			$get_user = $db->get_row(
 				"SELECT * FROM aiki_users".
 				" WHERE username='$username' ".
 				"  AND password='$password' ".
 				"  AND usergroup=1 ".
 				"  AND is_active=1" .		  
-				" LIMIT 1");				
+				" LIMIT 1");
+								
 			if (!$get_user) {
 				$step=2;
-				return $t->t("Wrong user name");
+				return $t->t("Wrong user name" );
 			} 
-			session_start();
-			$_SESSION["is_root"]=1;
+			
+			session_start(); // don't remove this line. IT'S NECESSARY			
+			$_SESSION["updater_is_root"]=1;			
 			return "";
 		
 		case 4:
 		case 5:
-			session_start();
-			if ( !isset($_SESSION["is_root"])){
+			if ( !isset($_SESSION["updater_is_root"])){
 				$step=2;	
 			}							
     }
