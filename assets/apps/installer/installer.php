@@ -404,16 +404,22 @@ JAVASCRIPT;
 
 // internationalization
 $language      = $t->translateTo();
-$css="";
-foreach ( explode(";" , $INSTALLER_CSS ) as $fileCSS ) {
-	$css .= "<link rel='stylesheet' href='./" . $t->t($fileCSS) ."' type='text/css' media='all'>\n";
-}
 $text_direction= $t->t("dir='ltr'");
-// note: which css to use, and text direction can be set in .po file
+// installer load foo.css or fooltr.css depending of text-direction
+$cssSuffix      = ( $text_direction=="dir='ltr'" ? ".css": "rtl.css" );
 
 // insert values and results in html template
 $stepOf = sprintf( $t->t("Step %d of %d"), $step, count($steps)-1) ;
 $result = sprintf($template[$step], $message, $aditional.$help) ;
+
+// theme
+if ( !isset($INSTALLER_CSS) ) {
+	$INSTALLER_CSS = "./../../themes/default/installer_upgrader" ;
+}
+$css="";
+foreach ( explode(";" , $INSTALLER_CSS ) as $fileCSS ) {
+	$css .= "<link rel='stylesheet' href='{$fileCSS}{$cssSuffix}' type='text/css' media='all'>\n";
+}	
 
 echo <<< HTML
 <!DOCTYPE HTML>

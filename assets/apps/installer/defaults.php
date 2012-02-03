@@ -36,5 +36,8 @@ $INSTALLER_REQUIREMENTS_TEXT = "
 	</ol>";
 
 
-// file with css. Separate files with ";".
-$INSTALLER_CSS ="installer.css";
+// don't define UPGRADER_CSS if you want use aiki admin theme
+// Don't add extension: .css or rtl.css will be added. 
+// Include path.
+// separate css files by ;
+// $INSTALLER_CSS= "./../../theme/default/installer_upgrader;./mysite";
