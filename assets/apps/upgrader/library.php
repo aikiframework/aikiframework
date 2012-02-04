@@ -222,7 +222,7 @@ function upgradeDB (){
 
 	$files = array (
 		"$AIKI_ROOT_DIR/sql/CreateTables.sql",
-		"$AIKI_ROOT_DIR/sql/Site.sql");
+		"$AIKI_ROOT_DIR/sql/CreateTablesSite.sql");
 
 	$ret = "<strong>".$t->t("Database upgrading")."</strong>";
 	
@@ -248,9 +248,11 @@ function upgradeDB (){
 function upgradeAikiData (){	
 	global $t, $db, $AIKI_ROOT_DIR;
 
+	$revision = Util::get_last_revision();
+
 	$replaces = array (
 		"@VERSION@"  =>AIKI_VERSION,
-		"@REVISION@" =>util::get_last_revision() );
+		"@REVISION@" =>$revision );
 	
 	// Re-install data: remove & insert -------------------------------
 	$files = array (
@@ -262,7 +264,7 @@ function upgradeAikiData (){
 	$ret = "<strong>". $t->t("Update Aiki & Site Data") . "</strong>";
 	foreach ($files as $file => $message ){
 		if ( file_exists($file) ) {
-			$db->query ( strtr( @file_get_contents($file), $replaces));
+			$db->query ( strtr( Util::remove_comments( @file_get_contents($file)), $replaces));
 			$ret .= "<br>$message";
 		}		
 	}
@@ -283,6 +285,12 @@ function upgradeAikiData (){
 			$ret .= "<br>" . sprintf("%s updated", $revision );
 		}
 	}
+	
+	// Set new aiki revision
+	config_set("AIKI-REVISION", $revision, "*/*/* !important");
+	// paranoic check to ensure revision is good in all sites/views/language
+	$db->query("UPDATE aiki_configs SET config_value = 'i:$revision' WHERE config_name='AIKI-REVISION'");
+	
 	
 	return $ret;
 }	
