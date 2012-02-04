@@ -197,23 +197,33 @@ class config {
 		}
 
         //else, obtain list of values for for setting.
-		$values = $db->get_results (
+		$sql=
 			"SELECT config_value, config_selector" .
 			" FROM aiki_configs" .
 			" WHERE config_name='" . addslashes($setting) . "'" .
-			" ORDER BY config_important DESC,config_weight DESC");
-	 		
+			" ORDER BY config_important DESC,config_weight DESC";
+	 	
+	 	// if any value is valid only seek first.	
+	 	// note: apps that don't have site/view/language use this way.
+	 	if ( $selector=="*" || $selector=="*/*/*" ){
+			$value = $db->get_var($sql);			
+			if ( is_null($value) ) {
+				return $default;
+			}
+			$ret= unserialize($value);
+			$config[$setting]= $ret;
+			return $ret;
+		}
+	 			 			 
+		// firt obtain all values
+		$values = $db->get_results($sql);
 		list($site,$view,$language)= $this->selector($selector);	
 				
 		// and filter the first that match selector		
 		if (is_array($values)) {
 			foreach ($values as $value) {				 
 				if ($aiki->match_pair($value->config_selector, $site, $view, $language)) {
-					if ( preg_match ('/^(N;)|([asidbO]:)/', $value->config_value) ) {
-						$ret= unserialize($value->config_value);
-					} else {
-						$ret= $value->config_value;
-					}								
+					$ret= unserialize($value->config_value);					
 					$config[$setting]= $ret;
 					return $ret;
 				}				
