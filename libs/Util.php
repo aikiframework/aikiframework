@@ -254,6 +254,11 @@ class Util {
 		return $ret;		
 	}	
 
+	public static function remove_comments ( $inputText ){
+		return preg_replace ("#/\*.*\*/#Us","" , $inputText);
+	}	
+
+
 	/**
 	 * Returns the last revision of aiki if .bzr exists, or 0 assuming this
      * is a release, since .bzr is stripped out.
