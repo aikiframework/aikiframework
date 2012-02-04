@@ -209,7 +209,7 @@ class config {
 		if (is_array($values)) {
 			foreach ($values as $value) {				 
 				if ($aiki->match_pair($value->config_selector, $site, $view, $language)) {
-					if ( preg_match ('/^[asidb]:/', $value->config_value) ) {
+					if ( preg_match ('/^(N;)|([asidbO]:)/', $value->config_value) ) {
 						$ret= unserialize($value->config_value);
 					} else {
 						$ret= $value->config_value;
@@ -286,7 +286,7 @@ class config {
 		}
 
 		if ( $givenSelector == "CURRENT" || 
-			 $givenSelector=="*" ||
+			 $givenSelector=="*" || $givenSelector =="*/*/*" ||
 			 $aiki->match_pair($givenSelector, $this->site, $this->view, $this->language) ) {
 			// value will only store in config, in selector is current, * (all) or match against
 			// current enviroment.
@@ -296,13 +296,14 @@ class config {
 		$parts   = $this->selector($selector);
 
 		// Rules: a given site value 100, a view 10, a language only 1, * cero.
-		$weight .=  ( $parts[0] != "*" && $parts[0] != "" ? 100 : 00 ) +
-			    ( $parts[1] !="*" && $parts[1] !="" ?  10 : 00 ) +
-			    ( $parts[2] !="*" && $parts[2] !="" ?   1 : 00 );
+		$weight .=  
+			( $parts[0] != "*" && $parts[0] != "" ? 100 : 00 ) +
+			( $parts[1] != "*" && $parts[1] != "" ?  10 : 00 ) +
+			( $parts[2] != "*" && $parts[2] != "" ?   1 : 00 );
 
-		$name	 = addslashes($setting);
-		$selector = addslashes("{$parts[0]}/$parts[1]/$parts[2]");	
-		$where	= " WHERE config_name='$name' AND config_selector='$selector'";
+		$name	  = addslashes($setting);
+		$selector = addslashes("{$parts[0]}/{$parts[1]}/{$parts[2]}");
+		$where    = " WHERE config_name='$name' AND config_selector='$selector'";
 		
 		if ($db->get_var("SELECT config_id FROM aiki_configs $where")) {
 			$SQL =
@@ -321,7 +322,7 @@ class config {
 			   addslashes(serialize($value)),
 			   $important,
 			   $weight,
-			   $selector);
+			   $selector);		
 		return $db->query($SQL);
 	
 	}
@@ -367,9 +368,9 @@ function config($setting, $default=false, $selector="CURRENT") {
  * @global $aiki
  */
 
-function config_set($setting, $dvalue, $selector="*") {
+function config_set($setting, $value, $selector="*") {
 	global $aiki;
-	return $aiki->config->set($setting, $value, $selector="CURRENT");
+	return $aiki->config->set($setting, $value, $selector );
 }
 
 
