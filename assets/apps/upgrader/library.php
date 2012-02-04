@@ -151,22 +151,23 @@ function check_step(&$step) {
 		case 0:
 		case 1:
 		case 2:
-			$lastRevision = util::get_last_revision();			
+			$lastRevision = Util::get_last_revision();			
 			if ( $lastRevision == 0){
 				$step=0;
 				return $t->t("Can't get last revision"). 
 					"<br><em>". $t->t("Copy .bzr/branch/last-version to config dir") ."</em>";
 			}	
 			
-			$revision = config("AIKI-REVISION",0);
-			if ( $revision >= $lastRevision){
+			$revision = config("AIKI-REVISION",0,"*");
+			
+			if (  $lastRevision <= $revision ){
 				$step=0;
 				return $t->t("No upgrade is necesary.").
 						"<br><em>". t("Installed revision:") . " $revision </em>";
 			}			
 			if ( $step==0){
 				$step=1;
-			}
+			}			
 			break;
 			
 		case 3:		  
@@ -248,11 +249,11 @@ function upgradeDB (){
 function upgradeAikiData (){	
 	global $t, $db, $AIKI_ROOT_DIR;
 
-	$revision = Util::get_last_revision();
+	$lastRevision = Util::get_last_revision();
 
 	$replaces = array (
 		"@VERSION@"  =>AIKI_VERSION,
-		"@REVISION@" =>$revision );
+		"@REVISION@" =>$lastRevision );
 	
 	// Re-install data: remove & insert -------------------------------
 	$files = array (
@@ -287,9 +288,9 @@ function upgradeAikiData (){
 	}
 	
 	// Set new aiki revision
-	config_set("AIKI-REVISION", $revision, "*/*/* !important");
+	config_set("AIKI-REVISION", $lastRevision, "*/*/* !important");
 	// paranoic check to ensure revision is good in all sites/views/language
-	$db->query("UPDATE aiki_configs SET config_value = 'i:$revision' WHERE config_name='AIKI-REVISION'");
+	$db->query("UPDATE aiki_configs SET config_value = 'i:$lastRevision;' WHERE config_name='AIKI-REVISION'");
 	
 	
 	return $ret;
