@@ -116,8 +116,8 @@ foreach ( $config as $key => $value) {
 // read titles and welcome text, creating global var $INSTALLER_TITLE_TAG,
 // $INSTALLER_TITLE, $INSTALLER_WELCOME_TEXT, $INSTALLER_REQUIREMENTS_TEXT,
 include_once("defaults.php"); 
-if ( file_exists("siteDefaults.php") ){
-	include_once("siteDefaults.php"); 
+if ( file_exists("defaultsSite.php") ){
+	include_once("defaultsSite.php"); 
 }
 
 $template[0]="<div class='error'>" . $t->t("Installation aborted")."</div><div class='error'>%s</div>";
@@ -325,7 +325,7 @@ JAVASCRIPT;
 			if ( !$revisionNumber ){
 				$revisionNumber = 1057; // installer revision
 			}				
-			$db->query("INSERT INTO `aiki`.`aiki_configs` (`config_id`, `config_name`, `config_value`, `config_selector`, `config_important`, `config_weight`) VALUES (NULL, 'AIKI-REVISION', 'i:$revisionNumber', '*', '1', '10000');");
+			$db->query("INSERT INTO `aiki`.`aiki_configs` (`config_id`, `config_name`, `config_value`, `config_selector`, `config_important`, `config_weight`) VALUES (NULL, 'AIKI-REVISION', 'i:$revisionNumber;', '*', '1', '10000');");
 		}
 		break;
 

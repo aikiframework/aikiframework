@@ -254,10 +254,20 @@ class Util {
 		return $ret;		
 	}	
 
-	public static function remove_comments ( $inputText ){
-		return preg_replace ("#/\*.*\*/#Us","" , $inputText);
-	}	
+	/**
+	 * Returns sql statements contained in the input file. Statements must be
+     * separated by a  "-- ------------------------------------------------------"
+     *
+     * @return array of false if file doesn't exist
+	 */
 
+	public static function get_sqls_statements ( $file ){
+		$delimiters= "-- ------------------------------------------------------";
+		if ( file_exists($file) ) {
+			return explode($delimiters, preg_replace ("#/\*.*\*/#Us","" , @file_get_contents($file) ));		
+		} 
+		return false;
+	}
 
 	/**
 	 * Returns the last revision of aiki if .bzr exists, or 0 assuming this
