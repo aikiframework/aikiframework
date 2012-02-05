@@ -19,5 +19,6 @@
  * 
  */
 
-// fake upgrade.
-$upgrades[1024] ="SELECT 1";
+
+// Revision 942 changes old php script markup with new (script(....)script)
+$upgrades[942] = 'UPDATE aiki_widgets SET widget=REPLACE( REPLACE(widget,"<php ","(script("),"php>",")script)")';
