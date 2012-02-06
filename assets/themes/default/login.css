@@ -1,0 +1,140 @@
+/**
+ * Aiki Framework (PHP)
+ *
+ * @author      Roger Martin
+ * @copyright   (c) 2008-2011 Aiki Lab Pte Ltd
+ * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
+ * @link        http://www.aikiframework.org
+ * @category    Aiki
+ * @package     apps
+ *
+ */
+
+* {
+	margin: 0;
+	padding: 0;}
+
+body {
+	background: #444 url(./images/installer_bg.png) repeat-x top left;
+	font: normal normal normal 14px/18px sans-serif ;
+	}
+
+select,
+input {
+	font: normal normal normal 14px/18px sans-serif ;
+
+}
+
+
+#aikiadmin_login {
+	margin: 40px auto;
+	width: 600px;
+	background: #fff url(./images/page_bg.png) 6px 3px no-repeat;
+	color: #333;
+	padding: 18px 24px;
+	border-radius: 12px ;
+	box-shadow: 12px 12px 12px #000;}
+
+h1 {
+	color: #111;
+	font-size: 18px;
+	line-height:24px;	
+	background: url(./images/aiki_framework.png) no-repeat top left;
+	padding: 55px 100px 9px 120px;	}
+
+
+h1 em {
+	display: block;
+	font-style: normal;
+	color: #72cccf;
+	text-transform: lxowercase;
+}
+
+form {
+    margin: 0 90px 0 120px;
+    border-top:1px dotted #aaa;
+    border-bottom:1px dotted #aaa;
+}
+
+
+h1 strong { text-transform: uppercase }
+
+
+span.error {
+	color: #a40000;
+}
+
+
+label {
+    font-size:18px;
+    line-height:24px;
+    color: #333;
+	display: block;
+	margin:  18px 0px 0px 0px;;
+}
+
+div.message-error {
+	padding: 13px 18px 13px 50px;
+	position:relative;
+	left:-50px;
+	margin: 9px 0px;
+	color: #900;
+    background: #fff url(./images/error.png) no-repeat 8px 6px; }
+
+input.button, 
+.user-input {
+display:block;
+	border: 1px solid #777;
+	padding: 5px 4px 2px 4px;
+	border-radius: 4px ;
+	box-shadow: 4px 4px 2px #f0f0f0;
+	background-color:#fff;
+	color: #333;
+}
+
+.user-input {
+	width: 215px;
+}
+
+input#captcha { 
+width: 5em ;
+margin:7px;
+float:left;}
+
+img.captcha {
+display:block;
+float:left;
+clear:left;
+margin:4px 8px 4px 0px;;
+padding: 3px;
+border: 1px solid #777;}
+
+input.button {
+	display:block;}
+
+.user-input:focus {    
+border-color: #f57900}
+
+input.button {
+padding: 5px 12px 2px 12px;
+background-color: #f2f2f2;
+text-decoration: none;
+width:94px;
+margin: 12px auto 24px 132px;
+}
+
+a.button:hover,
+input.button:hover {
+	background-color: #ddd;
+}
+
+#footer {
+font-size:11px;
+clear: both;
+padding: 12px 12px 12px 120px;;
+text-align:left }    
+
+#footer a { padding-left:  6px }    
+    
+    
+    
