@@ -172,6 +172,16 @@ class config {
 		return $returnString ? implode("/", $ret) : $ret;
 	}
 
+	
+	
+	/**
+	 * unserialize a value only if it seems like a serialized value
+	 **/
+	
+	private function _unserialize( $what ){
+		return  $what=="N;" || preg_match ("/^[abidsO]:/", $what ) ? unserialize($what) : $what;
+	}
+
 	/**
 	 * get a setting
 	 *
@@ -187,6 +197,7 @@ class config {
 	 * @global $config
 	 * @global $aiki
 	 */
+
 
 	function get($setting, $default=false, $selector="CURRENT") {
 		global $db, $config, $aiki;
@@ -210,7 +221,7 @@ class config {
 			if ( is_null($value) ) {
 				return $default;
 			}
-			$ret= unserialize($value);
+			$ret= $this->_unserialize($value);
 			$config[$setting]= $ret;
 			return $ret;
 		}
@@ -223,7 +234,7 @@ class config {
 		if (is_array($values)) {
 			foreach ($values as $value) {				 
 				if ($aiki->match_pair($value->config_selector, $site, $view, $language)) {
-					$ret= unserialize($value->config_value);					
+					$ret= $this->_unserialize($value->config_value);					
 					$config[$setting]= $ret;
 					return $ret;
 				}				
