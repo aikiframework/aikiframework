@@ -251,7 +251,9 @@ function upgradeAikiData (){
 
 	$lastRevision = Util::get_last_revision();
 
+	//@TODO aiki admin widget can call this function too!!
 	$replaces = array (
+	    "@AUTHORS@"  =>Util::get_authors(), 
 		"@VERSION@"  =>AIKI_VERSION,
 		"@REVISION@" =>$lastRevision );
 

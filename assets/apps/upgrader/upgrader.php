@@ -69,8 +69,8 @@ $t->addDomain("upgrader","languages");
 // read titles and welcome text, creating global vars $UPGRADER_TITLE_TAG,
 // $UPGRADER_TITLE, $UPGRADER_WELCOME_TEXT
 include_once("defaults.php"); 
-if ( file_exists("siteDefaults.php") ){
-	include_once("siteDefaults.php"); 
+if ( file_exists("DefaultsSite.php") ){
+	include_once("DefaultsSite.php"); 
 }
 
 
