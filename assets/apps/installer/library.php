@@ -152,9 +152,9 @@ function check_step(&$step) {
 }
 
 
-function clean_url($url){
+function clean_url($url, $ending=true){
 	$top= strpos( $url, "/assets/apps/installer");
-	return ( $top ? substr($url,0,$top) ."/" : $url . "/");
+	return ( $top ? substr($url,0,$top): $url) . ( $ending ? "/" : "");
 }
 
 
@@ -204,7 +204,7 @@ function get_new_htaccess($aikiPath){
 	if ( $htaccess_file == false ){				
 		return false;
 	}	
-	return str_replace( "@AIKI_REWRITE_BASE@", clean_url($_SERVER["REQUEST_URI"]), $htaccess_file);
+	return str_replace( "@AIKI_REWRITE_BASE@", clean_url($_SERVER["REQUEST_URI"], false), $htaccess_file);
 	
 }
 
