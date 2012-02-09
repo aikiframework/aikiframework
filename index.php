@@ -67,12 +67,12 @@ if ($noheaders) {
 	$html_output = $layout->html_output;
 } else {   
 	$html_output = $aiki->Output->headers();
-	if (isset($aiki->Output->title)) {
-		$layout->html_output = str_replace(
+	
+	$layout->html_output = str_replace(
 			'[page_title]', 
-			$aiki->Output->title, 
+			$aiki->Output->get_title(),
 			$layout->html_output);
-	} 
+	
 	$html_output .= $layout->html_output;
 	$html_output .= $aiki->Output->footer();
 } 

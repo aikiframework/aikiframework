@@ -41,20 +41,57 @@ class Output {
 	 * @var string
 	 */
 	public $title;
+	public $titleSeparator =" / ";
 	/**
 	 * buffer for header output
 	 * @var string
 	 */
 	private $headers = '';
 
+
 	/**
 	 * Mutator for setting title
 	 *
 	 * @param   strign  $title  page title
-	 */
-	public function set_title($title)
-	{
-		$this->title = $title;
+	 */	 
+	
+	public function set_title_separator($separator){
+		$this->titleSeparator = array($title);
+	}
+
+
+	/**
+	 * set title or add a part to title
+	 *
+	 * @param string  $title  new title part
+	 * @param booleann $reset if true title is added.
+	 */	 
+	
+	public function set_title($title, $reset = false ){ 
+		global $aiki;
+		if ( (boolean) $reset) {
+			$this->title = array($title);
+		} else {
+			if ( is_null($this->title )){		
+				$this->title = array ( t($aiki->site->site_name()));
+			}
+			$this->title[] = t($title);
+		}
+	}
+
+	/**
+	 * returns title as string joining all parts 
+	 *
+	 * @return string the title
+	 */	 
+
+	public function get_title(){	
+		global $aiki;
+		if ( is_null($this->title )){		
+			$this->title = array ( t($aiki->site->site_name()));
+		}
+			
+		return implode ( $this->titleSeparator,  $this->title );
 	}
 
 	/**
@@ -119,8 +156,7 @@ class Output {
 	 */
 	public function title_and_metas() {
 		global $aiki, $config;
-		$title = '<title>' . ( $this->title ? "$this->title - " : "" ) .
-			$aiki->site->site_name() . '</title>' . "\n";
+		$title = '<title>' . $this->get_title() . "</title>";
 		$aiki->Plugins->doAction("output_title", $title);
 		$encoding = isset($config["db_encoding"]) ? $this->correct_encoding($config["db_encoding"]) : "utf-8";
 

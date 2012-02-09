@@ -590,7 +590,11 @@ class CreateLayout {
 
             $title = $this->parsDBpars($widget->pagetitle, $widget_value);
             $title = $aiki->input->requests($title);
-            $aiki->Output->set_title($title);
+            if ( $title[0]=="+") {
+                $aiki->Output->set_title( substr($title,1));
+            } else {
+                $aiki->Output->set_title($title, true);
+            }
         }
 
 
