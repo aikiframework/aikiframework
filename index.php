@@ -87,7 +87,7 @@ if ( $engineType =="aiki" ){
 
 } elseif  ( file_exists( "$AIKI_ROOT_DIR/libs/Engine_$engineType.php") ) {	
     include "$AIKI_ROOT_DIR/libs/Engine_$engineType.php";
-    $engineClass= "engine_" . $engineType;    
+    $engineClass= "Engine_" . $engineType;    
     $engine = new $engineClass();
     $html_output = $engine->layout();
 	
