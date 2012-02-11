@@ -70,7 +70,7 @@ if ( $engineType =="aiki" ){
 	if ($noheaders) {
 		$html_output = $layout->html_output;
 	} else {   
-		$html_output = $aiki->Output->headers();
+		$html_output = $aiki->Output->headers($layout->widgets_css, $layout->head_output);
 		
 		$layout->html_output = str_replace(
 				'[page_title]', 

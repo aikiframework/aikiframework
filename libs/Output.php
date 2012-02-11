@@ -172,6 +172,22 @@ class Output {
 	}
 
 	/**
+	 * Returns the favicon
+	 *
+	 * @return  string
+	 */
+
+	public function favicon() {
+		global $config, $aiki;
+		$favicon =
+			'<link rel="icon" href="' . $config['url'] .
+			'assets/images/favicon.ico" type="image/x-icon" />';
+		$aiki->Plugins->doAction("output_favicon", $favicon);
+		return 	$favicon;
+	}
+
+
+	/**
 	 * Returns the doctype
 	 *
 	 * @global  $aiki
@@ -206,9 +222,10 @@ class Output {
 	 *
 	 * @global      aiki            $aiki   main obj manipulating configs + urls
 	 * @global      array           $db     global db instance
-	 * @global      CreateLayout	$layout global layout object
-	 * @global      bool            $nogui  global yes or no about gui
 	 * @global      array           $config global config options instance
+	 *
+	 * @param  $css array   
+	 
 	 * @return string
 	 *
 	 * @see bootstrap.php
@@ -216,8 +233,8 @@ class Output {
 	 * @todo the html hardcoded in here needs abstraction and shouldn't make
 	 * assumptions about setup
 	 */
-	public function headers() {
-		global $aiki, $db, $layout, $nogui, $config;
+	public function headers( $css, $aditionalHeader) {
+		global $aiki, $db, $config;
 		
         $header = '';
 		$aiki->Plugins->doAction("output_begin", $header);
@@ -227,34 +244,22 @@ class Output {
         $header .= $head_tag;
 		$header .= $this->title_and_metas();
 						
-		if (!$nogui) {
-			if (count($layout->widgets_css)) {
-
-				// handle language settings
-				if(isset($_GET['language'])) {
-					$language=$_GET['language'];
-				} else {
-					$language = $config['default_language'];
-				}
-				$view = $aiki->site->view();// comodity
-				$header .= sprintf(
-					'<link rel="stylesheet" type="text/css" ' .
-					' href="%sstyle.php?site=%s&amp;%swidgets=%s&amp;language=%s" />' . "\n",
-					config("url"),
-					$aiki->site->get_site(),
-					( $view ? "view={$view}&amp;" : ""),
-					implode("_", $layout->widgets_css),
-					$language);
-			}
-			$favicon =
-				'<link rel="icon" href="' . $config['url'] .
-				'assets/images/favicon.ico" type="image/x-icon" />';
-		    $aiki->Plugins->doAction("output_head_favicon", $favicon);
-            $header .= $favicon;
-		}
+		if (is_array($css) && count($css)) {			
+			$view = $aiki->site->view();// comodity
+			$header .= sprintf(
+				'<link rel="stylesheet" type="text/css" ' .
+				' href="%sstyle.php?site=%s&amp;%swidgets=%s&amp;language=%s" />' . "\n",
+				config("url"),
+				$aiki->site->get_site(),
+				( $view ? "view={$view}&amp;" : ""),
+				implode("_", $css),
+				$aiki->site->language() );
+		}			
+        $header .= $this->favicon();
+		
 	
-		if (isset($layout->head_output)){
-			$header .= $layout->head_output;
+		if ( !is_null($aditionalHeader) ){
+			$header .= $aditionalHeader;
 		}
 
 		$header .= $this->headers;
