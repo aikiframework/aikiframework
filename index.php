@@ -45,39 +45,58 @@ config_error_reporting();
  */
 $html_cache_file = $aiki->Output->cache_file();
 
-/**
- * @see widgets.php
- */
-require_once("libs/widgets.php");
-$layout = new CreateLayout();
 
-$noheaders  = false;
-$nogui      = false;
-if (isset($global_widget) or isset($_REQUEST['noheaders'])) {
-	$noheaders  = true;
-	$nogui      = true;
+$engineType = config("engine","aiki");
+
+if ( $engineType =="aiki" ){
+
+	/**
+	 * @see widgets.php
+	 */
+	require_once("libs/widgets.php");
+
+	require_once("libs/widgets.php");
+	$layout = new CreateLayout();
+
+	$noheaders  = false;
+	$nogui      = false;
+	if (isset($global_widget) or isset($_REQUEST['noheaders'])) {
+		$noheaders  = true;
+		$nogui      = true;
+	}
+
+	if ($layout->widget_custom_output) {
+		$noheaders = true;
+	}
+
+	if ($noheaders) {
+		$html_output = $layout->html_output;
+	} else {   
+		$html_output = $aiki->Output->headers();
+		
+		$layout->html_output = str_replace(
+				'[page_title]', 
+				$aiki->Output->get_title(),
+				$layout->html_output);
+		
+		$html_output .= $layout->html_output;
+		$html_output .= $aiki->Output->footer();
+	} 
+
+	$html_output = $aiki->languages->L10n($html_output);
+
+} elseif  ( file_exists( "$AIKI_ROOT_DIR/libs/Engine_$engineType.php") ) {	
+    include "$AIKI_ROOT_DIR/libs/Engine_$engineType.php";
+    $engineClass= "engine_" . $engineType;    
+    $engine = new $engineClass();
+    $html_output = $engine->layout();
+	
+} else {
+	$html_output = "<p>".
+		t( sprintf('Unkown engine %1$s. File /libs/Engine_%1$s.php doesn\'t exists.',$engineType)).
+		"</p>";
 }
 
-
-if ($layout->widget_custom_output) {
-	$noheaders = true;
-}
-
-if ($noheaders) {
-	$html_output = $layout->html_output;
-} else {   
-	$html_output = $aiki->Output->headers();
-	
-	$layout->html_output = str_replace(
-			'[page_title]', 
-			$aiki->Output->get_title(),
-			$layout->html_output);
-	
-	$html_output .= $layout->html_output;
-	$html_output .= $aiki->Output->footer();
-} 
-
-$html_output = $aiki->languages->L10n($html_output);
 
 /**
  * Tidy html using libtidy, or output compressed output, or just output.
@@ -107,6 +126,8 @@ if ( extension_loaded('tidy') &&
 		print $html_output;
 	}
 } // end of using tidy
+
+
 
 
 if ($html_cache_file) {
