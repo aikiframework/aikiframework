@@ -54,8 +54,6 @@ if ( $engineType =="aiki" ){
 	 * @see widgets.php
 	 */
 	require_once("libs/widgets.php");
-
-	require_once("libs/widgets.php");
 	$layout = new CreateLayout();
 
 	$noheaders  = false;
@@ -92,7 +90,8 @@ if ( $engineType =="aiki" ){
     $html_output = $engine->layout();
 	
 } else {
-	$html_output = "<p>".
+	$html_output = 
+		"<p>".
 		t( sprintf('Unkown engine %1$s. File /libs/Engine_%1$s.php doesn\'t exists.',$engineType)).
 		"</p>";
 }
@@ -128,8 +127,6 @@ if ( extension_loaded('tidy') &&
 } // end of using tidy
 
 
-
-
 if ($html_cache_file) {
 	//write the cache file
 	error_log($html_output, 3, $html_cache_file);
@@ -138,7 +135,7 @@ if ($html_cache_file) {
 /**
  * For ending the counter to see the page load time.
  */
-if (isset($config["debug"]) and $config["debug"]){
+if ( is_debug_on() ){
 	$end = (float)array_sum(explode(' ',microtime()));
 	$end_time = sprintf("%.4f", ($end-$start_time));
 	echo "\n <!-- queries: ".$db->num_queries." -->\n";
