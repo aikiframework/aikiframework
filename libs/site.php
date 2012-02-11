@@ -68,7 +68,7 @@ class Site {
 	
 	 /**
 	 * return the default language of a site.
-	 * @return array languages
+	 * @return string language
 	 */	  
 	function language($new=NULL) {		
 		global $aiki;
@@ -163,10 +163,7 @@ class Site {
 		// try read site information and test if is_active.
 		$info = $db->get_row("SELECT * from aiki_sites where site_shortcut='{$config['site']}' limit 1");		
 		if (is_null($info)) {		
-			die($aiki->message->error("Fatal Error: Wrong site name provided. " .
-					  (defined('ENABLE_RUNTIME_INSTALLER') && ENABLE_RUNTIME_INSTALLER == FALSE ?
-					  	"ENABLE_RUNTIME_INSTALLER is set to FALSE." : ""),
-				NULL, false));	  
+			die($aiki->message->error("Fatal Error: Wrong site name provided. " ,NULL,false));
 		} elseif ( $info->is_active != 1 ) {
 			die($aiki->message->error($info->if_closed_output ? $info->if_closed_output : "Site {$config['site']} is closed.",
 				NULL,
