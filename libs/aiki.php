@@ -298,7 +298,7 @@ class aiki {
         $delim= "";
         
 		$temp ="";
-		if ( preg_match ('/\(([a-z]+)\(/U', $string, $temp)  ){
+		if ( preg_match ('/\(([a-z_]+)\(/U', $string, $temp)  ){
 			$delim      = $temp[1];
 			$startDelim ="($delim(";
 			$endDelim   =")$delim)";
