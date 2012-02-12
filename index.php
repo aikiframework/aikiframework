@@ -56,29 +56,22 @@ if ( $engineType =="aiki" ){
 	require_once("libs/widgets.php");
 	$layout = new CreateLayout();
 
-	$noheaders  = false;
-	$nogui      = false;
 	if (isset($global_widget) or isset($_REQUEST['noheaders'])) {
 		$noheaders  = true;
-		$nogui      = true;
+	} else {
+		$noheaders  = false;	
 	}
 
-	if ($layout->widget_custom_output) {
-		$noheaders = true;
-	}
-
-	if ($noheaders) {
-		$html_output = $layout->html_output;
+	if ( $noheaders || $layout->widget_custom_output) {
+		$html_output = $aiki->Output->custom_output($layout->html_output);
 	} else {   
-		$html_output = $aiki->Output->headers($layout->widgets_css, $layout->head_output);
-		
+		$html_output = $aiki->Output->header($layout->widgets_css, $layout->head_output);		
 		$layout->html_output = str_replace(
 				'[page_title]', 
 				$aiki->Output->get_title(),
-				$layout->html_output);
-		
-		$html_output .= $layout->html_output;
-		$html_output .= $aiki->Output->footer();
+				$layout->html_output);		
+		$html_output .= $aiki->Output->body($layout->html_output);
+		$html_output .= $aiki->Output->end();
 	} 
 
 	$html_output = $aiki->languages->L10n($html_output);

@@ -200,20 +200,19 @@ class Output {
 		 * don't change the direction if the page is the admin panel on /admin
 		 * @todo instance of where admin and rest of code needs separation
 		 */
-		if ( isset($_GET["pretty"]) && $_GET["pretty"] == 'admin' ) {
-			$aiki->languages->language = "en";
-			$aiki->languages->dir = "ltr";
+		if ( isset($_GET["pretty"]) && $_GET["pretty"] == 'admin') {
+			$lang = "en";
+			$dir  = "ltr";
+		} else {
+			$lang =  $aiki->site->language();
+			$dir  =  $aiki->languages->dir;
 		}
-		$lang=  $aiki->site->language();
-		$dir =  $aiki->languages->dir;
 
-        $header  = "<!doctype html>\n";
-		$aiki->Plugins->doAction("output_doctype_begin", $header);
-        $html = "<html lang='$lang' dir='$dir'>\n";
-		$aiki->Plugins->doAction("output_html_begin", $html);
-        $header .= $html;
-		 
-		return $header;
+        $html  = "<!doctype html>\n".
+				 "<html lang='$lang' dir='$dir'>\n";
+		$aiki->Plugins->doAction("output_doctype", $html);
+         
+		return $html;
 	} // end of doctype function
 
 
@@ -233,20 +232,22 @@ class Output {
 	 * @todo the html hardcoded in here needs abstraction and shouldn't make
 	 * assumptions about setup
 	 */
-	public function headers( $css, $aditionalHeader) {
+	public function header ( $css, $aditionalHeader) {
 		global $aiki, $db, $config;
+		     
+		$output="";
+		$aiki->Plugins->doAction("output_begin", $output);
 		
-        $header = '';
-		$aiki->Plugins->doAction("output_begin", $header);
-		$header = $this->doctype();
-		$head_tag = '<head>';
-		$aiki->Plugins->doAction("output_head_begin", $head_tag);
-        $header .= $head_tag;
-		$header .= $this->title_and_metas();
+		$doctype = $this->doctype(); 
+		
+		$headStart = '<head>';
+		$aiki->Plugins->doAction("output_head_begin", $headStart);
+		
+		$head = $this->title_and_metas();
 						
 		if (is_array($css) && count($css)) {			
 			$view = $aiki->site->view();// comodity
-			$header .= sprintf(
+			$head .= sprintf(
 				'<link rel="stylesheet" type="text/css" ' .
 				' href="%sstyle.php?site=%s&amp;%swidgets=%s&amp;language=%s" />' . "\n",
 				config("url"),
@@ -255,42 +256,71 @@ class Output {
 				implode("_", $css),
 				$aiki->site->language() );
 		}			
-        $header .= $this->favicon();
-		
-	
+        $head .= $this->favicon();
+
 		if ( !is_null($aditionalHeader) ){
-			$header .= $aditionalHeader;
+			$head .= $aditionalHeader;
 		}
 
-		$header .= $this->headers;
-		$head_tag_close = "</head>";
-        // Yes, the next two are the same.
-		$aiki->Plugins->doAction("output_head_end", $head_tag_close);
-        $header .= $head_tag_close;
-				
-		$bodybegin = "\n<body>\n";
-		$aiki->Plugins->doAction("output_body_begin", $bodybegin);
-		$header .= $bodybegin;
+		$head .= $this->headers;
 		
-		return $header;
-	} // end of headers function
-
-
+		$headEnd = "</head>";
+		$aiki->Plugins->doAction("output_head_end", $headEnd);
+		
+        $head = $output.$doctype.$headStart.$head.$headEnd;
+		$aiki->Plugins->doAction("output_head", $head);        		
+        		
+        return $head;
+	}			
+	
+	
 	/**
-	 * Returns a footer for output.
+	 * Returns body for output.
 	 *
 	 * @return	string
 	 *
 	 */
-	public function footer() {
+				
+	public function body( $bodyHTML, $bodyTag=true)	{			
 		global $aiki;
-		$footer = "\n</body>";
-		$aiki->Plugins->doAction("output_body_end", $footer);
-		$html= "</html>";
-		$aiki->Plugins->doAction("output_html_end", $html);
-		return $footer.$html;
+		$bodyStart =  ( $bodyTag ? "\n<body>\n" :"" );
+		$aiki->Plugins->doAction("output_body_begin", $bodyStart);
+		
+		$bodyEnd = ( $bodyTag ? "\n</body>" :"");
+		$aiki->Plugins->doAction("output_body_end", $bodyEnd);
+		
+		$body = $bodyStart.$bodyHTML.$bodyEnd;
+		$aiki->Plugins->doAction("output_body", $body);
+						
+		return $body;
+		
+	} // end of headers function
+
+
+	public function custom_output($output){
+		global $aiki;
+		$begin="";
+		$end="";			
+		$aiki->Plugins->doAction("output_begin", $end);
+		$aiki->Plugins->doAction("output_custom", $output);
+		$aiki->Plugins->doAction("output_end", $end);
+		return $begin.$output.$end; 
 	}
 
+	/**
+	 * Returns end of output ( a /html )
+	 *
+	 * @return	string
+	 *
+	 */
+
+	public function end(){
+		global $aiki;
+		$end= "</html>";		
+		$aiki->Plugins->doAction("output_end", $end);
+		return $end; 
+	}
+	
 
 	/**
 	 * Returns an formatted table from a widget. An autoformatted widget.
