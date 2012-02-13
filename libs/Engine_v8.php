@@ -268,49 +268,64 @@ class engine_v8 {
 		global $aiki, $page;
 
 		if ( $bufferReplace == NULL ) {
+			/* @TODO unified with aiki processVars*/
 
 			$pretty = $aiki->config->get('pretty_urls', 1);
 			$url = $aiki->config->get('url');
-			// calculate view, prefix, route
-			$view       = $aiki->site->view();
-			$language   = $aiki->site->language();
-			$prefix     = $aiki->site->prefix();
-			$view_prefix= $aiki->site->view_prefix();
-			$paths[]    = $url;
 
+			$current_month = date("n");
+			$current_year = date("Y");
+			$current_day = date("j");
+
+			// calculate view, prefix, route
+			$view = $aiki->site->view();
+			$language = $aiki->site->language();
+			$prefix = $aiki->site->prefix();
+			$view_prefix= $aiki->site->view_prefix();
+				
+			$paths= array();
 			if ($prefix) {
 				$paths[] = $prefix;
 			}
+
 			if ($view_prefix) {
 				$paths[] = $view_prefix;
 			}
 			if ( count($aiki->site->languages()) > 1 ) {
 				$paths[] = $language;
 			}
+			$paths = implode("/",$paths);
+			
+			if ( isset($_SERVER["HTTPS"])) {
+				$url = str_replace("http://", "https://", $url);
+			}	
 
+			$trimedUrl = preg_replace('#/$#',"",$url); // reg: remove ending /
+							
 			$bufferReplace = array(
-				'userid'	=> $aiki->membership->userid,
-				'full_name' => $aiki->membership->full_name,
-				'username'  => $aiki->membership->username,
-				'user_group_level' => $aiki->membership->group_level,
-				'user_permissions' => $aiki->membership->permissions,
-				'language'  => $aiki->site->language(),
-				'page'	  => $page,
-				'site_name' => $aiki->site->site_name(),
-				'site'	  => $aiki->site->get_site(),
-				'view'	  => $aiki->site->view(),
-				'direction' => $aiki->languages->dir,
-				'insertedby_username' => $aiki->membership->username,
-				'insertedby_userid' => $aiki->membership->userid,
-				'current_month' => date("n"),
-				'current_year' => date("Y"),
-				'current_day' => date("j"),
-				'root'		  => $url,
-				'root-language' => $url .  "/" . $aiki->site->language(),
-				'site_prefix'   => $prefix ,
-				'view_prefix'   => $view_prefix ,
-				'route'		 => implode("/",$paths) );
-		}
+				'[$userid]'	=> $aiki->membership->userid,
+				'[$full_name]' => $aiki->membership->full_name,
+				'[$username]'  => $aiki->membership->username,
+				'[$user_group_level]' => $aiki->membership->group_level,
+				'[$user_permissions]' => $aiki->membership->permissions,			
+				'[$language]'  => $aiki->site->language(),		   
+				'[$page]'	  => $page,
+				'[$site_name]' => $aiki->site->site_name(),
+				'[$site]'	  => $aiki->site->get_site(),
+				'[$view]'	  => $aiki->site->view(),
+				'[$direction]' => $aiki->languages->dir,
+				'[$insertedby_username]' => $aiki->membership->username,
+				'[$insertedby_userid]' => $aiki->membership->userid,
+				'[$current_month]' => $current_month,
+				'[$current_year]' => $current_year,
+				'[$current_day]' => $current_day,
+				'[$root]'		  => $url,
+				'[$root-language]' => $trimedUrl .  "/" . $aiki->site->language(),
+				'[$site_prefix]'   => $prefix ,
+				'[$view_prefix]'   => $view_prefix ,
+				'[$route]'		 => $trimedUrl.  "/". $paths,
+				'[$route-local]'	 => $paths );
+			}
 
 		$token = $match[1];
 		if ( isset($bufferReplace[$token]) ){
@@ -340,12 +355,9 @@ class engine_v8 {
 		return  is_null($id) ? "": $db->get_var ("SELECT widget FROM aiki_widgets WHERE id='$id'" );
 	}
 
-	function parse_script($view){
-		/*
-		 * @TODO USE AikiScript!!!
-		 */
-		
-		return "SCRIPT..PARSED" ;
+	function parse_script($code){
+		global $aiki;
+		return $aiki->AikiScript->parser($code,false);
 	}
 
 
@@ -430,14 +442,20 @@ class engine_v8 {
 
 
 	function parse_view( &$text){
+		global $aiki;
 		if ( strpos($text,"||") !== false ){
 			list($filter,$content) = explode("||", $text, 2);
+			if ($trim($filter)=="") {
+				return $text;
+			}
 		} else {
 			return $text;
 		}
-
-		//* fake filter
-		if ( $filter=="dark") {
+		
+		list($view,$language)= exlode("/",$filter."/*",2);
+	
+		if  ( match_pair_one( $view, $aiki->site->view()) &&
+		      match_pair_one( $language, $aiki->site->language() )){
 			return $content;
 		}
 		return "";

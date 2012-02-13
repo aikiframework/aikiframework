@@ -50,20 +50,24 @@ class AikiScript {
 	/*
 	 * Parse over text
 	 * @param	string	$text	Input text
+	 * @param   boolean Searchin. If true, text have (script( markup, else is script.
 	 * @global	aiki	$aiki	global aiki instance
 	 * @return	string. Output text.
 	 */
-	public function parser($text) {
+	public function parser($text, $searchIn= true) {
 		global $aiki;
 
 		//$text = stripslashes($text);
-		
-		if (preg_match("/\<textarea.*((\<php |\(script\().*(\)script\)|php\>)).*\<\/textarea\>/Us", $text)) {
+		if ( $searchIn ) {
+			if (preg_match("/\<textarea.*((\<php |\(script\().*(\)script\)|php\>)).*\<\/textarea\>/Us", $text)) {
 			return $text;
+			}
+			// now, we will divided the text. The array is always
+			// out of marker, in of markers, out of markers, in of markers
+			$tokens= preg_split("/\(script\(|\)script\)|<php|php>/", $text);
+		} else {
+			$tokens = array("", $text); // shortcut for engines. @TODO Must be improved
 		}
-		// now, we will divided the text. The array is always
-		// out of marker, in of markers, out of markers, in of markers
-		$tokens= preg_split("/\(script\(|\)script\)|<php|php>/", $text);
 
 		$parsed = "";
 	   		
@@ -408,12 +412,14 @@ class AikiScript {
 	 * @return	string
 	 */
 	function getinfo($what) {
+		$aiki_revision = defined("AIKI_REVISION") ? AIKI_REVISION :"" ;
+
 		switch ($what) {
 			case "version":
 			case "hidden-version":
 				return ( $what=="version" ? 
 					AIKI_VERSION : "\n<!-- aikiframework version: ". AIKI_VERSION .
-						"." . AIKI_REVISION . " -->\n" );
+						".$aiki_revision -->\n" );
 			case "queries":
 			case "hidden-queries" :
 				global $db;
