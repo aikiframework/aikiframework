@@ -19,6 +19,15 @@ Aiki Framework is built on PHP and is pluggable to many SQL-based
 database engines (MYSQL, PSQL, SQLite, etc).
 
 
+Requirements 
+------------
+
+* PHP 5.3 or Greater! (Very Important)
+* Apache 2.2 or Greater, with mod-rewrite support
+* SQL engine, preferably MySQL 4.1 or Greater
+* http://aikiframework.org/wiki/Aiki_Prerequisites has latest information
+
+
 More Information
 ----------------
 
