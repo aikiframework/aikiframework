@@ -402,21 +402,21 @@ class Bot {
 	 * @todo	rename function to showTableStructure
 	 */
 	function ShowTableStructure($table) {
-		global $aiki;
+		global $aiki, $db;
 
-		$result2 = mysql_query('SHOW COLUMNS FROM ' . $table) or die('cannot show columns from ' . $table);
+		$results = $db->get_results('SHOW COLUMNS FROM ' . $table) or die('cannot show columns from ' . $table);
 
-		if (mysql_num_rows($result2)) {
+		if ( !is_null($results)) {
 			$output = '<div id="table_information_container">
 			<table cellpadding="0" cellspacing="0" class="db-table" '.
 				'style="width: 100%">';
 			$output .= 
 			'<tr><td><b>Field</b></td><td><b>Type</b></td><td><b>Null</b></td>
 			<td><b>Key</b></td><td><b>Default</b><td><b>Extra</b></td></tr>';
-			while($row2 = mysql_fetch_row($result2)) 
+			foreach ( $results as $row) 
 			{
 				$output .= '<tr>';
-				foreach($row2 as $key=>$value) 
+				foreach($row as $key=>$value) 
 				{
 					$output .= '<td>'.$value.'</td>';
 				}
@@ -483,7 +483,7 @@ class Bot {
 					$intwalker[1] = $intwalker[0];
 				}
 				$output .= 
-				"<option value=\"$intwalker[0]\">".$intwalker[1]."</option>";
+				"<option value=\"{$intwalker[0]}\">{$intwalker[1]}</option>";
 			}
 		}
 		$output .= 
@@ -497,57 +497,42 @@ class Bot {
 			$orderby = '';
 		}
 
-		$data = $db->get_results("select * from $tablename $orderby");
-
-		$form_fields = mysql_query('SHOW COLUMNS FROM '.$tablename) 
-			or die('cannot show columns from '.$tablename);
-
-		if (mysql_num_rows($form_fields)) {
-			$output .= "<div class='dashboard_grid_container'><ul>";
-
-			$records_output = '';
-			$edit_delete_output = '';
-
-			while($fields_names = mysql_fetch_row($form_fields)) {
-				if ( $fields_names['0'] == $pkey ) {
-					$edit_delete_output .= 
-					"<li><span class='dashboard_manage_text'>".
-					"<b>Tools</b></span><ul>";
-				}
-
-				$records_output .= "<li><span class='dashboard_manage_text'>".
-					"<b><a href=\"\">".$fields_names['0']."</a></b></span><ul>";
-
-				$i = 0;
-				if ($data) {
-					foreach ( $data as $field_data ) {
-						if ( ($i % 2) == 0 ) {
-							$li_class="dashboard_li_even";
-						} else {
-							$li_class = "dashboard_li_odd";
-						}
-						$field_data->$fields_names['0'] = 
-							htmlspecialchars($field_data->$fields_names['0']);
-
-						if ( $fields_names['0'] == $pkey ) {
-							$edit_delete_output .= 	"<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'><a href='".$config['url']."admin_tools/edit/".$table_info->id."/".$field_data->$fields_names['0']."'  rel=\"edit_record\" rev=\"#table_information_container\">edit</a> -
-						<a href='".$config['url']."admin_tools/delete/".$table_info->id."/".$field_data->$fields_names['0']."' rel=\"delete_record\" rev=\"#table_information_container\">delete</a></span></li>";
-						}
-
-						$records_output .= "<li class='$li_class dashboard_li_selector' id='row_$i'><span class='dashboard_manage_text'>".$field_data->$fields_names[0]."</span></li>";
-
-						$i++;
-					}
-				}
-				if ( $fields_names['0'] == $pkey ) {
-					$edit_delete_output .= "</ul></li>";
-				}
-				$records_output .= "</ul></li>";
-			}
-			$output .= $edit_delete_output . $records_output . "</ul></div>";
+		$data = $db->get_results("select * from $tablename $orderby LIMIT 250", ARRAY_A); //* TODO PAGINATION.
+		
+		if ( is_null($data) ){
+			return t("No records found");			
 		}
-		$output = $aiki->url->apply_url_on_query($output);
-
+								
+        $output .= 
+			"<table class='db-table'>\n".
+			"<thead>\n".
+			"<tr>\n".
+			($pkey ? "<th>Tools</th>":"" ) . "<th>". implode("</th><th>", array_keys (reset($data))). "</th>"	.
+			"</tr></thead>\n".
+			"<tbody>";
+        
+        reset($data);   
+        $odd=false;     
+        foreach ( $data as $row ) {
+			if ($pkey ){
+				$id= $row[$pkey];
+				$edit = 
+					"<td class='tools'>".
+					"<a href='{$config['url']}admin_tools/edit/$tablename/$id'  rel=\"edit_record\" rev=\"#table_information_container\">edit</a> -".
+					"<a href='{$config['url']}admin_tools/delete/$tablename/$id' rel=\"delete_record\" rev=\"#table_information_container\">delete</a>";				
+					"</td>\n";
+			} else {
+				$edit ="";
+			}
+			$odd= !$odd;
+						
+			$output .= "\n<tr class='". ($odd? "odd": "even") ."'>$edit";
+            foreach ( $row as $field ){
+				$output .= "<td>".htmlspecialchars($field)."</td>";
+			}            
+			$output .= "</tr>";
+		}						
+		$output .= "\n</tbody>\n</table>\n";						
 		return $output;
 	} // end of dataGrid function
 
