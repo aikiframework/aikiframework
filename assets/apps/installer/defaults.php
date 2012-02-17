@@ -31,10 +31,16 @@ $INSTALLER_REQUIREMENTS_TEXT = "
 	<p>"  . $t->t("Before we start you need the following:"). "</p>
 	<ol>
 		<li>" . $t->t("An empty database, with collation set to") . "<em>utf8_general_ci.</em></li>
-		<li>" . $t->t("PHP 5.2 or above and Apache2"). "</li>
+		<li>" . $t->t("PHP 5.3 or above and Apache2"). "</li>
 		<li>" . $t->t("mod_rewrite must be enabled inside apache2 httpd.conf"). "</li>
-	</ol>";
+	</ol>
+	<p>".
+    $t->t("Your server is") .":<br><em>".
+    phpversion()."<br>".
+    $_SERVER['SERVER_SOFTWARE'].
+    "</em></p>"	;
 
+    
 
 // don't define UPGRADER_CSS if you want use aiki admin theme
 // Don't add extension: .css or rtl.css will be added. 

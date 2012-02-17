@@ -344,9 +344,12 @@ msgid "An empty database, with collation set to"
 msgstr "Una base de datos vacía con cotejo (collation set) de "
 
 #: ../defaults.php:33
-msgid "PHP 5.2 or above and Apache2"
-msgstr "PHP 5.2 o superior y Apache2"
+msgid "PHP 5.3 or above and Apache2"
+msgstr "PHP 5.3 o superior y Apache2"
 
-#: ../defaults.php:34
-msgid "mod_rewrite must be enabled inside apache2 httpd.conf"
-msgstr "mod_rewrite activo "
+#: defaults.php:38
+msgid "Your server is"
+msgstr "Tu servidor es"
+
+
+
