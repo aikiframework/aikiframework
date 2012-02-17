@@ -29,62 +29,6 @@ class engine_v8 {
 	private $widget_css;
 	private $widget_html;
 
-	/**
-	 * Get a widget by name or ID
-	 * @TODO move to a generic library (all engines can share this code)
-	 */
-
-	private function get_widget_id($widgetNameOrId) {
-		global $db;
-		if ( (int)$widgetNameOrId > 0 ) {
-			$fieldTest= "id='$widgetNameOrId'";
-		} else {
-			//sql injection test or '
-			$fieldTest = "widget_name='" . str_replace("'", "", $widgetNameOrId) . "'";
-		}
-
-		$searchSQL =
-			"SELECT id FROM aiki_widgets ".
-			"WHERE {$fieldTest} AND is_active='1' LIMIT 1" ;
-		return $db->get_var($searchSQL);
-	}
-
-
-	/**
-	 * Get widgets that 'can' match url
-	 * @TODO move to a generic library (all engines can share this code)
-	 */
-
-	function get_candidate_widgets($father=0) {
-		global $db, $aiki;
-
-		$search = $aiki->url->url[0];
-		$SQL =
-			"SELECT id, display_urls,kill_urls,widget_name, widget_target, css <> '' AS have_css " .
-			" FROM aiki_widgets " .
-			" WHERE father_widget=$father AND is_active=1 AND " .
-			" (widget_site='{$aiki->site}' OR widget_site ='aiki_shared') AND " . // default.
-			" (display_urls LIKE '%$search%' OR display_urls = '*' OR display_urls LIKE '%#%#%') AND " .
-			" (kill_urls='' OR kill_urls<> '$search') " .
-			" ORDER BY  display_order, id";
-		 return $db->get_results($SQL);
-	}
-
-
-
-	 function get_Page_Not_Found_Widgets() {
-        global $db, $aiki;
-
-        $SQL =
-            "SELECT id, widget_target, css <> '' AS have_css FROM aiki_widgets WHERE is_active=1 AND " .
-            " (widget_site='{$aiki->site}' OR widget_site ='aiki_shared') AND " .
-            " (display_urls LIKE '%error_404%' OR display_urls = '*' ".
-            " (kill_urls='' OR kill_urls not like '%error_404%') " .
-            " ORDER BY display_order, id";
-        return $db->get_col($SQL);
-    }
-
-
 	/*
 	 * Create layout
 	 */
@@ -102,7 +46,7 @@ class engine_v8 {
 
 		// the widget is given directly or
 		if (isset($_GET["widget"])) {
-			if ($getWidgetId = $this->get_widget_id($_GET['widget'])) {
+			if ($getWidgetId = $aiki->widgets->get_widget_id($_GET['widget'])) {
 				return $this->parse($getWidgetId);
 			}
 			return;//all work is done
@@ -110,7 +54,7 @@ class engine_v8 {
 
 		// or in url,
 		// search widget and test there is a unique response
-		$module_widgets = $this->get_candidate_widgets();
+		$module_widgets = $aiki->widgets->get_candidate_widgets();
 		$unique_widget_exists = false;
 		if ($module_widgets) {
 			foreach($module_widgets as $tested_widget){
@@ -126,7 +70,7 @@ class engine_v8 {
 		if (!$unique_widget_exists) {
 			// first look for widget that responds error_404,
 			// else use config error_404.
-			$module_widgets= $this->get_Page_Not_Found_Widgets();
+			$module_widgets= $aiki->widgets->get_Page_Not_Found_Widgets();
 			if ( $module_widgets ) {
 				$aiki->Errors->pageNotFound(false);
 				$allMatch = true;
@@ -148,7 +92,7 @@ class engine_v8 {
 
 				// children..
 				/* @TODO..a function */
-				if ( is_array($descendants = $this->get_candidate_widgets($parent->id)) ){
+				if ( is_array($descendants = $aiki->widgets->get_candidate_widgets($parent->id)) ){
 					foreach ($descendants as $descendant){
 						if ( $aiki->url->match($descendant->display_urls) && !$aiki->url->match($descendant->kill_urls) ) {
 							$this->target["css"][] = $descendant->id;
@@ -163,9 +107,8 @@ class engine_v8 {
 	}
 
 
-	function render_html(){
+	function render_html(){	
 		global $aiki;
-
 		$html  = $aiki->Output->header($this->target['css'],  $this->target['header']);
 		$html .= $aiki->Output->body($this->target['body']);
 		$html .= $aiki->Output->end();
@@ -253,7 +196,7 @@ class engine_v8 {
 		}
 		
 		if ( is_debug_on() ){
-			return "<!-- {$widgetName} ($widgetID) -->" . $widget ;
+			return "\n<!-- start {$widgetName} ($widgetID) -->" . $widget . "\n<!-- end {$widgetName} ($widgetID) -->";
 		}		
 	    return $widget;
 	}

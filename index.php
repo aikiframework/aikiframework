@@ -53,9 +53,10 @@ if ( $engineType =="aiki" ){
 	/**
 	 * @see widgets.php
 	 */
-	require_once("libs/widgets.php");
-	$layout = new CreateLayout();
-
+	require_once("libs/Engine_aiki.php");
+	$layout = new Engine_Aiki();
+	$layout->layout();	
+	
 	if (isset($global_widget) or isset($_REQUEST['noheaders'])) {
 		$noheaders  = true;
 	} else {
