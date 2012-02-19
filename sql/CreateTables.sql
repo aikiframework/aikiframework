@@ -224,6 +224,8 @@ CREATE TABLE IF NOT EXISTS aiki_sites (
   widget_language varchar(5) NOT NULL,
   site_prefix varchar(80) NOT NULL DEFAULT '',
   site_default_view varchar(32) NOT NULL,
+  site_engine varchar(32) NOT NULL DEFAULT 'aiki',
+  site_engine_parameters text NOT NULL,      
   PRIMARY KEY (site_id),
   KEY site_prefix (site_prefix)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -440,4 +442,4 @@ CREATE TABLE IF NOT EXISTS aiki_databases (
   db_encoding varchar(255) NOT NULL,
   db_use_mysql_set_charset varchar(255) NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

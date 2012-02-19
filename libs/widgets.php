@@ -33,16 +33,16 @@ if (!defined('IN_AIKI')){
  */
 
 class widgets {
-    
+
     /**
      * return sql filter to select only widget of current apps & engine
      *
      * @return string part of a SQL WHERE clausule
      */
 
-	private function widget_scope (){
-		global $aiki;		
-		return "is_active=1 AND ( widget_site='{$aiki->site}' OR widget_site ='aiki_shared')"	;
+	private function widget_scope ( $checkSite= true  ){
+		global $aiki;
+		return "is_active=1" . ( $checkSite ? " AND ( widget_site='{$aiki->site}' OR widget_site ='aiki_shared')": "");
 	}
 
 	/**
@@ -55,7 +55,7 @@ class widgets {
      */
 
     function get_candidate_widgets($father=0) {
-        global $db, $aiki;        
+        global $db, $aiki;
         $search = $aiki->url->url[0];
         $SQL =
             "SELECT id, display_urls, kill_urls, widget_name, widget_target, css<>'' as have_css" .
@@ -65,7 +65,7 @@ class widgets {
             " (display_urls LIKE '%$search%' OR display_urls = '*' OR ".
             " display_urls LIKE '%#%#%') AND " .
             " (kill_urls='' OR kill_urls not rlike '^$search\$|^$search\\\\||\\\\|$search\$|\\\\|$search\\\\|') " .
-            " ORDER BY  display_order, id";         
+            " ORDER BY  display_order, id";
          return $db->get_results($SQL);
     }
 
@@ -75,7 +75,7 @@ class widgets {
      *
      * @return array of id
      */
-    
+
     function get_page_not_found_widgets() {
         global $db, $aiki;
 
@@ -89,7 +89,7 @@ class widgets {
             " ORDER BY display_order, id";
         return $db->get_results($SQL);
     }
-    
+
     /**
      * lookup a widget by id or name
      *
@@ -108,24 +108,24 @@ class widgets {
      * @return object_Ezsql_row
      */
 
-	function get_widget($widgetNameOrId) {
-		return $this->get_widget_helper($widgetNameOrId, true);
+	function get_widget($widgetNameOrId, $checkSite = true) {
+		return $this->get_widget_helper($widgetNameOrId, true, $direct);
 	}
 
 
-    private function get_widget_helper($widgetNameOrId, $record=false) {
+    private function get_widget_helper($widgetNameOrId, $record=false, $checkSite=true) {
         global $db;
         if ( (int)$widgetNameOrId > 0 ) {
             $where= "id='$widgetNameOrId' AND is_active='1'";
-        } else {            			                       
-            $where = 
-                $this->widget_scope() ." AND ".
-				"widget_name='" . addslashes($widgetNameOrId) ."'"; // paranoic test.        
+        } else {
+            $where =
+                $this->widget_scope($checkSite) ." AND " .
+				"widget_name='" . addslashes($widgetNameOrId) ."'"; // paranoic test.
         }
 
         $searchSQL =
             "SELECT " . ($record? "*" :"id" ).  " FROM aiki_widgets ".
-            "WHERE {$where} LIMIT 1" ;        
+            "WHERE {$where} LIMIT 1" ;
         return ( $record ? $db->get_row($searchSQL) : $db->get_var($searchSQL));
     }
 

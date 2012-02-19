@@ -33,7 +33,7 @@ class engine_v8 {
 	 * Create layout
 	 */
 
-	function layout(){
+	function layout( $parameters ){
 		global $db, $aiki;
 
 		// Initialize

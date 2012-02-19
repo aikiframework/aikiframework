@@ -17,6 +17,7 @@
  */
  
 
+ $changes[1097]= "Engines enabled per site";
  $changes[1056]= "Installer Added";
  $changes[1050]= "Fix instant login bug";
  $changes[1040]= "Added rel next and prev to pagination for SEO";

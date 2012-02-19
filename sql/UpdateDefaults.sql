@@ -27,14 +27,14 @@ aiki_dictionary last id is 39
 aiki_widget 29 is last id for oficial aiki widget.
 aiki_forms id (1,4,6,9,12,13,17,18,20 are oficial
 
+DELETE FROM `aiki_forms` WHERE `id` IN (1,4,6,9,12,13,17,18,20);
+DELETE FROM `aiki_widgets` WHERE `id` < 30;
+-- ------------------------------------------------------
+
 */ 
 
 DELETE FROM `aiki_dictionary` WHERE `term_id` < 39;
 
--- ------------------------------------------------------
 
-DELETE FROM `aiki_forms` WHERE `id` IN (1,4,6,9,12,13,17,18,20);
 
--- ------------------------------------------------------
 
-DELETE FROM `aiki_widgets` WHERE `id` < 30;
