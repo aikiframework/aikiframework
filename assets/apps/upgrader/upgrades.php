@@ -27,8 +27,8 @@
 //                 "UPDATE aiki_bar SET bar=1");
 
 
-// revision 1097 introduces engines for site.
-$upgrades[1097]= 'UPDATE aiki_sites SET site_engine="aiki" WHERE site_engine="" OR site_engine is null';
+// revision 1098 introduces engines for site.
+$upgrades[1098]= 'UPDATE aiki_sites SET site_engine="aiki" WHERE site_engine="" OR site_engine is null';
 
 // Revision 942 changes old php script markup with new (script(....)script)
 $upgrades[942] =  'UPDATE aiki_widgets SET widget=REPLACE( REPLACE(widget,"<php ","(script("),"php>",")script)");';
