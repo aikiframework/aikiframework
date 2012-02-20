@@ -78,6 +78,14 @@ if ( !defined("AIKI_VERSION") ) {
 	define(AIKI_VERSION,"0.8.24");
 }
 
+// patch for IIS.
+if ( !isset($_SERVER['REQUEST_URI']) || $_SERVER['REQUEST_URI']==""){
+    $_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],0 );
+    if (isset($_SERVER['QUERY_STRING'])) { 
+		$_SERVER['REQUEST_URI'].='?'.$_SERVER['QUERY_STRING'];
+	}
+}
+
 $AIKI_ROOT_DIR = realpath( dirname(__FILE__ ). "/../../..");
 $AIKI_SITE_URL = clean_url("http://".
 	$_SERVER["SERVER_NAME"].
@@ -97,7 +105,8 @@ $config = array(
 	"language"       => "en",
 	"ADMIN_EMAIL"    => "",
 	"ADMIN_USER"     => "admin",
-	"ADMIN_FULLNAME" => "adminstrator");
+	"ADMIN_FULLNAME" => "adminstrator",
+	"AIKI_SITE_URL"  => $AIKI_SITE_URL);
 
 // request via $POST all config var
 foreach ( $config as $key => $value) {
@@ -120,6 +129,17 @@ if ( file_exists("defaultsSite.php") ){
 	include_once("defaultsSite.php"); 
 }
 
+
+// Description of steps
+$steps = array (
+    0=> $t->t("Pre-installation check"),
+    1=> $t->t("Requirements & language"),
+	2=> $t->t("Settings"),
+    3=> $t->t("Create database"),
+	4=> $t->t("Config file"),
+    5=> $t->t("Pretty urls")
+    );
+
 $template[0]="<div class='error'>" . $t->t("Installation aborted")."</div><div class='error'>%s</div>";
 
 
@@ -134,7 +154,7 @@ $template[1]=
     <div id='license'      class='toggle'><pre>". Util::get_license() ."</pre></div>
     <div id='authors'      class='toggle'><h3>". $t->t("Authors")."</h3>". Util::get_authors("list")."</div>".
 	select_language() .
-	form_hidden(2, "<input type='submit' class='button next' value=' " . $t->t("Next:") ." ".  $t->t("Settings") . "'>");
+	form_hidden(2);
 
 $template[2]= "%s<form method='post'>
 	<fieldset class='db'><legend>" . $t->t("Database")."</legend>
@@ -147,11 +167,13 @@ $template[2]= "%s<form method='post'>
 	<p><label for='db_encoding'>" . $t->t("Encoding")     ."</label><input type='text' name='db_encoding' id='db_encoding' class='user-input' value='{$config['db_encoding']}'><span class='required'>*</span></p>
 	</fieldset>
 
-    <fieldset class='other'><legend>" . $t->t("Admin user / Site") ."</legend>
-    <p><label for='ADMIN_USER'>"      . $t->t("Login")."</label><input type='text' name='ADMIN_USER'  id='ADMIN_USER'  class='user-input' value='{$config['ADMIN_USER']}'></p>
-	<p><label for='ADMIN_FULLNAME'>"  . $t->t("Full name")."</label> <input type='text' name='SITE_TITLE'  id='SITE_TITLE'  class='user-input' value='{$config['ADMIN_FULLNAME']}'></p>
-	<p><label for='ADMIN_EMAIL'>"     . $t->t("Email")."</label> <input type='text' name='ADMIN_EMAIL' id='ADMIN_EMAIL' class='user-input' value='{$config['ADMIN_EMAIL']}'></p>
+    <fieldset class='other'><legend>". $t->t("Admin user / Site") ."</legend>
+    <p><label for='ADMIN_USER'>"     . $t->t("Login")."</label><input type='text' name='ADMIN_USER'  id='ADMIN_USER'  class='user-input' value='{$config['ADMIN_USER']}'></p>
+	<p><label for='ADMIN_FULLNAME'>" . $t->t("Full name")."</label> <input type='text' name='SITE_TITLE'  id='SITE_TITLE'  class='user-input' value='{$config['ADMIN_FULLNAME']}'></p>
+	<p><label for='ADMIN_EMAIL'>"    . $t->t("Email")."</label> <input type='text' name='ADMIN_EMAIL' id='ADMIN_EMAIL' class='user-input' value='{$config['ADMIN_EMAIL']}'></p>
 	<p class='note'>" . $t->t("Aiki will send login and password using this email.") ."</p>    
+	<p><label for='AIKI_SITE_URL'>"  . $t->t("Site url")."</label><input type='text' name='AIKI_SITE_URL' id='AIKI_SITE_URL' class='user-input' value='{$config['AIKI_SITE_URL']}'></p>
+    <p class='note'>"                . $t->t("Must have a ending /") ."</p>
     </fieldset>
 
     <input type='hidden' name='step' value='3'>
@@ -164,20 +186,12 @@ $template[2]= "%s<form method='post'>
 	</form>";
 // removed: <p><label for='SITE_URL'>Site url</label> <input type='text' name='SITE_URL' id='SITE_URL' class='user-input' value='{$config['SITE_URL']}'></p>
 
-$template[3]= "%s " . form_hidden(4, "<input type='submit' class='button next' value='" . $t->t("Next:")." " . $t->t("Write configuration") ."'>");
-$template[4]= "%s " . form_hidden(5, "<input type='submit' class='button next' value='" . $t->t("Next:")." " . $t->t("Pretty urls"). "'>");
+$template[3]= "%s " . form_hidden(4);
+$template[4]= "%s " . form_hidden(5);
 $template[5]= "%s <div class='actions'>%s</div>";
 
 
-// Description of steps
-$steps = array (
-    0=> $t->t("Pre-installation check"),
-    1=> $t->t("Requirements & language"),
-	2=> $t->t("Settings"),
-    3=> $t->t("Create database"),
-	4=> $t->t("Config file"),
-    5=> $t->t("Pretty urls")
-    );
+
 
 /*
  * Installer work starts here
@@ -323,7 +337,7 @@ JAVASCRIPT;
 			// INSERT THE REVISION IN DATABASE. Updater need this data.
 			$revisionNumber = (int) Util::get_last_revision();
 			if ( !$revisionNumber ){
-				$revisionNumber = 1057; // installer revision
+				$revisionNumber = 1099; // installer revision
 			}				
 			$db->query("INSERT INTO `aiki`.`aiki_configs` (`config_id`, `config_name`, `config_value`, `config_selector`, `config_important`, `config_weight`) VALUES (NULL, 'AIKI-REVISION', 'i:$revisionNumber;', '*', '1', '10000');");
 		}
@@ -338,7 +352,7 @@ JAVASCRIPT;
 			           "<em>" . $t->t("Path"). " $AIKI_ROOT_DIR/configs/config.php</em></div>";
 			break;
 		}
-
+        
 		$replace= array (
 			"DB_TYPE"   => "\"{$config['db_type']}\"",
 			"DB_NAME"   => "\"{$config['db_name']}\"",
@@ -346,14 +360,19 @@ JAVASCRIPT;
 			"DB_PASS"   => "\"{$config['db_pass']}\"",
 			"DB_HOST"   => "\"{$config['db_host']}\"",
 			"DB_ENCODE" => "\"{$config['db_encoding']}\"",
-			"@AIKI_SITE_URL@"     => $AIKI_SITE_URL,
-			"@AIKI_REWRITE_BASE@" => clean_url($_SERVER["REQUEST_URI"]) );
+			"@AIKI_SITE_URL@"     => $config['AIKI_SITE_URL'],
+			"@AIKI_REWRITE_BASE@" => clean_host($config['AIKI_SITE_URL']) );
 		$config_file = strtr($config_file, $replace);
 
-		if ( @file_put_contents ( "$AIKI_ROOT_DIR/config.php", $config_file) ){
+		// check if user have paste the code
+		if ( isset($_REQUEST["try_step_4"] ) && 
+				file_exists($AIKI_ROOT_DIR ."/config.php") && 
+				$config_file == file_get_contents("$AIKI_ROOT_DIR/config.php")) {		
+			$message="<div class='ok'>" . $t->t("Config file ok.")."</div>";		
+		} elseif ( @file_put_contents ( "$AIKI_ROOT_DIR/config.php", $config_file) ){
 			$message="<div class='ok'>" . $t->t("Config file created.")."</div>";
 		} else {
-			$aditional = "<input type='submit' name='try_step_3' value='" . $t->t("Try again")."' class='button' >";
+			$aditional = "<input type='submit' name='try_step_4' value='" . $t->t("Try again")."' class='button' >";
 			$message=
 				"<div class='error'>" . $t->t("can't write config file:")." <em>" . $t->t("Path:") ." $AIKI_ROOT_DIR/config.php </em></div>".
 				"<div class='message'><p>" . $t->t("Please, copy this code, create file and paste.")."</p><textarea class='filedump'>". $config_file . "</textarea></div>";
@@ -364,36 +383,32 @@ JAVASCRIPT;
 	case 5:
 		// STEP 5 Write htaccess -------------------------------------------------
 		$htaccess_file = get_new_htaccess($AIKI_ROOT_DIR);
+		if ( !$htaccess_file ) {
+			$message = 
+				"<div class='error'>" . $t->t("FATAL ERROR: failed to read htaccess.inc file") .
+				"<em>" . $t->t("Path"). " $AIKI_ROOT_DIR/configs/config.php</em></div>";
+			break;
+		}
 		
 		if ( file_exists($AIKI_ROOT_DIR ."/.htaccess" ) ) {			
-			if ( @file_get_contents($AIKI_ROOT_DIR ."/.htaccess") == $htaccess_file ){
+			if ( trim(@file_get_contents($AIKI_ROOT_DIR ."/.htaccess")) == trim($htaccess_file) ){
 				$message= "<div class='ok'>" . $t->t("Installation finished <em>pretty urls are enabled with previous .htaccess</em>")."</div>";
-				$aditional="<a href='{$AIKI_SITE_URL}' class='button'>" . $t->t("Test my site!!")."</a>";
+				$aditional="<a href='{$config['AIKI_SITE_URL']}' class='button'>" . $t->t("Test my site!!")."</a>";
 			} else {			
-				$aditional= "<input type='submit' name='try_step_4' value='" . $t->t("Try/Check again") ."' class='button' >";
+				$aditional= "<input type='submit' name='try_step_5' value='" . $t->t("Try/Check again") ."' class='button' >";
 				$message = "<div class='error'>" . $t->t("There is a existing .htaccess file.")."</div>".
 				  		   "<div class='message'><p>" . $t->t("Please, remove file or rewrite file with this code:")."</p><textarea class='filedump'>". $htaccess_file . "</textarea></div>";
 			}		
-		
-			break;	
-			           			           
-		} else {								
-			if ( !$htaccess_file ) {
-				$message = "<div class='error'>" . $t->t("FATAL ERROR: failed to read htaccess.inc file") .
-						   "<em>" . $t->t("Path"). " $AIKI_ROOT_DIR/configs/config.php</em></div>";
-				break;
-			}
-			
-			if ( @file_put_contents ( "$AIKI_ROOT_DIR/.htaccess", $htaccess_file) ){
-				$message= "<div class='ok'>" . $t->t("Installation finished <em>pretty urls are enabled.</em>")."</div>";
-				$aditional="<a href='{$AIKI_SITE_URL}' class='button'>" . $t->t("Test my site!!")."</a>";
-			} else {	
-				$aditional= "<input type='submit' name='try_step_4' value='" . $t->t("Try again")."' class='button' >";
-				$message=
-					"<div class='error'>" . $t->t("Aiki can't write .htaccess file:")." <em>" . $t->t("Path") ." $AIKI_ROOT_DIR/.htaccess</em></div>".
-					"<div class='message'><p>" . $t->t("Please, copy this code, create file and paste.")."</p><textarea class='filedump'>". $htaccess_file . "</textarea></div>";
-				$help  = "<div class='help'>" . $t->t("Check permission in directory")."</div>";
-			}
+				           			           
+		} elseif ( @file_put_contents ( "$AIKI_ROOT_DIR/.htaccess", $htaccess_file) ){
+			$message= "<div class='ok'>" . $t->t("Installation finished <em>pretty urls are enabled.</em>")."</div>";
+			$aditional="<a href='{$config['AIKI_SITE_URL']}' class='button'>" . $t->t("Test my site!!")."</a>";
+		} else {	
+			$aditional= "<input type='submit' name='try_step_5' value='" . $t->t("Try again")."' class='button' >";
+			$message=
+				"<div class='error'>" . $t->t("Aiki can't write .htaccess file:")." <em>" . $t->t("Path") ." $AIKI_ROOT_DIR/.htaccess</em></div>".
+				"<div class='message'><p>" . $t->t("Please, copy this code, create file and paste.")."</p><textarea class='filedump'>". $htaccess_file . "</textarea></div>";
+			$help  = "<div class='help'>" . $t->t("Check permission in directory")."</div>";			
 		}	
 		break;
 

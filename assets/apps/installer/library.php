@@ -35,14 +35,17 @@
 
 
 
-function form_hidden ( $step , $buttons) {
-	global $config;
+function form_hidden ( $step , $buttons="") {
+	global $config, $steps, $t;
 	$form_hidden = "";
 	foreach ( $config as $name => $value) {
 		$form_hidden .= "\n<input type='hidden' name='$name' value='$value'>";
 	}
-	$form_hidden = "\n<div class='actions'><form method='post'>%s<input type='hidden' name='step' value='$step'>$form_hidden$buttons</form></div>\n";
-	return $form_hidden;
+	
+	$next= sprintf( "<input type='submit' class='button next' value='%s %s'>",
+		$t->t("Next:"),
+		$t->t( $steps[$step] ) );
+	return  "\n<div class='actions'><form method='post'>%s<input type='hidden' name='step' value='$step'>{$form_hidden}{$next}{$buttons}</form></div>\n";	
 }
 
 
@@ -120,8 +123,8 @@ function check_step(&$step) {
 				$step=4;
 			}
 
-		default:
-			if ( file_exists($AIKI_ROOT_DIR ."/config.php" )  && $step!=5 ) {
+		default:		    		    
+			if ( file_exists($AIKI_ROOT_DIR ."/config.php" )  && $step!=5 && !isset($_REQUEST["try_step_4"]) ) {
 				$step=0;
 				return  $t->t("There is a existing configuration file.") .
 						"<em>".  $t->t("Please remove file to continue installation") ."<br>".
@@ -158,17 +161,24 @@ function clean_url($url, $ending=true){
 }
 
 
+function clean_host($url){
+	if ( preg_match('#^https?://([^/])*/#Ui',$url ) ){
+		return "/". trim(preg_replace('#^https?://([^/])*/#Ui',"", $url ),"/");
+	} 
+	return "/";
+}
+
 /** 
  *
  * send login and password via email
  * 
- * @global $config, $AIKI_SITE_URL, $t
+ * @global $config,  $t
  * 
  * @return false if mail is send else true
  */
 
 function send_data_by_email(){
-	global $config, $AIKI_SITE_URL, $t;
+	global $config, $t;
 	
 	if (!$config['ADMIN_EMAIL'] ||
 	    !preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i", $config['ADMIN_EMAIL'])){
@@ -181,7 +191,7 @@ function send_data_by_email(){
 
 	$message = $t->t("Hello"). "  {$config['ADMIN_FULLNAME']} \n".
 	           $t->t("Your new Aiki installation is ready to be used"). "\n\n".
-			   $t->t("Go to") .  ": $AIKI_SITE_URL/admin \n".
+			   $t->t("Go to") .  ": {$config['AIKI_SITE_URL']}/admin \n".
 			   $t->t("Username") . ":{$config['ADMIN_USER']} \n".
 			   $t->t("Password") . ":{$config['ADMIN_PASSWORD']}\n\n".
 			   $t->t("Have a nice day")."<br>\n";
@@ -200,11 +210,12 @@ function send_data_by_email(){
  */
 
 function get_new_htaccess($aikiPath){
+	global $config;
 	$htaccess_file = @file_get_contents("$aikiPath/configs/htaccess.inc");
 	if ( $htaccess_file == false ){				
 		return false;
-	}	
-	return str_replace( "@AIKI_REWRITE_BASE@", clean_url($_SERVER["REQUEST_URI"], false), $htaccess_file);
+	}
+	return str_replace( "@AIKI_REWRITE_BASE@", clean_host($config['AIKI_SITE_URL'], false), $htaccess_file);
 	
 }
 
@@ -213,13 +224,13 @@ function get_new_htaccess($aikiPath){
  *
  * Read all sql file, making some replacemnets
  * 
- * @global $config, $AIKI_ROOT_DIR, $AIKI_SITE_URL, $AIKI_AUTHORS
+ * @global $config, $AIKI_ROOT_DIR,  $AIKI_AUTHORS
  * 
  * @return array of SQLS statments
  */
 
 function sqls(){
-	global $config, $AIKI_ROOT_DIR, $AIKI_SITE_URL ;
+	global $config, $AIKI_ROOT_DIR;
 
 	$SQLS_DELIMITER = "-- ------------------------------------------------------";
 	
@@ -227,8 +238,8 @@ function sqls(){
 	$config["ADMIN_PASSWORD_MD5_MD5"]= md5(md5($config["ADMIN_PASSWORD"]));
 
     $replace = array ( 
-		"@AIKI_SITE_URL_LEN@"=> strlen($AIKI_SITE_URL),
-		"@AIKI_SITE_URL@"    => $AIKI_SITE_URL,
+		"@AIKI_SITE_URL_LEN@"=> strlen($config['$AIKI_SITE_URL']),
+		"@AIKI_SITE_URL@"    => $config['$AIKI_SITE_URL'],
 		"@PKG_DATA_DIR_LEN@" => strlen($AIKI_ROOT_DIR),
 		"@PKG_DATA_DIR@"     => $AIKI_ROOT_DIR, 
 		"@ADMIN_USER@"=> $config["ADMIN_USER"],
