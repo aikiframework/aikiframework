@@ -266,12 +266,14 @@ class Engine_aiki {
 
 
             if ($this->kill_widget) {
-                if ($widget->if_no_results) {
-				
-                    $dead_widget =
-                        '<'.$widget->widget_type.' id="'.
-                        $widget->widget_name.'">' . $this->parse_no_results($widget->if_no_results) .
-                        '</'.$widget->widget_type.'>';
+                if ($widget->if_no_results) {				
+                    $dead_widget = $this->parse_no_results($widget->if_no_results) ;
+                    if ( $widget->remove_container != 1 ){
+						$dead_widget = 
+							"<{$widget->widget_type} id='{$widget->widget_name}'>" . 
+							$dead_widget.
+							"</{$widget->widget_type}>";
+					} 
                 } else {
                     $dead_widget = "";
                 }
