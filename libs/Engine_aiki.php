@@ -191,8 +191,8 @@ class Engine_aiki {
                 $this->widget_custom_output = true;
             }
 
-                        if ( isset($widget->custome_header) )
-                            $widget->custom_header = $widget->custome_header;
+            if ( isset($widget->custome_header) )
+                 $widget->custom_header = $widget->custome_header;
 
             if ( $widget->custom_header && $widget->custom_header != '' ) {
                 $custom_headers = explode("\n", $widget->custom_header);
@@ -260,13 +260,14 @@ class Engine_aiki {
                  *        we should not be seeing it
                  *        if ( (isset($config["debug"]) and $config["debug"]) )
                  */
-                    $this->widget_html .=
+                $this->widget_html .=
                        "\n <!--{$widget->widget_name}({$widget->id}) end--> \n";
             }
 
 
             if ($this->kill_widget) {
                 if ($widget->if_no_results) {
+				
                     $dead_widget =
                         '<'.$widget->widget_type.' id="'.
                         $widget->widget_name.'">' . $this->parse_no_results($widget->if_no_results) .
@@ -274,16 +275,21 @@ class Engine_aiki {
                 } else {
                     $dead_widget = "";
                 }
+                
                 /**
                  * @todo looks like some text is placed into the output
                  *         stream and then replaced here!!! Nooo!
                  */
-                $subpattern="[A-z0-9\-_]*\({$this->kill_widget}\)";
-                $this->widget_html =
+                if (!$custom_output) {
+					$subpattern="[A-z0-9\-_]*\({$this->kill_widget}\)";
+					$this->widget_html =
                         preg_replace("/<!--start {$subpattern}-->(.*)<!--{$subpattern} end-->/s",
                                        $dead_widget, $this->widget_html, 1, $count);
-                $this->kill_widget = '';
-
+					$this->kill_widget = '';
+				} else {
+					$this->widget_html = $dead_widget;
+				}			
+                
             }
 
             switch ($widget->widget_target){
