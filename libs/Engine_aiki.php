@@ -1222,21 +1222,22 @@ class Engine_aiki {
 
             foreach ($matches['1'] as $i=>$widget_info) {
                 $widget_para = explode("|", $widget_info);
-                $widget_id  = $aiki->widgets->get_widget_id($widget_para[0]);
-                $normal_select = ( isset($widget_para[1]) ? $widget_para[1] : "" );
-
-                $widget_data = $db->get_row(
-                    "SELECT * FROM aiki_widgets WHERE id='{$widget_id}' LIMIT 1");
-
-                // widget css is added
-                if ( trim($widget_data->css) <> "" &&
-                     !in_array( $widget_data->id, $this->widgets_css)) {
-                    $this->widgets_css[]= $widget_data->id ;
-                }
-                $widget_html = $this->createWidgetContent($widget_data, $normal_select);
-
-
-
+                $widget_data = $aiki->widgets->get_widget($widget_para[0]);
+                
+                if ( is_null( $widget_data ) ) {
+					$widget_html = is_debug_on() ? 
+						sprintf( t("Widget %s doesn't exist"), $widget_para[0]):
+						"" ;
+				} else {					
+					// widget css is added
+					if ( trim($widget_data->css) <> "" &&
+						 !in_array( $widget_data->id, $this->widgets_css)) {
+						$this->widgets_css[]= $widget_data->id ;
+					}
+					$normal_select = ( isset($widget_para[1]) ? $widget_para[1] : "" );
+					$widget_html = $this->createWidgetContent($widget_data, $normal_select);
+				}
+				
 
                 // if the same widget appears two times..it will be replaced.
                 $widget = str_replace($matches[0][$i], $widget_html, $widget);

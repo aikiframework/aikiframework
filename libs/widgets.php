@@ -109,7 +109,7 @@ class widgets {
      */
 
 	function get_widget($widgetNameOrId, $checkSite = true) {
-		return $this->get_widget_helper($widgetNameOrId, true, $direct);
+		return $this->get_widget_helper($widgetNameOrId, true, $checkSite);
 	}
 
 
