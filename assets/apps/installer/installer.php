@@ -339,7 +339,7 @@ JAVASCRIPT;
 			if ( !$revisionNumber ){
 				$revisionNumber = 1099; // installer revision
 			}				
-			$db->query("INSERT INTO `aiki`.`aiki_configs` (`config_id`, `config_name`, `config_value`, `config_selector`, `config_important`, `config_weight`) VALUES (NULL, 'AIKI-REVISION', 'i:$revisionNumber;', '*', '1', '10000');");
+			$db->query("INSERT INTO aiki_configs (config_id, config_name, config_value, config_selector, config_important, config_weight) VALUES (NULL, 'AIKI-REVISION', 'i:$revisionNumber;', '*', '1', '10000');");
 		}
 		break;
 
@@ -378,6 +378,8 @@ JAVASCRIPT;
 				"<div class='message'><p>" . $t->t("Please, copy this code, create file and paste.")."</p><textarea class='filedump'>". $config_file . "</textarea></div>";
 			$help  = "<div class='help'>" . $t->t("Check permission in directory")."</div>";
 		}
+		
+	
 		break;
 
 	case 5:

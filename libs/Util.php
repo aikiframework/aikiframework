@@ -16,7 +16,7 @@
  * @filesource
  */
  
-if(!defined('IN_AIKI')) {
+if(!defined('IN_AIKI')) {	
 	die('No direct script access allowed');
 }
 
@@ -256,17 +256,41 @@ class Util {
 
 	/**
 	 * Returns sql statements contained in the input file. Statements must be
-     * separated by a  "-- ------------------------------------------------------"
+     * separated by a  "-- --[-]*"
      *
      * @return array of false if file doesn't exist
 	 */
 
-	public static function get_sqls_statements ( $file ){
+	public static function get_sqls_statements ( $files, $replaces=NULL, $asArray=true) {
 		$delimiters= "-- ------------------------------------------------------";
-		if ( file_exists($file) ) {
-			return explode($delimiters, preg_replace ("#/\*.*\*/#Us","" , @file_get_contents($file) ));		
-		} 
-		return false;
+		
+		if ( !is_array($files) ) {
+			$files = array($files);
+		}
+	
+		foreach ( $files as $file ){
+			
+			if ( file_exists($file) ) {
+				$sqls .= preg_replace(
+					array(
+						"#^-- --[-]*\$#"   ,  // all delimiters will be corrected..
+						"#^\s*/\*.*\*/#Us" ,  // initial comments like /* .. */
+						"#^-- [A-z].*\$#Um",  // msyql comments like -- some thing
+							"#^--\$#Um"),         // msyql comments like --						
+					array (	$delimiters ) ,        // first regex will be replaced by "-- --", rest by "";
+					@file_get_contents($file)).
+					"\n$delimiters";
+			} 
+			
+		}
+		if ( !is_null( $replaces) ){
+			$sqls = strtr( $sqls, $replaces);
+		}
+		if ( $asArray ) {
+			return explode($delimiters,$sqls);
+		}
+		
+		return $sqls;
 	}
 
 	/**

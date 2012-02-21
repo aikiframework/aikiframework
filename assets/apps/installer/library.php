@@ -232,14 +232,12 @@ function get_new_htaccess($aikiPath){
 function sqls(){
 	global $config, $AIKI_ROOT_DIR;
 
-	$SQLS_DELIMITER = "-- ------------------------------------------------------";
-	
 	$config["ADMIN_PASSWORD"]        = substr(md5(uniqid(rand(),true)),1,8);
 	$config["ADMIN_PASSWORD_MD5_MD5"]= md5(md5($config["ADMIN_PASSWORD"]));
 
     $replace = array ( 
-		"@AIKI_SITE_URL_LEN@"=> strlen($config['$AIKI_SITE_URL']),
-		"@AIKI_SITE_URL@"    => $config['$AIKI_SITE_URL'],
+		"@AIKI_SITE_URL_LEN@"=> strlen($config['AIKI_SITE_URL']),
+		"@AIKI_SITE_URL@"    => $config['AIKI_SITE_URL'],
 		"@PKG_DATA_DIR_LEN@" => strlen($AIKI_ROOT_DIR),
 		"@PKG_DATA_DIR@"     => $AIKI_ROOT_DIR, 
 		"@ADMIN_USER@"=> $config["ADMIN_USER"],
@@ -257,14 +255,7 @@ function sqls(){
 		"$AIKI_ROOT_DIR/sql/CreateTablesSite.sql",
 		"$AIKI_ROOT_DIR/sql/InsertDefaultsSite.sql",
 		"$AIKI_ROOT_DIR/sql/InsertVariable-inSite.sql" );
+				
+	return Util::get_sqls_statements($files, $replace, true);
 			
-	foreach ($files as $file ){
-		if ( file_exists($file) ){
-			$ret.= $SQLS_DELIMITER . "\n". preg_replace ("#/\*.*\*/#Us","",@file_get_contents($file));
-			// remove coments
-		} 
-	}
-	
-	return explode($SQLS_DELIMITER, strtr ($ret, $replace));
-	// note: files can contain sql_delimeters,
 }

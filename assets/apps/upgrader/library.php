@@ -107,7 +107,12 @@ function template($step) {
 					<a href='#license'      class='toggle'>". $t->t("License")   ."</a>
 					<a href='#authors'      class='toggle'>". $t->t("Authors")   ."</a>
 				</div>
-				<div id='changelog'    class='toggle'>" . Util::get_changelog($revision) ."</div>
+				<div id='changelog'    class='toggle'>
+					<div id='revisions'>".
+						$t->t("Last revision").": " . Util::get_last_revision()."<br>".
+						$t->t("Installed revision"). ": " . config("AIKI-REVISION",0,"*") . "
+					</div>".				
+					Util::get_changelog($revision) ."</div>
 				<div id='license'      class='toggle'><pre>" . Util::get_license() ."</pre></div>
 				<div id='authors'      class='toggle'><h3>". $t->t("Authors")."</h3>". Util::get_authors("list")."</div>".
 				select_language() .
@@ -209,7 +214,7 @@ function check_step(&$step) {
 
 function clean_url($url){
 	$top= strpos( $url, "/assets/apps/upgrader");
-	return ( $top ? substr($url,0,$top) ."/" : $url . "/");
+	return ( $top !== false ? substr($url,0,$top) ."/" : $url . "/");
 }
 
 
@@ -266,11 +271,14 @@ function upgradeAikiData (){
 
 	$ret = "<strong>". $t->t("Update Aiki & Site Data") . "</strong>";
 	foreach ($files as $file => $message ){
-		if ( $sqls = Util::get_sqls_statements($file) ) {
+		if ( $sqls = Util::get_sqls_statements($file,$replaces) ) {
 			$result = "";
 			foreach ( $sqls as $i=>$sql ){
+				if ( trim($sql) =="") {
+					continue;
+				}
 				$db->last_error = false;
-				$db->query ( strtr( $sql, $replaces));
+				$db->query ($sql);
 				if ($db->last_error ){
 					$result .= "- in $i statement ".substr($sql,0,35) ."...<br>";
 				}
