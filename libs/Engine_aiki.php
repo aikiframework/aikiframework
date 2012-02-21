@@ -924,6 +924,7 @@ class Engine_aiki {
         return $template;
     }
 
+	
 
 
 
@@ -1258,8 +1259,12 @@ class Engine_aiki {
     private function records_num($sql) {
         global $db;
 
+		$sql = trim($sql);
         if (!preg_match('/^select(.*) from /Usi', $sql, $select)){
-            return false;
+			if ( preg_match('/^select (.*) /Usi',$sql) ) {
+				return 1;
+            } 
+            return false;            
         }
 
         if (stripos($sql, " GROUP BY ") || stripos($sql, " LIMIT")) {
