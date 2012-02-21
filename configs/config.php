@@ -274,18 +274,18 @@ $config["debug"] = false;
 
 /** Set the aiki log directory
  * @global string $config["log_dir"] */
-$config["log_dir"] = AIKI_LOG_DIR;
+$config["log_dir"] = "";
 
 /** Set the aiki log file name
  * @global string $config["log_file"] */
-$config["log_file"] = AIKI_LOG_FILE;
+$config["log_file"] = "";
 
 /** Set the aiki host profile name
  * @global string $config["log_profile"] */
-$config["log_profile"] = AIKI_LOG_PROFILE;
+$config["log_profile"] = "";
 
 /** Set the aiki log level
  * @global string $config["log_level"] */
-$config["log_level"] = AIKI_LOG_LEVEL;
+$config["log_level"] = "NONE";
 
 ?>
