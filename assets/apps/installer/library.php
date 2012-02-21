@@ -157,7 +157,7 @@ function check_step(&$step) {
 
 function clean_url($url, $ending=true){
 	$top= strpos( $url, "/assets/apps/installer");
-	return ( $top ? substr($url,0,$top): $url) . ( $ending ? "/" : "");
+	return ( $top !== false ? substr($url,0,$top): $url) . ( $ending ? "/" : "");
 }
 
 
