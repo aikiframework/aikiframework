@@ -28,7 +28,7 @@
  * @TODO: Need to integrat the bzr revno into this after the X.X.X.REVNO
  *        since bassel nuked it because he didn't understand it.
  */
-define('AIKI_VERSION','0.9.0');
+define('AIKI_VERSION','0.9.0.1');
 
 /**
  * Used to test for script access
