@@ -24,12 +24,12 @@ if(!defined("IN_AIKI")) { die("No direct script access allowed"); }
 require_once("libs/updater/UpdaterInterface.php");
 
 class FileUpdater implements UpdaterInterface {
-    
+
     /** Constructs a new FileUpdater */
     public function __construct() {
-        
+
     }
     public function update() {
-    	
+
     }
 }

@@ -21,24 +21,24 @@ require_once("libs/Log.php");
 
 /** To test protected properties and methods */
 class TestLog extends Log {
-	public function getAllow() {
-		return $this->_allow;
-	}	
+    public function getAllow() {
+        return $this->_allow;
+    }
 }
 
 /** This is the test class which should be the same as the file name */
 class LogTest extends PHPUnit_Framework_TestCase {
 
-	public function testGetContents() {
-		
-		// test the get contents method
+    public function testGetContents() {
+
+        // test the get contents method
         $log = new TestLog("", "", "", "");
         $this->assertSame("NONE", $log->getContents());
-        
+
         $log = new TestLog(".", "test.log", "none", ".");
         $this->assertSame("NONE", $log->getContents());
-        
+
         // test protected property value
         $this->assertSame("NONE", $log->getAllow());
-	}
+    }
 }

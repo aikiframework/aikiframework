@@ -25,15 +25,15 @@ require_once("libs/file/TransferInterface.php");
 
 class CurlTransfer implements TransferInterface {
 
-	/** cURL session resource */
-	protected $_curl = false;
-    
+    /** cURL session resource */
+    protected $_curl = false;
+
     /** Constructs a new CurlTransfer
      * @return void
      * @throws AikiException */
     public function __construct() {
         if (extension_loaded("curl")) {
-        	$this->_open();
+            $this->_open();
             curl_setopt($this->_curl, CURLOPT_TIMEOUT, 50);
             curl_setopt($this->_curl, CURLOPT_FOLLOWLOCATION, true);
         }
@@ -41,35 +41,35 @@ class CurlTransfer implements TransferInterface {
             throw new AikiException("Extension curl is not loaded.");
         }
     }
-    
+
     /** Destructs a CurlTransfer.
      * Closes this cURL session. */
     public function __destruct() {
         $this->_close();
     }
-    
+
     /** Open the cURL resource.
-     * @return void 
+     * @return void
      * @throws AikiException */
     protected function _open() {
         // Initialize a cURL session
         $this->_curl = curl_init();
-        
+
         if (false === $this->_curl) {
             throw new AikiException("Failed to initialize cURL.");
         }
     }
-    
+
     /** Close the cURL resource.
      * @return void */
     protected function _close()
     {
         if (!(false === $this->_curl)) {
-	        // close the curl resource
-	        curl_close($this->_curl);
+            // close the curl resource
+            curl_close($this->_curl);
         }
     }
-    
+
     /** Close a file stream resource.
      * @return void */
     protected function _closeStream($stream)
@@ -78,9 +78,9 @@ class CurlTransfer implements TransferInterface {
             fclose($stream);
         }
     }
-    
-    /** Reset the time limit 
-     * @param integer $seconds Seconds to timeout in 
+
+    /** Reset the time limit
+     * @param integer $seconds Seconds to timeout in
      * @return void */
     protected function _setTimeLimit($seconds) {
         /* This is usefull when you are downloading big files, as it
@@ -89,25 +89,25 @@ class CurlTransfer implements TransferInterface {
             set_time_limit($seconds);
         }
     }
-    
-    /** Get remote file contents 
-     * @param string $url URL to get contents of 
+
+    /** Get remote file contents
+     * @param string $url URL to get contents of
      * @return string|boolean $contents Contents of the file or FALSE on failure
      * @throws AikiException */
     public function getRemoteContents($url) {
-    	$contents = false;
-    	// Seconds to timeout in
-    	$this->_setTimeLimit(0);
-        
+        $contents = false;
+        // Seconds to timeout in
+        $this->_setTimeLimit(0);
+
         // set the URL
         curl_setopt($this->_curl, CURLOPT_URL, $url);
-    	
-    	// Indicate that we want the output returned into a variable.
+
+        // Indicate that we want the output returned into a variable.
         curl_setopt($this->_curl, CURLOPT_RETURNTRANSFER, true);
-        
-        // Execute the given cURL session. 
-		$contents = curl_exec($this->_curl);
-		
+
+        // Execute the given cURL session.
+        $contents = curl_exec($this->_curl);
+
         if ($contents) {
             return $contents;
         }
@@ -115,48 +115,48 @@ class CurlTransfer implements TransferInterface {
             throw new AikiException("Failed to execute the cURL session.");
         }
     }
-    
-    /** Download a file 
-     * @param string $url URL to file download 
-     * @param string $destination The destination to save the download 
+
+    /** Download a file
+     * @param string $url URL to file download
+     * @param string $destination The destination to save the download
      * @return boolean $success Whether or not the download succeeded
      * @throws AikiException */
     public function download($url, $destination = NULL) {
-    	
-    	$success = false;
-    	
-    	// Seconds to timeout in
-    	$this->_setTimeLimit(0);
-	    
-	    // when destination not given, default to the base name of the URL
-	    if (NULL == $destination) {
-	    	$destination = basename($url);
-	    }
-	    // This is the stream resource to save the contents of the URL
-	    $stream = fopen($destination, 'wb+');
-	    
-	    if ($stream) {
-	    	// set the URL
+
+        $success = false;
+
+        // Seconds to timeout in
+        $this->_setTimeLimit(0);
+
+        // when destination not given, default to the base name of the URL
+        if (NULL == $destination) {
+            $destination = basename($url);
+        }
+        // This is the stream resource to save the contents of the URL
+        $stream = fopen($destination, 'wb+');
+
+        if ($stream) {
+            // set the URL
             curl_setopt($this->_curl, CURLOPT_URL, $url);
-            
+
             // pass curl the stream resource
             curl_setopt($this->_curl, CURLOPT_FILE, $stream);
-            
-            // Execute the given cURL session. 
+
+            // Execute the given cURL session.
             if (curl_exec($this->_curl)) {
-	            // close the stream resource
-	            $this->_closeStream($stream);
-	            $success = true;
+                // close the stream resource
+                $this->_closeStream($stream);
+                $success = true;
             }
             else {
                 // close the stream resource
                 $this->_closeStream($stream);
                 throw new AikiException("Failed to execute the cURL session.");
             }
-	    }
-	    else {
+        }
+        else {
             throw new AikiException("Failed to open " . $destination);
-	    }
-	    return $success;
+        }
+        return $success;
     }
 }

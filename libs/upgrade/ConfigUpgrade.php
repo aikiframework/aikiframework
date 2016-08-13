@@ -24,14 +24,14 @@ if(!defined("IN_AIKI")) { die("No direct script access allowed"); }
 require_once("libs/upgrade/UpgradeInterface.php");
 
 class ConfigUpgrade implements UpgradeInterface {
-    
+
     /** Constructs a new ConfigUpgrade */
     public function __construct() {
-        
+
     }
-    
+
     /** Install an Upgrade */
     public function install() {
-        
+
     }
 }

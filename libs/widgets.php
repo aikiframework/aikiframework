@@ -40,12 +40,12 @@ class widgets {
      * @return string part of a SQL WHERE clausule
      */
 
-	private function widget_scope ( $checkSite= true  ){
-		global $aiki;
-		return "is_active=1" . ( $checkSite ? " AND ( widget_site='{$aiki->site}' OR widget_site ='aiki_shared')": "");
-	}
+    private function widget_scope ( $checkSite= true  ){
+        global $aiki;
+        return "is_active=1" . ( $checkSite ? " AND ( widget_site='{$aiki->site}' OR widget_site ='aiki_shared')": "");
+    }
 
-	/**
+    /**
      * get a group of widget
      *
      * If no parameters is given search for layout widgets.
@@ -70,7 +70,7 @@ class widgets {
     }
 
 
-	/**
+    /**
      * return widget that responds a error_404 page.
      *
      * @return array of id
@@ -97,20 +97,20 @@ class widgets {
      * @return integer widget_ir
      */
 
-	function get_widget_id($widgetNameOrId) {
-		return $this->get_widget_helper($widgetNameOrId, false);
-	}
+    function get_widget_id($widgetNameOrId) {
+        return $this->get_widget_helper($widgetNameOrId, false);
+    }
 
-	/**
+    /**
      * get all data from a widget given by id or name
      *
      * @param  mixed  v$widgetNameOrId Widget name or id.
      * @return object_Ezsql_row
      */
 
-	function get_widget($widgetNameOrId, $checkSite = true) {
-		return $this->get_widget_helper($widgetNameOrId, true, $checkSite);
-	}
+    function get_widget($widgetNameOrId, $checkSite = true) {
+        return $this->get_widget_helper($widgetNameOrId, true, $checkSite);
+    }
 
 
     private function get_widget_helper($widgetNameOrId, $record=false, $checkSite=true) {
@@ -120,7 +120,7 @@ class widgets {
         } else {
             $where =
                 $this->widget_scope($checkSite) ." AND " .
-				"widget_name='" . addslashes($widgetNameOrId) ."'"; // paranoic test.
+                "widget_name='" . addslashes($widgetNameOrId) ."'"; // paranoic test.
         }
 
         $searchSQL =

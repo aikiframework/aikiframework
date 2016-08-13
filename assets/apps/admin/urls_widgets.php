@@ -8,7 +8,7 @@
  * This source file is subject to the AGPL-3.0 license that is bundled
  * with this package in the file LICENSE.
  *
- * @author      Aikilab http://www.aikilab.com 
+ * @author      Aikilab http://www.aikilab.com
  * @copyright   (c) 2008-2011 Aiki Lab Pte Ltd
  * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
  * @link        http://www.aikiframework.org
@@ -32,7 +32,7 @@ require_once("../../../bootstrap.php");
  * @see membership.php
  */
 if ($membership->permissions != "SystemGOD"){
-	die("You do not have permissions to access this file");
+    die("You do not have permissions to access this file");
 }
 
 
@@ -49,47 +49,47 @@ $used = array();
 $used_url = array();
 foreach ($get_urls as $url){
 
-	if ($url->display_urls == "*"){
-		$url->display_urls = "Global";
-	}
-	$multi_url = explode("|", $url->display_urls);
+    if ($url->display_urls == "*"){
+        $url->display_urls = "Global";
+    }
+    $multi_url = explode("|", $url->display_urls);
 
-	if (isset($multi_url['1'])){
-		$url->display_urls = $multi_url[0];
-	}
+    if (isset($multi_url['1'])){
+        $url->display_urls = $multi_url[0];
+    }
 
-	if (!in_array($url->display_urls, $used_url)){
-		echo '<item parent_id="0" id="'.$url->display_urls.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/link.png"><![CDATA['.$url->display_urls.']]></name></content></item>';
-	}
+    if (!in_array($url->display_urls, $used_url)){
+        echo '<item parent_id="0" id="'.$url->display_urls.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/link.png"><![CDATA['.$url->display_urls.']]></name></content></item>';
+    }
 
-	$used_url[$url->display_urls] = $url->display_urls;
+    $used_url[$url->display_urls] = $url->display_urls;
 
-	$get_widgets = $db->get_results("select id, widget_name, father_widget, is_father, display_urls from aiki_widgets where display_urls = '$url->display_urls' or display_urls LIKE '$url->display_urls|%' or display_urls LIKE '$url->display_urls/%' or display_urls = '*' order by display_order,id");
-	if($get_widgets){
-		foreach ($get_widgets as $widget){
+    $get_widgets = $db->get_results("select id, widget_name, father_widget, is_father, display_urls from aiki_widgets where display_urls = '$url->display_urls' or display_urls LIKE '$url->display_urls|%' or display_urls LIKE '$url->display_urls/%' or display_urls = '*' order by display_order,id");
+    if($get_widgets){
+        foreach ($get_widgets as $widget){
 
-			if (!in_array($widget->id, $used)){
+            if (!in_array($widget->id, $used)){
 
-				if ($widget->father_widget == 0 or $widget->display_urls == $url->display_urls){
-					$used[$widget->id] = $widget->id;
-					echo '<item parent_id="'.$url->display_urls.'" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->id.' - '.$widget->widget_name.']]></name></content></item>';
-				}else{
-					$used[$widget->id] = $widget->id;
-					echo '<item parent_id="'.$widget->father_widget.'" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->id.' - '.$widget->widget_name.']]></name></content></item>';
-				}
-			}
+                if ($widget->father_widget == 0 or $widget->display_urls == $url->display_urls){
+                    $used[$widget->id] = $widget->id;
+                    echo '<item parent_id="'.$url->display_urls.'" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->id.' - '.$widget->widget_name.']]></name></content></item>';
+                }else{
+                    $used[$widget->id] = $widget->id;
+                    echo '<item parent_id="'.$widget->father_widget.'" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->id.' - '.$widget->widget_name.']]></name></content></item>';
+                }
+            }
 
-		}
-	}
+        }
+    }
 
 }
 
 echo '<item parent_id="0" id="view_all_widgets" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/link.png"><![CDATA[All Widgets]]></name></content></item>';
 $get_widgets = $db->get_results("select id, widget_name, father_widget, is_father from aiki_widgets where app_id != 1 order by id");
 if($get_widgets){
-	foreach ($get_widgets as $widget){
-		echo '<item parent_id="view_all_widgets" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->id.' - '.$widget->widget_name.']]></name></content></item>';
-	}
+    foreach ($get_widgets as $widget){
+        echo '<item parent_id="view_all_widgets" id="'.$widget->id.'" ><content><name icon="'.$config['url'].'assets/apps/admin/images/icons/layout_content.png"><![CDATA['.$widget->id.' - '.$widget->widget_name.']]></name></content></item>';
+    }
 }
 
 echo "</root>";

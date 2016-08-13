@@ -24,29 +24,29 @@ if(!defined("IN_AIKI")) { die("No direct script access allowed"); }
 require_once("libs/archive/ArchiveInterface.php");
 
 class AikiZipArchive implements ArchiveInterface {
-    
+
     /** ZipArchive object utility library */
     protected $_ZipArchive = "";
-    
+
     /** Constructs a new AikiZipArchive. This should
      * look like:
      * $zip = new AikiZipArchive(Array("ZipArchive" => new ZipArchive()));
-     * @param array $deps The dependencies of the Updater. 
-     * @return void 
+     * @param array $deps The dependencies of the Updater.
+     * @return void
      * @throws AikiException */
     public function __construct(Array $deps = NULL) {
         if (extension_loaded("zip")) {
-	        if (isset($deps)) {
-	            foreach ($deps as $key => $val) {
-	                $dep = "_" . $key;
-	                if (isset($this->$dep) and $val instanceof $key) {
-	                   $this->$dep = $val;
-	                }
-	                else {
-	                    throw new AikiException("Invalid dependency " . $key);
-	                }
-	            }
-	        }
+            if (isset($deps)) {
+                foreach ($deps as $key => $val) {
+                    $dep = "_" . $key;
+                    if (isset($this->$dep) and $val instanceof $key) {
+                       $this->$dep = $val;
+                    }
+                    else {
+                        throw new AikiException("Invalid dependency " . $key);
+                    }
+                }
+            }
         }
         else {
             throw new AikiException("Extension zip is not loaded.");
@@ -55,32 +55,32 @@ class AikiZipArchive implements ArchiveInterface {
 
     /** Compress something */
     public function compress() {
-    	
+
     }
-    
+
     /** Decompress an archive to a destination directory.
      * @param string $archive Archive file to decompress
      * @param string $destination Directory for decompressed contents
      * @return boolean $success Whether or not decompress succeeds */
     public function decompress($archive, $destination) {
-    	$success = false;
+        $success = false;
         if ($this->_ZipArchive instanceof ZipArchive) {
-	    	$success = $this->_ZipArchive->open($archive);
-	    	if ($success) {
-	    		$success = $this->_ZipArchive->extractTo($destination);
-	    		if (false === $success) {
-	    			throw new AikiException(
+            $success = $this->_ZipArchive->open($archive);
+            if ($success) {
+                $success = $this->_ZipArchive->extractTo($destination);
+                if (false === $success) {
+                    throw new AikiException(
                         "Failed to extract to " . $destination);
-	    		}
-	            $this->_ZipArchive->close();
-	    	}
-	    	else {
-	    		throw new AikiException("Failed to open archive " . $archive);
-	    	}
+                }
+                $this->_ZipArchive->close();
+            }
+            else {
+                throw new AikiException("Failed to open archive " . $archive);
+            }
         }
         else {
             throw new AikiException("Invalid ZipArchive instance.");
         }
-    	return $success;
+        return $success;
     }
 }

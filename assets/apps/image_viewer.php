@@ -16,7 +16,7 @@
  * @package     Apps
  * @filesource
  *
- * @todo		break this code into smaller pieces
+ * @todo        break this code into smaller pieces
  */
 
 error_reporting(0);
@@ -33,9 +33,9 @@ $id = $_GET['id'];
 $size = $_GET['size'];
 
 if (isset($_GET['mode']))
-	$mode = $_GET['mode'];
+    $mode = $_GET['mode'];
 else
-	$mode = '';
+    $mode = '';
 
 /**
  * @global string $ext isolates the extension of the filename
@@ -48,28 +48,28 @@ $ext = substr($id, strrpos($id, '.') + 1);
 $ext = strtolower($ext);
 
 if ($ext == "jpeg")
-	$ext = "jpg";
+    $ext = "jpg";
 
 /**
  * Compares isolated file extension & generates appropriate content-type
  */
 switch ($ext)
 {
-	case "svg":
-		header('Content-Type: image/svg+xml');
-		break;
+    case "svg":
+        header('Content-Type: image/svg+xml');
+        break;
 
-	case "png":
-		header('Content-Type: image/png');
-		break;
+    case "png":
+        header('Content-Type: image/png');
+        break;
 
-	case "jpg":
-		header('content-type: image/jpeg');
-		break;
+    case "jpg":
+        header('content-type: image/jpeg');
+        break;
 
-	default:
-		header('content-type: image/jpeg');
-		break;
+    default:
+        header('content-type: image/jpeg');
+        break;
 }
 
 /**
@@ -77,14 +77,14 @@ switch ($ext)
  */
 switch ($mode)
 {
-	case "svg_to_png":
-		$ext = "svg";
-		break;
+    case "svg_to_png":
+        $ext = "svg";
+        break;
 
-	default:
-		if ($mode)
-			$hard_full_path = $mode;
-		break;
+    default:
+        if ($mode)
+            $hard_full_path = $mode;
+        break;
 }
 
 
@@ -107,234 +107,234 @@ $default_photo_module = $config['default_photo_module'];
  */
 if ($id)
 {
-	if (!isset($hard_full_path))
-	{
-		/**
-		 * Ensure the extension is a displayable file type
-		 *
-		 * @todo extract hardcoded default to the top of the document
-		 */
-		if (!preg_match('/jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG/i', $id))
-		{
+    if (!isset($hard_full_path))
+    {
+        /**
+         * Ensure the extension is a displayable file type
+         *
+         * @todo extract hardcoded default to the top of the document
+         */
+        if (!preg_match('/jpg|jpeg|gif|png|svg|JPG|JPEG|GIF|PNG|SVG/i', $id))
+        {
 
-			$image = $db->get_row("SELECT filename, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where id='$id'");
-			$id = $image->filename;
+            $image = $db->get_row("SELECT filename, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where id='$id'");
+            $id = $image->filename;
 
-		} else {
-			$file = $id;
-			switch ($mode)
-			{
-				case "svg_to_png":
-					$file = str_replace(".png", ".svg", $file);
-					break;
-			}
+        } else {
+            $file = $id;
+            switch ($mode)
+            {
+                case "svg_to_png":
+                    $file = str_replace(".png", ".svg", $file);
+                    break;
+            }
 
-			$image = $db->get_row("SELECT id, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where filename='$file'");
-		}
-		
-	} else {
-		
-		$image =  new stdClass();
-		if (!isset($hard_full_path) or !$hard_full_path)
-			$hard_full_path = '';
+            $image = $db->get_row("SELECT id, full_path, available_sizes, no_watermark_under, watermark FROM $default_photo_module where filename='$file'");
+        }
 
-		$image->full_path = $hard_full_path."/";
-		$image->filename = $id;
-		$image->no_watermark_under = '';
-		$image->watermark = '';
-		$image->available_sizes = '';
-		$hard_image = true;
-	}
-	
-	/**
-	 * If a row has been pulled from the db describing an image, handle it
-	 */
-	if ($image)
-	{
-		/**
-		 * Begin constructing the URL
-		 */
-		$get_root = $AIKI_ROOT_DIR."/";
-		
-		$original_filename = $get_root.$image->full_path.$id;
-		
-		/**
-		 * Sets default size, if no size specified
-		 */
-		if ($config['max_res'] and !$size)
-			$size = $config['max_res'];
+    } else {
 
-		if ($size == '_')
-			$size = '';
+        $image =  new stdClass();
+        if (!isset($hard_full_path) or !$hard_full_path)
+            $hard_full_path = '';
 
-		/**
-		 * If file is svg, rename to png
-		 */
-		if ($ext == "svg")
-		{
-			switch ($mode)
-			{
-				case "svg_to_png":
-					$original_filename = 
-						str_replace(".png", ".svg", $original_filename );
-					break;
-			}
+        $image->full_path = $hard_full_path."/";
+        $image->filename = $id;
+        $image->no_watermark_under = '';
+        $image->watermark = '';
+        $image->available_sizes = '';
+        $hard_image = true;
+    }
 
-			if ($size)
-			{
-				$size = str_replace('px', '', $size);
+    /**
+     * If a row has been pulled from the db describing an image, handle it
+     */
+    if ($image)
+    {
+        /**
+         * Begin constructing the URL
+         */
+        $get_root = $AIKI_ROOT_DIR."/";
 
-				switch ($mode)
-				{
-					case "svg_to_png":
+        $original_filename = $get_root.$image->full_path.$id;
 
-						if(file_exists($get_root.$image->full_path."$size"."px-".$id)){
-							$final_image = imagecreatefrompng($get_root.$image->full_path."$size"."px-".$id);
+        /**
+         * Sets default size, if no size specified
+         */
+        if ($config['max_res'] and !$size)
+            $size = $config['max_res'];
 
-							imagealphablending($final_image, false);
-							imagesavealpha($final_image, true);
+        if ($size == '_')
+            $size = '';
 
-							imagepng($final_image);
-							imagedestroy($final_image);
+        /**
+         * If file is svg, rename to png
+         */
+        if ($ext == "svg")
+        {
+            switch ($mode)
+            {
+                case "svg_to_png":
+                    $original_filename =
+                        str_replace(".png", ".svg", $original_filename );
+                    break;
+            }
 
-						}else{
+            if ($size)
+            {
+                $size = str_replace('px', '', $size);
 
-							$svgfile = implode(file($original_filename));
+                switch ($mode)
+                {
+                    case "svg_to_png":
 
-							$header = $aiki->get_string_between($svgfile, "<svg", ">");
+                        if(file_exists($get_root.$image->full_path."$size"."px-".$id)){
+                            $final_image = imagecreatefrompng($get_root.$image->full_path."$size"."px-".$id);
 
-							$or_width = $aiki->get_string_between($header, 'width="', '"');
-							$width = str_replace("px", "", $or_width );
-							$width = str_replace("pt", "", $width );
-							$width  = intval($width);
+                            imagealphablending($final_image, false);
+                            imagesavealpha($final_image, true);
 
-							$or_height = $aiki->get_string_between($header, 'height="', '"');
-							$height  = str_replace("px", "", $or_height);
-							$height  = str_replace("pt", "", $height);
-							$height = intval($height);
+                            imagepng($final_image);
+                            imagedestroy($final_image);
 
-							$newvalue = $size;
-							if ($width < $height){
-								$newhight = $newvalue;
-								$newwidth = round(($newvalue * $width)/$height);
-							}elseif ($width == $height) {
-								$newhight = $newvalue;
-								$newwidth = $newvalue;
-							}else{
-								$newwidth = $newvalue;
-								$newhight = round(($newvalue * $height)/$width);
-							}
+                        }else{
 
-							$id_svg = str_replace(".png", ".svg", $id);
-							$or_svg_file = $get_root.$image->full_path.$id_svg;
+                            $svgfile = implode(file($original_filename));
 
-							if (file_exists($or_svg_file)){
+                            $header = $aiki->get_string_between($svgfile, "<svg", ">");
 
-								$aiki->image->rsvg_convert_svg_png($or_svg_file, $newwidth, $newhight);
+                            $or_width = $aiki->get_string_between($header, 'width="', '"');
+                            $width = str_replace("px", "", $or_width );
+                            $width = str_replace("pt", "", $width );
+                            $width  = intval($width);
 
+                            $or_height = $aiki->get_string_between($header, 'height="', '"');
+                            $height  = str_replace("px", "", $or_height);
+                            $height  = str_replace("pt", "", $height);
+                            $height = intval($height);
 
-								$final_image = imagecreatefrompng($get_root.$image->full_path.$size."px-".$id);
+                            $newvalue = $size;
+                            if ($width < $height){
+                                $newhight = $newvalue;
+                                $newwidth = round(($newvalue * $width)/$height);
+                            }elseif ($width == $height) {
+                                $newhight = $newvalue;
+                                $newwidth = $newvalue;
+                            }else{
+                                $newwidth = $newvalue;
+                                $newhight = round(($newvalue * $height)/$width);
+                            }
 
-								//$aiki->image->imageresize($get_root.$image->full_path,$id,$size,$size."px-");
+                            $id_svg = str_replace(".png", ".svg", $id);
+                            $or_svg_file = $get_root.$image->full_path.$id_svg;
 
-								imagealphablending($final_image, false);
-								imagesavealpha($final_image, true);
+                            if (file_exists($or_svg_file)){
 
-								imagepng($final_image);
-								imagedestroy($final_image);
-							}
-						}
-						break;
-
-					default:
-						echo $svgfile;
-						break;
-				}
-
-			}else{
-				echo $svgfile;
-			}
-
-		} else {
-			$resize_filename = $get_root.$image->full_path.$size."px-".$id;
-
-			if ($image->watermark and 
-				!$size and 
-				file_exists($original_filename))
-			{
-				$original_filename = 
-					$aiki->image->display_watermarked_image($original_filename,
-						$image->watermark, $image->no_watermark_under);
-
-			} elseif ($image->watermark and $size and 
-					  file_exists($resize_filename))
-			{
-				$original_filename = 
-					$aiki->image->display_watermarked_image($resize_filename, 
-						$image->watermark, $image->no_watermark_under);
-			}
-
-			if ($size)
-				$req_filename = $resize_filename;
-			else
-				$req_filename = $original_filename;
-
-			if (file_exists($req_filename))
-			{
-				switch ($ext)
-				{
-					case "png":
-
-						$final_image = imagecreatefrompng($req_filename);
-
-						imagealphablending($final_image, false);
-						imagesavealpha($final_image, true);
-							
-						imagepng($final_image);
-						imagedestroy($final_image);
-
-						break;
-
-					case "jpg":
-						$final_image = imagecreatefromjpeg($req_filename);
-						imagejpeg($final_image);
-						imagedestroy($final_image);
-						break;
-				}
+                                $aiki->image->rsvg_convert_svg_png($or_svg_file, $newwidth, $newhight);
 
 
+                                $final_image = imagecreatefrompng($get_root.$image->full_path.$size."px-".$id);
 
-			} elseif(file_exists($original_filename))
-			{
-				$aiki->image->imageresize($get_root.$image->full_path,$id,$size,$size."px-");
+                                //$aiki->image->imageresize($get_root.$image->full_path,$id,$size,$size."px-");
 
-				if (file_exists($req_filename))
-				{
-					$image->available_sizes = $image->available_sizes."$size".'px|';
-					if (!isset($hard_image))
-					{
-						$update_sizes = $db->query("UPDATE $default_photo_module set available_sizes = '$image->available_sizes' where id = '$image->id'");
-					}
+                                imagealphablending($final_image, false);
+                                imagesavealpha($final_image, true);
 
-					switch ($ext)
-					{
-						case "png":
-							$final_image = imagecreatefrompng($req_filename);
-							imagealphablending($final_image, false);
-							imagesavealpha($final_image, true);
-							imagepng($final_image);
-							imagedestroy($final_image);
-							break;
+                                imagepng($final_image);
+                                imagedestroy($final_image);
+                            }
+                        }
+                        break;
 
-						case "jpg":
-							$final_image = imagecreatefromjpeg($req_filename);
-							imagejpeg($final_image);
-							imagedestroy($final_image);
-							break;
-					}
+                    default:
+                        echo $svgfile;
+                        break;
+                }
 
-				}
-			}
-		}
-	}
+            }else{
+                echo $svgfile;
+            }
+
+        } else {
+            $resize_filename = $get_root.$image->full_path.$size."px-".$id;
+
+            if ($image->watermark and
+                !$size and
+                file_exists($original_filename))
+            {
+                $original_filename =
+                    $aiki->image->display_watermarked_image($original_filename,
+                        $image->watermark, $image->no_watermark_under);
+
+            } elseif ($image->watermark and $size and
+                      file_exists($resize_filename))
+            {
+                $original_filename =
+                    $aiki->image->display_watermarked_image($resize_filename,
+                        $image->watermark, $image->no_watermark_under);
+            }
+
+            if ($size)
+                $req_filename = $resize_filename;
+            else
+                $req_filename = $original_filename;
+
+            if (file_exists($req_filename))
+            {
+                switch ($ext)
+                {
+                    case "png":
+
+                        $final_image = imagecreatefrompng($req_filename);
+
+                        imagealphablending($final_image, false);
+                        imagesavealpha($final_image, true);
+
+                        imagepng($final_image);
+                        imagedestroy($final_image);
+
+                        break;
+
+                    case "jpg":
+                        $final_image = imagecreatefromjpeg($req_filename);
+                        imagejpeg($final_image);
+                        imagedestroy($final_image);
+                        break;
+                }
+
+
+
+            } elseif(file_exists($original_filename))
+            {
+                $aiki->image->imageresize($get_root.$image->full_path,$id,$size,$size."px-");
+
+                if (file_exists($req_filename))
+                {
+                    $image->available_sizes = $image->available_sizes."$size".'px|';
+                    if (!isset($hard_image))
+                    {
+                        $update_sizes = $db->query("UPDATE $default_photo_module set available_sizes = '$image->available_sizes' where id = '$image->id'");
+                    }
+
+                    switch ($ext)
+                    {
+                        case "png":
+                            $final_image = imagecreatefrompng($req_filename);
+                            imagealphablending($final_image, false);
+                            imagesavealpha($final_image, true);
+                            imagepng($final_image);
+                            imagedestroy($final_image);
+                            break;
+
+                        case "jpg":
+                            $final_image = imagecreatefromjpeg($req_filename);
+                            imagejpeg($final_image);
+                            imagedestroy($final_image);
+                            break;
+                    }
+
+                }
+            }
+        }
+    }
 }

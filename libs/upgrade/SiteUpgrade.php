@@ -24,14 +24,14 @@ if(!defined("IN_AIKI")) { die("No direct script access allowed"); }
 require_once("libs/upgrade/UpgradeInterface.php");
 
 class SiteUpgrade implements UpgradeInterface {
-    
+
     /** Constructs a new SiteUpgrade */
     public function __construct() {
-        
+
     }
-    
+
     /** Install an Upgrade */
     public function install() {
-    	
+
     }
 }

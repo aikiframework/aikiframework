@@ -20,21 +20,21 @@
 
 // disable php script access
 if (!defined("IN_AIKI")) {
-	die("No direct script access allowed");
+    die("No direct script access allowed");
 }
 
 /** @see UpgradeInterface.php */
 require_once("libs/upgrade/UpgradeInterface.php");
 
 class Upgrade implements UpgradeInterface {
-	
-	/** Constructs a new Upgrade */
-	public function __construct() {
-		
-	}
-	
-	/** Install an Upgrade */
-	public function install() {
-		
-	}
+
+    /** Constructs a new Upgrade */
+    public function __construct() {
+
+    }
+
+    /** Install an Upgrade */
+    public function install() {
+
+    }
 }

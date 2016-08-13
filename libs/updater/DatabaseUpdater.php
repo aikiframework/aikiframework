@@ -24,13 +24,13 @@ if(!defined("IN_AIKI")) { die("No direct script access allowed"); }
 require_once("libs/updater/UpdaterInterface.php");
 
 class DatabaseUpdater implements UpdaterInterface {
-	
+
     /** Constructs a new DatabaseUpdater */
-	public function __construct() {
-		
-	}
-	
+    public function __construct() {
+
+    }
+
     public function update() {
-    	
+
     }
 }

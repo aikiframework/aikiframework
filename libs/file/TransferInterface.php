@@ -21,16 +21,16 @@
 if(!defined("IN_AIKI")) { die("No direct script access allowed"); }
 
 interface TransferInterface {
-    
-    /** Download a file 
-     * @param string $url URL to file download 
-     * @param string $destination The destination to save the download 
+
+    /** Download a file
+     * @param string $url URL to file download
+     * @param string $destination The destination to save the download
      * @return boolean $success Whether or not the download succeeded
      * @throws AikiException */
     public function download($url, $destination = NULL);
-    
-    /** Get remote file contents 
-     * @param string $url URL to get contents of 
+
+    /** Get remote file contents
+     * @param string $url URL to get contents of
      * @return string|boolean $contents Contents of the file or FALSE on failure
      * @throws AikiException */
     public function getRemoteContents($url);

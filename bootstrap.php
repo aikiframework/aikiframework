@@ -24,7 +24,7 @@
  * When the MINOR number changes, the FIX number should reset to zero.
  * When the MAJOR number changes, the MINOR number should reset to zero.
  * When the MAJOR number is zero, this indicates an alpha or beta type
- * release. Each number can, but should probably not exceed 99 
+ * release. Each number can, but should probably not exceed 99
  * @TODO: Need to integrat the bzr revno into this after the X.X.X.REVNO
  *        since bassel nuked it because he didn't understand it.
  */
@@ -42,9 +42,9 @@ $AIKI_ROOT_DIR = realpath(dirname(__FILE__));
 
 // append to the include path while preserving existing entries
 set_include_path(
-		get_include_path() .
-		PATH_SEPARATOR .
-		"$AIKI_ROOT_DIR");
+        get_include_path() .
+        PATH_SEPARATOR .
+        "$AIKI_ROOT_DIR");
 
 /** @see AikiException.php */
 require_once("$AIKI_ROOT_DIR/libs/AikiException.php");
@@ -53,30 +53,30 @@ require_once("$AIKI_ROOT_DIR/libs/AikiException.php");
  * @todo these should be set in some class, and are scoped wrong
  */
 if (isset($_GET['nogui'])) {
-	$nogui = true;
+    $nogui = true;
 }
 if (isset($_GET['noheaders'])) {
-	$noheaders = true;
+    $noheaders = true;
 }
 if (isset($_GET['custom_output'])){
-	$custom_output = true;
-	$noheaders = true;
+    $custom_output = true;
+    $noheaders = true;
 }
 
-/** 
+/**
  * Set the configuration option defaults.
- * 
+ *
  */
 
 
 /* use run-time installer config */
 if (file_exists("$AIKI_ROOT_DIR/config.php")) {
-	/** @see config.php */
-	require_once("$AIKI_ROOT_DIR/config.php");
+    /** @see config.php */
+    require_once("$AIKI_ROOT_DIR/config.php");
 }
 else {
-	/** @see assets/apps/installer/installer.php */
-	header("location:./assets/apps/installer/installer.php");	
+    /** @see assets/apps/installer/installer.php */
+    header("location:./assets/apps/installer/installer.php");
 }
 
 /* setting $config["log_level"] = "NONE" disables the log
@@ -89,9 +89,9 @@ require_once("$AIKI_ROOT_DIR/libs/Log.php");
  * @global Log $log */
 
 $log = new Log($config["log_dir"],
-		$config["log_file"],
-		$config["log_level"],
-		$AIKI_ROOT_DIR);
+        $config["log_file"],
+        $config["log_level"],
+        $AIKI_ROOT_DIR);
 
 /* the following lines are usage examples:
  $log->message("test message which defaults to debug level");
@@ -130,7 +130,7 @@ $config = $aiki->get_config($config);
 
 // if HTTP port is not 80, insert port in URL.
 if ( isset($config["url"]) && $_SERVER["SERVER_PORT"]!=80 ){
-	$config["url"] = preg_replace("#(http.?://[^/]*)(/)#",'$1:'. $_SERVER["SERVER_PORT"] . "/", $config["url"]);
+    $config["url"] = preg_replace("#(http.?://[^/]*)(/)#",'$1:'. $_SERVER["SERVER_PORT"] . "/", $config["url"]);
 }
 
 
@@ -138,7 +138,7 @@ if ( isset($config["url"]) && $_SERVER["SERVER_PORT"]!=80 ){
  * run time correction for site path
 */
 if ($config['top_folder'] and $config['top_folder'] != $AIKI_ROOT_DIR){
-	$config['top_folder'] = $AIKI_ROOT_DIR;
+    $config['top_folder'] = $AIKI_ROOT_DIR;
 }
 
 /*

@@ -25,16 +25,16 @@ require_once("libs/session/SessionInterface.php");
 
 /** @link http://www.php.net/manual/en/function.session-set-save-handler.php */
 class DatabaseSession implements SessionInterface {
-    
+
     /** database */
     protected $_database = "";
-    
+
     /** Constructs a new AikiSession
      * @param object $database Database object
      * @return void */
     public function __construct($database) {
         $this->_database = $database;
-        
+
         /* Sets the user-level session storage functions which
          * are used for storing and retrieving data associated
          * with a session. This is most useful when a storage
@@ -46,16 +46,16 @@ class DatabaseSession implements SessionInterface {
                                 Array($this, "_write"),
                                 Array($this, "_destroy"),
                                 Array($this, "_collect"));
-        
-        /* Shutdown functions are called before object destructors. 
+
+        /* Shutdown functions are called before object destructors.
          * Registers the function named by function to be executed
          * when script processing is complete or when exit() is called. */
         register_shutdown_function('session_write_close');
-        
+
         // ini_set('session.save_handler', 'user');
     }
-    
-    /** Destructs a AikiSession 
+
+    /** Destructs a AikiSession
      * @return void*/
     public function __destruct() {
         /* End the current session and store session data. Session data is
@@ -67,7 +67,7 @@ class DatabaseSession implements SessionInterface {
          * changes to session variables are done. */
         session_write_close();
     }
-    
+
     /** Open function, this works like a constructor in classes and is
      * executed when the session is being opened. The open function expects
      * two parameters, where the first is the save path and the
@@ -78,7 +78,7 @@ class DatabaseSession implements SessionInterface {
     public function _open($path, $name) {
         return(true);
     }
-    
+
     /** Close function, this works like a destructor in classes and is
      * executed when the session operation is done. As of PHP 5.0.5 the write
      * and close handlers are called after object
@@ -90,7 +90,7 @@ class DatabaseSession implements SessionInterface {
     public function _close() {
         return(true);
     }
-    
+
     /** Read function must return string value always to make save handler
      * work as expected. Return empty string if there is no data to read.
      * Return values from other handlers are converted to boolean expression.
@@ -103,7 +103,7 @@ class DatabaseSession implements SessionInterface {
                        "WHERE session_id = '%s'", $id);
         return $this->_database->get_var($sql);
     }
-    
+
     /** Write function that is called when session data is to be saved.
      * This function expects two parameters: an identifier and the data
      * associated with it. The "write" handler is not executed until after
@@ -128,7 +128,7 @@ class DatabaseSession implements SessionInterface {
                         $time);
         return $this->_database->query($sql);
     }
-    
+
     /** The destroy handler, this is executed when a session is destroyed with
      * session_destroy() and takes the session id as its only parameter.
      * @param string $id Session ID
@@ -139,10 +139,10 @@ class DatabaseSession implements SessionInterface {
             $id);
         return $this->_database->query($sql);
     }
-    
+
     /** The garbage collector, this is executed when the session garbage
      * collector is executed and takes the max session lifetime as its
-     * only parameter. 
+     * only parameter.
      * @param integer $max Maximum session lifetime
      * @return integer $count Number of rows affected */
     public function _collect($max) {
@@ -160,8 +160,8 @@ class DatabaseSession implements SessionInterface {
         $new = session_id();
         return $this->_regenerateId($old, $new);
     }
-    
-    /** Regenerate a Session ID 
+
+    /** Regenerate a Session ID
      * @return integer $count Number of rows affected */
     protected function _regenerateId($old, $new) {
         $new = $this->_database->escape($new);

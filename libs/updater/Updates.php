@@ -25,9 +25,9 @@ if(!defined("IN_AIKI")) { die("No direct script access allowed"); }
 require_once("libs/updater/UpdaterInterface.php");
 
 class Updates implements UpdaterInterface {
-    
+
     /** Constructs new Updates */
     public function __construct() {
-        
+
     }
 }

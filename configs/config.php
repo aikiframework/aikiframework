@@ -1,7 +1,7 @@
 <?php
 
 /** Aiki Framework (PHP)
- * 
+ *
  * Global configuration options
  *
  * LICENSE
@@ -9,7 +9,7 @@
  * This source file is subject to the AGPL-3.0 license that is bundled
  * with this package in the file LICENSE.
  *
- * @author      Aikilab http://www.aikilab.com 
+ * @author      Aikilab http://www.aikilab.com
  * @copyright   (c) 2008-2011 Aiki Lab Pte Ltd
  * @license     http://www.fsf.org/licensing/licenses/agpl-3.0.html
  * @link        http://aikiframework.org
@@ -22,7 +22,7 @@
  * These are needed in the web installer
  */
 if (!defined("AIKI_REWRITE_BASE")) {
-	/** Aiki Rewrite Base (for htaccess) if NOT defined */
+    /** Aiki Rewrite Base (for htaccess) if NOT defined */
     define("AIKI_REWRITE_BASE", "@AIKI_REWRITE_BASE@");
 }
 if (!defined("AIKI_SITE_URL")) {
@@ -30,7 +30,7 @@ if (!defined("AIKI_SITE_URL")) {
     define("AIKI_SITE_URL", "@AIKI_SITE_URL@");
 }
 
-/** @todo review how to replace the rest of these constants, but they 
+/** @todo review how to replace the rest of these constants, but they
           aren't breaking anything right now and can be overridden from
           config.php file. */
 
@@ -107,7 +107,7 @@ if (!defined("AIKI_UPDATE_RETRY"))
     define("AIKI_UPDATE_RETRY", 3);
 
 /** Whether or not this update involves changes to the Aiki
- *  configuration (aiki_config table, config.php or .htaccess) 
+ *  configuration (aiki_config table, config.php or .htaccess)
  *  Do NOT put the following value (TRUE or FALSE) in quotes. */
 if (!defined("AIKI_UPDATE_CONFIG"))
     define("AIKI_UPDATE_CONFIG", false);
@@ -115,7 +115,7 @@ if (!defined("AIKI_UPDATE_CONFIG"))
 /* the following error related constants
  * are built-in on newer versions of PHP */
 if (!defined("E_RECOVERABLE_ERROR")) {
-	/** Define E_RECOVERABLE_ERROR if not defined */
+    /** Define E_RECOVERABLE_ERROR if not defined */
     define("E_RECOVERABLE_ERROR", 4096);
 }
 if (!defined("E_DEPRECATED")) {
@@ -186,7 +186,7 @@ $config["enable_query_cache"] = false;
 $config["allow_multiple_databases"] = false;
 
 /** use html tidy php extension to format the html output
- * @global bool $config["html_tidy"] */ 
+ * @global bool $config["html_tidy"] */
 $config["html_tidy"] = false;
 
 /** enable html tidy compression
@@ -209,8 +209,8 @@ $config["compress_output"] = false;
  * @global bool $config["widget_cache"] */
 $config["widget_cache"] = false;
 
-/** Full path to widgets cache directory in case $config["widget_cache"] 
- * was true 
+/** Full path to widgets cache directory in case $config["widget_cache"]
+ * was true
  * @global string $config["widget_cache_dir"] */
 $config["widget_cache_dir"] = '';
 
@@ -229,13 +229,13 @@ $config["css_cache_file"] = "";
 /** This will store each page in its own file.
  * full html cache with full path to cache
  * @global bool $config["html_cache"] */
-$config["html_cache"] = false; 
+$config["html_cache"] = false;
 
 /** Time out for pages cache, in milliseconds
  * @global integer $config["cache_timeout"] */
 $config["cache_timeout"] = "86400";
 
-/** Session lifetime before auto log out if no activities from the logged 
+/** Session lifetime before auto log out if no activities from the logged
  * in user - in milliseconds
  * @global integer $config["session_timeout"] */
 $config["session_timeout"] = 7200;
@@ -244,17 +244,17 @@ $config["session_timeout"] = 7200;
  * @global bool $config["allow_multiple_sessions"] */
 $config["allow_multiple_sessions"] = false;
 
-/** Register guests sessions for tracking how many users are currently 
+/** Register guests sessions for tracking how many users are currently
  * visiting the site
  * @global bool $config["allow_guest_sessions"] */
 $config["allow_guest_sessions"] = false;
 
-/** Enable version control system this will store each change for any sql 
+/** Enable version control system this will store each change for any sql
  * UPDATE command in aiki_revisions
  * @global bool $config["save_revision_history"] */
 $config["save_revision_history"] = false;
 
-/** Store information about not found pages in aiki_redirects so admin can 
+/** Store information about not found pages in aiki_redirects so admin can
  * later add redirects
  * @global bool $config["register_errors"] */
 $config["register_errors"] = false;
@@ -267,7 +267,7 @@ $config["timezone"] = '';
 /** Show admin widgets or not?
  * @global bool $config["admin_widgets_display"] */
 $config["admin_widgets_display"] = false;
- 
+
 /** Enable debug mode
  * @global bool $config["debug"] */
 $config["debug"] = false;

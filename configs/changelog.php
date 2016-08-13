@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Aiki Framework (PHP)
  *
@@ -15,13 +15,13 @@
  * @package     Library
  * @filesource
  */
- 
+
 
  $changes[1098]= "Engines enabled per site";
  $changes[1056]= "Installer Added";
  $changes[1050]= "Fix instant login bug";
  $changes[1040]= "Added rel next and prev to pagination for SEO";
  $changes[1038]= "Fix &amp;gt; and &amp;lt; replacement";
- 
- 
+
+
  ?>

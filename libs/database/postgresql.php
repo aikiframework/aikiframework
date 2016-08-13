@@ -6,10 +6,10 @@ if(!defined('IN_AIKI')){die('No direct script access allowed');}
 /**
  * ezSQL
  *
- * @author		Justin Vincent (justin@visunet.ie)
+ * @author        Justin Vincent (justin@visunet.ie)
  * @copyright   Copyright (C) 2010 Justin Vincent
- * @license		LGPL http://www.gnu.org/licenses/lgpl.html
- * @link		http://justinvincent.com/ezsql
+ * @license        LGPL http://www.gnu.org/licenses/lgpl.html
+ * @link        http://justinvincent.com/ezsql
  * @category    Aiki
  * @package     Database
  * @filesource
@@ -44,237 +44,237 @@ if ( ! class_exists ('ezSQLcore') ) die('<b>Fatal Error:</b> ezSQL_postgresql re
 class ezSQL_postgresql extends ezSQLcore
 {
 
-	var $dbuser = false;
-	var $dbpassword = false;
-	var $dbname = false;
-	var $dbhost = false;
+    var $dbuser = false;
+    var $dbpassword = false;
+    var $dbname = false;
+    var $dbhost = false;
 
-	/**********************************************************************
-		*  Constructor - allow the user to perform a qucik connect at the
-		*  same time as initialising the ezSQL_postgresql class
-		*/
+    /**********************************************************************
+        *  Constructor - allow the user to perform a qucik connect at the
+        *  same time as initialising the ezSQL_postgresql class
+        */
 
-	public function ezSQL_postgresql($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
-	{
-		$this->dbuser = $dbuser;
-		$this->dbpassword = $dbpassword;
-		$this->dbname = $dbname;
-		$this->dbhost = $dbhost;
-	}
+    public function ezSQL_postgresql($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+    {
+        $this->dbuser = $dbuser;
+        $this->dbpassword = $dbpassword;
+        $this->dbname = $dbname;
+        $this->dbhost = $dbhost;
+    }
 
-	/**********************************************************************
-		*  In the case of PostgreSQL quick_connect is not really needed
-		*  because std. connect already does what quick connect does -
-		*  but for the sake of consistency it has been included
-		*/
+    /**********************************************************************
+        *  In the case of PostgreSQL quick_connect is not really needed
+        *  because std. connect already does what quick connect does -
+        *  but for the sake of consistency it has been included
+        */
 
-	public function quick_connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
-	{
-		$return_val = false;
-		if ( ! $this->connect($dbuser, $dbpassword, $dbname, $dbhost,true) ) ;
-		else if ( ! $this->select($dbname) ) ;
-		else $return_val = true;
-		return $return_val;
-	}
+    public function quick_connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+    {
+        $return_val = false;
+        if ( ! $this->connect($dbuser, $dbpassword, $dbname, $dbhost,true) ) ;
+        else if ( ! $this->select($dbname) ) ;
+        else $return_val = true;
+        return $return_val;
+    }
 
-	/**********************************************************************
-		*  Try to connect to mySQL database server
-		*/
+    /**********************************************************************
+        *  Try to connect to mySQL database server
+        */
 
-	public function connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
-	{
-		global $ezsql_postgresql_str; $return_val = false;
+    public function connect($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+    {
+        global $ezsql_postgresql_str; $return_val = false;
 
-		// Must have a user and a password
-		if ( ! $dbuser )
-		{
-			$this->register_error($ezsql_postgresql_str[1].' in '.__FILE__.' on line '.__LINE__);
-			$this->show_errors ? trigger_error($ezsql_postgresql_str[1],E_USER_WARNING) : null;
-		}
-		// Try to establish the server database handle
-		else if ( ! $this->dbh = @pg_connect("host=$dbhost user=$dbuser password=$dbpassword dbname=$dbname",true) )	//should be modified for port
-		{
-			$this->register_error($ezsql_postgresql_str[2].' in '.__FILE__.' on line '.__LINE__);
-			$this->show_errors ? trigger_error($ezsql_postgresql_str[2],E_USER_WARNING) : null;
-		}
-		else
-		{
-			$this->dbuser = $dbuser;
-			$this->dbpassword = $dbpassword;
-			$this->dbhost = $dbhost;
-			$this->dbname = $dbname;
-			$return_val = true;
-		}
+        // Must have a user and a password
+        if ( ! $dbuser )
+        {
+            $this->register_error($ezsql_postgresql_str[1].' in '.__FILE__.' on line '.__LINE__);
+            $this->show_errors ? trigger_error($ezsql_postgresql_str[1],E_USER_WARNING) : null;
+        }
+        // Try to establish the server database handle
+        else if ( ! $this->dbh = @pg_connect("host=$dbhost user=$dbuser password=$dbpassword dbname=$dbname",true) )    //should be modified for port
+        {
+            $this->register_error($ezsql_postgresql_str[2].' in '.__FILE__.' on line '.__LINE__);
+            $this->show_errors ? trigger_error($ezsql_postgresql_str[2],E_USER_WARNING) : null;
+        }
+        else
+        {
+            $this->dbuser = $dbuser;
+            $this->dbpassword = $dbpassword;
+            $this->dbhost = $dbhost;
+            $this->dbname = $dbname;
+            $return_val = true;
+        }
 
-		return $return_val;
-	}
+        return $return_val;
+    }
 
-	/**********************************************************************
-		*  No real equivalent of mySQL select in PostgreSQL
-		*  once again, function included for the sake of consistency
-		*/
+    /**********************************************************************
+        *  No real equivalent of mySQL select in PostgreSQL
+        *  once again, function included for the sake of consistency
+        */
 
-	public function select($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
-	{
-		$return_val = false;
-		if ( ! $this->connect($dbuser, $dbpassword, $dbname, $dbhost,true) ) ;
-		else if ( ! $this->select($dbname) ) ;
-		else $return_val = true;
-		return $return_val;
-	}
+    public function select($dbuser='', $dbpassword='', $dbname='', $dbhost='localhost')
+    {
+        $return_val = false;
+        if ( ! $this->connect($dbuser, $dbpassword, $dbname, $dbhost,true) ) ;
+        else if ( ! $this->select($dbname) ) ;
+        else $return_val = true;
+        return $return_val;
+    }
 
-	/**********************************************************************
-		*  Format a mySQL string correctly for safe mySQL insert
-		*  (no mater if magic quotes are on or not)
-		*/
+    /**********************************************************************
+        *  Format a mySQL string correctly for safe mySQL insert
+        *  (no mater if magic quotes are on or not)
+        */
 
-	public function escape($str)
-	{
-		return pg_escape_string(stripslashes($str));
-	}
+    public function escape($str)
+    {
+        return pg_escape_string(stripslashes($str));
+    }
 
-	/**********************************************************************
-		*  Return PostgreSQL specific system date syntax
-		*  i.e. Oracle: SYSDATE Mysql: NOW()
-		*/
+    /**********************************************************************
+        *  Return PostgreSQL specific system date syntax
+        *  i.e. Oracle: SYSDATE Mysql: NOW()
+        */
 
-	public function sysdate()
-	{
-		return 'NOW()';
-	}
+    public function sysdate()
+    {
+        return 'NOW()';
+    }
 
-	/**********************************************************************
-		*  Return PostgreSQL specific values
-		*/
+    /**********************************************************************
+        *  Return PostgreSQL specific values
+        */
 
-	public function showTables()
-	{
-		return "table_name FROM information_schema.tables WHERE table_schema = 'public' and table_type='BASE TABLE'";
-	}
+    public function showTables()
+    {
+        return "table_name FROM information_schema.tables WHERE table_schema = 'public' and table_type='BASE TABLE'";
+    }
 
-	public function descTable($tbl_name)
-	{
-		return "ordinal_position, column_name, data_type, column_default, is_nullable, character_maximum_length, numeric_precision FROM information_schema.columns WHERE table_name = '$tbl_name' ORDER BY ordinal_position";
-	}
+    public function descTable($tbl_name)
+    {
+        return "ordinal_position, column_name, data_type, column_default, is_nullable, character_maximum_length, numeric_precision FROM information_schema.columns WHERE table_name = '$tbl_name' ORDER BY ordinal_position";
+    }
 
-	public function showDatabases()
-	{
-		return "datname from pg_database WHERE datname NOT IN ('template0', 'template1') ORDER BY 1";
-	}
+    public function showDatabases()
+    {
+        return "datname from pg_database WHERE datname NOT IN ('template0', 'template1') ORDER BY 1";
+    }
 
-	/**********************************************************************
-		*  Perform PostgreSQL query and try to detirmin result value
-		*/
+    /**********************************************************************
+        *  Perform PostgreSQL query and try to detirmin result value
+        */
 
-	public function query($query)
-	{
+    public function query($query)
+    {
 
-		// Initialise return
-		$return_val = 0;
+        // Initialise return
+        $return_val = 0;
 
-		// Flush cached values..
-		$this->flush();
+        // Flush cached values..
+        $this->flush();
 
-		// For reg expressions
-		$query = trim($query);
+        // For reg expressions
+        $query = trim($query);
 
-		// Log how the function was called
-		$this->func_call = "\$db->query(\"$query\")";
+        // Log how the function was called
+        $this->func_call = "\$db->query(\"$query\")";
 
-		// Keep track of the last query for debug..
-		$this->last_query = $query;
+        // Keep track of the last query for debug..
+        $this->last_query = $query;
 
-		// Count how many queries there have been
-		$this->num_queries++;
+        // Count how many queries there have been
+        $this->num_queries++;
 
-		// Use core file cache function
-		if ( $cache = $this->get_cache($query) )
-		{
-			return $cache;
-		}
+        // Use core file cache function
+        if ( $cache = $this->get_cache($query) )
+        {
+            return $cache;
+        }
 
-		// If there is no existing database connection then try to connect
-		if ( ! isset($this->dbh) || ! $this->dbh )
-		{
-			$this->connect($this->dbuser, $this->dbpassword, $this->dbname);
-		}
+        // If there is no existing database connection then try to connect
+        if ( ! isset($this->dbh) || ! $this->dbh )
+        {
+            $this->connect($this->dbuser, $this->dbpassword, $this->dbname);
+        }
 
-		// Perform the query via std postgresql_query function..
-		$this->result = @pg_query($this->dbh, $query);
+        // Perform the query via std postgresql_query function..
+        $this->result = @pg_query($this->dbh, $query);
 
 
-		// If there is an error then take note of it..
-		if ( $str = @pg_last_error($this->dbh) )
-		{
-			$is_insert = true;
-			$this->register_error($str);
-			$this->show_errors ? trigger_error($str,E_USER_WARNING) : null;
-			return false;
-		}
-		// Query was an insert, delete, update, replace
-		$is_insert = false;
-		if ( preg_match("/^(insert|delete|update|replace)\s+/i",$query) )
-		{
-			$this->rows_affected = @pg_affected_rows($this->result);
+        // If there is an error then take note of it..
+        if ( $str = @pg_last_error($this->dbh) )
+        {
+            $is_insert = true;
+            $this->register_error($str);
+            $this->show_errors ? trigger_error($str,E_USER_WARNING) : null;
+            return false;
+        }
+        // Query was an insert, delete, update, replace
+        $is_insert = false;
+        if ( preg_match("/^(insert|delete|update|replace)\s+/i",$query) )
+        {
+            $this->rows_affected = @pg_affected_rows($this->result);
 
-			// Take note of the insert_id
-			if ( preg_match("/^(insert|replace)\s+/i",$query) )
-			{
-				//$this->insert_id = @postgresql_insert_id($this->dbh);
-				$this->insert_id = pg_last_oid($this->result);
-			}
+            // Take note of the insert_id
+            if ( preg_match("/^(insert|replace)\s+/i",$query) )
+            {
+                //$this->insert_id = @postgresql_insert_id($this->dbh);
+                $this->insert_id = pg_last_oid($this->result);
+            }
 
-			// Return number fo rows affected
-			$return_val = $this->rows_affected;
-		}
-		// Query was a select
-		else
-		{               $num_rows=0;
-		//if ( $this->result )  //may be needed but my tests did not
-		//{
-		 
-			// =======================================================
-			// Take note of column info
+            // Return number fo rows affected
+            $return_val = $this->rows_affected;
+        }
+        // Query was a select
+        else
+        {               $num_rows=0;
+        //if ( $this->result )  //may be needed but my tests did not
+        //{
 
-			$i=0;
-			while ($i < @pg_num_fields($this->result))
-			{
-				$this->col_info[$i]->name = pg_field_name($this->result,$i);
-				$this->col_info[$i]->type = pg_field_type($this->result,$i);
-				$this->col_info[$i]->size = pg_field_size($this->result,$i);
-				$i++;
-			}
+            // =======================================================
+            // Take note of column info
 
-			// =======================================================
-			// Store Query Results
+            $i=0;
+            while ($i < @pg_num_fields($this->result))
+            {
+                $this->col_info[$i]->name = pg_field_name($this->result,$i);
+                $this->col_info[$i]->type = pg_field_type($this->result,$i);
+                $this->col_info[$i]->size = pg_field_size($this->result,$i);
+                $i++;
+            }
 
-			//while ( $row = @pg_fetch_object($this->result, $i, PGSQL_ASSOC) ) doesn't work? donno
-			//while ( $row = @pg_fetch_object($this->result,$num_rows) ) does work
-			while ( $row = @pg_fetch_object($this->result) )
-			{
-				// Store results as an objects within main array
-				$this->last_result[$num_rows] = $row ;
-				$num_rows++;
-			}
+            // =======================================================
+            // Store Query Results
 
-			@pg_free_result($this->result);
-			//}
-			// Log number of rows the query returned
-			$this->num_rows = $num_rows;
+            //while ( $row = @pg_fetch_object($this->result, $i, PGSQL_ASSOC) ) doesn't work? donno
+            //while ( $row = @pg_fetch_object($this->result,$num_rows) ) does work
+            while ( $row = @pg_fetch_object($this->result) )
+            {
+                // Store results as an objects within main array
+                $this->last_result[$num_rows] = $row ;
+                $num_rows++;
+            }
 
-			// Return number of rows selected
-			$return_val = $this->num_rows;
+            @pg_free_result($this->result);
+            //}
+            // Log number of rows the query returned
+            $this->num_rows = $num_rows;
 
-		}
+            // Return number of rows selected
+            $return_val = $this->num_rows;
 
-		// disk caching of queries
-		$this->store_cache($query,$is_insert);
+        }
 
-		// If debug ALL queries
-		$this->trace || $this->debug_all ? $this->debug() : null ;
+        // disk caching of queries
+        $this->store_cache($query,$is_insert);
 
-		return $return_val;
+        // If debug ALL queries
+        $this->trace || $this->debug_all ? $this->debug() : null ;
 
-		}
+        return $return_val;
 
-	}
+        }
+
+    }

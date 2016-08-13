@@ -23,8 +23,8 @@ require_once("libs/Util.php");
 /** This is the test class which should be the same as the file name */
 class UtilTest extends PHPUnit_Framework_TestCase {
 
-	public function testLastRevisionReal() {
-		
+    public function testLastRevisionReal() {
+
         $last_revision = Util::get_last_revision();
         // echo $last_revision;
 

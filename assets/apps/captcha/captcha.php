@@ -21,10 +21,10 @@ if ( isset($_GET["debug"]) && $_GET["debug"] && $_GET["debug"]!="off" ) {
     error_reporting(E_ALL);
 } else {
     error_reporting(0);
-}    
+}
 
 
-session_start();  
+session_start();
 
 /**
  * captcha stores displayed text (encrypted by md5) in session variable,
@@ -34,11 +34,11 @@ session_start();
  */
 function create_random_text()
 {
-	$md5 = md5(microtime() * mktime());
-	$randnumber = rand(2, 6);
-	$string = substr($md5,$randnumber,6);
+    $md5 = md5(microtime() * mktime());
+    $randnumber = rand(2, 6);
+    $string = substr($md5,$randnumber,6);
 
-	return $string;
+    return $string;
 }
 
 $string = create_random_text();

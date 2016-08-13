@@ -19,21 +19,21 @@
 
 // disable php script access
 if (!defined("IN_AIKI")) {
-	die("No direct script access allowed");
+    die("No direct script access allowed");
 }
 
 /** For more info see the following links
  * @link http://www.php.net/manual/en/language.exceptions.extending.php
  * @link http://www.php.net/manual/en/class.exception.php */
 class AikiException extends Exception {
-	
-	/** Construct extended exception
-	 * @param string $message The message is required
-	 * @param integer $code The code defaults to user error
-	 * @return void */
-	public function __construct($message, $code = E_USER_ERROR) {
-		parent::__construct($message, (int)$code);
-	}
-	/* Versions of PHP 5, prior to PHP 5.3.0
-	 * do not support nesting of exceptions ($previous). */
+
+    /** Construct extended exception
+     * @param string $message The message is required
+     * @param integer $code The code defaults to user error
+     * @return void */
+    public function __construct($message, $code = E_USER_ERROR) {
+        parent::__construct($message, (int)$code);
+    }
+    /* Versions of PHP 5, prior to PHP 5.3.0
+     * do not support nesting of exceptions ($previous). */
 }

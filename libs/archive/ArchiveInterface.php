@@ -23,7 +23,7 @@ if(!defined("IN_AIKI")) { die("No direct script access allowed"); }
 interface ArchiveInterface {
     /** Compress something */
     public function compress();
-    
+
     /** Decompress an archive to a destination directory.
      * @param string $archive Archive file to decompress
      * @param string $destination Directory for decompressed contents

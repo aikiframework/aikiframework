@@ -120,10 +120,10 @@ class Engine_aiki {
         if (!$unique_widget_exists) {
             $aiki->Errors->pageNotFound();
             $module_widgets = $aiki->widgets->get_page_not_found_widgets();
-            foreach ($module_widgets as $widget) {                
+            foreach ($module_widgets as $widget) {
                     $widget_group[] = $widget->id;
             }
-            
+
          } else {
             // now filter canditate widgets, before create content
             foreach ($module_widgets as $widget) {
@@ -266,32 +266,32 @@ class Engine_aiki {
 
 
             if ($this->kill_widget) {
-                if ($widget->if_no_results) {				
+                if ($widget->if_no_results) {
                     $dead_widget = $this->parse_no_results($widget->if_no_results) ;
                     if ( $widget->remove_container != 1 ){
-						$dead_widget = 
-							"<{$widget->widget_type} id='{$widget->widget_name}'>" . 
-							$dead_widget.
-							"</{$widget->widget_type}>";
-					} 
+                        $dead_widget =
+                            "<{$widget->widget_type} id='{$widget->widget_name}'>" .
+                            $dead_widget.
+                            "</{$widget->widget_type}>";
+                    }
                 } else {
                     $dead_widget = "";
                 }
-                
+
                 /**
                  * @todo looks like some text is placed into the output
                  *         stream and then replaced here!!! Nooo!
                  */
                 if (!$custom_output) {
-					$subpattern="[A-z0-9\-_]*\({$this->kill_widget}\)";
-					$this->widget_html =
+                    $subpattern="[A-z0-9\-_]*\({$this->kill_widget}\)";
+                    $this->widget_html =
                         preg_replace("/<!--start {$subpattern}-->(.*)<!--{$subpattern} end-->/s",
                                        $dead_widget, $this->widget_html, 1, $count);
-					$this->kill_widget = '';
-				} else {
-					$this->widget_html = $dead_widget;
-				}			
-                
+                    $this->kill_widget = '';
+                } else {
+                    $this->widget_html = $dead_widget;
+                }
+
             }
 
             switch ($widget->widget_target){
@@ -416,15 +416,15 @@ class Engine_aiki {
 
         // noloop part are extracted and deleted.
         $no_loop_part = $aiki->get_string_between($widget->widget,
-												  '(noloop(', ')noloop)');
+                                                  '(noloop(', ')noloop)');
 
         $widget->widget = str_replace('(noloop(' . $no_loop_part . ')noloop)',
-									  '',
-									  $widget->widget);
+                                      '',
+                                      $widget->widget);
 
         $custom_pagination = $aiki->get_string_between($widget->widget,
-													   "(pagination(",
-													   ")pagination)");
+                                                       "(pagination(",
+                                                       ")pagination)");
 
         $no_loop_bottom_part = $aiki->get_string_between($widget->widget,
                                                          '(noloop_bottom(',
@@ -924,7 +924,7 @@ class Engine_aiki {
         return $template;
     }
 
-	
+
 
 
 
@@ -1191,7 +1191,7 @@ class Engine_aiki {
      */
 
     private function inline_widgets($widget){
-		global $aiki;
+        global $aiki;
         $matches = "";
         if (preg_match_all('/\(\#\(widget\:(.*)\)\#\)/Us', $widget, $matches)){
             foreach ($matches[1] as $widget_id) {
@@ -1223,21 +1223,21 @@ class Engine_aiki {
             foreach ($matches['1'] as $i=>$widget_info) {
                 $widget_para = explode("|", $widget_info);
                 $widget_data = $aiki->widgets->get_widget($widget_para[0]);
-                
+
                 if ( is_null( $widget_data ) ) {
-					$widget_html = is_debug_on() ? 
-						sprintf( t("Widget %s doesn't exist"), $widget_para[0]):
-						"" ;
-				} else {					
-					// widget css is added
-					if ( trim($widget_data->css) <> "" &&
-						 !in_array( $widget_data->id, $this->widgets_css)) {
-						$this->widgets_css[]= $widget_data->id ;
-					}
-					$normal_select = ( isset($widget_para[1]) ? $widget_para[1] : "" );
-					$widget_html = $this->createWidgetContent($widget_data, $normal_select);
-				}
-				
+                    $widget_html = is_debug_on() ?
+                        sprintf( t("Widget %s doesn't exist"), $widget_para[0]):
+                        "" ;
+                } else {
+                    // widget css is added
+                    if ( trim($widget_data->css) <> "" &&
+                         !in_array( $widget_data->id, $this->widgets_css)) {
+                        $this->widgets_css[]= $widget_data->id ;
+                    }
+                    $normal_select = ( isset($widget_para[1]) ? $widget_para[1] : "" );
+                    $widget_html = $this->createWidgetContent($widget_data, $normal_select);
+                }
+
 
                 // if the same widget appears two times..it will be replaced.
                 $widget = str_replace($matches[0][$i], $widget_html, $widget);
@@ -1260,12 +1260,12 @@ class Engine_aiki {
     private function records_num($sql) {
         global $db;
 
-		$sql = trim($sql);
+        $sql = trim($sql);
         if (!preg_match('/^select(.*) from /Usi', $sql, $select)){
-			if ( preg_match('/^select (.*) /Usi',$sql) ) {
-				return 1;
-            } 
-            return false;            
+            if ( preg_match('/^select (.*) /Usi',$sql) ) {
+                return 1;
+            }
+            return false;
         }
 
         if (stripos($sql, " GROUP BY ") || stripos($sql, " LIMIT")) {

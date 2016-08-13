@@ -1,21 +1,21 @@
 <?php
 /**
  * Modifed version of upload.php
- * 
+ *
  * Released under GPLv2 License.
  * Contributing: http://www.plupload.com/contributing
  *
- * @author		The Developers of TinyMCE
+ * @author        The Developers of TinyMCE
  * @copyright   Copyright 2009, Moxiecode Systems AB
- * @license		http://www.plupload.com/license GPLv2
- * @link		http://www.plupload.com
+ * @license        http://www.plupload.com/license GPLv2
+ * @link        http://www.plupload.com
  * @package     Plupload
  * @category    Aiki
  * @filesource
  */
 
 if (!isset($_GET['key'])){
-	die("No key");
+    die("No key");
 }
 
 /**
@@ -30,24 +30,24 @@ require_once("../../../bootstrap.php");
 
 //TODO store authorization key in db and check it
 if (!isset($_SESSION['aikiuser'])){
-	die("Not authorized");
+    die("Not authorized");
 }
 
 if ($_GET['key'] != $_SESSION['aikiuser']){
-	die("Not authorized");
+    die("Not authorized");
 }
 
 $username = $db->get_var("SELECT user_name FROM aiki_users_sessions where user_session='".$_SESSION['aikiuser']."'");
 if (!$username){
-	die("Not authorized");
+    die("Not authorized");
 }
 
 
 if (isset($config["plupload_path"])){
-	$targetDir = $system_folder."/";
-	$targetDir .= $aiki->processVars($config["plupload_path"]);
+    $targetDir = $system_folder."/";
+    $targetDir .= $aiki->processVars($config["plupload_path"]);
 }else{
-	die("please configure upload_path in aiki settings");
+    die("please configure upload_path in aiki settings");
 }
 
 // HTTP headers for no cache etc
@@ -74,11 +74,11 @@ $fileName = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
 $fileName = str_replace(" ", "_", $fileName);
 if (!preg_match("/^[a-zA-Z0-9\-\_\.]+\.(".$config['allowed_extensions'].")$/i",$fileName)){
 
-	die ("Not valid filename");
+    die ("Not valid filename");
 }
 
 if (file_exists($targetDir.$fileName)){
-	die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "The same file already exists."}, "id" : "id"}');
+    die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "The same file already exists."}, "id" : "id"}');
 }
 
 // Create target dir
@@ -87,15 +87,15 @@ if (!file_exists($targetDir))
 
 // Remove old temp files
 if (is_dir($targetDir) && ($dir = opendir($targetDir))) {
-	while (($file = readdir($dir)) !== false) {
-		$filePath = $targetDir . DIRECTORY_SEPARATOR . $file;
+    while (($file = readdir($dir)) !== false) {
+        $filePath = $targetDir . DIRECTORY_SEPARATOR . $file;
 
-		// Remove temp files if they are older than the max age
-		if (preg_match('/\\.tmp$/', $file) && (filemtime($filePath) < time() - $maxFileAge))
-		@unlink($filePath);
-	}
+        // Remove temp files if they are older than the max age
+        if (preg_match('/\\.tmp$/', $file) && (filemtime($filePath) < time() - $maxFileAge))
+        @unlink($filePath);
+    }
 
-	closedir($dir);
+    closedir($dir);
 } else
 die('{"jsonrpc" : "2.0", "error" : {"code": 100, "message": "Failed to open temp directory."}, "id" : "id"}');
 
@@ -107,41 +107,41 @@ if (isset($_SERVER["CONTENT_TYPE"]))
 $contentType = $_SERVER["CONTENT_TYPE"];
 
 if (strpos($contentType, "multipart") !== false) {
-	if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
-		// Open temp file
-		$out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
-		if ($out) {
-			// Read binary input stream and append it to temp file
-			$in = fopen($_FILES['file']['tmp_name'], "rb");
+    if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name'])) {
+        // Open temp file
+        $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
+        if ($out) {
+            // Read binary input stream and append it to temp file
+            $in = fopen($_FILES['file']['tmp_name'], "rb");
 
-			if ($in) {
-				while ($buff = fread($in, 4096))
-				fwrite($out, $buff);
-			} else
-			die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+            if ($in) {
+                while ($buff = fread($in, 4096))
+                fwrite($out, $buff);
+            } else
+            die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
 
-			fclose($out);
-			unlink($_FILES['file']['tmp_name']);
-		} else
-		die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
-	} else
-	die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
+            fclose($out);
+            unlink($_FILES['file']['tmp_name']);
+        } else
+        die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+    } else
+    die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "Failed to move uploaded file."}, "id" : "id"}');
 } else {
-	// Open temp file
-	$out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
-	if ($out) {
-		// Read binary input stream and append it to temp file
-		$in = fopen("php://input", "rb");
+    // Open temp file
+    $out = fopen($targetDir . DIRECTORY_SEPARATOR . $fileName, $chunk == 0 ? "wb" : "ab");
+    if ($out) {
+        // Read binary input stream and append it to temp file
+        $in = fopen("php://input", "rb");
 
-		if ($in) {
-			while ($buff = fread($in, 4096))
-			fwrite($out, $buff);
-		} else
-		die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
+        if ($in) {
+            while ($buff = fread($in, 4096))
+            fwrite($out, $buff);
+        } else
+        die('{"jsonrpc" : "2.0", "error" : {"code": 101, "message": "Failed to open input stream."}, "id" : "id"}');
 
-		fclose($out);
-	} else
-	die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
+        fclose($out);
+    } else
+    die('{"jsonrpc" : "2.0", "error" : {"code": 102, "message": "Failed to open output stream."}, "id" : "id"}');
 }
 
 // Return JSON-RPC response

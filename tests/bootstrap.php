@@ -2,7 +2,7 @@
 
 /** Prepend to the include path for all unit tests.
  * Tests should always prefer the configured and built
- * src before the distributed source. 
+ * src before the distributed source.
  *
  * Add like the following if need in other folders:
  *

@@ -18,6 +18,6 @@
  * @filesource */
 
 interface UpdaterInterface {
-	/** Update something */
-	public function update();
+    /** Update something */
+    public function update();
 }

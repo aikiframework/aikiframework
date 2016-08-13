@@ -21,17 +21,17 @@
 if(!defined("IN_AIKI")) { die("No direct script access allowed"); }
 
 interface BackupInterface {
-    
-    /** Save a Backup 
-     * @param string $destination Directory to save the backup in 
+
+    /** Save a Backup
+     * @param string $destination Directory to save the backup in
      * @param array $exclude Target files or directories to exclude
      * @throws AikiException */
     public function save($destination, Array $exclude = Array());
-    
-    /** Restore a Backup 
-     * @param string $source Directory where the backup is 
-     * @param string $destination Directory to restore the backup in 
+
+    /** Restore a Backup
+     * @param string $source Directory where the backup is
+     * @param string $destination Directory to restore the backup in
      * @param array $exclude Target files or directories to exclude
      * @throws AikiException */
     public function restore($source, $destination, Array $exclude = Array());
-} 
+}

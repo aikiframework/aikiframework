@@ -18,6 +18,6 @@
  * @filesource */
 
 interface UpgradeInterface {
-	/** Install an Upgrade */
-	public function install();
-} 
+    /** Install an Upgrade */
+    public function install();
+}
