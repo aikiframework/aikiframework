@@ -267,7 +267,7 @@ class Util {
         if ( !is_array($files) ) {
             $files = array($files);
         }
-
+        $sqls = "";
         foreach ( $files as $file ){
 
             if ( file_exists($file) ) {
