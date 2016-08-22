@@ -54,7 +54,7 @@ class AikiScript {
      * @global    aiki    $aiki    global aiki instance
      * @return    string. Output text.
      */
-    public function parser($text, $searchIn= true) {
+    public function parser($text, $searchIn = true) {
         global $aiki;
 
         //$text = stripslashes($text);

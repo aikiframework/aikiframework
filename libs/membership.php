@@ -74,7 +74,7 @@ class membership {
      * @global    array    $db        global db instance
      * @global    array    $config    global config instance
      */
-    public function membership() {
+    public function __construct() {
         global $db, $config, $log;
 
         try {
@@ -161,9 +161,9 @@ class membership {
         $time_now = time();
 
 
-        if ( !isset($_SESSION['aikiuser']) and
+        if (!isset($_SESSION['aikiuser']) and
             !isset($_SESSION['guest']) and
-            !isset($_COOKIE["PHPSESSID"]) ) {
+            !isset($_COOKIE["PHPSESSID"])) {
             session_start();
         }
 
@@ -173,22 +173,24 @@ class membership {
             "  AND password='$password' ".
             "  AND is_active=1" .
             " LIMIT 1");
+
         if ($get_user) {
 
             $host_name = $_SERVER['HTTP_HOST'];
             $user_ip   = $this->get_ip();
 
-            if ( isset($config["allow_guest_sessions"]) and
-                $config["allow_guest_sessions"] ) {
+            if (isset($config["allow_guest_sessions"]) and
+                $config["allow_guest_sessions"]) {
                 $_SESSION['aikiuser'] = $_SESSION['guest'];
                 $register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='" .
                     $get_user->userid . "', `user_name` = '" . $get_user->username .
                     "', `user_ip`='$user_ip' WHERE `user_session`='" . $_SESSION['aikiuser'] . "' LIMIT 1");
             } else {
                 $_SESSION['aikiuser'] = $this->generate_session(100);
-                $register_user = $db->query("INSERT INTO aiki_users_sessions VALUES ('', '" . $get_user->userid .
-                "', '" . $get_user->username . "' , '$time_now', '$time_now' ,'" . $_SESSION['aikiuser'] .
-                "', '1', '$user_ip', '$user_ip')");
+                $register_user = $db->query("INSERT INTO aiki_users_sessions(user_id, user_name, session_start,".
+                    " last_hit, user_session, hits, user_ip, last_ip) VALUES (" . $get_user->userid .
+                    ", '" . $get_user->username . "' , $time_now, $time_now ,'" . $_SESSION['aikiuser'] .
+                    "', 1, '$user_ip', '$user_ip')");
             }
 
             if ( !isset($config["allow_multiple_sessions"]) || $config["allow_multiple_sessions"] == false ) {
@@ -286,7 +288,7 @@ class membership {
      */
 
     public function is_admin(){
-        return $this->permissions=="SystemGod";
+        return $this->permissions == "SystemGod";
     }
 
 
@@ -337,7 +339,7 @@ class membership {
      * @return    string
      */
     public function generate_session($strlen) {
-        return substr(md5(uniqid(rand(),true)),1,$strlen);
+        return substr(md5(uniqid(rand(), true)), 1, $strlen);
     }
 
 

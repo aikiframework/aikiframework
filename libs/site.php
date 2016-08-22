@@ -115,7 +115,7 @@ class Site {
      * @return string
      */
     function engine() {
-        if ( !isset($this->site->site_engine) ||  $this->site->site_engine=="" ){
+        if (!isset($this->site->site_engine) ||  $this->site->site_engine == "") {
             return "aiki";
         }
         return $this->site->site_engine;
@@ -210,7 +210,7 @@ class Site {
         // determine site name
 
         // when aiki receive directly the wigdet to render, widget_site is set as site
-        $widget= isset($_GET["widget"]) ? $aiki->widgets->get_widget($_GET['widget'],false) : NULL ;
+        $widget = isset($_GET["widget"]) ? $aiki->widgets->get_widget($_GET['widget'], false) : NULL;
 
         if ( !is_null($widget)){
             // 1. site is determind by widget
@@ -224,9 +224,9 @@ class Site {
             $this->site_prefix = "";
             $path = $aiki->url->first_url();
             $site = ($path == "homepage" ? NULL : $db->get_row("SELECT * FROM aiki_sites WHERE is_active!=0 AND site_prefix='$path'"));
-            if ( is_null($site) ) {
+            if (is_null($site)) {
                 // 4 by config[site] else default.
-                $this->set_site ( ( isset($config['site']) ? $config['site'] : 'default' ) );
+                $this->set_site((isset($config['site']) ? $config['site'] : 'default'));
             } else {
                 $path = $aiki->url->shift_url();
                 $this->set_site($site);

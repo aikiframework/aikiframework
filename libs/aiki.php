@@ -1,5 +1,7 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 /**
  * Aiki Framework (PHP)
  *
@@ -190,7 +192,7 @@ class aiki {
         $html_entities = array("&#41;", "&#40;", "&#91;", "&#93;", "&#123;",
                                "&#124;", "&#125;", "&#60;", "&#62;", "&#95;");
 
-        $text = str_replace($html_chars, $html_entities,$text);
+        $text = str_replace($html_chars, $html_entities, $text);
 
         return $text;
     }
@@ -203,9 +205,9 @@ class aiki {
      *
      * @return boolean
      */
-    function match_pair_one( $condition, $var){
-        if ( $condition=='*' || $condition=='' || $condition==$var ||
-             ( substr($condition,0,1)=="!" &&  $condition<>"!$var" ) ) {
+    function match_pair_one($condition, $var) {
+        if ($condition=='*' || $condition=='' || $condition==$var ||
+             (substr($condition, 0, 1) == "!" &&  $condition <> "!$var")) {
             return true;
         }
         return false;
@@ -220,7 +222,7 @@ class aiki {
      *
      * @return boolean
      */
-    function match_pair( $condition,$first, $second="*", $third ="*") {
+    function match_pair($condition, $first, $second="*", $third ="*") {
         //clean conditions,
         $condition= strtr(
                         $condition,
@@ -234,9 +236,9 @@ class aiki {
 
         foreach ($matches as $match) {
             $pair = explode("/", $match, 3) + array("*","*","*");
-            if ( $this->match_pair_one($pair[0],$first) &&
+            if ($this->match_pair_one($pair[0],$first) &&
                  $this->match_pair_one($pair[1],$second) &&
-                 $this->match_pair_one($pair[2],$third) ) {
+                 $this->match_pair_one($pair[2],$third)) {
                 return true;
             }
         }
@@ -261,17 +263,18 @@ class aiki {
         $i= 10 ; //max level of recursion.
 
         $start = strpos($string, $startDelim);
-        if ( $start === false ) {
+        if ($start === false) {
             return false;
         }
 
         do {
 
             $end  = strpos($string, $endDelim, $start);
-            if ( $end === false )
+            if ($end === false) {
                 return false;
+            }
             $nested = strpos($string, $startDelim, $start+1);
-            if ( $nested === false || $nested > $end ) {
+            if ($nested === false || $nested > $end) {
                 $position = array($start, $end) ;
                 return true;
             }
@@ -293,22 +296,22 @@ class aiki {
      *                2 delim
      */
 
-    function outer_markup ( $string , $offset=0 ){
+    function outer_markup($string, $offset = 0) {
         $i= 64; //max level of recursion.
-        $delim= "";
+        $delim = "";
 
-        $temp ="";
-        if ( preg_match ('/\(([a-z_]+)\(/U', $string, $temp)  ){
-            $delim      = $temp[1];
-            $startDelim ="($delim(";
-            $endDelim   =")$delim)";
+        $temp = "";
+        if (preg_match('/\(([a-z_]+)\(/U', $string, $temp)) {
+            $delim = $temp[1];
+            $startDelim = "($delim(";
+            $endDelim = ")$delim)";
             $temp = "";
         } else {
             return false;
         }
 
-        $initial = strpos ($string, $startDelim, $offset);
-        if ( $initial === false ) {
+        $initial = strpos($string, $startDelim, $offset);
+        if ($initial === false) {
             return false;
         }
 
@@ -319,10 +322,11 @@ class aiki {
 
             $nested = strpos($string, $startDelim, $nested+1);
             $end    = strpos($string, $endDelim, $end+1);
-            if ( $end === false )
+            if ($end === false) {
                 return false;
-            if ( $nested === false || $nested > $end ){
-                return array($initial, $end-$initial,$delim);
+            }
+            if ($nested === false || $nested > $end) {
+                return array($initial, $end - $initial, $delim);
             }
 
             $i--;
@@ -347,21 +351,21 @@ class aiki {
      */
     function eval_expression($expr, &$var) {
         $matches = 0;
-        if ( $expr == "" ) {
+        if ($expr == "") {
             return 0;
-        }elseif (preg_match('/^[+-]?[0-9]*(\.[0-9]*)?$/', $expr, $matches)) {
+        } elseif (preg_match('/^[+-]?[0-9]*(\.[0-9]*)?$/', $expr, $matches)) {
             return (float) $expr;
         } elseif (preg_match('/^\$([a-z_]+[a-z_0-9]*)$/i', $expr, $matches)) {
-            return ( isset($var[$matches[1]]) ? $var[$matches[1]] : 0 );
-        } elseif (preg_match('/^(.*)\(([^\(\)]*)\)(.*)$/i', $expr, $matches) ) {
-            return meval($matches[1] . meval($matches[2],$var) . $matches[3], $var);
-        } elseif (preg_match('~^(.*)([\+\-/\\\*%])(.*)$~', $expr, $matches)){
+            return (isset($var[$matches[1]]) ? $var[$matches[1]] : 0);
+        } elseif (preg_match('/^(.*)\(([^\(\)]*)\)(.*)$/i', $expr, $matches)) {
+            return meval($matches[1] . meval($matches[2], $var) . $matches[3], $var);
+        } elseif (preg_match('~^(.*)([\+\-/\\\*%])(.*)$~', $expr, $matches)) {
              $op1= meval($matches[1], $var);
              $op2= meval($matches[3], $var);
-             if( is_null($op1) || is_null($op2) ) {
+             if (is_null($op1) || is_null($op2)) {
                  return NULL;
              }
-             switch ($matches[2]){
+             switch ($matches[2]) {
                  case "+": return $op1+$op2;
                  case "-": return $op1-$op2;
                  case "*": return $op1*$op2;
@@ -404,9 +408,9 @@ class aiki {
             $view = $aiki->site->view();
             $language = $aiki->site->language();
             $prefix = $aiki->site->prefix();
-            $view_prefix= $aiki->site->view_prefix();
+            $view_prefix = $aiki->site->view_prefix();
 
-            $paths= array();
+            $paths = array();
             if ($prefix) {
                 $paths[] = $prefix;
             }
@@ -418,7 +422,7 @@ class aiki {
             }
             $paths = implode("/",$paths);
 
-            if ( isset($_SERVER["HTTPS"])) {
+            if (isset($_SERVER["HTTPS"])) {
                 $url = str_replace("http://", "https://", $url);
             }
             $trimedUrl = preg_replace('#/$#',"",$url); // reg: remove ending /

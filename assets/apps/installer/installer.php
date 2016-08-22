@@ -392,22 +392,22 @@ JAVASCRIPT;
             break;
         }
 
-        if ( file_exists($AIKI_ROOT_DIR ."/.htaccess" ) ) {
-            if ( trim(@file_get_contents($AIKI_ROOT_DIR ."/.htaccess")) == trim($htaccess_file) ){
-                $message= "<div class='ok'>" . $t->t("Installation finished <em>pretty urls are enabled with previous .htaccess</em>")."</div>";
-                $aditional="<a href='{$config['AIKI_SITE_URL']}' class='button'>" . $t->t("Test my site!!")."</a>";
+        if (file_exists($AIKI_ROOT_DIR ."/.htaccess")) {
+            if (trim(@file_get_contents($AIKI_ROOT_DIR ."/.htaccess")) == trim($htaccess_file)){
+                $message = "<div class='ok'>" . $t->t("Installation finished <em>pretty urls are enabled with previous .htaccess</em>")."</div>";
+                $aditional = "<a href='{$config['AIKI_SITE_URL']}' class='button'>" . $t->t("Test my site!!")."</a>";
             } else {
-                $aditional= "<input type='submit' name='try_step_5' value='" . $t->t("Try/Check again") ."' class='button' >";
+                $aditional = "<input type='submit' name='try_step_5' value='" . $t->t("Try/Check again") ."' class='button' >";
                 $message = "<div class='error'>" . $t->t("There is a existing .htaccess file.")."</div>".
                              "<div class='message'><p>" . $t->t("Please, remove file or rewrite file with this code:")."</p><textarea class='filedump'>". $htaccess_file . "</textarea></div>";
             }
 
-        } elseif ( @file_put_contents ( "$AIKI_ROOT_DIR/.htaccess", $htaccess_file) ){
-            $message= "<div class='ok'>" . $t->t("Installation finished <em>pretty urls are enabled.</em>")."</div>";
-            $aditional="<a href='{$config['AIKI_SITE_URL']}' class='button'>" . $t->t("Test my site!!")."</a>";
+        } elseif (@file_put_contents("$AIKI_ROOT_DIR/.htaccess", $htaccess_file)) {
+            $message = "<div class='ok'>" . $t->t("Installation finished <em>pretty urls are enabled.</em>")."</div>";
+            $aditional = "<a href='{$config['AIKI_SITE_URL']}' class='button'>" . $t->t("Test my site!!")."</a>";
         } else {
-            $aditional= "<input type='submit' name='try_step_5' value='" . $t->t("Try again")."' class='button' >";
-            $message=
+            $aditional = "<input type='submit' name='try_step_5' value='" . $t->t("Try again")."' class='button' >";
+            $message =
                 "<div class='error'>" . $t->t("Aiki can't write .htaccess file:")." <em>" . $t->t("Path") ." $AIKI_ROOT_DIR/.htaccess</em></div>".
                 "<div class='message'><p>" . $t->t("Please, copy this code, create file and paste.")."</p><textarea class='filedump'>". $htaccess_file . "</textarea></div>";
             $help  = "<div class='help'>" . $t->t("Check permission in directory")."</div>";
