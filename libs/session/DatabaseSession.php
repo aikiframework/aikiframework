@@ -65,7 +65,7 @@ class DatabaseSession implements SessionInterface {
          * session at any time. You can reduce the time needed
          * to load all the frames by ending the session as soon as all
          * changes to session variables are done. */
-        session_write_close();
+        session_write_close(true);
     }
 
     /** Open function, this works like a constructor in classes and is
@@ -126,7 +126,7 @@ class DatabaseSession implements SessionInterface {
                         $id,
                         $data,
                         $time);
-        return $this->_database->query($sql);
+        return (boolean)$this->_database->query($sql);
     }
 
     /** The destroy handler, this is executed when a session is destroyed with
