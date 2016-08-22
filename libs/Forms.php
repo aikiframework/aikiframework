@@ -224,7 +224,7 @@ $("#new_record_form").ajaxForm(function() {
 
         $i = 0;
 
-        foreach ( $form_array as $field ) {
+        foreach ($form_array as $field) {
 
             //$field = $aiki->url->apply_url_on_query($field);
 
@@ -236,25 +236,24 @@ $("#new_record_form").ajaxForm(function() {
             $get_permission_and_man_info = explode("|", $intwalker[0]);
             $intwalker[0] = $get_permission_and_man_info[0];
 
-            if ( isset($get_permission_and_man_info[2]) and $get_permission_and_man_info[2] == "true" ) {
+            if (isset($get_permission_and_man_info[2]) and $get_permission_and_man_info[2] == "true") {
                 $intwalker[1] = "<font color='#FF0000'>".$intwalker[1]."</font>";
             }
 
             if (isset($get_permission_and_man_info[1])) {
-                $get_group_level = $db->get_var ("SELECT group_level FROM aiki_users_groups WHERE" .
+                $get_group_level = $db->get_var("SELECT group_level FROM aiki_users_groups WHERE" .
                     " group_permissions='$get_permission_and_man_info[1]'");
             }
 
             $form .= "<div class='$intwalker[0] field'>";
-
-            if ( isset($form_data) and isset($form_data->$intwalker[0]) ) {
+            if ( isset($form_data) and isset($form_data->{$intwalker[0]}) ) {
                 /**
                  * To stop the L10n Function
                  * @TODO: apply such function to stop other types of aiki
                  * markup check input.php line 29
                  * instead preg_matching forms
                  */
-                $form_data->$intwalker[0] = str_replace("_", "&#95;", $form_data->$intwalker[0]);
+                $form_data->{$intwalker[0]} = str_replace("_", "&#95;", $form_data->{$intwalker[0]});
             }
 
             if ( !isset($get_permission_and_man_info[1]) or
@@ -281,7 +280,7 @@ $("#new_record_form").ajaxForm(function() {
                             foreach ( $explodeStaticSelect as $option ) {
                                 $optionsieds = explode(">", $option);
                                 $form .= '<option value="'.$optionsieds['1'].'"';
-                                if ( isset($form_data) and $form_data->$intwalker[0] == $optionsieds['1'] ) {
+                                if ( isset($form_data) and $form_data->{$intwalker[0]} == $optionsieds['1'] ) {
                                     $form .= ' selected';
                                 }
                                 $form .= '>' . $optionsieds['0'] . '</option>';
@@ -313,11 +312,11 @@ $("#new_record_form").ajaxForm(function() {
                         }
                         if ($aquery) {
                             foreach ( $aquery as $mini_selection ) {
-                                $name = $mini_selection->$intwalker[4];
-                                $id = $mini_selection->$intwalker[3];
+                                $name = $mini_selection->{$intwalker[4]};
+                                $id = $mini_selection->{$intwalker[3]};
 
                                 $form .= "<option value=\"$id\" ";
-                                if ( isset($form_data) and $form_data->$intwalker[0] == $id ) {
+                                if ( isset($form_data) and $form_data->{$intwalker[0]} == $id ) {
                                     $form .=' selected';
                                 }
                                 $form .= ">$name</option>";
@@ -330,8 +329,8 @@ $("#new_record_form").ajaxForm(function() {
                         $form .= '<label for="' . $intwalker[0].'">' . $intwalker['1'] .
                             '</label><input type="text" id="' . $intwalker['0'] .
                             '" name="' . $intwalker['0'] . '" value="';
-                        if ( isset($form_data) and isset($form_data->$intwalker[0]) ) {
-                            $form .= $form_data->$intwalker[0] ;
+                        if ( isset($form_data) and isset($form_data->{$intwalker[0]}) ) {
+                            $form .= $form_data->{$intwalker[0]};
                         } elseif (isset($_POST[$intwalker['0']])) {
                             $form .=$_POST[$intwalker['0']];
                         }
@@ -389,7 +388,7 @@ $("#new_record_form").ajaxForm(function() {
                             .$intwalker['0'] . '_container"><textarea rows="7" cols="50" id="' .
                             $intwalker['0'] . '" name="' . $intwalker['0'] . '">';
                         if (isset($form_data)) {
-                            $temp = str_replace("&#95;", "_", $form_data->$intwalker[0]);
+                            $temp = str_replace("&#95;", "_", $form_data->{$intwalker[0]});
                             $temp = htmlspecialchars($temp);
                             $temp = str_replace("_", "&#95;", $temp);
                             $form.= $temp;

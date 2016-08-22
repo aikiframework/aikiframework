@@ -298,7 +298,8 @@ if (function_exists('mysql_set_charset') === false) {
 			if ( $str = @$this->dbh->error )
 			{
 				$this->register_error($str);
-				$this->show_errors ? trigger_error($str,E_USER_WARNING) : null;
+				echo $query . "<br/>";
+				$this->show_errors ? trigger_error($str, E_USER_WARNING) : null;
 				return false;
 			}
 
