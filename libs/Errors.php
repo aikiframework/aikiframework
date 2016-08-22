@@ -63,7 +63,7 @@ class Errors {
                 }
 
             } else {
-                $db->query("INSERT INTO aiki_redirects VALUES('$request', '', '1')");
+                $db->query("INSERT INTO aiki_redirects(url,redirect,hits) VALUES('$request', '', '1')");
             }
         }
 
