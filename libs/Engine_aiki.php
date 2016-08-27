@@ -1029,7 +1029,7 @@ class Engine_aiki {
 
 
     function parse_translate_widget(&$widgetContents) {
-    global $aiki;
+        global $aiki;
         if (!$aiki->site->need_translation()) {
             return preg_replace('/\(t\((.*)\)t\)/Us','$1', $widgetContents);
         } else {
@@ -1051,7 +1051,7 @@ class Engine_aiki {
 
 
     function parse_translate_aiki_core(&$widgetContents) {
-    global $aiki;
+        global $aiki;
         if ($aiki->site->language()=="en") {
             return preg_replace('/\(__\((.*)\)__\)/Us','$1', $widgetContents);
         } else {

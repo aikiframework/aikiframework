@@ -33,7 +33,7 @@ class engine_v8 {
      * Create layout
      */
 
-    function layout( $parameters ){
+    function layout($parameters) {
         global $db, $aiki;
 
         // Initialize
@@ -107,7 +107,7 @@ class engine_v8 {
     }
 
 
-    function render_html(){
+    function render_html() {
         global $aiki;
         $html  = $aiki->Output->header($this->target['css'],  $this->target['header']);
         $html .= $aiki->Output->body($this->target['body']);
@@ -153,26 +153,26 @@ class engine_v8 {
         $widgetName= $widgetData->widget_name;
 
         // process pre-parsers.
-        foreach ( $preParsers as $pattern => $callback ){
-            if ( is_string($pattern) ){
-                $widget = preg_replace_callback ( $pattern, $callback, $widget);
+        foreach ($preParsers as $pattern => $callback) {
+            if (is_string($pattern)) {
+                $widget = preg_replace_callback($pattern, $callback, $widget);
             } else {
-                $widget = call_user_func   ( $callback, $widget);
+                $widget = call_user_func($callback, $widget);
             }
         }
 
         // now the normal parser.
         $match = false;
-        $offset=0;
-        while ( $match = $aiki->outer_markup ( $widget,$offset ) ){
-            $parserToCall= $match[2];
-            $len        = strlen($parserToCall)+2;
+        $offset = 0;
+        while ($match = $aiki->outer_markup($widget, $offset)){
+            $parserToCall = $match[2];
+            $len = strlen($parserToCall)+2;
 
             // call parser
-            if ( isset( $parsers[ $parserToCall]) ){
+            if (isset($parsers[$parserToCall])) {
                 $text    = substr($widget, $match[0]+ $len,$match[1]-$len );
                 $replace = call_user_func(array($this, $parsers[$parserToCall]), $text);
-                if (is_int($replace) ){ // necesary for noaki
+                if (is_int($replace)) { // necesary for noaki
                     $offset += $replace;
                     continue;
                 }
