@@ -282,7 +282,8 @@ class Records {
         $i = 0;
         $insertCount = count($form_array);
 
-        foreach( $form_array as $field ) {
+        foreach ($form_array as $key => $field) {
+            $type = preg_replace("/[0-9]+$/", "", $key);
 
             $field = $aiki->url->apply_url_on_query($field);
             $field = $aiki->SqlMarkup->sql($field);
@@ -292,7 +293,7 @@ class Records {
             $get_permission_and_man_info = explode("|", $intwalker[0]);
 
             if (isset($get_permission_and_man_info[1])) {
-                $get_group_level = $db->get_var ("SELECT group_level from ".
+                $get_group_level = $db->get_var("SELECT group_level from ".
                     "aiki_users_groups where group_permissions='".
                     "$get_permission_and_man_info[1]'");
             }
@@ -301,9 +302,9 @@ class Records {
 
             // Security Check to remove unauthorized POST data
             if (isset($get_group_level)) {
-                if ( isset($get_permission_and_man_info['1']) and
+                if (isset($get_permission_and_man_info['1']) and
                     $get_permission_and_man_info[1]==$membership->permissions or
-                    $membership->group_level < $get_group_level ) {
+                    $membership->group_level < $get_group_level) {
                     /**
                      * @todo uh, there is nothing here, can this be reversed?
                      */
@@ -459,9 +460,9 @@ class Records {
 
                         $plupload_files = array();
 
-                        if ( isset($_POST['multifiles_plupload']) and
+                        if (isset($_POST['multifiles_plupload']) and
                             isset($_POST[$intwalker[0].'_count']) and
-                            $_POST[$intwalker[0].'_count'] > 0 ) {
+                            $_POST[$intwalker[0].'_count'] > 0) {
                             $total_uploaded_files =
                                 $_POST[$intwalker[0].'_count'];
 
@@ -479,16 +480,16 @@ class Records {
             } // end of foreach loop
 
 
-            if ( !isset($full_path) and isset($config["upload_path"]) ) {
+            if (!isset($full_path) and isset($config["upload_path"])) {
                 $full_path = $aiki->processVars($config["upload_path"]);
             } else {
                 $full_path = $aiki->processVars($full_path);
             }
             // need a unique filename for processing
-            if ( isset($unique_filename) and
+            if (isset($unique_filename) and
                 isset($intwalker[2]) and
                 $unique_filename == $intwalker[2] and
-                $full_path ) {
+                $full_path) {
                 $uploadexploded = explode(":", $intwalker[0]);
 
                 $filename = $_FILES[$uploadexploded[0]];
@@ -594,7 +595,13 @@ class Records {
                 $_POST[$intwalker[0]] = $name;
 
             } // end of long if to handle unique filename
-
+            //default value for textinput
+            if ($type == 'textinput' and
+                isset($_POST[$intwalker[0]]) and
+                !$_POST[$intwalker[0]] and
+                isset($intwalker[2])) {
+                $_POST[$intwalker[0]] = $intwalker[2];
+            }
             if (!isset($send_email)) {
                 $send_email = '';
             }
@@ -606,14 +613,18 @@ class Records {
                     $field != $permission and
                     $field != $send_email and
                     $field != $submit and
-                    isset($_POST[$intwalker[0]]) and
-                    $_POST[$intwalker[0]] ) {
-                    if ( $insertCount == $i+1 ) {
-                        $tableFields .=$intwalker[0];
-                        $preinsertQuery .= "'".$_POST[$intwalker[0]]."'";
+                    isset($_POST[$intwalker[0]])) {
+                    
+                    $tableFields .= $intwalker[0];
+                        
+                    if (is_numeric($_POST[$intwalker[0]]) || $_POST[$intwalker[0]] == 'null') {
+                        $preinsertQuery .= $_POST[$intwalker[0]];
                     } else {
-                        $tableFields .= $intwalker[0].", ";
-                        $preinsertQuery .= "'".$_POST[$intwalker[0]]."', ";
+                        $preinsertQuery .= "'".$_POST[$intwalker[0]]."'";
+                    }
+                    if ($insertCount != $i+1) {
+                        $tableFields .= ", ";
+                        $preinsertQuery .= ", ";
                     }
                 }
             } else {
@@ -716,7 +727,9 @@ class Records {
                 }
             } else {
                 $insertResult = $db->query($insertQuery);
-                $this_pkey =  mysql_insert_id();
+                if ($insertResult) {
+                    $this_pkey =  $db->insert_id;
+                }
 
                 if ( isset($secondery_queries) and
                     is_array($secondery_queries) ) {

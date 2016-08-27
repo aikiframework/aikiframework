@@ -171,7 +171,7 @@ class Site {
 
     private function set_site($sitename) {
         global $db, $config, $aiki;
-        if ( !is_string($sitename) ) {
+        if (!is_string($sitename)) {
             // $sitename is a object
             $this->site = $sitename;
             $config['site'] = $sitename->site_shortcut;
@@ -180,10 +180,10 @@ class Site {
 
         // search site
         $site = $db->get_row("SELECT * from aiki_sites where site_shortcut='$sitename' limit 1");
-        if ( is_null($site) ){
+        if (is_null($site)) {
             // not found
-            die($aiki->message->error( t("Fatal Error: Wrong site name provided.") ,NULL,false));
-        } elseif ( $site->is_active != 1 ) {
+            die($aiki->message->error( t("Fatal Error: Wrong site name provided."), NULL, false));
+        } elseif ($site->is_active != 1) {
             // not active or closed;
             die($aiki->message->error($site->if_closed_output ? $info->if_closed_output : t("Site $sitename is closed."),
                     NULL,

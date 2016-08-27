@@ -171,7 +171,7 @@ class engine_v8 {
             // call parser
             if ( isset( $parsers[ $parserToCall]) ){
                 $text    = substr($widget, $match[0]+ $len,$match[1]-$len );
-                $replace= call_user_func( array($this, $parsers[ $parserToCall] ), &$text);
+                $replace = call_user_func(array($this, $parsers[$parserToCall]), $text);
                 if (is_int($replace) ){ // necesary for noaki
                     $offset += $replace;
                     continue;
@@ -182,7 +182,7 @@ class engine_v8 {
             }
 
             //Replacement.
-            $widget= substr($widget,0,$match[0]) . $replace . substr($widget,$match[0]+$match[1]+$len) ;
+            $widget= substr($widget, 0, $match[0]) . $replace . substr($widget, $match[0]+$match[1]+$len) ;
         }
 
 

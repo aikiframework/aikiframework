@@ -73,19 +73,19 @@ function refreshthetree(tree){
 	$.tree_reference(tree).refresh();
 }
 
-function create_form(selector, id, name, code, tree){
+function create_form(selector, id, name, code, tree) {
    
 	$(selector).click(function(event){
 		$('#tools_box').remove();
-			$("#widget-form").load("admin_tools/new/"+id, function(){
+			$("#widget-form").load("admin_tools/new/"+id, function() {
 				
 				var current_form = $("form.new_record_form").html();
 				if (code == 1){
 					code_mirror();
-					}
-				$('form.new_record_form').ajaxForm(function() { 
+				}
+				$('form.new_record_form').ajaxForm(function(data) { 
 					refreshthetree(tree);
-					$("#widget-form").html("Added new " + name + " successfully");
+					$("#widget-form").html('<pre>' + data + '</pre>');
 	           }); 
 
 			});	

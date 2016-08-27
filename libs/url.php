@@ -75,7 +75,7 @@ class url {
     /**
      * Sets up the url for further processing.
      */
-    public function url() {
+    public function __construct() {
         /**
          *
          * url procces requests transformed by .htaccess by this rule:

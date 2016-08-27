@@ -908,7 +908,11 @@ var Editor = (function(){
     // highlight them in green for a moment, or red if no proper match
     // was found.
     blinkParens: function(jump) {
-      if (!window.select) return;
+      try {
+        if (!window.select) return;
+      } catch(e) {
+        return;
+      }
       // Clear the event property.
       if (this.parenEvent) this.parent.clearTimeout(this.parenEvent);
       this.parenEvent = null;
@@ -1099,7 +1103,11 @@ var Editor = (function(){
     highlightDirty: function(force) {
       // Prevent FF from raising an error when it is firing timeouts
       // on a page that's no longer loaded.
-      if (!window.select) return;
+      try {
+        if (!window.select) return;
+      } catch(e) {
+        return;
+      }
 
       if (!this.options.readOnly) select.markSelection(this.win);
       var start, endTime = force ? null : time() + this.options.passTime;
@@ -1119,7 +1127,11 @@ var Editor = (function(){
       var self = this, pos = null;
       return function() {
         // FF timeout weirdness workaround.
-        if (!window.select) return;
+        try {
+          if (!window.select) return;
+        } catch(e) {
+          return;
+        }
         // If the current node is no longer in the document... oh
         // well, we start over.
         if (pos && pos.parentNode != self.container)

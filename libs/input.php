@@ -41,7 +41,7 @@ class input {
      * @global  aiki        $aiki   global aiki instance
      * @global  CreateLayout    $layout global layout instance
      */
-    public function input() {
+    public function __construct() {
         global $aiki, $layout;
 
         foreach ( $_GET as $key => $req ) {
