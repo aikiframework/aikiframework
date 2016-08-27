@@ -186,7 +186,11 @@ History.prototype = {
 
   // Commit unless there are pending dirty nodes.
   tryCommit: function() {
-    if (!window.History) return; // Stop when frame has been unloaded
+    try {
+      if (!window.History) return; // Stop when frame has been unloaded
+    } catch(e) {
+      return;
+    }
     if (this.editor.highlightDirty()) this.commit(true);
     else this.scheduleCommit();
   },

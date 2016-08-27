@@ -1064,16 +1064,22 @@ class Records {
 
         $i = 0;
         $viewCount = count($form_array);
-        foreach ( $form_array as $field ) {
+        foreach ($form_array as $key => $field) {
+            $type = preg_replace("/[0-9]+$/", "", $key);
 
-            if ( $field != $tablename and
+            if ($field != $tablename and
                 $field != $pkey and
-                $field != $submit ) {
+                $field != $submit) {
                 $intwalker = explode(":", $field);
 
                 $get_permission_and_man_info = explode("|", $intwalker[0]);
                 $intwalker[0] = $get_permission_and_man_info[0];
-
+                if (isset($post[$intwalker[0]]) and
+                    !$post[$intwalker[0]] and
+                    isset($intwalker[2]) and
+                    $type == 'textinput') {
+                    $post[$intwalker[0]] = $intwalker[2];
+                }
                 if (isset($intwalker['2'])) {
                     switch ($intwalker['2']) {
                         case "orderby":
@@ -1176,11 +1182,18 @@ class Records {
                             @str_replace('&gt;', '>' , $post[$intwalker[0]]);
                         */
                         $insert_query_fields .= "$intwalker[0], ";
-                        $insert_query_values .= "'".$post[$intwalker[0]]."', ";
+                        if (is_numeric($post[$intwalker[0]]) || $post[$intwalker[0]] == 'null') {
+                            $insert_query_values .= $post[$intwalker[0]] . ", ";
+                        } else {
+                            $insert_query_values .= "'" . $post[$intwalker[0]] . "', ";
+                        }
 
                         if ($post['form_post_type'] == "save") {
-                            $editQuery .= ", ".$intwalker[0]."='".
-                                            $post[$intwalker[0]]."'";
+                            if (is_numeric($post[$intwalker[0]]) || $post[$intwalker[0]] == 'null') {
+                                $editQuery .= ", " . $intwalker[0]."=" . $post[$intwalker[0]];
+                            } else {
+                                $editQuery .= ", " . $intwalker[0]."='" . $post[$intwalker[0]] . "'";
+                            }
                         }
                     }
                 } else {
