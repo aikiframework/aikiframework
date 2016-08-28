@@ -34,6 +34,7 @@ $html_output = '';
  * @see bootstrap.php
  */
 require_once("bootstrap.php");
+
 config_error_reporting();
 
 /**

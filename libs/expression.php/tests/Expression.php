@@ -24,7 +24,7 @@ class ExpressionTest extends TestCase {
     }
     // -------------------------------------------------------------------------
     public function testFloats() {
-        $ints = array("10.10", "0.01", "-100.100", "1.10e2", "-0.10e10");
+        $ints = array("10.10", "0.01", ".1", "1.", "-100.100", "1.10e2", "-0.10e10");
         $expr = new Expression();
         for ($i=0; $i<count($ints); $i++) {
             $result = $expr->evaluate($ints[$i]);
@@ -33,9 +33,18 @@ class ExpressionTest extends TestCase {
     }
     // -------------------------------------------------------------------------
     public function testAritmeticOperators() {
-        $expressions = array("20+20", "-20+20", "-0.1+0.1", "20*20", "20-20",
-                             "20/20", '10%20', '10%9', '20%9');
+        $expressions = array("20+20", "-20+20", "-0.1+0.1", ".1+.1", "1.+1.",
+                             "0.1+(-0.1)", "20*20", "-20*20", "20*(-20)", "1.*1.",
+                             ".1*.1", "20-20", "-20-20", "20/20", "-20/20", "10%20",
+                             "10%9", "20%9");
         $this->arrayTest($expressions);
+        try {
+            $expr = new Expression();
+            $expr->evaluate('10/0');
+            $this->assertTrue(false); // will fail if evaluate don't throw exception
+        } catch(Exception $e) {
+            $this->assertTrue(true);
+        }
     }
     // -------------------------------------------------------------------------
     public function testSemicolon() {
@@ -112,7 +121,13 @@ class ExpressionTest extends TestCase {
     }
     // -------------------------------------------------------------------------
     public function testCustomFunctions() {
-        $functions = array('square(x) = x*x' => array('square(10)' => 100),
+        $functions = array('square(x) = x*x' => array(
+                                'square(10)' => 100,
+                                'square(10) == 100' => 1
+                           ),
+                           'string() = "foo"' => array(
+                                'string() =~ "/[fo]+/"' => 1
+                           ),
                            'number(x) = x =~ "/^[0-9]+$/"' => array(
                                 'number("10")' => 1,
                                 'number("10foo")' => 0
@@ -130,6 +145,7 @@ class ExpressionTest extends TestCase {
             }
         }       
     }
+
     // -------------------------------------------------------------------------
     public function testCustomClosures() {
         $expr = new Expression();

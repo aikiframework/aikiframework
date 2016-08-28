@@ -18,7 +18,7 @@
  */
 
 
-if(!defined('IN_AIKI')){
+if (!defined('IN_AIKI')) {
     die('No direct script access allowed');
 }
 
@@ -55,15 +55,15 @@ class url {
      * @return string First part of url, or "homepage".
      *
      */
-    public function first_url(){
+    public function first_url() {
         return current($this->url);
     }
 
     /**
      * remove first route of url ( /foo/bar to /bar) .
      */
-    public function shift_url(){
-        if ( count($this->url) > 1 ) {
+    public function shift_url() {
+        if (count($this->url) > 1) {
              $this->pretty = substr($this->pretty, strlen($this->url[0])+1) ;
              array_shift($this->url);
         } else {
@@ -86,11 +86,11 @@ class url {
          */
 
         if (isset($_GET['pretty'])) {
-            $this->pretty= $_GET['pretty'];
+            $this->pretty = $_GET['pretty'];
             $this->url = explode("/", str_replace("|", "/", $this->pretty));
         } else {
-            $this->url[0]="homepage";
-            $this->pretty="";
+            $this->url[0] = "homepage";
+            $this->pretty = "";
         }
 
         $this->url_count = count($this->url);
@@ -103,7 +103,7 @@ class url {
      * @param array $query a constructed query
      * @return arry
      */
-    public function apply_url_on_query($query)    {
+    public function apply_url_on_query($query) {
         if (preg_match_all('/\(\!\((.*)\)\!\)/U', $query, $matches)) {
             foreach ($matches[1] as $parsed) {
                 $query = @str_replace("(!($parsed)!)", $this->url[$parsed],
@@ -119,8 +119,7 @@ class url {
      * @param string $text
      * @return string
      */
-    public function fix_url($text)
-    {
+    public function fix_url($text) {
         $text = trim($text);
         $text = strtr($text, array(
                       " " =>"_",
@@ -139,7 +138,6 @@ class url {
 
     public function match($displayString) {
         if ($displayString) {
-
             // a regular expression can containe a | character, that must be
             // escaped, so in this case use preg_split.
             if ( strpos($displayString,"#") !== false ) {
@@ -195,9 +193,6 @@ class url {
         }
         return false;
     }
-
-
-
 
 
 } // end of url class

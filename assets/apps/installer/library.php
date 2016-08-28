@@ -87,18 +87,18 @@ function select_language (){
  * @return string containg comple html select.
  */
 
-function select_db_type( $db_type ){
+function select_db_type($db_type) {
     global $t;
     $selectType="<select name='db_type' id='db_type' class='user-input'>\n";
     $options = array (
         "mysql" =>"MySQL",
         "mssql" =>"mssql",
         "oracle" => $t->t("oracle 8 or higher"),
-        "pdo"=>"PDO",
+        "pdo" => "PDO",
         "postgresql" =>"postgresql",
         "sqlite" =>"sqlite");
-    foreach ( $options as $value=>$option){
-        $selected= ($value==$db_type ? " selected ": "" );
+    foreach ($options as $value=>$option) {
+        $selected = ($value==$db_type ? " selected ": "" );
         $selectType .= "\t<option value='$value'$selected>$option</option>\n";
     }
     $selectType .="</select>\n";
@@ -236,17 +236,17 @@ function sqls(){
     $config["ADMIN_PASSWORD_MD5_MD5"]= md5(md5($config["ADMIN_PASSWORD"]));
 
     $replace = array (
-        "@AIKI_SITE_URL_LEN@"=> strlen($config['AIKI_SITE_URL']),
-        "@AIKI_SITE_URL@"    => $config['AIKI_SITE_URL'],
-        "@PKG_DATA_DIR_LEN@" => strlen($AIKI_ROOT_DIR),
-        "@PKG_DATA_DIR@"     => $AIKI_ROOT_DIR,
-        "@ADMIN_USER@"=> $config["ADMIN_USER"],
-        "@ADMIN_NAME@"=> $config["ADMIN_FULLNAME"],
-        "@ADMIN_PASS@"=> $config["ADMIN_PASSWORD_MD5_MD5"],
-        "@ADMIN_MAIL@"=> $config["ADMIN_EMAIL"],
-        "@VERSION@"   => AIKI_VERSION,
-        "@REVISION@"  => Util::get_last_revision(),
-        "@AUTHORS@"   => Util::get_authors());
+        "@AIKI_SITE_URL_LEN@" => strlen($config['AIKI_SITE_URL']),
+        "@AIKI_SITE_URL@"     => $config['AIKI_SITE_URL'],
+        "@PKG_DATA_DIR_LEN@"  => strlen($AIKI_ROOT_DIR),
+        "@PKG_DATA_DIR@"      => $AIKI_ROOT_DIR,
+        "@ADMIN_USER@"        => $config["ADMIN_USER"],
+        "@ADMIN_NAME@"        => $config["ADMIN_FULLNAME"],
+        "@ADMIN_PASS@"        => $config["ADMIN_PASSWORD_MD5_MD5"],
+        "@ADMIN_MAIL@"        => $config["ADMIN_EMAIL"],
+        "@VERSION@"           => AIKI_VERSION,
+        "@REVISION@"          => Util::get_last_revision(),
+        "@AUTHORS@"           => Util::get_authors());
 
     $files = array (
         "$AIKI_ROOT_DIR/sql/CreateTables.sql",

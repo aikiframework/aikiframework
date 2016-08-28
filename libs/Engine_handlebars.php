@@ -42,13 +42,14 @@ class engine_handlebars extends engine_v8 {
             return $source;
         });
         $self = $this;
-        $this->handlebars->addHelper('if', function($template, $context, $arg, $source) use ($self) {
-            $math = new Expression();
+        $expr_engine = new Expression();
+        $this->expressions = $expr_engine;
+        $this->handlebars->addHelper('if', function($template, $context, $arg, $source) use ($self, $expr_engine) {
             $parsedArgs = $template->parseArguments($arg);
             $expr = $self->process_args($context, $parsedArgs[0]);
-            $tmp = $math->evaluate($expr);
-            if ($math->last_error) {
-                throw new Exception($math->last_error);
+            $tmp = $expr_engine->evaluate($expr);
+            if ($expr_engine->last_error) {
+                throw new Exception($expr_engine->last_error);
             }
             if ($tmp) {
                 $template->setStopToken('else');
@@ -101,13 +102,12 @@ class engine_handlebars extends engine_v8 {
                 case 2: header($para[0], $para[1]); break;
                 default: header($para[0], $para[1], $para[2]); break;
             }
-            return '';
         });
     }
     
     function process_args($context, $str) {
         $self = $this;
-        return preg_replace_callback('/\$([a-zA-Z_][a-zA-Z_0-9]*+(?!->))/', function($matches) use ($context, $self) {
+        return preg_replace_callback('/\$(\w*+(?!->))/', function($matches) use ($context, $self) {
             return $self->get_context_var($context, $matches[1]);
         }, (string)$str);
     }
@@ -149,7 +149,7 @@ class engine_handlebars extends engine_v8 {
         $widgetName   = $this->widget->widget_name;
         // fix handlebars helper arguments
         $helpers = array('#sql', '#if', 'script');
-        $re = "/\{\{(" . implode('|', $helpers).")\s+([^\"'](.*?)[^\"'])\s*\}\}/";
+        $re = "/\{\{(" . implode('|', $helpers).")\s+(.*?)\s*\}\}/";
         $widget = preg_replace_callback($re, function($matches) {
             return '{{' . $matches[1] . ' "'. preg_replace('/(?<!\\\\)"/', '\\"', $matches[2]) . '"}}';
         }, $widget);
@@ -176,7 +176,7 @@ class engine_handlebars extends engine_v8 {
     }
 
     function global_vars() {
-        global $aiki, $page;
+        global $aiki, $page, $config;
 
         $pretty = $aiki->config->get('pretty_urls', 1);
         $url = $aiki->config->get('url');
@@ -189,9 +189,10 @@ class engine_handlebars extends engine_v8 {
         $view = $aiki->site->view();
         $language = $aiki->site->language();
         $prefix = $aiki->site->prefix();
-        $view_prefix= $aiki->site->view_prefix();
+        $view_prefix = $aiki->site->view_prefix();
 
         $paths = array();
+        
         if ($prefix) {
             $paths[] = $prefix;
         }
@@ -203,13 +204,14 @@ class engine_handlebars extends engine_v8 {
             $paths[] = $language;
         }
         $paths = implode("/", $paths);
-
+        //print_r($paths);
         if ( isset($_SERVER["HTTPS"])) {
             $url = str_replace("http://", "https://", $url);
         }
 
-        $trimedUrl = preg_replace('#/$#',"",$url); // reg: remove ending /
+        $trimedUrl = preg_replace('#/$#', "", $url); // reg: remove ending /
         return array(
+            'paths' => $url,
             'userid'    => $aiki->membership->userid,
             'full_name' => $aiki->membership->full_name,
             'username'  => $aiki->membership->username,
@@ -236,7 +238,7 @@ class engine_handlebars extends engine_v8 {
             'POST'          => $_POST,
             'COOKIE'        => $_COOKIE,
             'SESSION'       => $_SESSION,
-            'foo' => array(1,2,3,4,5)
+            'config'        => $config
         );
         
     }

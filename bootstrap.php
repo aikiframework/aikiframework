@@ -129,7 +129,7 @@ $aiki = new aiki();
 $config = $aiki->get_config($config);
 
 // if HTTP port is not 80, insert port in URL.
-if ( isset($config["url"]) && $_SERVER["SERVER_PORT"]!=80 ){
+if (isset($config["url"]) && $_SERVER["SERVER_PORT"] != 80) {
     $config["url"] = preg_replace("#(http.?://[^/]*)(/)#",'$1:'. $_SERVER["SERVER_PORT"] . "/", $config["url"]);
 }
 
@@ -162,7 +162,7 @@ $aiki->load('config');
 $aiki->load("languages");
 $aiki->load("input");
 
-// this class will be loaded by demand
+// this classes will be loaded by demand
 /*
  $aiki->load("text");
 $aiki->load("records");

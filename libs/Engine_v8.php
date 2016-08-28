@@ -70,7 +70,7 @@ class engine_v8 {
         if (!$unique_widget_exists) {
             // first look for widget that responds error_404,
             // else use config error_404.
-            $module_widgets= $aiki->widgets->get_Page_Not_Found_Widgets();
+            $module_widgets = $aiki->widgets->get_Page_Not_Found_Widgets();
             if ( $module_widgets ) {
                 $aiki->Errors->pageNotFound(false);
                 $allMatch = true;

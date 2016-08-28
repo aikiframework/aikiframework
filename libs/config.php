@@ -216,25 +216,25 @@ class config {
 
          // if any value is valid only seek first.
          // note: apps that don't have site/view/language use this way.
-         if ( $selector=="*" || $selector=="*/*/*" ){
+         if ($selector == "*" || $selector == "*/*/*") {
             $value = $db->get_var($sql);
-            if ( is_null($value) ) {
+            if (is_null($value)) {
                 return $default;
             }
-            $ret= $this->_unserialize($value);
+            $ret = $this->_unserialize($value);
             $config[$setting]= $ret;
             return $ret;
         }
 
         // firt obtain all values
         $values = $db->get_results($sql);
-        list($site,$view,$language)= $this->selector($selector);
+        list($site,$view,$language) = $this->selector($selector);
 
         // and filter the first that match selector
         if (is_array($values)) {
             foreach ($values as $value) {
                 if ($aiki->match_pair($value->config_selector, $site, $view, $language)) {
-                    $ret= $this->_unserialize($value->config_value);
+                    $ret = $this->_unserialize($value->config_value);
                     $config[$setting]= $ret;
                     return $ret;
                 }
