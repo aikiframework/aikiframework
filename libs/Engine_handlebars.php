@@ -82,13 +82,18 @@ class engine_handlebars extends engine_v8 {
             return $buffer;
         });
 
-        $this->handlebars->addHelper('script', function($template, $context, $arg, $source) use ($self) {
+        $this->handlebars->addHelper('script', function($template, $context, $arg, $source) use ($self, $expr_engine) {
             global $aiki;
             $parsedArgs = $template->parseArguments($arg);
             $arg = $self->process_args($context, $parsedArgs[0]);
             // unescape quotes
             $arg = preg_replace('/\\\\"/', '"', $arg);
-            return new \Handlebars\SafeString($aiki->AikiScript->parser($arg, false));
+            $result = $expr_engine->evaluate($arg);
+            if (is_string($result)) {
+                return new \Handlebars\SafeString($result);
+            } else {
+                return $result;
+            }
         });
         
         $this->handlebars->addHelper('header', function($template, $context, $arg, $source) use ($self) {
@@ -107,11 +112,15 @@ class engine_handlebars extends engine_v8 {
     
     function process_args($context, $str) {
         $self = $this;
-        return preg_replace_callback('/\$(\w*+(?!->))/', function($matches) use ($context, $self) {
-            return $self->get_context_var($context, $matches[1]);
+        $str = preg_replace_callback("/'[^']+'(*SKIP)(*F)|(?<!\\\\)\\$(\w+)\b(?!->)/", function($matches) use ($context, $self) {
+            return json_encode($self->get_context_var($context, $matches[1]));
         }, (string)$str);
+        $str = preg_replace_callback('/\$aiki\-\>(.*?)\-\>([^(]+)\((.*)\)?/', function($matches) {
+            global $aiki;
+            return json_encode($aiki->AikiScript->aiki_function($matches[1], $matches[2], $matches[3]));
+        }, $str);
+        return $str;
     }
-    
     /**
      * get variable from handlebars context
      */
@@ -218,13 +227,22 @@ class engine_handlebars extends engine_v8 {
      */
 
     function parse($widget) {
-        global $aiki, $db;
+        global $aiki, $db, $membership;
         
 
         $this->widget = $widget;
-        $widget_text = $this->widget->widget;
-        $widgetName   = $this->widget->widget_name;
         
+        // Security check to determine which widget content to display.
+        if ($widget->is_admin &&
+            $membership->permissions &&
+            $widget->if_authorized &&
+            $membership->have_permission($widget->permissions)) {
+            $widget_text = $widget->if_authorized;
+            $widget->query = $widget->authorized_select;
+        } else {
+            $widget_text = $this->widget->widget;
+            $widget->query = $widget->normal_select;
+        }
         if (isset($widget->custome_header)) {
             $widget->custom_header = $widget->custome_header;
         }
@@ -238,16 +256,17 @@ class engine_handlebars extends engine_v8 {
             }
         }
         
-        // fix handlebars helper arguments
+        // handlerbars helpers require to quote arguments if then have special characters
         $helpers = array('#?sql', '#?if', '#?script');
         $re = "/\{\{(" . implode('|', $helpers).")\s+(.*?)\s*\}\}/";
         $widget_text = preg_replace_callback($re, function($matches) {
             return '{{' . $matches[1] . ' "'. preg_replace('/(?<!\\\\)"/', '\\"', $matches[2]) . '"}}';
         }, $widget_text);
 
-        $widget_text= $this->handlebars->render($widget_text, $this->global_vars());
+        $widget_text = $this->handlebars->render($widget_text, $this->global_vars());
 
-        if ( is_debug_on() ){
+        if (is_debug_on()) {
+            $widgetName = $this->widget->widget_name;
             return "\n<!-- start {$widgetName} ($widgetID) -->" . $widget_text . "\n<!-- end {$widgetName} ($widgetID) -->";
         }
         return $widget_text;

@@ -333,7 +333,7 @@ class Engine_aiki {
     private function createWidgetContent($widget, $normal_select=false) {
         global $aiki, $db, $membership, $nogui, $custom_output, $config;
 
-        $is_inline = ( $normal_select !== false ? true : false );
+        $is_inline = $normal_select !== false;
         $stopcaching = false;
         if ( isset($config["widget_cache"]) &&
             $config["widget_cache"] &&
