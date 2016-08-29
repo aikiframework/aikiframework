@@ -58,14 +58,15 @@ class widgets {
         global $db, $aiki;
         $search = $aiki->url->url[0];
         $SQL =
-            "SELECT id, display_urls, kill_urls, widget_name, widget_target, css<>'' as have_css" .
+            "SELECT id, display_urls, kill_urls, widget_name, widget_target, widget_site, css<>'' as have_css" .
             " FROM aiki_widgets " .
             " WHERE father_widget=$father AND " .
             $this->widget_scope() ." AND ".
-            " (display_urls LIKE '%$search%' OR display_urls = '*' OR ".
+            " (display_urls LIKE '^$search\$|^$search\\\\||\\\\|$search\$|\\\\|$search\\\\|' OR display_urls = '*' OR ".
             " display_urls LIKE '%#%#%') AND " .
             " (kill_urls='' OR kill_urls not rlike '^$search\$|^$search\\\\||\\\\|$search\$|\\\\|$search\\\\|') " .
             " ORDER BY  display_order, id";
+         //throw new Error($SQL);
          return $db->get_results($SQL);
     }
 

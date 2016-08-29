@@ -106,9 +106,11 @@ class Engine_aiki {
         // or in url, search widget and test there is a unique response
         $module_widgets = $aiki->widgets->get_candidate_widgets();
         $unique_widget_exists = false;
+
         if ($module_widgets) {
-            foreach($module_widgets as $tested_widget){
-                if ($tested_widget->display_urls != "*"){
+            foreach($module_widgets as $tested_widget) {
+                if ($tested_widget->display_urls != "*") {
+                    //throw new Error(json_encode($tested_widget));
                     $unique_widget_exists = true;
                     break;
                 }
