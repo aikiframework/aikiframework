@@ -69,17 +69,7 @@ class engine_handlebars extends engine_v8 {
             global $db;
             $parsedArgs = $template->parseArguments($arg);
             $sql = $self->process_args($context, $parsedArgs[0]);
-            $results = $db->get_results($sql);
-            $buffer = '';
-            if ($results) {
-                foreach ($results as $object) {
-                    $context->push($object);
-                    $buffer .= $template->render($context);
-                    $context->pop();
-                    $template->rewind();
-                }
-            }
-            return $buffer;
+            return $self->iterate($template, $context, $db->get_results($sql));
         });
 
         $this->handlebars->addHelper('script', function($template, $context, $arg, $source) use ($self, $expr_engine) {
@@ -94,6 +84,29 @@ class engine_handlebars extends engine_v8 {
             } else {
                 return $result;
             }
+        });
+        
+        $this->handlebars->addHelper('file', function($template, $context, $arg, $source) use ($self, $expr_engine) {
+            global $aiki;
+            $parsedArgs = $template->parseArguments($arg);
+            
+            $arg = $self->process_args($context, $parsedArgs[0]);
+            if (preg_match("/^\\\".*\\\"$/", $arg)) {
+                $arg = json_decode($arg);
+            }
+            //return new \Handlebars\SafeString($arg);
+            return new \Handlebars\SafeString(file_get_contents($arg));
+        });
+        
+        $this->handlebars->addHelper('read', function($template, $context, $arg, $source) use ($self) {
+            global $aiki;
+            $parsedArgs = $template->parseArguments($arg);
+            $arg = $self->process_args($context, $parsedArgs[0]);
+            if (preg_match("/^\\\".*\\\"$/", $arg)) {
+                $arg = json_decode($arg);
+            }
+            $file = explode("\n", file_get_contents($arg));
+            return new \Handlebars\SafeString($self->iterate($template, $context, $file));
         });
         
         $this->handlebars->addHelper('header', function($template, $context, $arg, $source) use ($self) {
@@ -112,15 +125,46 @@ class engine_handlebars extends engine_v8 {
     
     function process_args($context, $str) {
         $self = $this;
-        $str = preg_replace_callback("/'[^']+'(*SKIP)(*F)|(?<!\\\\)\\$(\w+)\b(?!->)/", function($matches) use ($context, $self) {
+        
+        $str = preg_replace_callback("/'[^']+'(*SKIP)(*F)|(?<!\\\\)\\$([\w.]+)\b(?!->)/", function($matches) use ($context, $self) {
             return json_encode($self->get_context_var($context, $matches[1]));
         }, (string)$str);
+        $str = preg_replace_callback("/(@\w+)/", function($matches) use ($context, $self) {
+            return json_encode($self->get_context_var($context, $matches[1]));
+        }, $str);
         $str = preg_replace_callback('/\$aiki\-\>(.*?)\-\>([^(]+)\((.*)\)?/', function($matches) {
             global $aiki;
             return json_encode($aiki->AikiScript->aiki_function($matches[1], $matches[2], $matches[3]));
         }, $str);
         return $str;
     }
+    
+    /**
+     * render template by iterating over array values
+     */
+
+    function iterate($template, $context, $array) {
+        $buffer = '';
+        if ($array && count($array)) {
+            $index = 0;
+            $lastIndex = count($array) - 1;
+            foreach ($array as $key => $value) {
+                $specialVariables = array(
+                    '@index' => $index,
+                    '@first' => ($index === 0),
+                    '@last' => ($index === $lastIndex),
+                );
+                $context->pushSpecialVariables($specialVariables);
+                $context->push($value);
+                $buffer .= $template->render($context);
+                $context->pop();
+                $template->rewind();
+                $index++;
+            }
+        }
+        return $buffer;
+    }
+    
     /**
      * get variable from handlebars context
      */
@@ -238,10 +282,8 @@ class engine_handlebars extends engine_v8 {
             $widget->if_authorized &&
             $membership->have_permission($widget->permissions)) {
             $widget_text = $widget->if_authorized;
-            $widget->query = $widget->authorized_select;
         } else {
             $widget_text = $this->widget->widget;
-            $widget->query = $widget->normal_select;
         }
         if (isset($widget->custome_header)) {
             $widget->custom_header = $widget->custome_header;
