@@ -110,7 +110,6 @@ class Engine_aiki {
         if ($module_widgets) {
             foreach($module_widgets as $tested_widget) {
                 if ($tested_widget->display_urls != "*") {
-                    //throw new Error(json_encode($tested_widget));
                     $unique_widget_exists = true;
                     break;
                 }

@@ -135,31 +135,122 @@ class engine_handlebars extends engine_v8 {
             }
         }
     }
+    
+    /**
+     * Create layout
+     */
+
+    function layout($parameters) {
+        global $db, $aiki;
+
+        // Initialize
+
+        // @TODO javascript? id for some elements?
+        $this->target = array(
+            "body"=>"" ,
+            "header"=>"",
+            "css"=>array() );
+
+        // the widget is given directly or
+        if (isset($_GET["widget"])) {
+            if ($widget = $aiki->widgets->get_widget($_GET['widget'])) {
+                return $this->parse($widget);
+            }
+            return;//all work is done
+        }
+
+        // or in url,
+        // search widget and test there is a unique response
+        $module_widgets = $aiki->widgets->get_candidate_widgets();
+        $unique_widget_exists = false;
+        if ($module_widgets) {
+            foreach($module_widgets as $tested_widget){
+                if ($tested_widget->display_urls != "*"){
+                    $unique_widget_exists = true;
+                    break;
+                }
+            }
+        }
+
+        // Error 404 page not found
+        $allMatch=false;
+        if (!$unique_widget_exists) {
+            // first look for widget that responds error_404,
+            // else use config error_404.
+            $module_widgets = $aiki->widgets->get_Page_Not_Found_Widgets();
+            if ( $module_widgets ) {
+                $aiki->Errors->pageNotFound(false);
+                $allMatch = true;
+            } else {
+                return $aiki->Errors->pageNotFound(true);
+            }
+        }
+
+        // now filter canditate widgets, before create content
+        foreach ( $module_widgets as $parent ) {
+
+            // first parent
+            if ( $allMatch or
+                ($aiki->url->match($parent->display_urls) && !$aiki->url->match($parent->kill_urls)) ) {
+                if ( $parent->have_css == 1) {
+                    $this->target["css"][] = $parent->id;
+                }
+                $this->target[$parent->widget_target] .= $this->parse($parent);
+
+                // children..
+                /* @TODO..a function */
+                if ( is_array($descendants = $aiki->widgets->get_candidate_widgets($parent->id)) ){
+                    foreach ($descendants as $descendant){
+                        if ( $aiki->url->match($descendant->display_urls) && !$aiki->url->match($descendant->kill_urls) ) {
+                            $this->target["css"][] = $descendant->id;
+                            $this->target[$descendant->widget_target] .= $this->parse($descendant);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $this->render_html();
+    }
 
     /**
      *  parse a given widget
      */
 
-    function parse($widgetID) {
+    function parse($widget) {
         global $aiki, $db;
         
 
-        $this->widget = $db->get_row("SELECT * FROM aiki_widgets WHERE id=" . (int)$widgetID);
-        $widget       = $this->widget->widget;
+        $this->widget = $widget;
+        $widget_text = $this->widget->widget;
         $widgetName   = $this->widget->widget_name;
-        // fix handlebars helper arguments
-        $helpers = array('#sql', '#if', 'script');
-        $re = "/\{\{(" . implode('|', $helpers).")\s+(.*?)\s*\}\}/";
-        $widget = preg_replace_callback($re, function($matches) {
-            return '{{' . $matches[1] . ' "'. preg_replace('/(?<!\\\\)"/', '\\"', $matches[2]) . '"}}';
-        }, $widget);
+        
+        if (isset($widget->custome_header)) {
+            $widget->custom_header = $widget->custome_header;
+        }
 
-        $widget = $this->handlebars->render($widget, $this->global_vars());
+        if ($widget->custom_header && $widget->custom_header != '') {
+            $custom_headers = explode("\n", $widget->custom_header);
+            foreach ($custom_headers as $custom_header) {
+                if ( $custom_header != "" ) {
+                    header($custom_header);
+                }
+            }
+        }
+        
+        // fix handlebars helper arguments
+        $helpers = array('#?sql', '#?if', '#?script');
+        $re = "/\{\{(" . implode('|', $helpers).")\s+(.*?)\s*\}\}/";
+        $widget_text = preg_replace_callback($re, function($matches) {
+            return '{{' . $matches[1] . ' "'. preg_replace('/(?<!\\\\)"/', '\\"', $matches[2]) . '"}}';
+        }, $widget_text);
+
+        $widget_text= $this->handlebars->render($widget_text, $this->global_vars());
 
         if ( is_debug_on() ){
-            return "\n<!-- start {$widgetName} ($widgetID) -->" . $widget . "\n<!-- end {$widgetName} ($widgetID) -->";
+            return "\n<!-- start {$widgetName} ($widgetID) -->" . $widget_text . "\n<!-- end {$widgetName} ($widgetID) -->";
         }
-        return $widget;
+        return $widget_text;
     }
     
     function render_html() {

@@ -29,7 +29,7 @@ class engine_v8 {
     private $widget_css;
     private $widget_html;
 
-    /*
+    /**
      * Create layout
      */
 
