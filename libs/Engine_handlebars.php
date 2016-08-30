@@ -152,7 +152,8 @@ class engine_handlebars extends engine_v8 {
                 $specialVariables = array(
                     '@index' => $index,
                     '@first' => ($index === 0),
-                    '@last' => ($index === $lastIndex),
+                    '@last'  => ($index === $lastIndex),
+                    '@key'   => $key
                 );
                 $context->pushSpecialVariables($specialVariables);
                 $context->push($value);
