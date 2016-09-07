@@ -137,7 +137,7 @@ class DatabaseSession implements SessionInterface {
         $id = $this->_database->escape($id);
         $sql = sprintf("DELETE FROM aiki_sessions WHERE session_id = '%s'",
             $id);
-        return $this->_database->query($sql);
+        return (boolean)$this->_database->query($sql);
     }
 
     /** The garbage collector, this is executed when the session garbage

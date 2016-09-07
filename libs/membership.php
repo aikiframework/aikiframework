@@ -516,7 +516,7 @@ class membership {
             $delete_session_data = $db->query("DELETE FROM aiki_users_ses".
                                               "sions where user_session='".
                                               $_SESSION['aikiuser'] . "'");
-
+        
             unset($_SESSION['aikiuser']);
             unset($_SESSION['guest']);
             session_destroy();

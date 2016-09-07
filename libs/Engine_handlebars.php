@@ -572,7 +572,7 @@ class engine_handlebars extends engine_v8 {
             'GET'           => $_GET,
             'POST'          => $_POST,
             'COOKIE'        => $_COOKIE,
-            'SESSION'       => $_SESSION,
+            'SESSION'       => isset($_SESSION) ? $_SESSION : array(),
             'config'        => $config
         );
         
