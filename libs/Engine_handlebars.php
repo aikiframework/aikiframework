@@ -39,30 +39,43 @@ class engine_handlebars extends engine_v8 {
         $this->handlebars = new Handlebars();
         
         $this->handlebars->addHelper('noaiki', function($template, $context, $arg, $source) {
-            return $source;
+            return new \Handlebars\SafeString($source);
         });
         $self = $this;
         $expr_engine = new Expression();
         $this->expressions = $expr_engine;
         $this->handlebars->addHelper('if', function($template, $context, $arg, $source) use ($self, $expr_engine) {
             $parsedArgs = $template->parseArguments($arg);
+            //$parsedArgs = array($arg);
             $expr = $self->process_args($context, $parsedArgs[0]);
             $tmp = $expr_engine->evaluate($expr);
             if ($expr_engine->last_error) {
                 throw new Exception($expr_engine->last_error);
             }
+            
             if ($tmp) {
+                if (preg_match("/=~/", $expr)) {
+                    $new = array();
+                    foreach ($expr_engine->v as $var => $value) {
+                        if (preg_match("/^\\\$[0-9]+$/", $var)) {
+                            $new[$var] = $value;
+                        }
+                    }
+                    $context->push($new);
+                }
                 $template->setStopToken('else');
                 $buffer = $template->render($context);
                 $template->setStopToken(false);
                 $template->discard($context);
+                if (preg_match("/=~/", $expr)) {
+                    $context->pop();
+                }
             } else {
                 $template->setStopToken('else');
                 $template->discard($context);
                 $template->setStopToken(false);
                 $buffer = $template->render($context);
             }
-            
             return $buffer;
         });
         $this->handlebars->addHelper('sql', function($template, $context, $arg, $source) use ($self) {
@@ -89,24 +102,83 @@ class engine_handlebars extends engine_v8 {
         $this->handlebars->addHelper('file', function($template, $context, $arg, $source) use ($self, $expr_engine) {
             global $aiki;
             $parsedArgs = $template->parseArguments($arg);
-            
-            $arg = $self->process_args($context, $parsedArgs[0]);
-            if (preg_match("/^\\\".*\\\"$/", $arg)) {
-                $arg = json_decode($arg);
-            }
-            //return new \Handlebars\SafeString($arg);
-            return new \Handlebars\SafeString(file_get_contents($arg));
+            try { 
+                $arg = $self->process_args($context, $parsedArgs[0]);
+                if (preg_match("/^\\\".*\\\"$/", $arg)) {
+                    $arg = json_decode($arg);
+                }
+                if (file_exists($arg)) {
+                    return new \Handlebars\SafeString(file_get_contents($arg));
+                }
+            } catch(Exception $e) {}
         });
         
-        $this->handlebars->addHelper('read', function($template, $context, $arg, $source) use ($self) {
-            global $aiki;
+        $this->handlebars->addHelper('permission', function($template, $context, $arg, $source) use ($self) {
+            global $aiki, $db;
             $parsedArgs = $template->parseArguments($arg);
             $arg = $self->process_args($context, $parsedArgs[0]);
             if (preg_match("/^\\\".*\\\"$/", $arg)) {
                 $arg = json_decode($arg);
             }
-            $file = explode("\n", file_get_contents($arg));
-            return new \Handlebars\SafeString($self->iterate($template, $context, $file));
+            $permissions = explode(" ", preg_replace("/\s+/", " ", $arg));
+            $permission = false;
+            if (in_array($aiki->membership->permissions, $permissions)) {
+                $permission = true;
+            } else {
+                $sql = "SELECT group_level" .
+                    " FROM aiki_users_groups".
+                    " WHERE group_permissions in ('". implode("','", $permissions) ."')";
+
+                $levels = $db->get_col($sql);
+            
+                if ($levels) {
+                    foreach ($levels as $level) {
+                        if ($aiki->membership->group_level < $level) {
+                            $permission = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if ($permission) {
+                $template->setStopToken('else');
+                $buffer = $template->render($context);
+                $template->setStopToken(false);
+                $template->discard($context);
+            } else {
+                $template->setStopToken('else');
+                $template->discard($context);
+                $template->setStopToken(false);
+                $buffer = $template->render($context);
+            }
+            return $buffer;
+        }); 
+        
+        $this->handlebars->addHelper('json_encode', function($template, $context, $arg, $source) use ($self) {
+            $parsedArgs = $template->parseArguments($arg);
+            $arg = $self->process_args($context, $parsedArgs[0]);
+            if (preg_match("/^\\\".*\\\"$/", $arg)) {
+                return new \Handlebars\SafeString($arg);
+            } else {
+                return new \Handlebars\SafeString(json_encode($arg));
+            }
+        });
+        
+        $this->handlebars->addHelper('read', function($template, $context, $arg, $source) use ($self) {
+            global $aiki;
+            $parsedArgs = $template->parseArguments($arg);
+            try {
+                $arg = $self->process_args($context, $parsedArgs[0]);
+                if ($arg) {
+                    if (preg_match("/^\\\".*\\\"$/", $arg)) {
+                        $arg = json_decode($arg);
+                    }
+                    if (file_exists($arg)) {
+                        $file = explode("\n", file_get_contents($arg)); // file function inlcude newline characters
+                        return new \Handlebars\SafeString($self->iterate($template, $context, $file));
+                    }
+                }
+            } catch(Exception $e) { }
         });
         
         $this->handlebars->addHelper('header', function($template, $context, $arg, $source) use ($self) {
@@ -121,20 +193,126 @@ class engine_handlebars extends engine_v8 {
                 default: header($para[0], $para[1], $para[2]); break;
             }
         });
+        
+        $this->handlebars->addHelper('set', function($template, $context, $arg, $source) use ($self, $expr_engine) {
+            if (!$source) {
+                //echo json_encode($source) . "\n";
+            }
+            $parsedArgs = $template->parseArguments($arg);
+            $arg = preg_replace('/\\\\"/', '"', $self->process_args($context, $parsedArgs[0]));
+            if (preg_match("/^\s*(.*?)\s*(=|\+=)\s*(.*)\s*$/", $arg, $matched)) {
+                $value = $expr_engine->evaluate($matched[3]);
+                if (preg_match("/^\.\.\//", $matched[1])) {
+                    $selectors = explode("/", $matched[1]);
+                    $stack = array();
+                    foreach ($selectors as $selector) {
+                        array_push($stack, $context->pop());
+                    }
+                    $selector = explode(".", end($selectors));
+                    $end = end($stack);
+                    $top = &$end;
+                    foreach ($selector as $i => $part) {
+                        if (array_key_exists($part, $top)) {
+                            if ($i == count($selector)-1) {
+                                if ($matched[2] == '+=') {
+                                    if (is_array($top) && array_key_exists($part, $top)) {
+                                        if (is_string($value)) {
+                                            $top[$part] .= $value;
+                                        } else {
+                                            $top[$part] += $value;
+                                        }
+                                    } elseif ($part == 'this') {
+                                        if (is_string($value)) {
+                                            $top .= $value;
+                                        } else {
+                                            $top += $value;
+                                        }
+                                    }
+                                } else {
+                                    if (is_array($top)) {
+                                        $top[$part] = $value;
+                                    } else {
+                                        $array = array(
+                                            "this" => $top
+                                        );
+                                        $array[$part] = $value;
+                                        $top = $array;
+                                    }
+                                }
+                            } else {
+                                $top = &$top[$part];
+                            }
+                        }
+
+                    }
+                    // push modified context on the stack
+                    array_pop($stack);
+                    array_push($stack, $end);
+                    // restore context
+                    while (end($stack)) {
+                        $context->push(array_pop($stack));
+                    }
+                } else {
+                    $top = $context->pop();
+                    if ($matched[2] == '+=') {
+                        if (array_key_exists($matched[1], $top)) {
+                            if (is_string($value)) {
+                                $top[$matched[1]] .= $value;
+                            } else {
+                                $top[$matched[1]] += $value;
+                            }
+                        } elseif ($matched[1] == 'this') {
+                            if (is_string($value)) {
+                                $top .= $value;
+                            } else {
+                                $top += $value;
+                            }
+                        }
+                    } else {
+                        
+                        if (is_array($top)) {
+                            $top[$matched[1]] = $value;
+                        } else {
+                            $array = array(
+                                "this" => $top
+                            );
+                            $array[$matched[1]] = $value;
+                            $top = $array;
+                        }
+                    }
+                    $context->push($top);
+                }
+            } else {
+                throw new Error("Invalid argument to set helper");
+            }
+            //*/
+        });
+        
     }
     
     function process_args($context, $str) {
         $self = $this;
-        
-        $str = preg_replace_callback("/'[^']+'(*SKIP)(*F)|(?<!\\\\)\\$([\w.]+)\b(?!->)/", function($matches) use ($context, $self) {
-            return json_encode($self->get_context_var($context, $matches[1]));
+        $str = preg_replace_callback('%(?<!\\\\)".*?(?<!\\\\)"%', function($matches) use ($context, $self) {
+            return preg_replace_callback('%(?<!\\\\)\\$([\w./]+)\b(?!->)%', function($matches) use ($context, $self) {
+                return $self->get_context_var($context, $matches[1]);
+            }, $matches[0]);
         }, (string)$str);
-        $str = preg_replace_callback("/(@\w+)/", function($matches) use ($context, $self) {
+        $str = preg_replace_callback("%'[^']+'(*SKIP)(*F)|(?<!\\\\)\\$([\w./]+)\b(?!->)%", function($matches) use ($context, $self) {
             return json_encode($self->get_context_var($context, $matches[1]));
         }, $str);
-        $str = preg_replace_callback('/\$aiki\-\>(.*?)\-\>([^(]+)\((.*)\)?/', function($matches) {
+        $str = preg_replace_callback('/(@\w+)/', function($matches) use ($context, $self) {
+            return json_encode($self->get_context_var($context, $matches[1]));
+        }, $str);
+        $str = preg_replace_callback('/\$aiki\-\>(.*?)\-\>([^(]+)\((.*)\)/', function($matches) {
             global $aiki;
             return json_encode($aiki->AikiScript->aiki_function($matches[1], $matches[2], $matches[3]));
+        }, $str);
+        
+        $str = preg_replace_callback('/\$aiki\-\>(.*?)\-\>([^(]+)/', function($matches) {
+            global $aiki;
+            $class = $matches[1];
+            $property = $matches[2];
+            return json_encode($aiki->$class->$property);
         }, $str);
         return $str;
     }
@@ -184,6 +362,10 @@ class engine_handlebars extends engine_v8 {
                 // save context for restoration
                 array_push($stack, $context->pop());
                 if (!$context->last()) {
+                    //restore the context
+                    while (end($stack)) {
+                       $context->push(array_pop($stack));
+                    }
                     throw new Exception("Can't find variable $var");
                 }
             }
@@ -300,12 +482,12 @@ class engine_handlebars extends engine_v8 {
         }
         
         // handlerbars helpers require to quote arguments if then have special characters
-        $helpers = array('#?sql', '#?if', '#?script');
-        $re = "/\{\{(" . implode('|', $helpers).")\s+(.*?)\s*\}\}/";
+        $helpers = array('#?sql', '#?if', '#?script', 'set', 'json_encode', 'permission');
+        $re = "/\{\{~?(" . implode('|', $helpers).")\s+(.*?)\s*\~?}\}/";
         $widget_text = preg_replace_callback($re, function($matches) {
-            return '{{' . $matches[1] . ' "'. preg_replace('/(?<!\\\\)"/', '\\"', $matches[2]) . '"}}';
+            return '{{' . $matches[1] . " '". preg_replace("/(?<!\\\\)'/", "\\'", $matches[2]) . "'}}";
         }, $widget_text);
-
+        //echo $widget_text . "\n";
         $widget_text = $this->handlebars->render($widget_text, $this->global_vars());
 
         if (is_debug_on()) {

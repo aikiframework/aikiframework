@@ -122,7 +122,7 @@ class Expression {
         if (substr($expr, -1, 1) == ';') $expr = substr($expr, 0, strlen($expr)-1); // strip semicolons at the end
         //===============
         // is it a variable assignment?
-        if (preg_match('/^\s*([a-z]\w*)\s*=\s*(.+)$/', $expr, $matches)) {
+        if (preg_match('/^\s*([a-z]\w*)\s*=(?!~|=)\s*(.+)$/', $expr, $matches)) {
             if (in_array($matches[1], $this->vb)) { // make sure we're not assigning to a constant
                 return $this->trigger("cannot assign to constant '$matches[1]'");
             }
@@ -189,7 +189,7 @@ class Expression {
                        '<'=>0,'>='=>0,'<='=>0,'=='=>0,'!='=>0,'=~'=>0,
                        '&&'=>0,'||'=>0,'!'=>0); // right-associative operator?  
         $ops_p = array('+'=>4,'-'=>4,'*'=>4,'/'=>4,'_'=>4,'%'=>4,'^'=>5,'>'=>2,'<'=>2,
-                       '>='=>2,'<='=>2,'=='=>2,'!='=>2,'=~'=>2,'&&'=>1,'||'=>1,'!'=>0); // operator precedence
+                       '>='=>2,'<='=>2,'=='=>2,'!='=>2,'=~'=>2,'&&'=>1,'||'=>1,'!'=>5); // operator precedence
         
         $expecting_op = false; // we use this in syntax-checking the expression
                                // and determining when a - is a negation
@@ -216,9 +216,9 @@ class Expression {
                 $stack->push('[');                
                 $stack->push($matches[1]);
                 $index += strlen($match[1]);
-            } elseif ($op == '!' && !$expecting_op) {
-                $stack->push('!'); // put a negation on the stack
-                $index++;
+            //} elseif ($op == '!' && !$expecting_op) {
+            //    $stack->push('!'); // put a negation on the stack
+            //    $index++;
             } elseif ($op == '-' and !$expecting_op) { // is it a negation instead of a minus?
                 $stack->push('_'); // put a negation on the stack
                 $index++;
@@ -330,9 +330,9 @@ class Expression {
             } elseif ($op == ')') { // miscellaneous error checking
                 return $this->trigger("unexpected ')'");
             } elseif (in_array($op, $ops) and !$expecting_op) {
-                return $this->trigger("unexpected operator '$op'"  . json_encode($op) . " " . json_encode($match) . " " . $expr);
+                return $this->trigger("unexpected operator '$op'");
             } else { // I don't even want to know what you did to get here
-                return $this->trigger("an unexpected error occured");
+                return $this->trigger("an unexpected error occured " . json_encode($op) . " " . json_encode($match) . " " . $expr);
             }
             if ($index == strlen($expr)) {
                 if (in_array($op, $ops)) { // did we end with an operator? bad.
@@ -404,8 +404,6 @@ class Expression {
                             $stack->push($op1 != $op2);
                         }
                         break;
-                    case '&&':
-                        $stack->push($op1 && $op2); break;
                     case '=~':
                         if (!preg_match("/^(.).*\\1/", $op2)) {
                             return $this->trigger("Invalid regex " . json_encode($op2));
@@ -415,8 +413,10 @@ class Expression {
                             $this->v['$' . $i] = $match[$i];
                         }
                         break;
+                    case '&&':
+                        $stack->push($op1 ? $op2 : $op1); break;
                     case '||':
-                        $stack->push($op1 || $op2); break;
+                        $stack->push($op1 ? $op1 : $op2); break;
                 }
             // if the token is a unary operator, pop one value off the stack, do the operation, and push it back on
             } elseif ($token == '!') {
@@ -464,10 +464,15 @@ class Expression {
                 }
             // if the token is a number or variable, push it on the stack
             } else {
-                if (preg_match('/^([\[{](?>"(?:[^"]|\\")*"|[^[{\]}]|(?1))*[\]}])$/', $token)) { // json
+                if (preg_match('/^([\[{](?>"(?:[^"]|\\")*"|[^[{\]}]|(?1))*[\]}])$/', $token) ||
+                    preg_match("/^(null|true|false)$/", $token)) { // json
                     //return $this->trigger("invalid json " . $token);
                     if ($token == 'null') {
                         $value = null;
+                    } elseif ($token == 'true') {
+                        $value = true;
+                    } elseif ($token == 'false') {
+                        $value = false;
                     } else {
                         $value = json_decode($token);
                         if ($value == null) {
