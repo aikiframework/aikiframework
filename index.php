@@ -81,13 +81,14 @@ if ( $engineType =="aiki" ){
     include "$AIKI_ROOT_DIR/libs/Engine_$engineType.php";
     $engineClass= "Engine_" . $engineType;
     $engine = new $engineClass();
+    $aiki->engine = $engine;
     $html_output = $engine->layout($aiki->site->engine_parameters());
 
 } else {
     // engine is no valid
     $html_output =
         "<p>".
-        t( sprintf('Unkown engine %1$s. File /libs/Engine_%1$s.php doesn\'t exists.',$engineType)).
+        t(sprintf('Unkown engine %1$s. File /libs/Engine_%1$s.php doesn\'t exists.',$engineType)).
         "</p>";
 }
 
@@ -116,7 +117,7 @@ if ( extension_loaded('tidy') &&
 
     if (!isset($_GET['no_output']))  {
         $aiki->Plugins->doAction("output_html", $html_output);
-        $html_output = stripslashes($html_output);
+        //$html_output = stripslashes($html_output);
         print $html_output;
     }
 } // end of using tidy

@@ -108,16 +108,18 @@ class membership {
         $time_now = time();
 
         if ($allowGuestSessions) {
-            if ( !isset($_SESSION['aikiuser']) and !isset($_SESSION['guest']) ) {
+            if (!isset($_SESSION['aikiuser']) and !isset($_SESSION['guest'])) {
                 $user_ip = $this->get_ip();
 
                 $_SESSION['guest'] = $this->generate_session(100);
+                $user_id = $db->get_var("SELECT userid FROM aiki_users WHERE username = 'guest'");
                 $insert_session = $db->query(
-                    "INSERT INTO aiki_users_sessions".
-                    " VALUES ('', '', 'guest' , '$time_now', '$time_now' , '" .
-                    $_SESSION['guest']."', '1', '$user_ip', '$user_ip')");
+                    "INSERT INTO aiki_users_sessions(user_id, user_name, session_start,".
+                    " last_hit, user_session, hits, user_ip, last_ip)".
+                    " VALUES ($user_id, 'guest' , $time_now, $time_now , '" .
+                    $_SESSION['guest']."', 1, '$user_ip', '$user_ip')");
 
-            } else {
+            } else if (isset($_SESSION['guest'])) {
                 $update_guest = $db->query("UPDATE `aiki_users_sessions` SET `last_hit` " .
                     "= '$time_now' WHERE `user_session`='" . $_SESSION['guest'] . "' LIMIT 1");
             }
@@ -180,7 +182,8 @@ class membership {
             $user_ip   = $this->get_ip();
 
             if (isset($config["allow_guest_sessions"]) and
-                $config["allow_guest_sessions"]) {
+                $config["allow_guest_sessions"] and
+                isset($_SESSION['guest'])) {
                 $_SESSION['aikiuser'] = $_SESSION['guest'];
                 $register_user = $db->query("UPDATE `aiki_users_sessions` SET `user_id`='" .
                     $get_user->userid . "', `user_name` = '" . $get_user->username .
@@ -253,8 +256,7 @@ class membership {
             "'$session'";
         $user = $db->get_row($SQL);
 
-        if ( $user )    {
-
+        if ($user) {
             $this->full_name   = $user->full_name;
             $this->username    = $user->username;
             $this->userid      = $user->userid;
