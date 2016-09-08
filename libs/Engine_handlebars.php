@@ -292,14 +292,17 @@ class engine_handlebars extends engine_v8 {
     
     function process_args($context, $str) {
         $self = $this;
-        $str = preg_replace_callback('%(?<!\\\\)".*?(?<!\\\\)"%', function($matches) use ($context, $self) {
-            return preg_replace_callback('%(?<!\\\\)\\$([\w./]+)\b(?!->)%', function($matches) use ($context, $self) {
-                return $self->get_context_var($context, $matches[1]);
-            }, $matches[0]);
+        $re = '~\'[^\']+\'(*SKIP)(*F)|(?<double>(?<!\\\\)"(?:(?:(?<!\\\\)(?:\\\\{2})*\\\\)"|[^"])*(?<![^\\\\]\\\\)")|(?<!\\\\)\$(?<name>[\w.\/]+)\b(?!->)~';
+        
+        $str = preg_replace_callback($re, function($matches) use ($context, $self) {
+            if (!empty($matches['double'])) {
+                return preg_replace_callback('/(?<!\\\\)\$([\w.\/]+)\b(?!->)/', function($matches) use ($context, $self) {
+                    return $self->get_context_var($context, $matches[1]);
+                }, $matches['double']);
+            } else if (!empty($matches['name'])) {
+                return json_encode($self->get_context_var($context, $matches['name']));
+            }
         }, (string)$str);
-        $str = preg_replace_callback("%'[^']+'(*SKIP)(*F)|(?<!\\\\)\\$([\w./]+)\b(?!->)%", function($matches) use ($context, $self) {
-            return json_encode($self->get_context_var($context, $matches[1]));
-        }, $str);
         $str = preg_replace_callback('/(@\w+)/', function($matches) use ($context, $self) {
             return json_encode($self->get_context_var($context, $matches[1]));
         }, $str);
