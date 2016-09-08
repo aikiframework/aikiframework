@@ -45,9 +45,10 @@ class engine_handlebars extends engine_v8 {
         $expr_engine = new Expression();
         $this->expressions = $expr_engine;
         $this->handlebars->addHelper('if', function($template, $context, $arg, $source) use ($self, $expr_engine) {
-            $parsedArgs = $template->parseArguments($arg);
+            //$parsedArgs = $template->parseArguments($arg);
             //$parsedArgs = array($arg);
-            $expr = $self->process_args($context, $parsedArgs[0]);
+            $arg = preg_replace("/\\\\'/", "'", preg_replace("/^'(.*)'/", "\\1", $arg));
+            $expr = $self->process_args($context, $arg);
             $tmp = $expr_engine->evaluate($expr);
             if ($expr_engine->last_error) {
                 throw new Exception($expr_engine->last_error);
@@ -292,8 +293,9 @@ class engine_handlebars extends engine_v8 {
     
     function process_args($context, $str) {
         $self = $this;
-        $re = '~\'[^\']+\'(*SKIP)(*F)|(?<double>(?<!\\\\)"(?:(?:(?<!\\\\)(?:\\\\{2})*\\\\)"|[^"])*(?<![^\\\\]\\\\)")|(?<!\\\\)\$(?<name>[\w.\/]+)\b(?!->)~';
-        
+        $string_re = '(?<!\\\\)"(?:(?<!\\\\)\\\\"|(?:(?<!\\\\)(?:\\\\{2})*\\\\)"|[^"])*(?<![^\\\]\\\\)"';
+        $re = "~\'[^\']+\'(*SKIP)(*F)|(?<double>$string_re)|(?<!\\\\)\\$(?<name>[\w.\/]+)\b(?!->)~";
+        //echo "1: " . $str . "\n";
         $str = preg_replace_callback($re, function($matches) use ($context, $self) {
             if (!empty($matches['double'])) {
                 return preg_replace_callback('/(?<!\\\\)\$([\w.\/]+)\b(?!->)/', function($matches) use ($context, $self) {
@@ -303,6 +305,7 @@ class engine_handlebars extends engine_v8 {
                 return json_encode($self->get_context_var($context, $matches['name']));
             }
         }, (string)$str);
+        //echo "2: " . $str . "\n";
         $str = preg_replace_callback('/(@\w+)/', function($matches) use ($context, $self) {
             return json_encode($self->get_context_var($context, $matches[1]));
         }, $str);
@@ -485,7 +488,7 @@ class engine_handlebars extends engine_v8 {
         }
         
         // handlerbars helpers require to quote arguments if then have special characters
-        $helpers = array('#?sql', '#?if', '#?script', 'set', 'json_encode', 'permission');
+        $helpers = array('#?sql', '#?if', '#?script', 'set', 'json_encode', '#permission');
         $re = "/\{\{~?(" . implode('|', $helpers).")\s+(.*?)\s*\~?}\}/";
         $widget_text = preg_replace_callback($re, function($matches) {
             return '{{' . $matches[1] . " '". preg_replace("/(?<!\\\\)'/", "\\'", $matches[2]) . "'}}";
