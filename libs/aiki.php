@@ -1,7 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 /**
  * Aiki Framework (PHP)
  *
@@ -391,12 +388,12 @@ class aiki {
      *
      * @todo this function is seriously overloaded and needs to be rethought
      */
-    public function processVars($text) {
+    public function processVars($text, $site="default") {
         static $bufferReplace;
         global $aiki, $page;
 
-        $pretty = $aiki->config->get('pretty_urls', 1);
-        $url = $aiki->config->get('url');
+        $pretty = $aiki->config->get('pretty_urls', 1, "CURRENT", $site);
+        $url = $aiki->config->get('url', false, "CURRENT", $site);
 
         if ( $bufferReplace == NULL ) {
 

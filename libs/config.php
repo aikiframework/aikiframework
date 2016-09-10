@@ -199,9 +199,11 @@ class config {
      */
 
 
-    function get($setting, $default=false, $selector="CURRENT") {
+    function get($setting, $default=false, $selector="CURRENT", $site="default") {
         global $db, $config, $aiki;
-
+        if (isset($config['sites'][$site][$setting])) {
+            return $config['sites'][$site][$setting];
+        }
         // check if setting is in cache.
         if (isset($config[$setting])) {
             return $config[$setting];

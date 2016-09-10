@@ -412,7 +412,7 @@ class Engine_aiki {
             $aiki->site->language());
 
         $widget->widget = $aiki->input->requests($widget->widget);
-        $widget->widget = $aiki->processVars($widget->widget);
+        $widget->widget = $aiki->processVars($widget->widget, $widget->widget_site);
 
 
         // noloop part are extracted and deleted.

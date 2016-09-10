@@ -17,8 +17,9 @@ class ExpressionTest extends TestCase {
         $expression = '"lorem" + (!false && "\n" || "")';
         $expr = new Expression();
         echo json_encode($expr->evaluate($expression));
+        $expr->evaluate("(10==10)");
     }
-    */
+    //*/
     // -------------------------------------------------------------------------
     public function testIntegers() {
         $ints = array("100", "3124123", (string)PHP_INT_MAX, "-1000");

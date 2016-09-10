@@ -128,29 +128,30 @@ class engine_v8 {
         // regex (string)  => function | array(object,method).
         // a numeric index => function | array(object,method).
 
-        $preParsers = array (
-            '/\[\$([a-z0-9_]+)\]/i'                    => array( $this, "parse_vars"),
-            '/\[GET\[([a-z0-9]+)\]\]/i'                   => array( $this, "parse_get"),
-            '/\[POST\[([a-z0-9]+)\]\]/i'               => array( $this, "parse_post"),
-            "/\(template\(([a-z0-9_]*)\)template\)/Ui" => array( $this, "parse_template")) ;
+        $preParsers = array(
+            '/\[\$([a-z0-9_]+)\]/i'                    => array($this, "parse_vars"),
+            '/\[GET\[([a-z0-9]+)\]\]/i'                => array($this, "parse_get"),
+            '/\[POST\[([a-z0-9]+)\]\]/i'               => array($this, "parse_post"),
+            "/\(template\(([a-z0-9_]*)\)template\)/Ui" => array($this, "parse_template"));
 
-        $postParsers =array (
-             array ($aiki->languages,"L10n") ) ;  // added for test purpose only
+        $postParsers =array(
+             array($aiki->languages,"L10n"));  // added for test purpose only
 
         // parsers are defined here
-        $parsers = array (
+        $parsers = array(
             "widget"      => "parse_widget",
             "permissions" => "parse_permissions",
             "view"        => "parse_view",
             "noaiki"      => "parse_noaiki",
             "sql"         => "parse_sql",
             "script"      => "parse_script",
-            "t"              => "parse_t",
+            "t"           => "parse_t",
             "__"          => "parse_translate");
 
         $widgetData = $db->get_row ("SELECT widget,widget_name FROM aiki_widgets WHERE id=" . (int) $widgetID );
         $widget    = $widgetData->widget;
         $widgetName= $widgetData->widget_name;
+        $this->site = $widgetData->widget_site;
 
         // process pre-parsers.
         foreach ($preParsers as $pattern => $callback) {
@@ -187,15 +188,15 @@ class engine_v8 {
 
 
         // process post-parsers.
-        foreach ( $postParsers as $pattern => $callback ){
-            if ( is_string($pattern) ){
-                $widget = preg_replace_callback ( $pattern, $callback, $widget);
+        foreach ($postParsers as $pattern => $callback) {
+            if (is_string($pattern)) {
+                $widget = preg_replace_callback($pattern, $callback, $widget);
             } else {
-                $widget = call_user_func   ( $callback, $widget);
+                $widget = call_user_func($callback, $widget);
             }
         }
 
-        if ( is_debug_on() ){
+        if (is_debug_on()) {
             return "\n<!-- start {$widgetName} ($widgetID) -->" . $widget . "\n<!-- end {$widgetName} ($widgetID) -->";
         }
         return $widget;
@@ -206,15 +207,15 @@ class engine_v8 {
      *  parse vars
      */
 
-    function parse_vars($match){
+    function parse_vars($match) {
         static $bufferReplace;
         global $aiki, $page;
 
         if ( $bufferReplace == NULL ) {
             /* @TODO unified with aiki processVars*/
 
-            $pretty = $aiki->config->get('pretty_urls', 1);
-            $url = $aiki->config->get('url');
+            $pretty = $aiki->config->get('pretty_urls', 1, "CURRENT", $this->site);
+            $url = $aiki->config->get('url', false, "CURRENT", $this->site);
 
             $current_month = date("n");
             $current_year = date("Y");

@@ -494,7 +494,7 @@ class engine_handlebars extends engine_v8 {
             return '{{' . $matches[1] . " '". preg_replace("/(?<!\\\\)'/", "\\'", $matches[2]) . "'}}";
         }, $widget_text);
         //echo $widget_text . "\n";
-        $widget_text = $this->handlebars->render($widget_text, $this->global_vars());
+        $widget_text = $this->handlebars->render($widget_text, $this->global_vars($widget->widget_site));
 
         if (is_debug_on()) {
             $widgetName = $this->widget->widget_name;
@@ -516,11 +516,11 @@ class engine_handlebars extends engine_v8 {
         return $html;
     }
 
-    function global_vars() {
+    function global_vars($site="default") {
         global $aiki, $page, $config;
 
-        $pretty = $aiki->config->get('pretty_urls', 1);
-        $url = $aiki->config->get('url');
+        $pretty = $aiki->config->get('pretty_urls', 1, "CURRENT", $site);
+        $url = $aiki->config->get('url', false, "CURRENT", $site);
 
         $current_month = date("n");
         $current_year = date("Y");

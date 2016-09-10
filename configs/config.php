@@ -288,4 +288,10 @@ $config["log_profile"] = "";
  * @global string $config["log_level"] */
 $config["log_level"] = "NONE";
 
+/** Per site configuration
+ */
+$config["sites"] = array();
+$config["sites"]["default"] = array();
+$config["sites"]["default"]["url"] = "@AIKI_SITE_URL@";
+
 ?>
