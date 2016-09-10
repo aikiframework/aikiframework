@@ -496,7 +496,7 @@ class engine_handlebars extends engine_v8 {
         //echo $widget_text . "\n";
         $widget_text = $this->handlebars->render($widget_text, $this->global_vars($widget->widget_site));
 
-        if (is_debug_on()) {
+        if (is_debug_on() && !$this->widget->custom_output) {
             $widgetName = $this->widget->widget_name;
             return "\n<!-- start {$widgetName} ($widgetID) -->" . $widget_text . "\n<!-- end {$widgetName} ($widgetID) -->";
         }

@@ -131,9 +131,9 @@ if ($html_cache_file) {
 /**
  * For ending the counter to see the page load time.
  */
-if ( is_debug_on() ){
+if (is_debug_on()) {
     $end = (float)array_sum(explode(' ',microtime()));
     $end_time = sprintf("%.4f", ($end-$start_time));
-    echo "\n <!-- Queries: ".$db->num_queries." -->\n";
-    echo "\n <!-- Time: ".$end_time." seconds -->";
+    echo "\n<!-- Queries: ".$db->num_queries." -->\n";
+    echo "\n<!-- Time: ".$end_time." seconds -->";
 }

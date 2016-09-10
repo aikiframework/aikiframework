@@ -439,7 +439,7 @@ function config_error_reporting($newLevel=false) {
 
 function is_debug_on() {
     global $aiki;
-    $debug= $aiki->config->get("debug",false);
+    $debug = $aiki->config->get("debug", false, "CURRENT", $_GET['site']);
 
     if ( $debug === false || $debug === true ) {
         // boolean. Backwark compatibility
