@@ -31,8 +31,8 @@ Requirements
 More Information
 ----------------
 
-* This project was created by Bassel Kartabil (known as Safadi) that was killed by Syrian Goverment. See more on Wikipedia:<br/>
-  https://en.wikipedia.org/wiki/Bassel_Khartabil
+* This project was created by Bassel Kartabil (known as Safadi) that was killed by Syrian Government after held in military prison.<br/>
+  See more on Wikipedia: https://en.wikipedia.org/wiki/Bassel_Khartabil
 
 * old site from Archive.org wayback machine https://web.archive.org/web/20121002041620/http://aikiframework.org/<br/>
   wiki https://web.archive.org/web/20121006074925/http://aikiframework.org/wiki/Main_Page
